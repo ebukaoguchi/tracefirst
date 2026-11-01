@@ -433,7 +433,55 @@
       .trans-method strong { color: var(--accent-strong); }
       .trans-empty { background: var(--panel); border: 1.5px dashed var(--line); border-radius: 12px; padding: 20px; text-align: center; color: var(--ink-soft); display: none; }
       .trans-empty.show { display: block; }
-      @media (max-width: 700px) { .trans-grid, .fix-compare { grid-template-columns: 1fr; } }
+      /* ---------- Challenges ---------- */
+      .ch-intro { max-width: 760px; margin-top: 22px; }
+      .ch-intro h2 { font-family: "Source Serif 4", Georgia, serif; font-size: 1.6rem; line-height: 1.15; }
+      .ch-intro p { margin-top: 8px; color: var(--ink-soft); }
+      .ch-intro p strong { color: var(--ink); }
+      .ch-levels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 16px; }
+      .level-btn { text-align: left; border: 1.5px solid var(--line); background: var(--panel); border-radius: 12px; padding: 14px; box-shadow: var(--shadow); color: var(--ink); }
+      .level-btn .lname { font-weight: 700; font-size: 1.05rem; display: block; }
+      .level-btn .lguide { font-size: .85rem; color: var(--ink-soft); display: block; margin-top: 3px; line-height: 1.4; }
+      .level-btn[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+      .level-btn[aria-pressed="true"] .lname { color: var(--accent-strong); }
+      .ch-section-h { font-family: "Source Serif 4", Georgia, serif; font-size: 1.4rem; margin-top: 28px; }
+      .ch-section-sub { color: var(--ink-soft); font-size: .93rem; margin-top: 4px; max-width: 720px; }
+      .ch-task-head { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+      .ch-task-head h3 { font-size: 1.05rem; }
+      .type-tag { font-family: "IBM Plex Mono", monospace; font-size: .7rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; background: var(--amber-soft); color: var(--amber); border-radius: 6px; padding: 3px 8px; }
+      .type-tag.done { background: var(--accent-soft); color: var(--accent-strong); }
+      .ch-prompt { margin-top: 8px; font-size: .95rem; }
+      .ch-code { margin-top: 10px; background: var(--code-bg); border-radius: 10px; padding: 12px 0; overflow-x: auto; }
+      .ch-code .cline { cursor: default; }
+      .spot-lines { display: grid; gap: 6px; margin-top: 10px; }
+      .spot-line { text-align: left; border: 1.5px solid var(--line); background: var(--panel-2); color: var(--ink); border-radius: 8px; padding: 9px 12px; font-family: "IBM Plex Mono", monospace; font-size: .88rem; width: 100%; white-space: pre-wrap; word-break: break-word; }
+      .spot-line[aria-pressed="true"] { border-color: var(--amber); background: var(--amber-soft); }
+      .spot-line.reveal-correct { border-color: var(--accent); background: var(--accent-soft); }
+      .spot-line.reveal-wrong { border-color: var(--rust); background: var(--rust-soft); }
+      .spot-line:disabled { opacity: .75; cursor: default; }
+      .milestones { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 8px; }
+      .milestone-btn { width: 100%; text-align: left; display: flex; gap: 10px; align-items: flex-start; border: 1.5px solid var(--line); background: var(--panel-2); color: var(--ink); border-radius: 10px; padding: 11px 13px; font-size: .94rem; }
+      .milestone-btn .mbox { width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--line); background: var(--panel); flex: none; display: grid; place-items: center; font-size: .8rem; font-weight: 700; margin-top: 1px; }
+      .milestone-btn[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+      .milestone-btn[aria-pressed="true"] .mbox { background: var(--accent); border-color: var(--accent); color: #fff; }
+      .testbench { margin-top: 16px; border-top: 1px dashed var(--line); padding-top: 14px; }
+      .testbench h4 { font-size: .8rem; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-soft); font-family: "IBM Plex Mono", monospace; margin: 0 0 10px; }
+      .testcase { border: 1px solid var(--line); border-radius: 10px; padding: 13px 14px; background: var(--panel-2); }
+      .testcase + .testcase { margin-top: 10px; }
+      .testcase .tinput { font-family: "IBM Plex Mono", monospace; font-size: .9rem; font-weight: 600; word-break: break-word; }
+      .testcase .tlabel2 { font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); font-weight: 700; margin-top: 10px; }
+      .revealed-box { margin-top: 10px; border-radius: 8px; padding: 10px 12px; font-size: .93rem; background: var(--accent-soft); color: var(--accent-strong); }
+      .revealed-box .exp { font-family: "IBM Plex Mono", monospace; font-weight: 700; }
+      .selfmark { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; align-items: center; }
+      .exam-q { border: 1px solid var(--line); border-radius: 10px; padding: 14px; background: var(--panel-2); }
+      .exam-q + .exam-q { margin-top: 10px; }
+      .exam-q.locked-q { opacity: .55; }
+      .exam-q .eqnum { font-family: "IBM Plex Mono", monospace; font-size: .75rem; font-weight: 700; color: var(--ink-soft); letter-spacing: .06em; text-transform: uppercase; }
+      .exam-q .eqtext { font-weight: 600; margin-top: 4px; font-size: .97rem; }
+      .exam-q .eqtext code, .ch-prompt code { font-family: "IBM Plex Mono", monospace; font-size: .9em; background: var(--panel); border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; }
+      .exam-score { margin-top: 14px; border-radius: 12px; padding: 16px; background: var(--accent-soft); border: 1.5px solid var(--accent); font-size: 1rem; display: none; }
+      .exam-score.show { display: block; }
+      @media (max-width: 700px) { .trans-grid, .fix-compare { grid-template-columns: 1fr; } .ch-levels { grid-template-columns: 1fr; } }
       @media (max-width: 900px) {
         .compare { grid-template-columns: 1fr; }
         .taxonomy { grid-template-columns: 1fr; }
@@ -475,6 +523,10 @@
         <button class="mode-btn" type="button" id="mode-translator" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h9M8.5 3v2c0 3-1.8 5.6-4 7M6 8c.6 2 2.3 4.2 4.5 5.5M13 21l4.5-10L22 21M14.8 17h5.4"/></svg>
           Error Translator
+        </button>
+        <button class="mode-btn" type="button" id="mode-challenges" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M7 6H4a2 2 0 0 0 0 4h3M17 6h3a2 2 0 0 1 0 4h-3"/></svg>
+          Challenges
         </button>
       </nav>
 
@@ -711,6 +763,33 @@
 
         <p class="foot"><strong>How to use this translator well:</strong> do not hunt through all 20. Copy two or three distinctive words from the message you actually got into the search box. The raw messages here use the wording of g++, the compiler in most introductory courses; other compilers phrase the same problems slightly differently, but the cause and the fix do not change.</p>
       </div><!-- /translator-mode -->
+
+      <div id="challenges-mode" hidden>
+        <section class="ch-intro">
+          <h2>Tasks, projects, and an exam — at your level.</h2>
+          <p>Pick a level and work in three parts: <strong>short tasks</strong> checked instantly, <strong>guided projects</strong> with milestones and a prediction-first test bench, and a <strong>six-question exam</strong> scored at the end. Start where you are honest, not where you wish you were — the levels share ideas, so finishing one prepares the next.</p>
+        </section>
+        <div class="ch-levels" id="ch-levels" role="group" aria-label="Choose your level"></div>
+        <section class="toolbar" style="margin-top:16px;" aria-label="Your Challenges session record">
+          <div class="scorebar" id="ch-scorebar" style="border-top:none;padding-top:0;"></div>
+        </section>
+        <h2 class="ch-section-h">Tasks</h2>
+        <p class="ch-section-sub">Four short exercises. Predict an output, complete a missing line, or spot a bug and its fix. Every answer is checked the moment you commit to it.</p>
+        <div id="ch-tasks"></div>
+        <h2 class="ch-section-h">Projects</h2>
+        <p class="ch-section-sub">Build each project in your own editor, ticking milestones as you go. At the test bench, predict the verdict before you reveal it — then mark your own program pass or fail.</p>
+        <div id="ch-projects"></div>
+        <h2 class="ch-section-h">Exam</h2>
+        <p class="ch-section-sub">Six questions, answered in order. Each answer locks and explains itself as you go; your score appears at the end.</p>
+        <section class="card" style="margin-top:14px;" aria-labelledby="ch-exam-title">
+          <span class="concept-tag" id="ch-exam-tag">Exam</span>
+          <h2 id="ch-exam-title" style="font-size:1.25rem;">Level exam</h2>
+          <div id="ch-exam" style="margin-top:14px;"></div>
+          <div class="exam-score" id="ch-exam-score" role="status"></div>
+          <div class="lockrow"><button class="btn ghost" type="button" id="ch-exam-restart">Retake this exam</button></div>
+        </section>
+        <p class="foot"><strong>One honest line:</strong> projects are built in your own editor; TraceFirst supplies the brief, the milestones, and the tests to pass. Nothing here is saved beyond this session.</p>
+      </div><!-- /challenges-mode -->
       <div class="sr-live" aria-live="polite" id="live"></div>
     </main>
     <script>
@@ -1806,20 +1885,339 @@
     $("trans-clear").addEventListener("click", function () { $("trans-search").value = ""; renderTrans(""); $("trans-search").focus(); });
     renderTrans("");
 
+    /* ================= Challenges ================= */
+    var CH_LEVELS = {
+      beginner: {
+        name: "Beginner", guide: "New to C++: variables, loops, simple decisions",
+        tasks: [
+          { id: "B1", type: "predict", title: "Multiply first", prompt: "What does this print?", code: ["int a = 4;", "int b = 3;", "cout << a * b + 2;"], options: ["14", "20", "9"], correct: 0, explain: "Multiplication happens before addition: 4 * 3 = 12, then 12 + 2 = 14." },
+          { id: "B2", type: "predict", title: "Squares in a loop", prompt: "What does this print?", code: ["for (int i = 1; i <= 3; i++)", "    cout << i * i << \" \";"], options: ["1 4 9", "1 2 3", "0 1 4"], correct: 0, explain: "The loop prints the squares of 1, 2, and 3: 1 4 9." },
+          { id: "B3", type: "complete", title: "The larger of two", prompt: "This program should print the larger of x and y (here, 9). Choose the missing line.", code: ["int x = 9;", "int y = 5;", "// _____ missing line _____"], options: ["if (x > y) cout << x;", "if (x < y) cout << x;", "cout << x + y;"], correct: 0, explain: "x (9) is greater than y (5), so the condition x > y is true and the program prints 9." },
+          { id: "B4", type: "spot", title: "The error is not where the compiler says", prompt: "One line in this program has a bug. First tap the faulty line, then choose the fix.", code: ["int main() {", "    cout << \"Hello\"", "    cout << \"World\";", "    return 0;", "}"], bugLine: 1, fixOptions: ["Add the semicolon at the end of the cout << \"Hello\" line", "Add a semicolon at the end of the cout << \"World\" line", "Remove the quotes around Hello"], fixCorrect: 0, explain: "The semicolon is missing after cout << \"Hello\", but the compiler reports the error on the following line: an error message names where the compiler gave up, not where the mistake is. That is the Error Translator's first lesson." }
+        ],
+        projects: [
+          { id: "BP1", title: "Validate My Password", brief: "Build a program that reads a password and prints STRONG if it has at least 8 characters, at least one digit, and at least one uppercase letter; otherwise it prints WEAK.",
+            milestones: ["Read the password into a string", "Check its length: at least 8 characters", "Loop over its characters, testing each with isdigit and isupper", "Print the verdict: STRONG or WEAK"],
+            tests: [
+              { input: "Password: \"abc123\"", options: ["WEAK", "STRONG"], correct: 0, expected: "WEAK", note: "Too short (6 characters) and no uppercase letter." },
+              { input: "Password: \"Abcdef12\"", options: ["WEAK", "STRONG"], correct: 1, expected: "STRONG", note: "8 characters, digits present, and an uppercase A: all three rules pass." },
+              { input: "Password: \"password\"", options: ["WEAK", "STRONG"], correct: 0, expected: "WEAK", note: "Long enough, but no digit and no uppercase letter." },
+              { input: "Password: \"HELLO123\"", options: ["WEAK", "STRONG"], correct: 1, expected: "STRONG", note: "8 characters, digits, and uppercase throughout." }
+            ] }
+        ],
+        exam: [
+          { q: "What does <code>17 / 5</code> evaluate to in C++ integer arithmetic?", options: ["3", "3.4", "4"], correct: 0, explain: "Both operands are int, so the fraction is discarded: 17 / 5 is 3 remainder 2." },
+          { q: "Which line correctly declares a variable holding 19.95?", options: ["int price = 19.95;", "double price = 19.95;", "string price = 19.95;"], correct: 1, explain: "19.95 has a fractional part, so it needs a floating-point type: double. An int would truncate it to 19." },
+          { q: "What does this print?", code: ["int n = 6;", "if (n % 2 == 0) cout << \"even\";", "else cout << \"odd\";"], options: ["even", "odd", "Nothing prints"], correct: 0, explain: "6 % 2 is 0, so the condition is true and the if branch prints even." },
+          { q: "Which of these programs has a syntax error?", options: ["A program missing a semicolon after an int declaration", "A program that prints a variable with cout", "A program whose if condition uses =="], correct: 0, explain: "A missing semicolon breaks a rule of the language: a syntax error. The other two describe legal code." },
+          { q: "How many times does the body of <code>for (int i = 0; i &lt; 4; i++)</code> run?", options: ["4", "3", "5"], correct: 0, explain: "i takes the values 0, 1, 2, 3 — four values — before i < 4 fails." },
+          { q: "What does this print?", code: ["int total = 0;", "total += 5;", "total += 3;", "cout << total;"], options: ["8", "53", "0"], correct: 0, explain: "total starts at 0, gains 5, then gains 3: 0 + 5 + 3 = 8." }
+        ]
+      },
+      intermediate: {
+        name: "Intermediate", guide: "Comfortable with arrays, functions, and strings",
+        tasks: [
+          { id: "I1", type: "predict", title: "Only the evens", prompt: "What does this print?", code: ["int vals[] = {3, 8, 5, 10, 7};", "int sum = 0;", "for (int i = 0; i < 5; i++) {", "    if (vals[i] % 2 == 0)", "        sum += vals[i];", "}", "cout << sum;"], options: ["18", "28", "15"], correct: 0, explain: "Only the even values are added: 8 + 10 = 18." },
+          { id: "I2", type: "predict", title: "Counting vowels", prompt: "What does this print?", code: ["string word = \"programming\";", "int count = 0;", "for (int i = 0; i < word.length(); i++) {", "    char c = word[i];", "    if (c=='a'||c=='e'||c=='i'||c=='o'||c=='u')", "        count++;", "}", "cout << count;"], options: ["3", "4", "2"], correct: 0, explain: "\"programming\" holds three vowels: o, a, and i." },
+          { id: "I3", type: "complete", title: "Binary search: the next half", prompt: "Binary search on a sorted array. The target was not found at mid, and arr[mid] &lt; target. Choose the missing line.", code: ["int first = 0, last = size - 1;", "while (first <= last) {", "    int mid = (first + last) / 2;", "    if (arr[mid] == target) return mid;", "    else if (arr[mid] < target)", "        // _____ missing line _____", "    else", "        last = mid - 1;", "}"], options: ["first = mid + 1;", "last = mid - 1;", "first = mid;"], correct: 0, explain: "arr[mid] < target means the target is in the upper half. mid itself is eliminated, so the search resumes at mid + 1." },
+          { id: "I4", type: "spot", title: "One past the end", prompt: "One line in this program has a bug. First tap the faulty line, then choose the fix.", code: ["int arr[5] = {2, 4, 6, 8, 10};", "int size = 5;", "for (int i = 0; i <= size; i++) {", "    cout << arr[i] << \" \";", "}"], bugLine: 2, fixOptions: ["Change i <= size to i < size", "Change int size = 5 to int size = 6", "Change arr[5] to arr[6]"], fixCorrect: 0, explain: "Valid indexes run from 0 to size - 1. With i <= size the loop also reads arr[size] — one element past the end of the array." }
+        ],
+        projects: [
+          { id: "IP1", title: "Character Histogram", brief: "Read a sentence, count how often each letter appears (ignore case and non-letters), and print each letter that appears with its count.",
+            milestones: ["Read the whole line with getline", "Convert each character to one case before counting", "Count into a 26-slot array indexed by letter", "Print only the letters whose count is not zero"],
+            tests: [
+              { input: "Sentence: \"Abba\"", options: ["A: 2, B: 2", "A: 1, B: 2", "A: 2, B: 1"], correct: 0, expected: "A: 2, B: 2", note: "Case is ignored: A and a count together, as do B and b." },
+              { input: "Sentence: \"Test\"", options: ["T: 2, E: 1, S: 1", "T: 1, E: 1, S: 1", "T: 2, E: 1, S: 2"], correct: 0, expected: "T: 2, E: 1, S: 1", note: "T appears twice (capital and lowercase); E and S appear once each." },
+              { input: "Sentence: \"Go go\"", options: ["G: 2, O: 2", "G: 1, O: 2", "G: 2, O: 3"], correct: 0, expected: "G: 2, O: 2", note: "The space is not a letter and is skipped." }
+            ] },
+          { id: "IP2", title: "State Capitals Quiz", brief: "Two parallel arrays hold 5 states and their capitals (Georgia/Atlanta, Texas/Austin, Ohio/Columbus, Colorado/Denver, Oregon/Salem). The program names a state, the user answers, and the program searches the arrays and reports Correct or the right answer.",
+            milestones: ["Fill the two parallel arrays: states and capitals", "Write a search that returns a state's index, or -1 if it is absent", "Compare the user's answer with the stored capital at that index", "Keep score over the 5 questions"],
+            tests: [
+              { input: "Asked: Georgia — user answers \"Atlanta\"", options: ["Correct", "Incorrect — the answer is Austin", "Not in this quiz"], correct: 0, expected: "Correct", note: "Atlanta is the stored capital of Georgia." },
+              { input: "Asked: Texas — user answers \"Dallas\"", options: ["Correct", "Incorrect — the answer is Austin", "Not in this quiz"], correct: 1, expected: "Incorrect — the answer is Austin", note: "Dallas is a Texas city, but the stored capital is Austin." },
+              { input: "Asked: a state that is not in the arrays", options: ["Correct", "Incorrect — the answer is Austin", "Not in this quiz"], correct: 2, expected: "Not in this quiz", note: "The search returns -1, so the program reports that the state is not in this quiz." }
+            ] }
+        ],
+        exam: [
+          { q: "What does this print?", code: ["int a[] = {2, 4, 6};", "int s = 0;", "for (int i = 0; i < 3; i++)", "    s += a[i];", "cout << s;"], options: ["12", "10", "24"], correct: 0, explain: "The loop adds every element: 2 + 4 + 6 = 12." },
+          { q: "Binary search requires the array to be…", options: ["sorted", "made only of integers", "exactly 10 elements long"], correct: 0, explain: "Binary search discards half the array at each step, which only works when the values are in order." },
+          { q: "Which loop header has the bug?", options: ["for (int i = 0; i <= size; i++)", "for (int i = 0; i < size; i++)", "for (int i = size - 1; i >= 0; i--)"], correct: 0, explain: "i <= size runs one pass too many and reads one element past the end of the array." },
+          { q: "What does this print?", code: ["string w = \"code\";", "w += \"rs\";", "cout << w.length();"], options: ["6", "4", "8"], correct: 0, explain: "\"code\" (4 letters) + \"rs\" (2) makes \"coders\", whose length is 6." },
+          { q: "A bubble sort's first pass on {5, 1, 4} leaves the array as…", options: ["{1, 4, 5}", "{1, 5, 4}", "{5, 4, 1}"], correct: 0, explain: "5 and 1 swap, then 5 and 4 swap: the largest value bubbles to the end, leaving {1, 4, 5}." },
+          { q: "What does this print?", code: ["int f(int x) { return x * x; }", "cout << f(3) + f(2);"], options: ["13", "25", "36"], correct: 0, explain: "f(3) is 9 and f(2) is 4: 9 + 4 = 13." }
+        ]
+      },
+      expert: {
+        name: "Expert", guide: "Pointers, structs, 2D arrays, dynamic memory",
+        tasks: [
+          { id: "E1", type: "predict", title: "Writing through a pointer", prompt: "What does this print?", code: ["int x = 10;", "int* p = &x;", "*p += 5;", "cout << x;"], options: ["15", "10", "5"], correct: 0, explain: "*p is x itself: writing through the pointer writes into x, so 10 + 5 = 15." },
+          { id: "E2", type: "predict", title: "One row of a grid", prompt: "What does this print?", code: ["int grid[2][3] = {{1, 2, 3}, {4, 5, 6}};", "int sum = 0;", "for (int col = 0; col < 3; col++)", "    sum += grid[1][col];", "cout << sum;"], options: ["15", "6", "21"], correct: 0, explain: "Row 1 is the second row, {4, 5, 6}: 4 + 5 + 6 = 15." },
+          { id: "E3", type: "complete", title: "Setting a struct member", prompt: "Choose the line that sets this student's GPA to 3.75.", code: ["struct Student {", "    string name;", "    double gpa;", "};", "Student s;", "// _____ missing line _____"], options: ["s.gpa = 3.75;", "s->gpa = 3.75;", "Student.gpa = 3.75;"], correct: 0, explain: "s is an object, not a pointer, so its members are reached with the dot operator: s.gpa." },
+          { id: "E4", type: "predict", title: "A substring by index", prompt: "What does this print?", code: ["string s = \"campus.edu\";", "cout << s.substr(7);"], options: ["edu", ".edu", "pus.edu"], correct: 0, explain: "Index 6 is the dot; substr(7) starts at the 'e', so it prints edu." }
+        ],
+        projects: [
+          { id: "XP1", title: "Magic Squares", brief: "A 3x3 grid is magic if every row, column, and both diagonals sum to the same value. Build a program that reads a grid and prints MAGIC or NOT MAGIC.",
+            milestones: ["Store the grid in a 2D array", "Take the first row's sum as the target", "Check every row and column against the target", "Check both diagonals, then report the verdict"],
+            tests: [
+              { input: "Grid: 8 1 6 / 3 5 7 / 4 9 2", options: ["MAGIC", "NOT MAGIC"], correct: 0, expected: "MAGIC", note: "Every row, column, and diagonal sums to 15." },
+              { input: "Grid: 1 2 3 / 4 5 6 / 7 8 9", options: ["MAGIC", "NOT MAGIC"], correct: 1, expected: "NOT MAGIC", note: "The rows sum to 6, 15, and 24 — they do not match the target." }
+            ] },
+          { id: "XP2", title: "Kangaroo Word", brief: "A word is hidden inside another if its letters appear in order, not necessarily next to each other. Build a program that decides whether word B is hidden in word A.",
+            milestones: ["Read both words", "Walk word A with one index and word B with another", "Advance through B only when the current letters match", "B is hidden if its index reaches the end"],
+            tests: [
+              { input: "Is \"cat\" hidden in \"concatenate\"?", options: ["HIDDEN", "NOT HIDDEN"], correct: 0, expected: "HIDDEN", note: "c, then a, then t appear in order inside concatenate." },
+              { input: "Is \"dog\" hidden in \"concatenate\"?", options: ["HIDDEN", "NOT HIDDEN"], correct: 1, expected: "NOT HIDDEN", note: "There is no d in concatenate, so the walk can never finish B." },
+              { input: "Is \"ten\" hidden in \"concatenate\"?", options: ["HIDDEN", "NOT HIDDEN"], correct: 0, expected: "HIDDEN", note: "t, e, and n appear in order: conca-t-e-n-ate." }
+            ] }
+        ],
+        exam: [
+          { q: "What does this print?", code: ["int v = 7;", "int* q = &v;", "*q = *q * 2;", "cout << v;"], options: ["14", "7", "49"], correct: 0, explain: "*q is v itself, so v becomes 7 * 2 = 14." },
+          { q: "<code>strcmp(\"ant\", \"bee\")</code> returns…", options: ["a negative value", "zero", "a positive value"], correct: 0, explain: "\"ant\" sorts before \"bee\" (a comes before b), and strcmp reports that ordering with a negative value." },
+          { q: "Which line correctly frees an array made with <code>new int[10]</code>?", options: ["delete[] p;", "delete p;", "free(p);"], correct: 0, explain: "An array allocated with new[] must be released with delete[], so every element is destroyed." },
+          { q: "What does this print?", code: ["int m[2][2] = {{1, 2}, {3, 4}};", "cout << m[1][0] + m[0][1];"], options: ["5", "4", "3"], correct: 0, explain: "m[1][0] is 3 (second row, first column) and m[0][1] is 2: 3 + 2 = 5." },
+          { q: "A struct member is reached through an object with…", options: ["the dot operator (obj.member)", "the arrow operator (obj->member)", "the scope operator (obj::member)"], correct: 0, explain: "Objects use the dot. The arrow is for reaching members through a pointer." },
+          { q: "What does this print?", code: ["string t = \"trace\";", "cout << t.find(\"ace\");"], options: ["2", "1", "-1"], correct: 0, explain: "In \"trace\" the substring \"ace\" starts at index 2: t(0), r(1), a(2)." }
+        ]
+      }
+    };
+    var CH_ORDER = ["beginner", "intermediate", "expert"];
+    var ch = { level: "beginner", data: {} };
+    function chLevelState(key) {
+      if (!ch.data[key]) {
+        var lv = CH_LEVELS[key];
+        var d = { tasks: {}, projects: {}, exam: { answers: lv.exam.map(function () { return -1; }), best: null } };
+        lv.projects.forEach(function (p) {
+          d.projects[p.id] = { miles: p.milestones.map(function () { return false; }), tests: p.tests.map(function () { return { pred: -1, revealed: false, self: null }; }) };
+        });
+        ch.data[key] = d;
+      }
+      return ch.data[key];
+    }
+    function chCodeBox(lines) {
+      var box = document.createElement("div"); box.className = "ch-code";
+      lines.forEach(function (line, i) {
+        var d = document.createElement("div"); d.className = "cline";
+        d.innerHTML = '<span class="ln">' + (i + 1) + "</span><span>" + (esc(line) || " ") + "</span>";
+        box.appendChild(d);
+      });
+      return box;
+    }
+    function chFeedback(good, html) {
+      var f = document.createElement("div");
+      f.className = "feedback show " + (good ? "good" : "bad"); f.setAttribute("role", "status"); f.innerHTML = html;
+      return f;
+    }
+    function chOptionBtns(options, selected, done, correct, onPick) {
+      var wrap = document.createElement("div"); wrap.className = "options";
+      options.forEach(function (opt, i) {
+        var b = document.createElement("button");
+        b.className = "opt-btn"; b.type = "button";
+        b.setAttribute("aria-pressed", selected === i ? "true" : "false");
+        b.innerHTML = '<span class="key">' + "ABC"[i] + "</span><span>" + esc(opt) + "</span>";
+        if (done) {
+          b.disabled = true;
+          if (i === correct) b.classList.add("reveal-correct");
+          if (i === selected && selected !== correct) b.classList.add("reveal-wrong");
+        } else {
+          (function (idx) { b.addEventListener("click", function () { onPick(idx); }); })(i);
+        }
+        wrap.appendChild(b);
+      });
+      return wrap;
+    }
+    function renderChallenges() {
+      var key = ch.level, lv = CH_LEVELS[key], d = chLevelState(key);
+      /* Level picker */
+      var lbox = $("ch-levels"); lbox.innerHTML = "";
+      CH_ORDER.forEach(function (k) {
+        var L = CH_LEVELS[k], dd = chLevelState(k);
+        var doneN = Object.keys(dd.tasks).filter(function (t) { return dd.tasks[t].done; }).length;
+        var b = document.createElement("button");
+        b.className = "level-btn"; b.type = "button";
+        b.setAttribute("aria-pressed", ch.level === k ? "true" : "false");
+        b.innerHTML = '<span class="lname">' + L.name + '</span><span class="lguide">' + L.guide + '</span><span class="lguide">' + doneN + " of " + L.tasks.length + " tasks completed" + (dd.exam.best !== null ? " · exam best " + dd.exam.best + " / " + L.exam.length : "") + "</span>";
+        b.addEventListener("click", function () { ch.level = k; renderChallenges(); });
+        lbox.appendChild(b);
+      });
+      /* Record */
+      var tasksDone = lv.tasks.filter(function (t) { return d.tasks[t.id] && d.tasks[t.id].done; }).length;
+      var testsTotal = 0, testsRevealed = 0;
+      lv.projects.forEach(function (p) { testsTotal += p.tests.length; d.projects[p.id].tests.forEach(function (t) { if (t.revealed) testsRevealed++; }); });
+      $("ch-scorebar").innerHTML =
+        '<span class="metric"><strong>' + tasksDone + " / " + lv.tasks.length + '</strong> <span>tasks completed (' + lv.name + ')</span></span>' +
+        '<span class="metric"><strong>' + testsRevealed + " / " + testsTotal + '</strong> <span>project tests revealed</span></span>' +
+        '<span class="metric"><strong>' + (d.exam.best === null ? "—" : d.exam.best + " / " + lv.exam.length) + '</strong> <span>exam best score</span></span>';
+      /* Tasks */
+      var tbox = $("ch-tasks"); tbox.innerHTML = "";
+      lv.tasks.forEach(function (t, ti) {
+        if (!d.tasks[t.id]) d.tasks[t.id] = { sel: -1, done: false, correct: false, lineSel: -1, lineDone: false, fixSel: -1, msg: "" };
+        var s = d.tasks[t.id];
+        var card = document.createElement("section"); card.className = "card"; card.style.marginTop = "14px";
+        var typeName = t.type === "predict" ? "Predict" : t.type === "complete" ? "Complete the line" : "Spot the bug";
+        card.innerHTML = '<div class="ch-task-head"><span class="type-tag' + (s.done ? " done" : "") + '">' + t.id + " · " + typeName + (s.done ? " · done" : "") + '</span><h3>' + t.title + "</h3></div>" +
+          '<p class="ch-prompt">' + t.prompt + "</p>";
+        card.appendChild(chCodeBox(t.code));
+        if (t.type === "spot") {
+          var sl = document.createElement("div"); sl.className = "spot-lines";
+          sl.innerHTML = '<div class="tlabel2" style="font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;">Step 1 — tap the faulty line</div>';
+          t.code.forEach(function (line, li) {
+            var b = document.createElement("button");
+            b.className = "spot-line"; b.type = "button";
+            b.setAttribute("aria-pressed", s.lineSel === li ? "true" : "false");
+            if (s.lineDone && li === t.bugLine) b.classList.add("reveal-correct");
+            if (!s.lineDone && s.lineSel === li && li !== t.bugLine) b.classList.add("reveal-wrong");
+            b.disabled = s.lineDone;
+            b.textContent = (li + 1) + "   " + line;
+            b.addEventListener("click", function () {
+              s.lineSel = li;
+              if (li === t.bugLine) { s.lineDone = true; s.msg = ""; announce("That is the faulty line. Now choose the fix."); }
+              else s.msg = "Line " + (li + 1) + " is clean. Look again — the bug is a single line.";
+              renderChallenges();
+            });
+            sl.appendChild(b);
+          });
+          card.appendChild(sl);
+          if (s.msg && !s.lineDone) card.appendChild(chFeedback(false, s.msg));
+          if (s.lineDone && !s.done) {
+            var fh = document.createElement("p"); fh.className = "ch-prompt"; fh.innerHTML = "<b>Step 2 — choose the fix:</b>";
+            card.appendChild(fh);
+            card.appendChild(chOptionBtns(t.fixOptions, s.fixSel, false, t.fixCorrect, function (idx) {
+              s.fixSel = idx; s.done = true; s.correct = idx === t.fixCorrect;
+              announce(s.correct ? "Task " + t.id + " complete." : "Task " + t.id + " answered — read the explanation.");
+              renderChallenges();
+            }));
+          }
+          if (s.done) {
+            card.appendChild(chOptionBtns(t.fixOptions, s.fixSel, true, t.fixCorrect, function () {}));
+            card.appendChild(chFeedback(s.correct, (s.correct ? "<b>Correct.</b> " : "<b>Not the fix.</b> ") + t.explain));
+          }
+        } else {
+          card.appendChild(chOptionBtns(t.options, s.sel, s.done, t.correct, function (idx) {
+            s.sel = idx; s.done = true; s.correct = idx === t.correct;
+            announce(s.correct ? "Task " + t.id + " correct." : "Task " + t.id + " answered — read the explanation.");
+            renderChallenges();
+          }));
+          if (s.done) card.appendChild(chFeedback(s.correct, (s.correct ? "<b>Correct.</b> " : "<b>Not this time.</b> ") + t.explain));
+        }
+        tbox.appendChild(card);
+      });
+      /* Projects */
+      var pbox = $("ch-projects"); pbox.innerHTML = "";
+      lv.projects.forEach(function (p) {
+        var ps = d.projects[p.id];
+        var revealedN = ps.tests.filter(function (t) { return t.revealed; }).length;
+        var complete = revealedN === p.tests.length;
+        var card = document.createElement("section"); card.className = "card"; card.style.marginTop = "14px";
+        card.innerHTML = '<span class="concept-tag">' + lv.name + " project" + (complete ? " · complete ✓" : "") + "</span><h2 style=\"font-size:1.25rem;\">" + p.title + '</h2><p class="story">' + p.brief + "</p>" +
+          '<h3 style="margin-top:14px; font-size:.85rem; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-soft); font-family:\'IBM Plex Mono\',monospace;">Milestones — tick each as you build it</h3>';
+        var ul = document.createElement("ul"); ul.className = "milestones";
+        p.milestones.forEach(function (m, mi) {
+          var li = document.createElement("li");
+          var b = document.createElement("button");
+          b.className = "milestone-btn"; b.type = "button";
+          b.setAttribute("aria-pressed", ps.miles[mi] ? "true" : "false");
+          b.innerHTML = '<span class="mbox">' + (ps.miles[mi] ? "✓" : "") + "</span><span>" + (mi + 1) + ". " + m + "</span>";
+          b.addEventListener("click", function () { ps.miles[mi] = !ps.miles[mi]; renderChallenges(); });
+          li.appendChild(b); ul.appendChild(li);
+        });
+        card.appendChild(ul);
+        var tb = document.createElement("div"); tb.className = "testbench";
+        tb.innerHTML = "<h4>Test bench — predict before you reveal (" + revealedN + " of " + p.tests.length + " revealed)</h4>";
+        p.tests.forEach(function (tc, tci) {
+          var ts = ps.tests[tci];
+          var div = document.createElement("div"); div.className = "testcase";
+          div.innerHTML = '<div class="tinput">Test ' + (tci + 1) + ": " + esc(tc.input) + '</div><div class="tlabel2">Your prediction</div>';
+          div.appendChild(chOptionBtns(tc.options, ts.pred, ts.revealed, tc.correct, function (idx) { ts.pred = idx; renderChallenges(); }));
+          if (!ts.revealed) {
+            var row = document.createElement("div"); row.className = "lockrow";
+            var rb = document.createElement("button"); rb.className = "btn small"; rb.type = "button"; rb.textContent = "Reveal the verdict";
+            rb.disabled = ts.pred < 0;
+            rb.addEventListener("click", function () { ts.revealed = true; announce("Test revealed: " + tc.expected + ". Now mark your own program."); renderChallenges(); });
+            row.appendChild(rb);
+            if (ts.pred < 0) { var n = document.createElement("span"); n.className = "locknote"; n.textContent = "Predict first — the reveal stays locked until you commit."; row.appendChild(n); }
+            div.appendChild(row);
+          } else {
+            var rv = document.createElement("div"); rv.className = "revealed-box";
+            rv.innerHTML = 'Actual verdict: <span class="exp">' + esc(tc.expected) + "</span>" +
+              (ts.pred === tc.correct ? " — your prediction matched." : " — your prediction was " + esc(tc.options[ts.pred]) + ".") + "<br>" + tc.note;
+            div.appendChild(rv);
+            var sm = document.createElement("div"); sm.className = "selfmark";
+            sm.innerHTML = '<span style="font-size:.9rem; font-weight:600;">My program on this test:</span>';
+            [["pass", "Pass ✓"], ["fail", "Fail — needs work"]].forEach(function (pair) {
+              var b = document.createElement("button");
+              b.className = "btn small" + (ts.self === pair[0] ? "" : " ghost"); b.type = "button"; b.textContent = pair[1];
+              b.setAttribute("aria-pressed", ts.self === pair[0] ? "true" : "false");
+              b.addEventListener("click", function () { ts.self = pair[0]; renderChallenges(); });
+              sm.appendChild(b);
+            });
+            if (ts.self) { var st = document.createElement("span"); st.style.fontSize = ".88rem"; st.textContent = ts.self === "pass" ? "Marked as passing." : "Marked as failing — fix it and re-run this test."; sm.appendChild(st); }
+            div.appendChild(sm);
+          }
+          tb.appendChild(div);
+        });
+        if (complete) tb.appendChild(chFeedback(true, "<b>Project complete.</b> Every test case has been revealed. A project counts as finished when your own program passes each of them — check your self-marks."));
+        card.appendChild(tb);
+        pbox.appendChild(card);
+      });
+      /* Exam */
+      $("ch-exam-tag").textContent = lv.name + " exam · 6 questions";
+      $("ch-exam-title").textContent = lv.name + " exam";
+      var ebox = $("ch-exam"); ebox.innerHTML = "";
+      var current = d.exam.answers.indexOf(-1);
+      lv.exam.forEach(function (q, qi) {
+        var answered = d.exam.answers[qi] >= 0;
+        var isCurrent = qi === current;
+        var div = document.createElement("div");
+        div.className = "exam-q" + (!answered && !isCurrent ? " locked-q" : "");
+        div.innerHTML = '<div class="eqnum">Question ' + (qi + 1) + " of " + lv.exam.length + (answered ? " · answered" : isCurrent ? " · your turn" : " · locked until the earlier questions are answered") + '</div><div class="eqtext">' + q.q + "</div>";
+        if (q.code) div.appendChild(chCodeBox(q.code));
+        div.appendChild(chOptionBtns(q.options, d.exam.answers[qi], answered, q.correct, function (idx) {
+          if (d.exam.answers[qi] >= 0) return;
+          d.exam.answers[qi] = idx;
+          if (d.exam.answers.indexOf(-1) === -1) {
+            var score = lv.exam.filter(function (qq, i) { return d.exam.answers[i] === qq.correct; }).length;
+            if (d.exam.best === null || score > d.exam.best) d.exam.best = score;
+            announce(lv.name + " exam complete. Score: " + score + " of " + lv.exam.length + ".");
+          } else announce("Question " + (qi + 1) + " answered. " + (idx === q.correct ? "Correct." : "Not correct — read the explanation."));
+          renderChallenges();
+        }));
+        if (answered) div.appendChild(chFeedback(d.exam.answers[qi] === q.correct, (d.exam.answers[qi] === q.correct ? "<b>Correct.</b> " : "<b>Not correct.</b> The correct answer is <b>" + esc(q.options[q.correct]) + "</b>. ") + q.explain));
+        ebox.appendChild(div);
+      });
+      var scoreBox = $("ch-exam-score");
+      if (current === -1) {
+        var sc = lv.exam.filter(function (qq, i) { return d.exam.answers[i] === qq.correct; }).length;
+        scoreBox.className = "exam-score show";
+        scoreBox.innerHTML = "<b>Exam complete: " + sc + " of " + lv.exam.length + ".</b> " +
+          (sc === lv.exam.length ? "A clean paper at this level. The next level is ready when you are." : sc >= 4 ? "A strong pass. Re-read the explanations for the questions you missed, then retake when ready." : "Below the line for now. The tasks above cover exactly these ideas — work them, then retake.") +
+          (d.exam.best !== null ? " Best score this session: " + d.exam.best + " / " + lv.exam.length + "." : "");
+      } else { scoreBox.className = "exam-score"; scoreBox.innerHTML = ""; }
+    }
+    $("ch-exam-restart").addEventListener("click", function () {
+      var d = chLevelState(ch.level);
+      d.exam.answers = CH_LEVELS[ch.level].exam.map(function () { return -1; });
+      renderChallenges();
+      announce(CH_LEVELS[ch.level].name + " exam reset. Question 1 is ready.");
+    });
+
     /* ---------------- Mode toggle ---------------- */
     function setMode(mode) {
       $("tracer-mode").hidden = mode !== "tracer";
       $("gym-mode").hidden = mode !== "gym";
       $("translator-mode").hidden = mode !== "translator";
+      $("challenges-mode").hidden = mode !== "challenges";
       $("mode-tracer").setAttribute("aria-pressed", mode === "tracer" ? "true" : "false");
       $("mode-gym").setAttribute("aria-pressed", mode === "gym" ? "true" : "false");
       $("mode-translator").setAttribute("aria-pressed", mode === "translator" ? "true" : "false");
+      $("mode-challenges").setAttribute("aria-pressed", mode === "challenges" ? "true" : "false");
       if (mode === "gym") renderGym();
+      if (mode === "challenges") renderChallenges();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
     $("mode-tracer").addEventListener("click", function () { setMode("tracer"); });
     $("mode-gym").addEventListener("click", function () { setMode("gym"); });
     $("mode-translator").addEventListener("click", function () { setMode("translator"); });
+    $("mode-challenges").addEventListener("click", function () { setMode("challenges"); });
 
     renderSkins();
     renderAll();
