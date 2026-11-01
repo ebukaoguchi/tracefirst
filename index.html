@@ -569,6 +569,32 @@
       .bolt-par .par-num { font-family: "IBM Plex Mono", monospace; font-weight: 700; }
       .bolt-par .star { color: var(--amber); font-size: 1.05rem; line-height: 1; }
 
+      /* ---------- Gym process stages (hypothesise / fix / verify) ---------- */
+      .gym-stage-tag { display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:.72rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--accent-strong); background:var(--accent-soft); border-radius:6px; padding:3px 8px; margin-bottom:10px; }
+      .hypo-q { border:1px solid var(--line); border-radius:10px; padding:14px; background:var(--panel-2); }
+      .hypo-q + .hypo-q { margin-top:12px; }
+      .hypo-q .hq-text { font-weight:600; font-size:.97rem; }
+      .hypo-q .hq-code { font-family:"IBM Plex Mono",monospace; font-size:.85rem; background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:8px 11px; margin-top:8px; white-space:pre-wrap; word-break:break-word; }
+      .hypo-opts { display:grid; gap:8px; margin-top:12px; }
+      .hypo-opt { text-align:left; border:1.5px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:11px 13px; font-size:.94rem; width:100%; }
+      .hypo-opt:hover:not(:disabled) { border-color:var(--amber); }
+      .hypo-opt:disabled { cursor:default; opacity:.8; }
+      .hypo-opt.is-correct { border-color:var(--accent); background:var(--accent-soft); color:var(--accent-strong); opacity:1; font-weight:600; }
+      .hypo-opt.is-wrong { border-color:var(--rust); background:var(--rust-soft); color:var(--rust); }
+      .hypo-msg { margin-top:10px; font-size:.93rem; min-height:1.2em; }
+      .hypo-msg.bad { color:var(--rust); font-weight:600; }
+      .hypo-msg.good { color:var(--accent-strong); font-weight:600; }
+      .gym-fix-list { margin-top:14px; background:var(--code-bg); border-radius:10px; padding:12px 0; border:1px solid rgba(0,0,0,.25); }
+      .gym-fix-row { display:flex; align-items:center; gap:0; padding:2px 14px 2px 0; font-family:"IBM Plex Mono",monospace; font-size:.88rem; line-height:1.6; color:var(--code-ink); }
+      .gym-fix-row .ln { width:42px; flex:none; text-align:right; padding-right:14px; color:var(--code-dim); user-select:none; }
+      .gym-fix-row .locked-line { white-space:pre; overflow-x:auto; }
+      .gym-fix-input { flex:1 1 auto; min-width:0; box-sizing:border-box; background:rgba(227,172,60,.14); color:var(--code-ink); border:1.5px dashed var(--amber); border-radius:6px; padding:4px 9px; font-family:"IBM Plex Mono",monospace; font-size:.88rem; }
+      .gym-fix-input:focus { outline:3px solid var(--amber); outline-offset:1px; }
+      .gym-test-box { margin-top:14px; border:1px solid var(--line); border-radius:10px; padding:13px 14px; background:var(--panel-2); font-size:.93rem; }
+      .gym-test-box .mono { font-family:"IBM Plex Mono",monospace; font-weight:600; word-break:break-word; white-space:pre-wrap; }
+      .gym-test-box .lbl { font-size:.75rem; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); font-weight:700; display:block; margin-top:9px; }
+      .gym-test-box .lbl:first-child { margin-top:0; }
+
       /* Journal + digest + a11y */
       .journal-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;align-items:center}
       .journal-status{font-size:.92rem;color:var(--ink-soft);margin-top:10px;min-height:1.4em}
@@ -952,16 +978,36 @@ for (int i = 0; i < 3; i++) {
           </div>
         </section>
 
+        <section class="card" id="gym-hypo-card" hidden aria-labelledby="gym-hypo-h" style="margin-top:18px;">
+          <span class="gym-stage-tag">Stage 2 of 4 · Hypothesise</span>
+          <h3 id="gym-hypo-h" style="font-size:1.1rem;">What does each logic bug actually do?</h3>
+          <p style="margin-top:6px; font-size:.95rem;" id="gym-hypo-note"></p>
+          <div id="gym-hypo-list" style="margin-top:14px;"></div>
+        </section>
+
+        <section class="card" id="gym-fix-card" hidden aria-labelledby="gym-fix-h" style="margin-top:18px;">
+          <span class="gym-stage-tag">Stage 3 of 4 · Fix · Stage 4 · Verify</span>
+          <h3 id="gym-fix-h" style="font-size:1.1rem;">Fix the program yourself</h3>
+          <p style="margin-top:6px; font-size:.95rem;">The faulty program again — but this time <strong>only the faulty lines are editable</strong>. Every other line is locked. There is no Run button here on purpose: when you press <strong>Check my fix</strong>, the machine runs your assembled program against this round's test (input: <span class="mono" style="font-family:'IBM Plex Mono',monospace; font-weight:600;" id="gym-fix-test-input"></span>). If it passes, the same program is <strong>immediately</strong> run against a second, unseen test — that is the Verify stage. One practical note: an editable line may hold more than one statement when a fix needs an extra step — for example, <span style="font-family:'IBM Plex Mono',monospace;">cin.ignore();</span> before a <span style="font-family:'IBM Plex Mono',monospace;">getline</span> that follows a <span style="font-family:'IBM Plex Mono',monospace;">cin &gt;&gt;</span> read.</p>
+          <div class="gym-fix-list" id="gym-fix-list" aria-label="Fix editor. Faulty lines are text fields; all other lines are locked."></div>
+          <div class="lockrow">
+            <button class="btn" type="button" id="gym-fix-check">Check my fix</button>
+            <span class="locknote" id="gym-fix-attempts"></span>
+          </div>
+          <div class="feedback" id="gym-fix-feedback" role="status"></div>
+          <div id="gym-verify-box"></div>
+        </section>
+
         <section class="card" id="gym-done-card" hidden aria-labelledby="gym-done-h">
-          <h3 id="gym-done-h">Round complete — the corrected program</h3>
+          <h3 id="gym-done-h">Round complete — your fix, verified</h3>
           <p style="margin-top:6px; font-size:.95rem;" id="gym-done-text"></p>
           <div class="compare">
             <div>
-              <div class="col-label">Faulty — as you hunted it</div>
-              <div class="codebox"><div class="codehead"><span>faulty.cpp</span><span>C++</span></div><pre id="gym-compare-faulty"></pre></div>
+              <div class="col-label">Your fixed program — the one that passed</div>
+              <div class="codebox"><div class="codehead"><span id="gym-your-name">your fix</span><span>C++</span></div><pre id="gym-compare-faulty"></pre></div>
             </div>
             <div>
-              <div class="col-label">Corrected — fixed lines highlighted</div>
+              <div class="col-label">Corrected — reference, fixed lines highlighted</div>
               <div class="codebox"><div class="codehead"><span id="gym-fixed-name">fixed.cpp</span><span>C++</span></div><pre id="gym-compare-fixed"></pre></div>
             </div>
           </div>
@@ -973,6 +1019,7 @@ for (int i = 0; i < 3; i++) {
         </section>
 
         <p style="margin-top:22px; color:var(--ink-soft); max-width:760px;">Find each bug, and say whether it is a syntax error or a logic error.</p>
+        <p style="margin-top:6px; color:var(--ink-soft); max-width:760px;">Then say what each logic bug does, fix the code yourself, and prove the fix on a test you have not seen.</p>
       </div><!-- /gym-mode -->
 
       <div id="translator-mode" role="tabpanel" tabindex="0" hidden>
@@ -2496,7 +2543,137 @@ for (int i = 0; i < 3; i++) {
       }
     ];
 
-    function gymFreshRound() { return { found: {}, pending: null, falseAlarms: 0, lastFalse: -1, lastResult: null, done: false }; }
+    /* Gym process data — visible tests are the rounds' existing sample runs;
+       unseen tests were verified against the corrected programs. Round 5's
+       data lives in the program itself, so its unseen test swaps the array. */
+    var GYM_TESTS = [
+      {
+        visible: { input: "Jane Smith\n80\n90\n70", inputLabel: "Jane Smith / 80 / 90 / 70", expected: ["Student: Jane Smith", "Average: 80", "You passed!"] },
+        unseen:  { input: "John Lee\n50\n40\n30", inputLabel: "John Lee / 50 / 40 / 30", expected: ["Student: John Lee", "Average: 40", "You did not pass."] }
+      },
+      {
+        visible: { input: "Jane Smith\nComputer Science\nSophomore\n20\nC++", inputLabel: "Jane Smith / Computer Science / Sophomore / 20 / C++", expected: ["----- Student Profile -----", "Name: Jane Smith", "Major: Computer Science", "Classification: Sophomore", "Age: 20", "Favorite Programming Language: C++"] },
+        unseen:  { input: "Mary Jones\nBiology\nJunior\n21\nPython", inputLabel: "Mary Jones / Biology / Junior / 21 / Python", expected: ["----- Student Profile -----", "Name: Mary Jones", "Major: Biology", "Classification: Junior", "Age: 21", "Favorite Programming Language: Python"] }
+      },
+      {
+        visible: { input: "5\n3", inputLabel: "5 / 3", expected: ["Area: 15.00", "Perimeter: 16.00"] },
+        unseen:  { input: "7\n2", inputLabel: "7 / 2", expected: ["Area: 14.00", "Perimeter: 18.00"] }
+      },
+      {
+        visible: { input: "5", inputLabel: "5", expected: ["Sum is 15"] },
+        unseen:  { input: "4", inputLabel: "4", expected: ["Sum is 10"] }
+      },
+      {
+        visible: { input: "", inputLabel: "the scores {50, 45, 7, 38} written in the program", expected: ["Max is 50"] },
+        unseen:  { input: "", inputLabel: "the scores {3, 99, 12, 41} written in the program", expected: ["Max is 99"], swapArray: "{3, 99, 12, 41}" }
+      }
+    ];
+    var GYM_HYPOS = [
+      {
+        23: { correct: 1, options: [
+          "The program adds the three scores and then divides the total by 3 twice, so the average always comes out three times too small.",
+          "Division binds tighter than addition, so only exam3 is divided by 3 and the other two scores are added whole — the average comes out far too high (for 80, 90, 70 it would be about 193, not 80).",
+          "The average is computed correctly, but the program then prints the total of the three scores (240) instead of the average."
+        ] },
+        28: { correct: 0, options: [
+          "The block under the if runs on its own, detached from the condition — so “You passed!” prints whatever the average is, and the else is left with no if to belong to.",
+          "The semicolon makes the condition false, so the program always prints “You did not pass.” instead.",
+          "The semicolon ends the whole program at that line, so neither verdict ever prints."
+        ] }
+      },
+      {
+        11: { correct: 2, options: [
+          "The program refuses to run at all, because char is not a real C++ type.",
+          "The language name is stored correctly, but the profile prints the age in the language line by mistake.",
+          "A char holds exactly one character, so a language name like C++ or Python can never be stored in full — at best a single letter survives."
+        ] },
+        26: { correct: 0, options: [
+          "Reading with >> stops at the first space — and into a char it keeps a single character besides — so the answer is cut down to a fragment instead of the full text that was typed.",
+          "The full answer, spaces and all, is stored — but the profile then prints it backwards.",
+          "The read stores the answer correctly, but into the age variable instead of the language variable."
+        ] }
+      },
+      {
+        16: { correct: 1, options: [
+          "The area is multiplied correctly, but then rounded down to a whole number, so 15.00 prints as 15.",
+          "The area comes out as length plus width instead of length times width — for length 5 and width 3 it prints 8.00 rather than 15.00.",
+          "The two results swap places: the area line prints the perimeter and the perimeter line prints the area."
+        ] },
+        17: { correct: 2, options: [
+          "The perimeter comes out twice too big, because both the length and the width are doubled two times.",
+          "The perimeter is correct, but computing it overwrites the area, so the area line prints the perimeter too.",
+          "Only the length is doubled, because multiplication binds tighter than addition — for length 5 and width 3 the perimeter prints 13.00 instead of 16.00."
+        ] }
+      },
+      {
+        5: { correct: 0, options: [
+          "Every total the program computes is exactly 1 too big — for input 5, the sum would come out as 16 instead of 15.",
+          "The loop runs one time too few, because the first pass is used up setting the sum to 1.",
+          "The sum is correct, but it is printed one line too early, before the last number is added."
+        ] },
+        10: { correct: 1, options: [
+          "The program prints the sum, but with the loop counter added on top, so input 5 prints “Sum is 20”.",
+          "The screen shows the number that was typed in, whatever the loop added up — for input 5 it prints “Sum is 5”, and the computed sum never appears.",
+          "Nothing prints, because the loop uses up n and leaves it at 0 by the time the cout line runs."
+        ] }
+      },
+      {
+        6: { correct: 2, options: [
+          "The search starts from the smallest value in the array, so the program prints the minimum instead of the maximum.",
+          "The first element is counted twice, so the maximum is printed correctly but the loop runs one wasted pass.",
+          "The first element is never taken as the starting maximum — and here the true maximum, 50, sits at index 0, so the program settles for 45, the largest of the values it did consider."
+        ] },
+        7: { correct: 0, options: [
+          "The loop runs one pass too many: on the last pass i equals size, and arr[i] reads one element past the end of the array — a value that was never part of the data.",
+          "The loop stops one pass early, so the last element of the array is never compared against the maximum.",
+          "The loop never runs at all, because i starts out already equal to size."
+        ] }
+      }
+    ];
+
+    function gymFreshRound() {
+      return {
+        found: {}, pending: null, falseAlarms: 0, lastFalse: -1, lastResult: null, done: false,
+        hypo: {}, hypoMsg: {}, fixEdits: {}, fixAttempts: 0, fixResult: null, verifyResult: null
+      };
+    }
+    function gymLogicLines(r) {
+      return Object.keys(r.bugs).filter(function (k) { return r.bugs[k].kind === "logic"; }).map(Number).sort(function (a, b) { return a - b; });
+    }
+    function gymSpotDone(idx) {
+      var r = GYM_ROUNDS[idx], s = gym.rounds[idx];
+      return Object.keys(s.found).length === gymCounts(r).total;
+    }
+    function gymHypoDone(idx) {
+      var r = GYM_ROUNDS[idx], s = gym.rounds[idx];
+      return gymLogicLines(r).every(function (ln) { return s.hypo[ln] && s.hypo[ln].correct; });
+    }
+    function gymHypoFirstTry(idx) {
+      var r = GYM_ROUNDS[idx], s = gym.rounds[idx], n = 0;
+      gymLogicLines(r).forEach(function (ln) { if (s.hypo[ln] && s.hypo[ln].correct && s.hypo[ln].firstTry) n++; });
+      return n;
+    }
+    function gymAssembled(idx) {
+      var r = GYM_ROUNDS[idx], s = gym.rounds[idx];
+      return r.code.map(function (line, i) {
+        var ln = i + 1;
+        return Object.prototype.hasOwnProperty.call(s.fixEdits, ln) ? s.fixEdits[ln] : line;
+      }).join("\n");
+    }
+    function gymRunTest(idx, src, test) {
+      var runSrc = src;
+      if (test.swapArray) {
+        runSrc = runSrc.split("\n").map(function (line) {
+          if (line.indexOf("scores") !== -1 && line.indexOf("{") !== -1) return line.replace(/\{[^}]*\}/, test.swapArray);
+          return line;
+        }).join("\n");
+      }
+      var res = makeRunProgram(runSrc, test.input);
+      if (!res.ok) return { pass: false, error: res.error, actual: res.output || "" };
+      var ok = normMakeOut(res.output) === normMakeOut(test.expected.join(" ")) ||
+               normMakeOut(res.output).slice(-normMakeOut(test.expected.join(" ")).length) === normMakeOut(test.expected.join(" "));
+      return { pass: ok, error: null, actual: res.output };
+    }
     var gym = { current: 0, rounds: GYM_ROUNDS.map(gymFreshRound) };
 
     function gymCounts(r) {
@@ -2510,7 +2687,8 @@ for (int i = 0; i < 3; i++) {
       GYM_ROUNDS.forEach(function (r, i) {
         var s = gym.rounds[i], c = gymCounts(r);
         var foundN = Object.keys(s.found).length;
-        var st = s.done ? { t: "complete ✓", cls: "good" }
+        var st = s.done ? { t: "complete ✓ (verified)", cls: "good" }
+               : foundN === c.total ? { t: "spotted — process in progress", cls: "" }
                : foundN > 0 ? { t: foundN + " of " + c.total + " bugs found", cls: "" }
                : { t: "not started", cls: "" };
         var b = document.createElement("button");
@@ -2524,7 +2702,8 @@ for (int i = 0; i < 3; i++) {
     }
 
     function renderGymScore() {
-      var found = 0, total = 0, clsOk = 0, clsAtt = 0, falseA = 0;
+      var found = 0, total = 0, clsOk = 0, clsAtt = 0, falseA = 0, verified = 0;
+      var cur = gym.rounds[gym.current], curR = GYM_ROUNDS[gym.current];
       GYM_ROUNDS.forEach(function (r, i) {
         var s = gym.rounds[i];
         total += gymCounts(r).total;
@@ -2532,11 +2711,15 @@ for (int i = 0; i < 3; i++) {
           found++; clsAtt++; if (s.found[k].clsCorrect) clsOk++;
         });
         falseA += s.falseAlarms;
+        if (s.done) verified++;
       });
       $("gym-scorebar").innerHTML =
         '<span class="metric"><strong>' + found + " / " + total + '</strong> <span>bugs found</span></span>' +
         '<span class="metric"><strong>' + clsOk + " / " + clsAtt + '</strong> <span>classified correctly</span></span>' +
-        '<span class="metric"><strong>' + falseA + '</strong> <span>false alarms</span></span>';
+        '<span class="metric"><strong>' + falseA + '</strong> <span>false alarms</span></span>' +
+        '<span class="metric"><strong>' + verified + " / " + GYM_ROUNDS.length + '</strong> <span>rounds completed (passed Verify)</span></span>' +
+        '<span class="metric"><strong>' + gymHypoFirstTry(gym.current) + " / " + gymLogicLines(curR).length + '</strong> <span>hypotheses first-try, this round</span></span>' +
+        '<span class="metric"><strong>' + cur.fixAttempts + '</strong> <span>fix attempts, this round</span></span>';
     }
 
     function renderGymCode() {
@@ -2593,12 +2776,148 @@ for (int i = 0; i < 3; i++) {
       $("gym-bugcount").innerHTML =
         '<span class="chip">' + c.total + " bugs: " + c.syntax + " syntax · " + c.logic + " logic</span>" +
         '<span class="chip">' + foundN + " found</span>" +
-        '<span class="chip">' + s.falseAlarms + " false alarm" + (s.falseAlarms === 1 ? "" : "s") + "</span>";
+        '<span class="chip">' + s.falseAlarms + " false alarm" + (s.falseAlarms === 1 ? "" : "s") + "</span>" +
+        '<span class="chip">hypotheses first-try: ' + gymHypoFirstTry(gym.current) + " / " + c.logic + "</span>" +
+        '<span class="chip">fix attempts: ' + s.fixAttempts + "</span>";
       var st = $("gym-status");
-      if (s.done) st.innerHTML = "<b>Round complete.</b> All " + c.total + " bugs found. The corrected program is below — compare it line by line with the one you hunted.";
+      if (s.done) st.innerHTML = "<b>Round complete — verified.</b> Your fix passed the test you could see and the one you could not. Your program and the reference are below.";
+      else if (foundN === c.total) st.innerHTML = "<b>Stage 1 complete — every bug spotted.</b> Continue with Hypothesise below: say what each logic bug does, then fix the code and verify the fix.";
       else if (s.pending !== null) st.innerHTML = "Line " + s.pending + " accused. <b>Classify the bug below</b> before you hunt the next one.";
       else if (foundN === 0 && s.falseAlarms === 0) st.innerHTML = "Hunt from the top, the way the checklist works. <b>" + c.total + " bugs</b> are hiding in this program.";
       else st.innerHTML = "<b>" + (c.total - foundN) + " bug" + (c.total - foundN === 1 ? "" : "s") + " still hiding.</b> Keep working the checklist.";
+    }
+
+    function renderGymHypo() {
+      var r = GYM_ROUNDS[gym.current], s = gym.rounds[gym.current];
+      var card = $("gym-hypo-card");
+      var spot = gymSpotDone(gym.current);
+      card.hidden = !spot;
+      if (!spot) return;
+      var logic = gymLogicLines(r), synCount = gymCounts(r).syntax;
+      $("gym-hypo-note").innerHTML = "Syntax bugs get no question here: a syntax bug stops the program from compiling at all, so it never gets to do anything at run time — the classification in Stage 1 already covered that" +
+        (synCount ? " (this round has " + synCount + " of them)" : "") +
+        ". For each logic bug below, choose what <strong>actually goes wrong when the program runs</strong>. A wrong choice is simply marked wrong — no reason is given — and you may try again. This stage unlocks the fix when every logic bug is answered correctly.";
+      var list = $("gym-hypo-list"); list.innerHTML = "";
+      logic.forEach(function (ln) {
+        var h = GYM_HYPOS[gym.current][ln];
+        var st = s.hypo[ln] || { correct: false, firstTry: true, tried: false };
+        var q = document.createElement("div"); q.className = "hypo-q";
+        var html = '<p class="hq-text">You found a logic bug on line ' + ln + '. What actually goes wrong when this program runs?</p>' +
+          '<div class="hq-code">' + esc(r.code[ln - 1].trim()) + "</div>" + '<div class="hypo-opts">';
+        h.options.forEach(function (opt, oi) {
+          var cls = "hypo-opt";
+          if (st.correct && oi === h.correct) cls += " is-correct";
+          else if (!st.correct && st.lastWrong === oi) cls += " is-wrong";
+          html += '<button type="button" class="' + cls + '" data-hypo-line="' + ln + '" data-hypo-opt="' + oi + '"' + (st.correct ? " disabled" : "") + '>' + esc(opt) + "</button>";
+        });
+        html += "</div>";
+        if (st.correct) html += '<p class="hypo-msg good">Correct' + (st.firstTry ? " — first try." : ".") + "</p>";
+        else if (s.hypoMsg[ln]) html += '<p class="hypo-msg bad">' + esc(s.hypoMsg[ln]) + "</p>";
+        q.innerHTML = html;
+        list.appendChild(q);
+      });
+      list.querySelectorAll("[data-hypo-line]").forEach(function (b) {
+        b.addEventListener("click", function () { gymHypoAnswer(Number(b.getAttribute("data-hypo-line")), Number(b.getAttribute("data-hypo-opt"))); });
+      });
+    }
+
+    function gymHypoAnswer(ln, oi) {
+      var s = gym.rounds[gym.current];
+      var h = GYM_HYPOS[gym.current][ln];
+      if (!h || (s.hypo[ln] && s.hypo[ln].correct)) return;
+      var prev = s.hypo[ln] || { correct: false, firstTry: true, tried: false };
+      if (oi === h.correct) {
+        s.hypo[ln] = { correct: true, firstTry: prev.tried ? false : prev.firstTry, tried: true };
+        delete s.hypoMsg[ln];
+        announce(gymHypoDone(gym.current) ? "Correct. Every logic bug is now explained — the Fix stage is unlocked below." : "Correct. That logic bug is explained.");
+      } else {
+        s.hypo[ln] = { correct: false, firstTry: false, tried: true, lastWrong: oi };
+        s.hypoMsg[ln] = "That is not it. Try again.";
+        announce("That is not it. Try again.");
+      }
+      renderGym();
+      if (gymHypoDone(gym.current)) { var fc = $("gym-fix-card"); if (fc) fc.scrollIntoView({ behavior: "smooth", block: "start" }); }
+    }
+
+    function renderGymFix() {
+      var r = GYM_ROUNDS[gym.current], s = gym.rounds[gym.current];
+      var card = $("gym-fix-card");
+      var open = gymSpotDone(gym.current) && gymHypoDone(gym.current);
+      card.hidden = !open;
+      if (!open) return;
+      var tests = GYM_TESTS[gym.current];
+      $("gym-fix-test-input").textContent = tests.visible.inputLabel;
+      $("gym-fix-attempts").textContent = s.fixAttempts ? "Attempts so far: " + s.fixAttempts : "";
+      var list = $("gym-fix-list"); list.innerHTML = "";
+      r.code.forEach(function (line, i) {
+        var ln = i + 1;
+        var row = document.createElement("div"); row.className = "gym-fix-row";
+        if (r.bugs[ln]) {
+          var val = Object.prototype.hasOwnProperty.call(s.fixEdits, ln) ? s.fixEdits[ln] : line;
+          row.innerHTML = '<span class="ln">' + ln + '</span>';
+          var inp = document.createElement("input");
+          inp.type = "text"; inp.className = "gym-fix-input"; inp.value = val; inp.spellcheck = false;
+          inp.setAttribute("aria-label", "Line " + ln + " — faulty line, yours to fix: " + line.trim());
+          inp.setAttribute("data-fix-line", ln);
+          inp.addEventListener("input", function () {
+            gym.rounds[gym.current].fixEdits[ln] = inp.value;
+          });
+          row.appendChild(inp);
+        } else {
+          row.innerHTML = '<span class="ln">' + ln + '</span><span class="locked-line">' + (esc(line) || " ") + "</span>";
+        }
+        list.appendChild(row);
+      });
+      var fb = $("gym-fix-feedback");
+      if (s.fixResult) {
+        fb.className = "feedback show " + (s.fixResult.pass ? "good" : "bad");
+        fb.innerHTML = s.fixResult.html;
+      } else { fb.className = "feedback"; fb.innerHTML = ""; }
+      var vb = $("gym-verify-box");
+      if (s.verifyResult) {
+        vb.innerHTML = '<div class="gym-test-box" role="status"><span class="lbl">Stage 4 — Verify · the unseen test</span>' +
+          '<span class="lbl">Input (shown now that it has run)</span><span class="mono">' + esc(GYM_TESTS[gym.current].unseen.inputLabel) + "</span>" +
+          '<span class="lbl">Expected result</span><span class="mono">' + esc(GYM_TESTS[gym.current].unseen.expected.join("\n")) + "</span>" +
+          '<span class="lbl">Your program printed</span><span class="mono">' + esc(s.verifyResult.actual && s.verifyResult.actual.trim() !== "" ? s.verifyResult.actual.replace(/\s+$/, "") : "(nothing)") + "</span>" +
+          (s.verifyResult.error ? '<span class="lbl">The machine stopped</span><span class="mono">' + esc(s.verifyResult.error) + "</span>" : "") +
+          '<p style="margin-top:10px;">' + (s.verifyResult.pass
+            ? "<strong>Verify passed.</strong> The round is complete — your fix and the reference are below."
+            : "<strong>Verify failed.</strong> Your fix handles the test you could see but not this one. You are back at the Fix stage above, with your edits exactly as you left them — change what this test exposes, then check again.") + "</p></div>";
+      } else vb.innerHTML = "";
+    }
+
+    function gymCheckFix() {
+      var idx = gym.current, s = gym.rounds[idx];
+      if (!(gymSpotDone(idx) && gymHypoDone(idx))) return;
+      var src = gymAssembled(idx);
+      var tests = GYM_TESTS[idx];
+      s.fixAttempts++;
+      var vres = gymRunTest(idx, src, tests.visible);
+      if (!vres.pass) {
+        s.fixResult = { pass: false, html: "<strong>Not yet — the visible test failed.</strong>" +
+          '<div class="gym-test-box"><span class="lbl">Test input</span><span class="mono">' + esc(tests.visible.inputLabel) + "</span>" +
+          '<span class="lbl">Expected result</span><span class="mono">' + esc(tests.visible.expected.join("\n")) + "</span>" +
+          '<span class="lbl">Your program printed</span><span class="mono">' + esc(vres.actual && vres.actual.trim() !== "" ? vres.actual.replace(/\s+$/, "") : "(nothing)") + "</span>" +
+          (vres.error ? '<span class="lbl">The machine stopped</span><span class="mono">' + esc(vres.error) + "</span>" : "") + "</div>" +
+          "<p style='margin-top:8px;'>Attempts so far: " + s.fixAttempts + ". Change the editable lines and check again — retries are unlimited.</p>" };
+        s.verifyResult = null;
+        announce("The visible test failed. Expected versus actual is shown below the fix editor.");
+        renderGym();
+        return;
+      }
+      s.fixResult = { pass: true, html: "<strong>Visible test passed</strong> — your program printed the expected result for input " + esc(tests.visible.inputLabel) + ". The Verify stage has already run the same program against an unseen test; its result is below." };
+      var ures = gymRunTest(idx, src, tests.unseen);
+      s.verifyResult = { pass: ures.pass, error: ures.error, actual: ures.actual };
+      if (ures.pass) {
+        s.done = true;
+        announce("Verify passed. Round complete: your fix passed both the visible and the unseen test.");
+        renderGym();
+        $("gym-done-card").scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        announce("The visible test passed, but the unseen Verify test failed. Its input and expected result are now shown; your edits are intact in the Fix stage.");
+        renderGym();
+        $("gym-verify-box").scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     }
 
     function renderGymDone() {
@@ -2608,9 +2927,12 @@ for (int i = 0; i < 3; i++) {
       if (!s.done) return;
       var clsOk = 0;
       Object.keys(s.found).forEach(function (k) { if (s.found[k].clsCorrect) clsOk++; });
-      $("gym-done-text").innerHTML = "You found all <b>" + gymCounts(r).total + " bugs</b> with <b>" + clsOk + " of " + gymCounts(r).total +
-        " classifications correct</b> and <b>" + s.falseAlarms + " false alarm" + (s.falseAlarms === 1 ? "" : "s") +
-        "</b>. In the lab, this is the moment you open the corrected file and check your list against it:";
+      var tests = GYM_TESTS[gym.current];
+      $("gym-done-text").innerHTML = "You found all <b>" + gymCounts(r).total + " bugs</b> (<b>" + clsOk + " of " + gymCounts(r).total +
+        " classifications correct</b>, <b>" + s.falseAlarms + " false alarm" + (s.falseAlarms === 1 ? "" : "s") +
+        "</b>), explained <b>" + gymHypoFirstTry(gym.current) + " of " + gymLogicLines(r).length + " logic bugs first-try</b>, and your own fix passed both tests in <b>" +
+        s.fixAttempts + " attempt" + (s.fixAttempts === 1 ? "" : "s") + "</b>. Your fixed program, beside the reference:";
+      $("gym-your-name").textContent = r.file + " (your fix)";
       $("gym-fixed-name").textContent = r.file + " (corrected)";
       function fill(pre, lines, fixedSet) {
         pre.innerHTML = "";
@@ -2621,16 +2943,18 @@ for (int i = 0; i < 3; i++) {
           pre.appendChild(d);
         });
       }
-      fill($("gym-compare-faulty"), r.code, null);
+      fill($("gym-compare-faulty"), gymAssembled(gym.current).split("\n"), null);
       fill($("gym-compare-fixed"), r.fixed, r.fixedLines);
-      $("gym-sample-head").textContent = r.sampleHead;
-      $("gym-sample-out").textContent = r.sample;
+      $("gym-sample-head").textContent = "Verification — the two tests your fix passed";
+      $("gym-sample-out").textContent =
+        "Visible test · input: " + tests.visible.inputLabel + "\n" + tests.visible.expected.join("\n") +
+        "\n\nUnseen test · input: " + tests.unseen.inputLabel + "\n" + tests.unseen.expected.join("\n");
       var next = $("gym-next-btn");
       next.hidden = gym.current >= GYM_ROUNDS.length - 1;
       next.textContent = gym.current < GYM_ROUNDS.length - 1 ? "Next round: " + GYM_ROUNDS[gym.current + 1].title : "";
     }
 
-    function renderGym() { renderGymNav(); renderGymScore(); renderGymRoundHead(); renderGymCode(); renderGymPanel(); renderGymDone(); }
+    function renderGym() { renderGymNav(); renderGymScore(); renderGymRoundHead(); renderGymCode(); renderGymPanel(); renderGymHypo(); renderGymFix(); renderGymDone(); }
 
     function gymAccuse(ln) {
       var r = GYM_ROUNDS[gym.current], s = gym.rounds[gym.current];
@@ -2658,13 +2982,12 @@ for (int i = 0; i < 3; i++) {
         (ok ? "<b>Classified correctly — " + bug.kind + ".</b> " : "<b>Bug banked, classification missed.</b> This one is <b>" + bug.kind + "</b>. ") + bug.text };
       var foundN = Object.keys(s.found).length;
       if (foundN === gymCounts(r).total) {
-        s.done = true;
-        announce("Round complete. All " + foundN + " bugs found. The corrected program is shown below.");
+        announce("Stage 1 complete. All " + foundN + " bugs found and classified. The Hypothesise stage is unlocked below.");
       } else {
         announce((ok ? "Correct classification." : "Classification missed — it was " + bug.kind + ".") + " " + (gymCounts(r).total - foundN) + " bugs remain.");
       }
       renderGym();
-      if (s.done) $("gym-done-card").scrollIntoView({ behavior: "smooth", block: "start" });
+      if (foundN === gymCounts(r).total) $("gym-hypo-card").scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
     $("cls-syntax").addEventListener("click", function () { gymClassify("syntax"); });
@@ -2676,6 +2999,7 @@ for (int i = 0; i < 3; i++) {
       gym.rounds[gym.current] = gymFreshRound(); renderGym();
       document.querySelector("#gym-title").scrollIntoView({ behavior: "smooth", block: "start" });
     });
+    $("gym-fix-check").addEventListener("click", gymCheckFix);
 
     /* ================= Error Translator ================= */
     var TRANS = [
@@ -3780,7 +4104,7 @@ for (int i = 0; i < 3; i++) {
 
     function makeParse(toks) {
       var p = 0;
-      var TYPES = { "int": 1, "double": 1, "string": 1, "void": 1 };
+      var TYPES = { "int": 1, "double": 1, "string": 1, "void": 1, "char": 1 };
       function peek() { return toks[p]; }
       function next() { return toks[p++]; }
       function fail(tok, msg) { throw makeErr(tok.line, msg); }
@@ -3824,7 +4148,13 @@ for (int i = 0; i < 3; i++) {
             var pt = next().v;
             if (pt === "void") fail(peek(), "a parameter cannot be void — give it a real type: int, double, or string.");
             var pn = expectId();
-            params.push({ type: pt, name: pn.v });
+            var pArr = false;
+            if (isOp("[")) {
+              next(); pArr = true;
+              if (!isOp("]")) { var psz = peek(); if (psz.t === "num") next(); }
+              expectOp("]");
+            }
+            params.push({ type: pt, name: pn.v, isArr: pArr });
             if (isOp(",")) { next(); continue; }
             break;
           }
@@ -4068,7 +4398,7 @@ for (int i = 0; i < 3; i++) {
       throw makeErr(line, "a void function hands nothing back, so there is no value here to use. Call it on its own line, as a statement by itself.");
     }
     function makeDefault(type) {
-      if (type === "string") return { t: "string", v: "" };
+      if (type === "string" || type === "char") return { t: "string", v: "" };
       if (type === "double") return { t: "double", v: 0 };
       return { t: "int", v: 0 };
     }
@@ -4086,6 +4416,10 @@ for (int i = 0; i < 3; i++) {
       if (type === "string") {
         if (val.t !== "string") throw makeErr(line, "the machine cannot store a number in '" + name + "', because " + name + " is a string box and holds text only.");
         return { t: "string", v: val.v };
+      }
+      if (type === "char") {
+        if (val.t !== "string") throw makeErr(line, "the machine cannot store a number in '" + name + "', because " + name + " is a char box and holds a single character only.");
+        return { t: "string", v: val.v.slice(0, 1) };
       }
       return val;
     }
@@ -4111,9 +4445,35 @@ for (int i = 0; i < 3; i++) {
       if (!funcs.main) return { ok: false, error: "There is no main() in this program. Every C++ program starts inside main — the skeleton has one; keep its shape and write inside its braces.", output: "" };
       var ctx = {
         funcs: funcs, out: "", steps: 0, depth: 0,
-        input: inputStr && String(inputStr).trim() ? String(inputStr).trim().split(/\s+/) : [],
-        inPos: 0
+        rawInput: inputStr === null || inputStr === undefined ? "" : String(inputStr),
+        inChar: 0,
+        fmtFixed: false, fmtPrec: 2
       };
+      /* Line-aware input cursor: >> reads the next whitespace-delimited
+         token and stops at (does not consume) the delimiter, getline reads
+         to the end of the current line, and ignore() discards through the
+         next newline — matching real cin behaviour. */
+      function inSkipWs() { while (ctx.inChar < ctx.rawInput.length && /\s/.test(ctx.rawInput.charAt(ctx.inChar))) ctx.inChar++; }
+      function inReadToken() {
+        inSkipWs();
+        if (ctx.inChar >= ctx.rawInput.length) return null;
+        var st = ctx.inChar;
+        while (ctx.inChar < ctx.rawInput.length && !/\s/.test(ctx.rawInput.charAt(ctx.inChar))) ctx.inChar++;
+        return ctx.rawInput.slice(st, ctx.inChar);
+      }
+      function inReadLine() {
+        if (ctx.inChar >= ctx.rawInput.length) return "";
+        var nl = ctx.rawInput.indexOf("\n", ctx.inChar);
+        var s;
+        if (nl === -1) { s = ctx.rawInput.slice(ctx.inChar); ctx.inChar = ctx.rawInput.length; }
+        else { s = ctx.rawInput.slice(ctx.inChar, nl); ctx.inChar = nl + 1; }
+        if (s.charAt(s.length - 1) === "\r") s = s.slice(0, -1);
+        return s;
+      }
+      function inIgnore() {
+        var nl = ctx.rawInput.indexOf("\n", ctx.inChar);
+        ctx.inChar = nl === -1 ? ctx.rawInput.length : nl + 1;
+      }
       function fail(line, msg) { throw makeErr(line, msg); }
       function step(line) {
         if (++ctx.steps > 100000) fail(line, "this program has taken 100,000 steps without finishing — this looks like an infinite loop. A loop ends only when its condition becomes false, so check that something inside the loop changes the values the condition tests. The program has stopped.");
@@ -4252,11 +4612,32 @@ for (int i = 0; i < 3; i++) {
             return node.kind === "pre" ? nv : old;
           }
           case "call": {
+            if (node.name === "getline") {
+              if (node.args.length !== 2 || node.args[0].kind !== "var" || node.args[0].name !== "cin")
+                fail(node.line, "getline is used as getline(cin, name) — it reads one whole line of input into a string variable.");
+              var gref = targetRef(env, node.args[1]);
+              var gval = inReadLine();
+              gref.set(makeConv({ t: "string", v: gval }, gref.type, node.line, "the box"));
+              return { t: "int", v: 1 };
+            }
+            var callee = ctx.funcs[node.name];
             var args = [];
-            for (var ai = 0; ai < node.args.length; ai++) args.push(evalExpr(env, node.args[ai]));
+            for (var ai = 0; ai < node.args.length; ai++) {
+              var an = node.args[ai];
+              var prm = callee && callee.params[ai];
+              if (prm && prm.isArr && an.kind === "var") {
+                var acell = lookupCell(env, an.name, an.line);
+                if (!acell.isArr) fail(an.line, "'" + an.name + "' is not an array, so it cannot be handed to an array parameter.");
+                args.push({ t: "arrayRef", cell: acell });
+              } else args.push(evalExpr(env, an));
+            }
             return callFunc(node.name, args, node.line);
           }
           case "method": {
+            if (node.obj.kind === "var" && node.obj.name === "cin" && node.name === "ignore") {
+              inIgnore();
+              return { t: "int", v: 0 };
+            }
             var obj = evalExpr(env, node.obj);
             if (obj.t === "string" && (node.name === "length" || node.name === "size")) {
               if (node.args.length) fail(node.line, "." + node.name + "() takes nothing inside its parentheses — just ask the string: word." + node.name + "().");
@@ -4327,8 +4708,16 @@ for (int i = 0; i < 3; i++) {
           }
           case "cout": {
             for (var ci = 0; ci < node.items.length; ci++) {
-              var v = evalExpr(env, node.items[ci]);
-              ctx.out += makeFmtVal(v, node.line);
+              var item = node.items[ci];
+              if (item.kind === "var" && item.name === "fixed") { ctx.fmtFixed = true; continue; }
+              if (item.kind === "var" && item.name === "defaultfloat") { ctx.fmtFixed = false; continue; }
+              if (item.kind === "call" && item.name === "setprecision") {
+                if (item.args.length === 1) ctx.fmtPrec = Math.max(0, Math.trunc(makeNum(evalExpr(env, item.args[0]), node.line, "inside setprecision()")));
+                continue;
+              }
+              var v = evalExpr(env, item);
+              if (v.t === "double" && ctx.fmtFixed) ctx.out += v.v.toFixed(ctx.fmtPrec);
+              else ctx.out += makeFmtVal(v, node.line);
               if (ctx.out.length > 60000) fail(node.line, "this program has printed an enormous amount of output — this looks like an infinite loop printing forever. The program has stopped.");
             }
             return;
@@ -4336,9 +4725,10 @@ for (int i = 0; i < 3; i++) {
           case "cin": {
             node.targets.forEach(function (tg) {
               var ref = targetRef(env, tg);
-              var tok = ctx.inPos < ctx.input.length ? ctx.input[ctx.inPos++] : null;
+              var tok = inReadToken();
               var val;
               if (ref.type === "string") val = { t: "string", v: tok === null ? "" : tok };
+              else if (ref.type === "char") val = { t: "string", v: tok === null ? "" : tok.charAt(0) };
               else if (ref.type === "double") { var pf = tok === null ? NaN : parseFloat(tok); val = { t: "double", v: isNaN(pf) ? 0 : pf }; }
               else { var pi = tok === null ? NaN : parseInt(tok, 10); val = { t: "int", v: isNaN(pi) ? 0 : pi }; }
               ref.set(val);
@@ -4355,7 +4745,13 @@ for (int i = 0; i < 3; i++) {
         if (++ctx.depth > 200) fail(line, "functions here are calling each other hundreds of levels deep — a function is probably calling itself, directly or in a circle. The program has stopped.");
         var env = [{}];
         f.params.forEach(function (pr, i) {
-          env[0][pr.name] = { type: pr.type, isArr: false, val: makeConv(args[i], pr.type, line, pr.name) };
+          if (pr.isArr) {
+            if (!args[i] || args[i].t !== "arrayRef") fail(line, "the parameter '" + pr.name + "' of '" + name + "' is an array — hand it an array, like " + pr.name + " itself, at the call.");
+            env[0][pr.name] = { type: pr.type, isArr: true, val: args[i].cell.val };
+          } else {
+            if (args[i] && args[i].t === "arrayRef") fail(line, "the parameter '" + pr.name + "' of '" + name + "' holds one value, but the call hands it a whole array.");
+            env[0][pr.name] = { type: pr.type, isArr: false, val: makeConv(args[i], pr.type, line, pr.name) };
+          }
         });
         var retVal = null;
         try { execBlock(env, f.body); }
