@@ -1,0 +1,1013 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>TraceFirst Prediction Tracer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #edf1ec;
+        --panel: #ffffff;
+        --panel-2: #f4f7f3;
+        --ink: #1b2521;
+        --ink-soft: #46544d;
+        --line: #d3ddd4;
+        --accent: #0e6b4f;
+        --accent-strong: #0a513c;
+        --accent-soft: #dcefe6;
+        --amber: #b97a0e;
+        --amber-soft: #fbf0d3;
+        --rust: #b03a26;
+        --rust-soft: #fbe7e1;
+        --code-bg: #13201a;
+        --code-ink: #dce8de;
+        --code-dim: #7e968a;
+        --code-active: #274435;
+        --shadow: 0 1px 2px rgba(20, 40, 30, .06), 0 8px 24px rgba(20, 40, 30, .07);
+        color-scheme: light;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0f1512;
+          --panel: #1a221e;
+          --panel-2: #212b26;
+          --ink: #e6ede8;
+          --ink-soft: #a7b8ae;
+          --line: #33413a;
+          --accent: #3ec79e;
+          --accent-strong: #6fd8b6;
+          --accent-soft: #17382c;
+          --amber: #e3ac3c;
+          --amber-soft: #3a2f14;
+          --rust: #ef8266;
+          --rust-soft: #402219;
+          --code-bg: #0b120e;
+          --code-ink: #dce8de;
+          --code-dim: #71857a;
+          --code-active: #1d3a2a;
+          --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+          color-scheme: dark;
+        }
+      }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "IBM Plex Sans", system-ui, sans-serif;
+        font-size: 16px;
+        line-height: 1.55;
+      }
+      h1, h2, h3, p, ul, ol, figure { margin: 0; }
+      button { font: inherit; cursor: pointer; }
+      button:focus-visible, [tabindex]:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; }
+      .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 20px 56px; }
+
+      /* ---------- Intro ---------- */
+      .intro { max-width: 760px; }
+      .intro h1 {
+        font-family: "Source Serif 4", Georgia, serif;
+        font-size: clamp(2rem, 5vw, 3.1rem);
+        line-height: 1.08;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+      .intro .lede { margin-top: 14px; font-size: 1.08rem; color: var(--ink-soft); max-width: 640px; }
+      .intro .lede strong { color: var(--ink); }
+
+      .primm {
+        display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+        margin-top: 24px;
+      }
+      .primm .phase {
+        background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+        padding: 12px 14px; box-shadow: var(--shadow);
+      }
+      .primm .phase .pnum {
+        font-family: "IBM Plex Mono", monospace; font-size: .72rem; font-weight: 600;
+        letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft);
+      }
+      .primm .phase .pname { font-weight: 700; font-size: 1rem; margin-top: 2px; display: flex; align-items: center; gap: 7px; }
+      .primm .phase .pdesc { font-size: .85rem; color: var(--ink-soft); margin-top: 3px; }
+      .primm .phase.active { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft), var(--shadow); }
+      .primm .phase.active .pname { color: var(--accent-strong); }
+      .primm .phase.done .pname { color: var(--accent-strong); }
+      .primm .phase .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--line); flex: none; }
+      .primm .phase.active .dot { background: var(--amber); }
+      .primm .phase.done .dot { background: var(--accent); }
+
+      /* ---------- Toolbar: skins + exercises ---------- */
+      .toolbar {
+        margin-top: 26px; background: var(--panel); border: 1px solid var(--line);
+        border-radius: 14px; padding: 16px; box-shadow: var(--shadow);
+        display: grid; gap: 16px;
+      }
+      .toolbar .tlabel {
+        font-family: "IBM Plex Mono", monospace; font-size: .72rem; font-weight: 600;
+        letter-spacing: .09em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 8px;
+      }
+      .skins { display: flex; flex-wrap: wrap; gap: 8px; }
+      .skin-btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        border: 1.5px solid var(--line); background: var(--panel-2); color: var(--ink);
+        border-radius: 999px; padding: 8px 14px; font-weight: 600; font-size: .92rem;
+      }
+      .skin-btn svg { width: 16px; height: 16px; flex: none; }
+      .skin-btn[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-strong); }
+      .skin-note { font-size: .85rem; color: var(--ink-soft); margin-top: 8px; }
+      .exnav { display: flex; flex-wrap: wrap; gap: 8px; }
+      .ex-btn {
+        display: inline-flex; align-items: center; gap: 9px; text-align: left;
+        border: 1.5px solid var(--line); background: var(--panel-2); color: var(--ink);
+        border-radius: 10px; padding: 8px 12px; font-size: .9rem;
+      }
+      .ex-btn .n {
+        font-family: "IBM Plex Mono", monospace; font-weight: 600; font-size: .8rem;
+        width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center;
+        background: var(--panel); border: 1px solid var(--line); flex: none;
+      }
+      .ex-btn[aria-current="true"] { border-color: var(--accent); background: var(--accent-soft); }
+      .ex-btn .status { font-size: .78rem; color: var(--ink-soft); }
+      .ex-btn .status.good { color: var(--accent-strong); font-weight: 600; }
+      .ex-btn .status.bad { color: var(--rust); font-weight: 600; }
+
+      .scorebar {
+        display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center;
+        border-top: 1px dashed var(--line); padding-top: 14px; font-size: .92rem;
+      }
+      .scorebar .metric strong { font-family: "IBM Plex Mono", monospace; font-size: 1.05rem; }
+      .scorebar .metric span { color: var(--ink-soft); }
+
+      /* ---------- Main grid ---------- */
+      .grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 18px; margin-top: 18px; align-items: start; }
+      .card {
+        background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+        box-shadow: var(--shadow); padding: 20px;
+      }
+      .card + .card { margin-top: 18px; }
+      .card h2 {
+        font-family: "Source Serif 4", Georgia, serif; font-size: 1.35rem; line-height: 1.2; font-weight: 700;
+      }
+      .card h3 { font-size: 1rem; font-weight: 700; }
+      .concept-tag {
+        display: inline-block; font-family: "IBM Plex Mono", monospace; font-size: .72rem; font-weight: 600;
+        letter-spacing: .08em; text-transform: uppercase; color: var(--accent-strong);
+        background: var(--accent-soft); border-radius: 6px; padding: 3px 8px; margin-bottom: 10px;
+      }
+      .story { margin-top: 10px; color: var(--ink-soft); }
+      .story strong { color: var(--ink); }
+      .goal { margin-top: 10px; font-size: .92rem; border-top: 1px dashed var(--line); padding-top: 10px; }
+      .goal b { color: var(--accent-strong); }
+
+      /* Code */
+      .codebox {
+        margin-top: 14px; background: var(--code-bg); border-radius: 10px; overflow: hidden;
+        border: 1px solid rgba(0,0,0,.25);
+      }
+      .codebox .codehead {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 8px 14px; border-bottom: 1px solid rgba(255,255,255,.08);
+        font-family: "IBM Plex Mono", monospace; font-size: .75rem; color: var(--code-dim);
+      }
+      .codebox pre { margin: 0; padding: 12px 0; overflow-x: auto; }
+      .cline {
+        display: flex; gap: 0; padding: 2px 14px 2px 0; white-space: pre;
+        font-family: "IBM Plex Mono", monospace; font-size: .9rem; line-height: 1.65; color: var(--code-ink);
+      }
+      .cline .ln { width: 42px; flex: none; text-align: right; padding-right: 14px; color: var(--code-dim); user-select: none; }
+      .cline.active { background: var(--code-active); box-shadow: inset 3px 0 0 var(--amber); }
+      .cline.done-line { opacity: .75; }
+
+      /* Prediction */
+      .predict-q { font-weight: 600; margin-top: 4px; }
+      .options { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 12px; }
+      .opt-btn {
+        border: 1.5px solid var(--line); background: var(--panel-2); color: var(--ink);
+        border-radius: 10px; padding: 12px 14px; text-align: left;
+        font-family: "IBM Plex Mono", monospace; font-size: 1rem; font-weight: 600;
+        display: flex; align-items: center; gap: 10px; min-height: 52px;
+      }
+      .opt-btn .key {
+        font-size: .72rem; width: 22px; height: 22px; border-radius: 6px; flex: none;
+        display: grid; place-items: center; border: 1px solid var(--line); background: var(--panel);
+        font-family: "IBM Plex Sans", sans-serif; font-weight: 700;
+      }
+      .opt-btn[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-strong); }
+      .opt-btn:disabled { opacity: .55; cursor: default; }
+      .opt-btn.reveal-correct { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-strong); opacity: 1; }
+      .opt-btn.reveal-wrong { border-color: var(--rust); background: var(--rust-soft); color: var(--rust); opacity: 1; }
+      .lockrow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 14px; }
+      .btn {
+        border: none; border-radius: 10px; padding: 11px 18px; font-weight: 700; font-size: .95rem;
+        background: var(--accent); color: #fff; display: inline-flex; align-items: center; gap: 8px;
+      }
+      .btn svg { width: 16px; height: 16px; }
+      .btn:hover:not(:disabled) { background: var(--accent-strong); }
+      .btn:disabled { background: var(--line); color: var(--ink-soft); cursor: not-allowed; }
+      .btn.ghost { background: transparent; color: var(--accent-strong); border: 1.5px solid var(--accent); }
+      .btn.ghost:hover:not(:disabled) { background: var(--accent-soft); }
+      .btn.small { padding: 8px 13px; font-size: .88rem; border-radius: 8px; }
+      .locknote { font-size: .88rem; color: var(--ink-soft); display: inline-flex; gap: 7px; align-items: center; }
+      .locknote svg { width: 15px; height: 15px; flex: none; }
+      .locked-banner {
+        margin-top: 12px; border-radius: 10px; padding: 11px 14px; font-size: .92rem;
+        background: var(--accent-soft); color: var(--accent-strong); font-weight: 600; display: none;
+      }
+      .locked-banner.show { display: block; }
+
+      /* Trace panel */
+      .trace-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+      .stepmeta { font-family: "IBM Plex Mono", monospace; font-size: .8rem; color: var(--ink-soft); margin-top: 10px; }
+      .stepbar { height: 6px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 99px; overflow: hidden; margin-top: 6px; }
+      .stepbar i { display: block; height: 100%; background: var(--accent); width: 0%; transition: width .25s ease; }
+      .memory { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; min-height: 86px; }
+      .mem-empty { color: var(--ink-soft); font-size: .92rem; border: 1.5px dashed var(--line); border-radius: 10px; padding: 16px; width: 100%; }
+      .membox {
+        border: 1.5px solid var(--line); border-radius: 10px; background: var(--panel-2);
+        padding: 10px 14px; min-width: 108px;
+      }
+      .membox .vname { font-family: "IBM Plex Mono", monospace; font-weight: 600; font-size: .92rem; display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+      .membox .vtype { font-size: .68rem; color: var(--ink-soft); font-weight: 500; letter-spacing: .05em; text-transform: uppercase; }
+      .membox .vval { font-family: "IBM Plex Mono", monospace; font-size: 1.55rem; font-weight: 600; margin-top: 2px; }
+      .membox.changed { border-color: var(--amber); animation: flash 0.7s ease; }
+      @keyframes flash { 0% { background: var(--amber-soft); } 100% { background: var(--panel-2); } }
+      .console {
+        margin-top: 14px; background: var(--code-bg); color: var(--code-ink); border-radius: 10px;
+        padding: 12px 14px; font-family: "IBM Plex Mono", monospace; font-size: .95rem; min-height: 52px;
+      }
+      .console .chead { font-size: .7rem; letter-spacing: .09em; text-transform: uppercase; color: var(--code-dim); margin-bottom: 5px; font-weight: 600; }
+      .console .cout { white-space: pre-wrap; min-height: 1.4em; }
+      .console .cursor { display: inline-block; width: 8px; height: 1em; background: var(--code-dim); vertical-align: -2px; animation: blink 1s steps(1) infinite; }
+      @keyframes blink { 50% { opacity: 0; } }
+      .stepnote {
+        margin-top: 14px; font-size: .95rem; background: var(--panel-2); border: 1px solid var(--line);
+        border-radius: 10px; padding: 12px 14px; min-height: 56px;
+      }
+      .stepnote b { color: var(--accent-strong); }
+      .trace-locked {
+        margin-top: 14px; border: 1.5px dashed var(--line); border-radius: 10px; padding: 16px;
+        color: var(--ink-soft); font-size: .93rem; display: flex; gap: 10px; align-items: flex-start;
+      }
+      .trace-locked svg { width: 18px; height: 18px; flex: none; margin-top: 2px; }
+
+      /* Investigate / confront */
+      .verdict { border-radius: 12px; padding: 16px; margin-top: 4px; }
+      .verdict.good { background: var(--accent-soft); border: 1.5px solid var(--accent); }
+      .verdict.bad { background: var(--rust-soft); border: 1.5px solid var(--rust); }
+      .verdict h3 { font-size: 1.08rem; }
+      .verdict .vs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+      .verdict .vs div {
+        background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px;
+        font-family: "IBM Plex Mono", monospace; font-size: .92rem;
+      }
+      .verdict .vs div span { display: block; font-family: "IBM Plex Sans", sans-serif; font-size: .72rem; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-soft); font-weight: 600; }
+      .verdict p { margin-top: 10px; font-size: .95rem; }
+      .verdict .jump { margin-top: 12px; }
+
+      /* Modify */
+      .modify-code {
+        font-family: "IBM Plex Mono", monospace; font-size: .9rem; background: var(--panel-2);
+        border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin-top: 10px; white-space: pre-wrap;
+      }
+      .modify-code mark { background: var(--amber-soft); color: inherit; padding: 0 3px; border-radius: 3px; font-weight: 600; }
+      .feedback { margin-top: 12px; font-size: .95rem; border-radius: 10px; padding: 12px 14px; display: none; }
+      .feedback.show { display: block; }
+      .feedback.good { background: var(--accent-soft); color: var(--accent-strong); }
+      .feedback.bad { background: var(--rust-soft); color: var(--rust); }
+
+      /* Concept record */
+      .record-list { list-style: none; padding: 0; display: grid; gap: 9px; margin-top: 12px; }
+      .record-list li {
+        display: flex; justify-content: space-between; gap: 12px; align-items: baseline;
+        border-bottom: 1px dashed var(--line); padding-bottom: 8px; font-size: .92rem;
+      }
+      .record-list li:last-child { border-bottom: none; padding-bottom: 0; }
+      .record-list .rconcept { font-weight: 600; }
+      .record-list .rstat { font-family: "IBM Plex Mono", monospace; font-size: .8rem; color: var(--ink-soft); text-align: right; }
+      .record-list .rstat.good { color: var(--accent-strong); font-weight: 600; }
+      .record-list .rstat.bad { color: var(--rust); font-weight: 600; }
+
+      .finish {
+        display: none; margin-top: 18px; background: var(--panel); border: 1.5px solid var(--accent);
+        border-radius: 14px; padding: 22px; box-shadow: var(--shadow);
+      }
+      .finish.show { display: block; }
+      .finish h2 { font-family: "Source Serif 4", Georgia, serif; font-size: 1.5rem; }
+      .finish p { margin-top: 8px; color: var(--ink-soft); max-width: 640px; }
+      .finish .frow { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+
+      .foot { margin-top: 26px; color: var(--ink-soft); font-size: .88rem; max-width: 720px; }
+      .foot strong { color: var(--ink); }
+      .sr-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+      @media (max-width: 900px) {
+        .grid { grid-template-columns: 1fr; }
+        .primm { grid-template-columns: 1fr 1fr; }
+      }
+      @media (max-width: 520px) {
+        .wrap { padding: 20px 14px 44px; }
+        .options { grid-template-columns: 1fr; }
+        .card { padding: 16px; }
+        .cline { font-size: .8rem; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .membox.changed { animation: none; }
+        .console .cursor { animation: none; }
+        .stepbar i { transition: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <section class="intro">
+        <h1>Predict before you run.</h1>
+        <p class="lede">TraceFirst is a first-year C++ tracer built on one rule: <strong>you never run code you have not first predicted.</strong> Commit to an answer, then step through the program and watch memory change. When your prediction and the machine disagree, TraceFirst stops at the exact statement where the two parted — and names the idea to fix.</p>
+      </section>
+
+      <div class="primm" id="primm" aria-label="The four stages of each exercise">
+        <div class="phase" data-phase="predict"><div class="pnum">Stage 1</div><div class="pname"><span class="dot"></span>Predict</div><div class="pdesc">Read the code. Say what it will print. Lock it in.</div></div>
+        <div class="phase" data-phase="trace"><div class="pnum">Stage 2</div><div class="pname"><span class="dot"></span>Run</div><div class="pdesc">Step line by line. Watch each variable's box change.</div></div>
+        <div class="phase" data-phase="investigate"><div class="pnum">Stage 3</div><div class="pname"><span class="dot"></span>Investigate</div><div class="pdesc">Compare your answer with the machine's. Find the parting line.</div></div>
+        <div class="phase" data-phase="modify"><div class="pnum">Stage 4</div><div class="pname"><span class="dot"></span>Modify</div><div class="pdesc">One value changes. Predict again, from your repaired model.</div></div>
+      </div>
+
+      <section class="toolbar" aria-label="Choose your field and exercise">
+        <div>
+          <div class="tlabel">Your field — same code, your world</div>
+          <div class="skins" id="skins" role="group" aria-label="Field skins"></div>
+          <p class="skin-note">Every field runs the identical program with the identical numbers. Only the story changes — so a class of mixed majors can argue about one answer together.</p>
+        </div>
+        <div>
+          <div class="tlabel">Exercises</div>
+          <div class="exnav" id="exnav"></div>
+        </div>
+        <div class="scorebar" id="scorebar" aria-label="Your session record"></div>
+      </section>
+
+      <div class="grid">
+        <div>
+          <section class="card" aria-labelledby="ex-title">
+            <span class="concept-tag" id="ex-concept"></span>
+            <h2 id="ex-title"></h2>
+            <p class="story" id="ex-story"></p>
+            <p class="goal" id="ex-goal"></p>
+            <div class="codebox">
+              <div class="codehead"><span>program.cpp</span><span>C++</span></div>
+              <pre id="code" aria-label="Program code"></pre>
+            </div>
+          </section>
+
+          <section class="card" aria-labelledby="predict-h">
+            <h3 id="predict-h">Stage 1 — Predict</h3>
+            <p class="predict-q" id="predict-q"></p>
+            <div class="options" id="predict-options"></div>
+            <div class="lockrow">
+              <button class="btn" id="lock-btn" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+                Lock my prediction
+              </button>
+              <span class="locknote" id="lock-note">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+                The tracer stays locked until you commit. Guessing is the point: a wrong prediction you own teaches more than a right answer you copied.
+              </span>
+            </div>
+            <div class="locked-banner" id="locked-banner" role="status"></div>
+          </section>
+
+          <section class="card" id="investigate-card" hidden aria-labelledby="inv-h">
+            <h3 id="inv-h">Stage 3 — Investigate</h3>
+            <div id="verdict"></div>
+          </section>
+
+          <section class="card" id="modify-card" hidden aria-labelledby="mod-h">
+            <h3 id="mod-h">Stage 4 — Modify</h3>
+            <p id="modify-prompt" style="margin-top:6px;"></p>
+            <div class="modify-code" id="modify-code"></div>
+            <div class="options" id="modify-options"></div>
+            <div class="lockrow">
+              <button class="btn" id="modify-btn" disabled>Check my prediction</button>
+              <button class="btn ghost" id="next-btn" hidden>Next exercise</button>
+            </div>
+            <div class="feedback" id="modify-feedback" role="status"></div>
+          </section>
+        </div>
+
+        <div>
+          <section class="card" aria-labelledby="trace-h">
+            <h3 id="trace-h">Stage 2 — Run the tracer</h3>
+            <div id="trace-locked" class="trace-locked">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+              <span>Locked. Make your prediction first — the machine will not run ahead of your thinking.</span>
+            </div>
+            <div id="trace-ui" hidden>
+              <div class="trace-controls">
+                <button class="btn small ghost" id="step-back">← Back</button>
+                <button class="btn small" id="step-next">Step →</button>
+                <button class="btn small ghost" id="run-all">Run to end</button>
+                <button class="btn small ghost" id="trace-reset">Restart</button>
+              </div>
+              <div class="stepmeta" id="stepmeta"></div>
+              <div class="stepbar"><i id="stepbar-fill"></i></div>
+              <h3 style="margin-top:18px; font-size:.85rem; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;">Memory</h3>
+              <div class="memory" id="memory"></div>
+              <div class="console"><div class="chead">Program output</div><div class="cout" id="cout"></div></div>
+              <div class="stepnote" id="stepnote"></div>
+            </div>
+          </section>
+
+          <section class="card" aria-labelledby="record-h">
+            <h3 id="record-h">Your prediction record</h3>
+            <p style="font-size:.9rem; color:var(--ink-soft); margin-top:6px;">Accuracy by concept, for this session. This is the record your instructor sees in aggregate: not who failed, but <em>where the class's mental models first break</em>.</p>
+            <ul class="record-list" id="record-list"></ul>
+          </section>
+        </div>
+      </div>
+
+      <section class="finish" id="finish" aria-labelledby="finish-h">
+        <h2 id="finish-h">Session complete</h2>
+        <p id="finish-text"></p>
+        <div class="frow">
+          <button class="btn" id="restart-all">Run the set again</button>
+          <button class="btn ghost" id="review-btn">Review an exercise</button>
+        </div>
+      </section>
+
+      <p class="foot"><strong>How TraceFirst works:</strong> each exercise follows PRIMM — Predict, Run, Investigate, Modify — a sequence from computing-education research. The prediction is not a quiz before the lesson; it <em>is</em> the lesson, because the step-through that follows is read against a model you have already committed to. The four field skins share one code path and one set of numbers, so mixed-major classes discuss the same machine behaviour in four different worlds.</p>
+      <div class="sr-live" aria-live="polite" id="live"></div>
+    </main>
+    <script>
+    "use strict";
+
+    /* ---------------- Skins ---------------- */
+    var SKINS = {
+      health:   { name: "Health & Biology", icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>' },
+      psych:    { name: "Psychology & Social Science", icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>' },
+      business: { name: "Business & Economics", icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>' },
+      arts:     { name: "Arts & Media", icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v3M12 18.2v3M2.8 12h3M18.2 12h3M5.5 5.5l2.1 2.1M16.4 16.4l2.1 2.1M18.5 5.5l-2.1 2.1M7.6 16.4l-2.1 2.1"/></svg>' }
+    };
+
+    /* ---------------- Exercises ----------------
+       steps: { line (0-based index into code), vars: {name: [type, value]},
+                out: full output text so far, note: explanation (HTML ok) }   */
+    var EXERCISES = [
+      {
+        concept: "Values & Assignment",
+        title: "The points that would not sit still",
+        goal: "Assignment replaces a value — and <b>points = points + 5</b> reads the old value before writing the new one.",
+        stories: {
+          health:   "A physical-therapy app awards <strong>activity points</strong> during a recovery session. It starts a patient at 10 points, adds a 5-point bonus for finishing a stretching set, then doubles the total as a completion reward. The app prints one number at the end.",
+          psych:    "A study-participation app awards <strong>engagement points</strong> for a reading task. It starts a participant at 10 points, adds 5 points for finishing the comprehension check, then doubles the total as a completion bonus. The app prints one number at the end.",
+          business: "A coffee shop's loyalty program awards <strong>points</strong> on a visit. It starts the account at 10 points, adds a 5-point bonus for bringing a reusable cup, then doubles the total as a weekend promotion. The receipt prints one number.",
+          arts:     "A rehearsal tracker awards <strong>practice points</strong> for a session. It starts the performer at 10 points, adds 5 points for finishing the warm-up, then doubles the total as a full-session reward. The app prints one number at the end."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int points = 10;",
+          "    points = points + 5;",
+          "    points = points * 2;",
+          "    cout << points << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["30", "15", "20", "10"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "You stopped one statement early. <b>points + 5</b> gives 15 — but the program does not end there. The next statement doubles whatever is in the box <em>now</em>, and by then the box holds 15, not 10." },
+          2: { step: 2, text: "You doubled the <em>starting</em> value. The machine works statement by statement on the <em>current</em> value: by the time it reaches the doubling line, the +5 has already landed, so it doubles 15, not 10." },
+          3: { step: 2, text: "You treated the later statements as if they changed nothing. Every assignment writes into the box. Two writes happen after the start, and each one uses the value the previous write left behind." }
+        },
+        steps: [
+          { line: 4, vars: { points: ["int", "10"] }, out: "", note: "A box named <b>points</b> is created and filled with <b>10</b>. Nothing has printed yet — declarations are silent." },
+          { line: 5, vars: { points: ["int", "15"] }, out: "", note: "Read the right side first: the <em>old</em> points (10) + 5 = 15. Only then does the box get overwritten: <b>points becomes 15</b>. The old 10 is gone." },
+          { line: 6, vars: { points: ["int", "30"] }, out: "", note: "Again, right side first: the <em>current</em> points (15) × 2 = 30. <b>points becomes 30</b>. The starting 10 plays no part in this line at all." },
+          { line: 7, vars: { points: ["int", "30"] }, out: "30", note: "<b>cout</b> reads the box and prints what it finds: <b>30</b>. Printing never changes the value." },
+          { line: 8, vars: { points: ["int", "30"] }, out: "30", note: "The program ends. Final answer: <b>30</b>." }
+        ],
+        modify: {
+          prompt: "Same program, one change: the starting value is 20 instead of 10. The +5 and the doubling stay exactly as they are.",
+          code: 'int points = <mark>20</mark>;\npoints = points + 5;\npoints = points * 2;\ncout << points << endl;',
+          options: ["50", "40", "25", "45"],
+          correct: 0,
+          explain: "20 + 5 = 25, then 25 × 2 = <b>50</b>. The order of operations is the order of the statements: add first, then double the result."
+        }
+      },
+      {
+        concept: "Input, Variables & Integer Division",
+        title: "The average that lost its fraction",
+        goal: "When both operands are <b>int</b>, C++ division throws the fraction away. It does not round — it truncates.",
+        stories: {
+          health:   "A clinic app collects a patient's <strong>pain score</strong> on five days. The five scores add up to 17. The app stores the total and the count in whole-number variables and computes the average to display on the chart.",
+          psych:    "A survey study collects <strong>five responses</strong> on a rating scale. The responses add up to 17. The analysis program stores the total and the count in whole-number variables and computes the average response.",
+          business: "A shop counts <strong>items sold</strong> over five days. The days add up to 17 items. The stock program stores the total and the count in whole-number variables and computes the average per day.",
+          arts:     "Five judges score a short film. Their <strong>scores add up to 17</strong>. The festival program stores the total and the count in whole-number variables and computes the average score."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int total = 17;",
+          "    int count = 5;",
+          "    int average = total / count;",
+          "    cout << average << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["3", "3.4", "4", "2"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "3.4 is the answer mathematics gives — and the answer a <b>double</b> variable would hold. But every variable here is an <b>int</b>, and int division cannot keep a fraction. The .4 is discarded before the value ever reaches the box." },
+          2: { step: 2, text: "You rounded. C++ integer division does not round to the nearest whole number — it cuts the fraction off entirely. 17 ÷ 5 leaves 3 with a remainder, and the remainder is thrown away, so the result is 3, not 4." },
+          3: { step: 2, text: "Check the arithmetic the machine actually does: 17 ÷ 5 is 3 with a remainder of 2. Integer division keeps the 3 and discards the remainder — the answer is 3, not the remainder and not the count of full groups minus one." }
+        },
+        steps: [
+          { line: 4, vars: { total: ["int", "17"] }, out: "", note: "The box <b>total</b> is created holding <b>17</b> — the sum of all five values." },
+          { line: 5, vars: { total: ["int", "17"], count: ["int", "5"] }, out: "", note: "A second box, <b>count</b>, holds <b>5</b>. Two boxes, two whole numbers." },
+          { line: 6, vars: { total: ["int", "17"], count: ["int", "5"], average: ["int", "3"] }, out: "", note: "17 / 5 in whole numbers: the machine computes 3 remainder 2, and because <b>average</b> is an <b>int</b>, the fraction has nowhere to live. <b>average becomes 3</b>." },
+          { line: 7, vars: { total: ["int", "17"], count: ["int", "5"], average: ["int", "3"] }, out: "3", note: "The program prints <b>3</b>. If the programmer wanted 3.4, at least one of these variables would need to be a <b>double</b>." },
+          { line: 8, vars: { total: ["int", "17"], count: ["int", "5"], average: ["int", "3"] }, out: "3", note: "The program ends. Final answer: <b>3</b> — truncated, not rounded." }
+        ],
+        modify: {
+          prompt: "The total changes to 19; the count is still 5, and every variable is still an int. What prints now?",
+          code: 'int total = <mark>19</mark>;\nint count = 5;\nint average = total / count;\ncout << average << endl;',
+          options: ["3", "3.8", "4", "19"],
+          correct: 0,
+          explain: "19 / 5 is 3 remainder 4. The fraction is still discarded, so the answer is still <b>3</b> — the total had to reach 20 before the printed average would move."
+        }
+      },
+      {
+        concept: "Decisions — if / else",
+        title: "One road is never taken",
+        goal: "An <b>if / else</b> runs exactly one branch. The condition is tested once, and the losing branch is skipped entirely — its code does not run at all.",
+        stories: {
+          health:   "A screening tool reads a patient's <strong>resting heart-rate value of 72</strong> from a monitor. Readings of 60 or above are flagged as <strong>Above threshold</strong>; anything lower reports <strong>Below threshold</strong>. The tool prints exactly one message.",
+          psych:    "A wellbeing check-in computes a <strong>stress index of 72</strong> from a questionnaire. An index of 60 or above reports <strong>Above threshold</strong>; anything lower reports <strong>Below threshold</strong>. The app prints exactly one message.",
+          business: "A sales dashboard shows a rep's <strong>daily total of 72</strong> against a target line. Totals of 60 or above report <strong>Above threshold</strong>; anything lower reports <strong>Below threshold</strong>. The dashboard prints exactly one message.",
+          arts:     "A venue's sound system logs a <strong>peak level reading of 72</strong>. Readings of 60 or above report <strong>Above threshold</strong>; anything lower reports <strong>Below threshold</strong>. The system prints exactly one message."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int reading = 72;",
+          "    if (reading >= 60) {",
+          "        cout << \"Above threshold\" << endl;",
+          "    } else {",
+          "        cout << \"Below threshold\" << endl;",
+          "    }",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["Above threshold", "Below threshold", "Above threshold, then Below threshold", "Nothing at all"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "You read the comparison backwards. The test is <b>reading &gt;= 60</b> — is 72 greater than or equal to 60? Yes. A true test takes the <b>if</b> branch, so the message is the first one." },
+          2: { step: 2, text: "Both messages exist in the code, but an <b>if / else</b> is a fork, not a list. Once the true branch runs, the machine jumps past the <b>else</b> block without entering it. Exactly one message can print." },
+          3: { step: 1, text: "Something always prints here. The condition is either true or false, and each outcome has its own branch with its own message — there is no path through this program that prints nothing." }
+        },
+        steps: [
+          { line: 4, vars: { reading: ["int", "72"] }, out: "", note: "The box <b>reading</b> holds <b>72</b>. Now the program reaches its fork." },
+          { line: 5, vars: { reading: ["int", "72"] }, out: "", note: "The test: is <b>72 &gt;= 60</b>? <b>True.</b> The machine commits to the <b>if</b> branch — and the else branch is already dead." },
+          { line: 6, vars: { reading: ["int", "72"] }, out: "Above threshold", note: "The if branch runs and prints <b>Above threshold</b>." },
+          { line: 9, vars: { reading: ["int", "72"] }, out: "Above threshold", note: "The machine lands <em>after</em> the whole if / else. The else block (lines 8–9) was <b>skipped, not run</b>. One fork, one message." },
+          { line: 10, vars: { reading: ["int", "72"] }, out: "Above threshold", note: "The program ends. Final answer: <b>Above threshold</b>, and only that." }
+        ],
+        modify: {
+          prompt: "The reading changes to 45. Everything else — the threshold, both messages — stays the same. What prints now?",
+          code: 'int reading = <mark>45</mark>;\nif (reading >= 60) {\n    cout << "Above threshold" << endl;\n} else {\n    cout << "Below threshold" << endl;\n}',
+          options: ["Below threshold", "Above threshold", "Both messages", "Nothing at all"],
+          correct: 0,
+          explain: "45 &gt;= 60 is <b>false</b>, so this time the machine takes the <b>else</b> branch and prints <b>Below threshold</b>. Same fork, other road."
+        }
+      },
+      {
+        concept: "Loops — for",
+        title: "Four trips through the loop",
+        goal: "A loop body runs once per pass. The counter, the test, and the running total are three separate things — track each one.",
+        stories: {
+          health:   "A recovery plan adds a <strong>growing daily bonus</strong>: on day 1 the patient earns 1 bonus point, on day 2 another 2, then 3, then 4. A tracker program adds each day's bonus into a running total across the four days and prints the total.",
+          psych:    "A habit-formation study awards a <strong>growing daily bonus</strong>: 1 point on day 1, 2 more on day 2, then 3, then 4. A program adds each day's bonus into a running total across the four days and prints the total.",
+          business: "A savings challenge adds a <strong>growing daily deposit</strong>: 1 unit on day 1, 2 more on day 2, then 3, then 4. A program adds each day's deposit into a running total across the four days and prints the total.",
+          arts:     "A practice plan adds <strong>growing daily minutes</strong> of new material: 1 segment on day 1, 2 more on day 2, then 3, then 4. A program adds each day's segments into a running total across the four days and prints the total."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int total = 0;",
+          "    for (int i = 1; i <= 4; i++) {",
+          "        total = total + i;",
+          "    }",
+          "    cout << total << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["10", "6", "4", "24"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 6, text: "6 is the total after <em>three</em> passes (1 + 2 + 3). The test is <b>i &lt;= 4</b>, so the loop takes a fourth pass with i = 4, adding 4 more. A loop that includes its boundary is the classic off-by-one trap — this one includes it." },
+          2: { step: 9, text: "4 is the number of <em>trips</em> through the loop, not the total. The counter <b>i</b> and the accumulator <b>total</b> are different boxes doing different jobs: i counts passes, total collects 1 + 2 + 3 + 4." },
+          3: { step: 4, text: "You multiplied (1 × 2 × 3 × 4). The body says <b>total = total + i</b> — addition, one pass at a time. Loops do whatever the body says; read the body, not the shape of the numbers." }
+        },
+        steps: [
+          { line: 4, vars: { total: ["int", "0"] }, out: "", note: "The accumulator <b>total</b> starts at <b>0</b>. Starting an accumulator at zero is deliberate: nothing has been added yet." },
+          { line: 5, vars: { total: ["int", "0"], i: ["int", "1"] }, out: "", note: "The loop sets up its counter: <b>i = 1</b>. Test: is 1 &lt;= 4? <b>True</b> — enter the body." },
+          { line: 6, vars: { total: ["int", "1"], i: ["int", "1"] }, out: "", note: "Pass 1: total = 0 + 1 = <b>1</b>. Then i++ makes i = 2, and the test runs again." },
+          { line: 6, vars: { total: ["int", "3"], i: ["int", "2"] }, out: "", note: "Pass 2: the test (2 &lt;= 4) passes, and total = 1 + 2 = <b>3</b>. Then i becomes 3." },
+          { line: 6, vars: { total: ["int", "6"], i: ["int", "3"] }, out: "", note: "Pass 3: total = 3 + 3 = <b>6</b>. Then i becomes 4. The test has not failed yet." },
+          { line: 6, vars: { total: ["int", "10"], i: ["int", "4"] }, out: "", note: "Pass 4: 4 &lt;= 4 is <b>true</b> — the boundary counts. total = 6 + 4 = <b>10</b>. Then i becomes 5." },
+          { line: 5, vars: { total: ["int", "10"], i: ["int", "5"] }, out: "", note: "Test again: is 5 &lt;= 4? <b>False.</b> The loop ends. <b>i</b> is left at 5; <b>total</b> keeps its 10." },
+          { line: 8, vars: { total: ["int", "10"], i: ["int", "5"] }, out: "10", note: "The program prints <b>10</b> — the sum 1 + 2 + 3 + 4, accumulated one pass at a time." },
+          { line: 9, vars: { total: ["int", "10"], i: ["int", "5"] }, out: "10", note: "The program ends. Final answer: <b>10</b>." }
+        ],
+        modify: {
+          prompt: "The loop boundary changes from 4 to 3. The body is untouched. What prints now?",
+          code: 'int total = 0;\nfor (int i = 1; i <= <mark>3</mark>; i++) {\n    total = total + i;\n}\ncout << total << endl;',
+          options: ["6", "10", "3", "4"],
+          correct: 0,
+          explain: "With i &lt;= 3 the loop takes three passes: 1 + 2 + 3 = <b>6</b>. The fourth pass — the one that added 4 — never happens."
+        }
+      },
+      {
+        concept: "Functions",
+        title: "A trip inside the function",
+        goal: "A function call pauses the caller, runs the function with its own box for the argument, and hands a value back with <b>return</b>.",
+        stories: {
+          health:   "A clinic calculator has a helper that <strong>doubles any measurement</strong> it is given. The main program asks the helper to double a reading of 7, adds 1 as a calibration adjustment, and prints the result.",
+          psych:    "A gamified survey has a helper that <strong>doubles any bonus score</strong> it is given. The main program asks the helper to double a bonus of 7, adds 1 extra point, and prints the result.",
+          business: "A loyalty program has a helper that <strong>doubles any points value</strong> it is given. The main program asks the helper to double 7 points, adds 1 goodwill point, and prints the result.",
+          arts:     "An audio tool has a helper that <strong>doubles any level value</strong> it is given. The main program asks the helper to double a level of 7, adds 1, and prints the result."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int doubleIt(int x) {",
+          "    return x * 2;",
+          "}",
+          "",
+          "int main() {",
+          "    int result = doubleIt(7) + 1;",
+          "    cout << result << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["15", "14", "16", "8"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 3, text: "14 is what the function hands back — but the main program is not finished. The call sits inside a larger expression: <b>doubleIt(7) + 1</b>. The returned 14 still has the + 1 waiting for it." },
+          2: { step: 1, text: "You applied the + 1 <em>before</em> the doubling: (7 + 1) × 2 = 16. But the code's order is fixed by the expression: the call <b>doubleIt(7)</b> is evaluated first, and only its result meets the + 1." },
+          3: { step: 1, text: "8 is 7 + 1 — the doubling never happened in your trace. The call is the heart of this line: <b>doubleIt(7)</b> runs the function, which returns 14, and then the + 1 applies." }
+        },
+        steps: [
+          { line: 8, vars: {}, out: "", note: "<b>main</b> starts and reaches the assignment. Before anything can be stored, the right side must be worked out — and it contains a function call." },
+          { line: 3, vars: { x: ["int", "7"] }, out: "", note: "Control jumps up into <b>doubleIt</b>. The argument 7 is copied into the function's own box, <b>x</b>. main is paused mid-statement." },
+          { line: 4, vars: { x: ["int", "7"] }, out: "", note: "The function computes x * 2 = 14 and <b>returns</b> it. The box <b>x</b> ceases to exist; only the returned value travels back." },
+          { line: 8, vars: { result: ["int", "15"] }, out: "", note: "Back in main, the call is replaced by its result: 14 + 1 = 15, and that is stored. <b>result becomes 15</b>." },
+          { line: 9, vars: { result: ["int", "15"] }, out: "15", note: "The program prints <b>15</b>." },
+          { line: 10, vars: { result: ["int", "15"] }, out: "15", note: "The program ends. Final answer: <b>15</b> — doubled first, then adjusted." }
+        ],
+        modify: {
+          prompt: "The call changes from doubleIt(7) to doubleIt(9). The function and the + 1 are unchanged. What prints now?",
+          code: 'int result = doubleIt(<mark>9</mark>) + 1;\ncout << result << endl;',
+          options: ["19", "18", "20", "10"],
+          correct: 0,
+          explain: "doubleIt(9) returns 18, then the + 1 applies: <b>19</b>. The function's rule never changed — only the value fed into it."
+        }
+      }
+    ];
+
+    /* ---------------- State (in-memory only, this session) ---------------- */
+    var state = {
+      skin: "health",
+      current: 0,
+      ex: EXERCISES.map(function () {
+        return { selected: -1, locked: false, correct: null, step: -1, traceDone: false,
+                 modSelected: -1, modDone: false, modCorrect: null };
+      })
+    };
+
+    var $ = function (id) { return document.getElementById(id); };
+    var live = $("live");
+    function announce(msg) { live.textContent = msg; }
+    function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+
+    /* ---------------- Rendering ---------------- */
+    function renderSkins() {
+      var box = $("skins"); box.innerHTML = "";
+      Object.keys(SKINS).forEach(function (key) {
+        var b = document.createElement("button");
+        b.className = "skin-btn"; b.type = "button";
+        b.setAttribute("aria-pressed", state.skin === key ? "true" : "false");
+        b.innerHTML = SKINS[key].icon + "<span>" + SKINS[key].name + "</span>";
+        b.addEventListener("click", function () {
+          state.skin = key; renderSkins(); renderStory();
+          announce("Field changed to " + SKINS[key].name + ". The code and numbers are unchanged.");
+        });
+        box.appendChild(b);
+      });
+    }
+
+    function exStatus(i) {
+      var s = state.ex[i];
+      if (!s.locked) return { t: "not started", cls: "" };
+      if (!s.modDone) return { t: s.correct ? "predicted ✓" : "predicted ✗", cls: s.correct ? "good" : "bad" };
+      return { t: "prediction " + (s.correct ? "✓" : "✗") + " · modify " + (s.modCorrect ? "✓" : "✗"),
+               cls: (s.correct && s.modCorrect) ? "good" : "bad" };
+    }
+
+    function renderExNav() {
+      var box = $("exnav"); box.innerHTML = "";
+      EXERCISES.forEach(function (ex, i) {
+        var st = exStatus(i);
+        var b = document.createElement("button");
+        b.className = "ex-btn"; b.type = "button";
+        b.setAttribute("aria-current", state.current === i ? "true" : "false");
+        b.innerHTML = '<span class="n">' + (i + 1) + '</span><span>' + ex.concept +
+                      '<br><span class="status ' + st.cls + '">' + st.t + "</span></span>";
+        b.addEventListener("click", function () { state.current = i; renderAll(); });
+        box.appendChild(b);
+      });
+    }
+
+    function renderScore() {
+      var attempted = 0, right = 0, modAtt = 0, modRight = 0;
+      state.ex.forEach(function (s) {
+        if (s.locked) { attempted++; if (s.correct) right++; }
+        if (s.modDone) { modAtt++; if (s.modCorrect) modRight++; }
+      });
+      $("scorebar").innerHTML =
+        '<span class="metric"><strong>' + right + " / " + attempted + '</strong> <span>first predictions correct</span></span>' +
+        '<span class="metric"><strong>' + modRight + " / " + modAtt + '</strong> <span>modify predictions correct</span></span>' +
+        '<span class="metric"><strong>' + attempted + " / " + EXERCISES.length + '</strong> <span>exercises attempted</span></span>';
+      var list = $("record-list"); list.innerHTML = "";
+      EXERCISES.forEach(function (ex, i) {
+        var s = state.ex[i], li = document.createElement("li"), stat, cls = "";
+        if (!s.locked) stat = "— not attempted";
+        else if (!s.modDone) { stat = s.correct ? "prediction ✓" : "prediction ✗"; cls = s.correct ? "good" : "bad"; }
+        else { stat = "prediction " + (s.correct ? "✓" : "✗") + " · modify " + (s.modCorrect ? "✓" : "✗");
+               cls = (s.correct && s.modCorrect) ? "good" : "bad"; }
+        li.innerHTML = '<span class="rconcept">' + ex.concept + '</span><span class="rstat ' + cls + '">' + stat + "</span>";
+        list.appendChild(li);
+      });
+      var allDone = state.ex.every(function (s) { return s.modDone; });
+      $("finish").classList.toggle("show", allDone);
+      if (allDone) {
+        var totalRight = state.ex.filter(function (s) { return s.correct; }).length;
+        var totalMod = state.ex.filter(function (s) { return s.modCorrect; }).length;
+        $("finish-text").textContent =
+          "First predictions: " + totalRight + " of " + EXERCISES.length + " correct. Modify predictions: " +
+          totalMod + " of " + EXERCISES.length + " correct. The modify column is the one that matters: it shows whether " +
+          "the model you repaired during the trace survived a change to the problem — which is the difference between " +
+          "memorising an answer and understanding a program.";
+      }
+    }
+
+    function renderStory() {
+      var ex = EXERCISES[state.current];
+      $("ex-concept").textContent = "Exercise " + (state.current + 1) + " · " + ex.concept;
+      $("ex-title").textContent = ex.title;
+      $("ex-story").innerHTML = ex.stories[state.skin];
+      $("ex-goal").innerHTML = "<b>The idea:</b> " + ex.goal;
+    }
+
+    function renderCode(activeLine, uptoStep) {
+      var ex = EXERCISES[state.current];
+      var pre = $("code"); pre.innerHTML = "";
+      ex.code.forEach(function (line, i) {
+        var div = document.createElement("div");
+        div.className = "cline" + (i === activeLine ? " active" : "");
+        div.innerHTML = '<span class="ln">' + (i + 1) + "</span><span>" + (esc(line) || " ") + "</span>";
+        pre.appendChild(div);
+      });
+    }
+
+    function renderPrimm() {
+      var s = state.ex[state.current];
+      var order = ["predict", "trace", "investigate", "modify"];
+      var cur = !s.locked ? "predict" : !s.traceDone ? "trace" : !s.modDone ? "investigate" : "modify";
+      if (s.traceDone && !s.modDone) cur = "modify-ready";
+      document.querySelectorAll("#primm .phase").forEach(function (el) {
+        var p = el.getAttribute("data-phase");
+        el.classList.remove("active", "done");
+        if (s.modDone) { el.classList.add("done"); return; }
+        if (p === cur || (cur === "modify-ready" && p === "investigate")) el.classList.add("active");
+        else if (order.indexOf(p) < order.indexOf(cur === "modify-ready" ? "investigate" : cur)) el.classList.add("done");
+      });
+    }
+
+    function renderPredict() {
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      $("predict-q").textContent = ex.question;
+      var box = $("predict-options"); box.innerHTML = "";
+      ex.options.forEach(function (opt, i) {
+        var b = document.createElement("button");
+        b.className = "opt-btn"; b.type = "button";
+        b.setAttribute("aria-pressed", s.selected === i ? "true" : "false");
+        b.innerHTML = '<span class="key">' + "ABCD"[i] + "</span><span>" + esc(opt) + "</span>";
+        if (s.locked) {
+          b.disabled = true;
+          if (i === ex.correct) b.classList.add("reveal-correct");
+          if (i === s.selected && !s.correct) b.classList.add("reveal-wrong");
+        } else {
+          b.addEventListener("click", function () {
+            s.selected = i; renderPredict();
+            $("lock-btn").disabled = false;
+          });
+        }
+        box.appendChild(b);
+      });
+      $("lock-btn").disabled = s.locked || s.selected < 0;
+      $("lock-btn").style.display = s.locked ? "none" : "";
+      $("lock-note").style.display = s.locked ? "none" : "";
+      var banner = $("locked-banner");
+      if (s.locked) {
+        banner.classList.add("show");
+        banner.textContent = "Prediction locked in: “" + ex.options[s.selected] + "”. The tracer is open — step through and hold the machine to your answer.";
+      } else banner.classList.remove("show");
+    }
+
+    function renderTrace() {
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      $("trace-locked").style.display = s.locked ? "none" : "";
+      $("trace-ui").hidden = !s.locked;
+      if (!s.locked) { renderCode(-1); return; }
+      var step = s.step >= 0 ? ex.steps[s.step] : null;
+      renderCode(step ? step.line : -1);
+      $("stepmeta").textContent = s.step < 0
+        ? "Ready. Press Step to run the first statement."
+        : "Step " + (s.step + 1) + " of " + ex.steps.length + " · line " + (step.line + 1);
+      $("stepbar-fill").style.width = (s.step < 0 ? 0 : ((s.step + 1) / ex.steps.length) * 100) + "%";
+      $("step-back").disabled = s.step < 0;
+      $("step-next").disabled = s.step >= ex.steps.length - 1;
+      $("run-all").disabled = s.step >= ex.steps.length - 1;
+
+      var mem = $("memory"); mem.innerHTML = "";
+      if (!step || Object.keys(step.vars).length === 0) {
+        mem.innerHTML = '<div class="mem-empty">' + (s.step < 0
+          ? "Memory is empty — the program has not started. No boxes exist yet."
+          : "No variable boxes exist at this moment. Watch this space: boxes appear when declarations run.") + "</div>";
+      } else {
+        var prev = s.step > 0 ? ex.steps[s.step - 1].vars : {};
+        Object.keys(step.vars).forEach(function (name) {
+          var d = document.createElement("div");
+          var changed = !prev[name] || prev[name][1] !== step.vars[name][1];
+          d.className = "membox" + (changed && s.step >= 0 ? " changed" : "");
+          d.innerHTML = '<div class="vname"><span>' + name + '</span><span class="vtype">' + step.vars[name][0] +
+                        '</span></div><div class="vval">' + step.vars[name][1] + "</div>";
+          mem.appendChild(d);
+        });
+      }
+      $("cout").innerHTML = step && step.out ? esc(step.out) : '<span class="cursor"></span>';
+      $("stepnote").innerHTML = step ? step.note :
+        "The highlighted line is always the statement the machine is <b>about to finish</b>. Step slowly on the lines that change a box — those are where mental models break.";
+    }
+
+    function renderInvestigate() {
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      var card = $("investigate-card");
+      if (!s.traceDone) { card.hidden = true; return; }
+      card.hidden = false;
+      var v = $("verdict");
+      var actual = ex.options[ex.correct], mine = ex.options[s.selected];
+      if (s.correct) {
+        v.innerHTML = '<div class="verdict good"><h3>Your model matched the machine.</h3>' +
+          '<div class="vs"><div><span>You predicted</span>' + esc(mine) + '</div><div><span>The program printed</span>' + esc(actual) + "</div></div>" +
+          "<p>A correct prediction is evidence your mental model of this concept is sound — for these values. Stage 4 changes a value to check the model, not the memory.</p></div>";
+      } else {
+        var d = ex.diagnoses[s.selected];
+        v.innerHTML = '<div class="verdict bad"><h3>Your model and the machine parted company.</h3>' +
+          '<div class="vs"><div><span>You predicted</span>' + esc(mine) + '</div><div><span>The program printed</span>' + esc(actual) + "</div></div>" +
+          "<p>" + d.text + '</p><button class="btn small ghost jump" id="jump-btn" type="button">Jump to the parting step</button></div>';
+        $("jump-btn").addEventListener("click", function () {
+          state.ex[state.current].step = d.step;
+          state.ex[state.current].traceDone = false;
+          renderAll();
+          document.querySelector("#trace-h").scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      }
+    }
+
+    function renderModify() {
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      var card = $("modify-card");
+      if (!s.traceDone) { card.hidden = true; return; }
+      card.hidden = false;
+      $("modify-prompt").textContent = ex.modify.prompt;
+      $("modify-code").innerHTML = ex.modify.code.split("\n").map(function (l) {
+        return l.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/&lt;mark&gt;/g, "<mark>").replace(/&lt;\/mark&gt;/g, "</mark>");
+      }).join("\n");
+      var box = $("modify-options"); box.innerHTML = "";
+      ex.modify.options.forEach(function (opt, i) {
+        var b = document.createElement("button");
+        b.className = "opt-btn"; b.type = "button";
+        b.setAttribute("aria-pressed", s.modSelected === i ? "true" : "false");
+        b.innerHTML = '<span class="key">' + "ABCD"[i] + "</span><span>" + esc(opt) + "</span>";
+        if (s.modDone) {
+          b.disabled = true;
+          if (i === ex.modify.correct) b.classList.add("reveal-correct");
+          if (i === s.modSelected && !s.modCorrect) b.classList.add("reveal-wrong");
+        } else {
+          b.addEventListener("click", function () {
+            s.modSelected = i; renderModify(); $("modify-btn").disabled = false;
+          });
+        }
+        box.appendChild(b);
+      });
+      $("modify-btn").disabled = s.modDone || s.modSelected < 0;
+      $("modify-btn").style.display = s.modDone ? "none" : "";
+      var fb = $("modify-feedback");
+      if (s.modDone) {
+        fb.className = "feedback show " + (s.modCorrect ? "good" : "bad");
+        fb.innerHTML = (s.modCorrect ? "<b>Correct.</b> " : "<b>Not this time.</b> ") + ex.modify.explain;
+      } else { fb.className = "feedback"; fb.innerHTML = ""; }
+      var next = $("next-btn");
+      var isLast = state.current === EXERCISES.length - 1;
+      next.hidden = !s.modDone || isLast;
+      next.textContent = "Next exercise: " + (EXERCISES[state.current + 1] ? EXERCISES[state.current + 1].concept : "");
+    }
+
+    function renderAll() {
+      renderExNav(); renderScore(); renderStory(); renderPredict(); renderTrace();
+      renderInvestigate(); renderModify(); renderPrimm();
+    }
+
+    /* ---------------- Wiring ---------------- */
+    $("lock-btn").addEventListener("click", function () {
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      if (s.selected < 0) return;
+      s.locked = true;
+      s.correct = s.selected === ex.correct;
+      announce("Prediction locked: " + ex.options[s.selected] + ". The tracer is now open.");
+      renderAll();
+    });
+
+    $("step-next").addEventListener("click", function () {
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      if (s.step < ex.steps.length - 1) {
+        s.step++;
+        if (s.step === ex.steps.length - 1) { s.traceDone = true; announce("Trace complete. Compare your prediction in Stage 3."); }
+        renderAll();
+      }
+    });
+    $("step-back").addEventListener("click", function () {
+      var s = state.ex[state.current];
+      if (s.step > -1) { s.step--; s.traceDone = false; renderAll(); }
+    });
+    $("run-all").addEventListener("click", function () {
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      s.step = ex.steps.length - 1; s.traceDone = true;
+      announce("Trace complete. Compare your prediction in Stage 3.");
+      renderAll();
+    });
+    $("trace-reset").addEventListener("click", function () {
+      var s = state.ex[state.current];
+      s.step = -1; s.traceDone = false; renderAll();
+    });
+
+    $("modify-btn").addEventListener("click", function () {
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      if (s.modSelected < 0) return;
+      s.modDone = true;
+      s.modCorrect = s.modSelected === ex.modify.correct;
+      announce(s.modCorrect ? "Modify prediction correct." : "Modify prediction incorrect — read the explanation.");
+      renderAll();
+    });
+    $("next-btn").addEventListener("click", function () {
+      if (state.current < EXERCISES.length - 1) {
+        state.current++; renderAll();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    });
+    $("restart-all").addEventListener("click", function () {
+      state.ex = EXERCISES.map(function () {
+        return { selected: -1, locked: false, correct: null, step: -1, traceDone: false,
+                 modSelected: -1, modDone: false, modCorrect: null };
+      });
+      state.current = 0; renderAll();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    $("review-btn").addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    renderSkins();
+    renderAll();
+    </script>
+  </body>
+</html>
