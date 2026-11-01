@@ -15,11 +15,12 @@ Every exercise exists in four story skins (Health & Biology, Psychology & Social
 
 ## Current state: prototype
 
-`index.html` is a self-contained prototype with four modes. Open it in any browser; there is nothing to install and nothing is sent anywhere.
+`index.html` is a self-contained prototype with five modes. Open it in any browser; there is nothing to install and nothing is sent anywhere.
 
-- **Prediction Tracer:** five exercises (assignment, integer division, if/else, for loops, functions), each running the full predict, trace, verdict, and modify loop, with a per-concept prediction record for the session.
-- **Debugging Gym:** three rounds of find-the-bugs exercises built from real beginner programs, faulty and corrected versions side by side at the end of each round.
-- **Error Translator:** a searchable catalogue of twenty beginner compiler errors, each with the raw compiler message, a plain-English translation, the cause, and a before-and-after fix.
+- **Bolt's World:** a pre-syntax robot environment, and the recommended starting point. Students program an original workshop robot in real C++ shape (commands, loops, conditionals, their own functions) across eight graded worlds, learning the logic of programming before formal syntax.
+- **Prediction Tracer:** nine exercises (assignment, integer division, if/else, for loops, functions, while loops, nested loops, arrays, strings), each running the full predict, trace, verdict, and modify loop, with a per-concept prediction record for the session.
+- **Debugging Gym:** five rounds of find-the-bugs exercises built from real beginner programs, faulty and corrected versions side by side at the end of each round.
+- **Error Translator:** a searchable catalogue of twenty-six beginner compiler errors, each with the raw compiler message, a plain-English translation, the cause, and a before-and-after fix.
 - **Challenges:** tasks, guided projects, and scored exams at Beginner, Intermediate, and Expert levels, drawn from real course assignments.
 
 ## Roadmap
