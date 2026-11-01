@@ -1,6 +1,6 @@
 # TraceFirst
 
-**A prediction-first learning platform for introductory C++** — built by [Ebuka Philip Oguchi](https://ebukaoguchi.github.io/), Assistant Professor of Computer and Information Sciences, Spelman College, for SCIS 121, a first-year course serving CS and non-CS majors together.
+**A prediction-first learning platform for introductory C++** — built by [Ebuka Philip Oguchi](https://ebukaoguchi.github.io/) for a first-year introductory course serving CS and non-CS majors together. A personal project in active development, being built to a standard any institution can adopt.
 
 ## The idea
 
