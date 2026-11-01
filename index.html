@@ -726,6 +726,111 @@
         .console .cursor { animation: none; }
         .stepbar i { transition: none; }
       }
+
+      /* ---------- Declutter pass: tighter spacing, grouping & collapse ---------- */
+      .wrap{padding:18px 16px 40px}
+      .intro .lede{margin-top:10px}
+      .route-panel{margin-top:18px;padding:14px 16px}
+      .route-steps{gap:6px;margin-top:12px}
+      .route-step{padding:8px 11px}
+      .route-free{margin-top:10px;padding-top:10px}
+      .primer-panel,.meet-link{margin-top:12px}
+      .toolbar{margin-top:14px;padding:12px;gap:10px;border-radius:12px}
+      .toolbar .tlabel{margin-bottom:6px}
+      .card{padding:14px 16px;border-radius:12px}
+      .card + .card{margin-top:12px}
+      .grid{gap:12px;margin-top:12px}
+      .scorebar{padding-top:10px;gap:6px 16px;font-size:.88rem}
+      .codebox{margin-top:10px}
+      .codebox pre{padding:9px 0}
+      .options{gap:7px;margin-top:9px}
+      .opt-btn{padding:9px 11px;min-height:44px}
+      .lockrow{margin-top:10px}
+      .memory{gap:8px;margin-top:10px;min-height:64px}
+      .membox{padding:8px 11px;min-width:96px}
+      .membox .vval{font-size:1.3rem}
+      .console{margin-top:10px;padding:10px 12px;min-height:44px}
+      .stepnote{margin-top:10px;padding:10px 12px;min-height:48px}
+      .trace-controls{gap:6px}
+      .stepmeta{margin-top:7px}
+      .record-list{gap:6px;margin-top:9px}
+      .record-list li{padding-bottom:6px}
+      .finish{margin-top:12px;padding:16px}
+      .foot{margin-top:18px}
+      .gym-intro,.trans-intro,.ch-intro,.make-intro,.bridge-intro,.bolt-intro{margin-top:14px}
+      .bolt-board-wrap{margin-top:10px;padding:6px}
+      .bolt-editor{min-height:180px;margin-top:8px}
+      .bolt-controls{margin-top:8px;gap:6px}
+      .bolt-statusbar{margin-top:8px}
+      .bolt-cmds{gap:10px}
+      .make-editor{min-height:240px}
+      /* Sticky compact mode tab bar */
+      .mode-toggle{position:sticky;top:8px;z-index:60;margin-top:16px;width:100%;box-sizing:border-box;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px;border-radius:11px}
+      .mode-toggle::-webkit-scrollbar{display:none}
+      .mode-btn{flex:0 0 auto;white-space:nowrap;padding:7px 11px;font-size:.88rem;border-radius:7px}
+      .mode-btn svg{width:15px;height:15px}
+      /* Grouped exercise nav (Tracer) */
+      .ex-groups{display:grid;gap:6px}
+      .ex-group{border:1px solid var(--line);border-radius:10px;background:var(--panel-2);overflow:hidden}
+      .ex-group>summary{cursor:pointer;padding:8px 11px;font-weight:700;font-size:.9rem;display:flex;justify-content:space-between;align-items:center;gap:10px;list-style:none}
+      .ex-group>summary::-webkit-details-marker{display:none}
+      .ex-group>summary .gcount{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;color:var(--ink-soft);white-space:nowrap}
+      .ex-group>summary:focus-visible,.ch-collapse>summary:focus-visible,.record-summary:focus-visible,.bolt-chal-details>summary:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+      .ex-group-list{display:grid;gap:4px;padding:0 8px 8px}
+      .ex-row{display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:6px 8px;border-radius:8px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);font-size:.88rem;min-height:36px}
+      .ex-row:hover{border-color:var(--amber)}
+      .ex-row[aria-current="true"]{border-color:var(--accent);background:var(--accent-soft)}
+      .ex-row .n{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.78rem;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--panel);border:1px solid var(--line);flex:none}
+      .ex-row .ex-row-title{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+      .ex-row .status{font-size:.76rem;color:var(--ink-soft);flex:none}
+      .ex-row .status.good{color:var(--accent-strong);font-weight:700}
+      .ex-row .status.bad{color:var(--rust);font-weight:700}
+      /* Compact chip navs (Bolt, Gym, Bridge, Make, Bolt challenges) */
+      .chip-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+      .chip-btn{display:inline-flex;align-items:center;gap:5px;min-width:46px;min-height:38px;justify-content:center;border:1.5px solid var(--line);background:var(--panel-2);color:var(--ink);border-radius:999px;padding:6px 11px;font-weight:700;font-size:.88rem}
+      .chip-btn:hover{border-color:var(--amber)}
+      .chip-btn[aria-current="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-strong)}
+      .chip-btn .chip-check{color:var(--accent-strong);font-size:.85rem;line-height:1}
+      .chip-btn .chip-star{color:var(--amber);line-height:1}
+      .chip-btn .chip-label{font-family:"IBM Plex Mono",monospace;font-size:.82rem;letter-spacing:.03em}
+      .chip-hint{font-size:.82rem;color:var(--ink-soft);width:100%}
+      /* Prediction record collapse */
+      .record-summary{cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;list-style:none;font-size:.95rem}
+      .record-summary::-webkit-details-marker{display:none}
+      .record-toggle-hint{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent-strong);white-space:nowrap}
+      /* Bolt challenges collapse */
+      .bolt-chal-details{margin-top:12px}
+      .bolt-chal-details>summary{cursor:pointer;font-family:"Source Serif 4",Georgia,serif;font-size:1.15rem;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px;align-items:center}
+      .bolt-chal-details>summary::-webkit-details-marker{display:none}
+      .bolt-chal-details>summary .gcount{font-family:"IBM Plex Sans",sans-serif;font-size:.8rem;font-weight:600;color:var(--ink-soft)}
+      /* Translator compact rows */
+      .trans-list{gap:6px;margin-top:10px}
+      .trans-item{border-radius:10px}
+      .trans-head{padding:10px 12px;gap:10px;align-items:center}
+      .trans-head .tnum{width:24px;height:24px;font-size:.72rem}
+      .trans-head .ttitle{font-size:.95rem}
+      .trans-head .tsummary{display:block;font-size:.82rem;color:var(--ink-soft);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:760px;font-weight:400}
+      .trans-body{padding:12px}
+      .trans-searchbar{margin-top:12px;padding:12px}
+      /* Challenges collapsible sections */
+      .ch-collapse{border:1px solid var(--line);background:var(--panel);border-radius:12px;margin-top:14px;box-shadow:var(--shadow);overflow:hidden}
+      .ch-collapse>summary{cursor:pointer;padding:12px 16px;font-family:"Source Serif 4",Georgia,serif;font-size:1.3rem;font-weight:700;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+      .ch-collapse>summary::-webkit-details-marker{display:none}
+      .ch-collapse>summary .gcount{font-family:"IBM Plex Sans",sans-serif;font-size:.82rem;font-weight:600;color:var(--ink-soft)}
+      .ch-collapse-inner{padding:0 14px 14px}
+      .ch-collapse-inner .card{box-shadow:none}
+      .ch-collapse .ch-section-sub{margin-top:0}
+      .ex-group:not([open]) .ex-group-list{display:none}
+      .ch-collapse:not([open]) .ch-collapse-inner{display:none}
+      #record-details:not([open]) .record-list{display:none}
+      #record-details:not([open]) > p{display:none}
+      .bolt-chal-details:not([open]) > div{display:none}
+      @media(max-width:700px){
+        .trans-head .tsummary{white-space:normal}
+        .ex-row .ex-row-title{white-space:normal}
+        .mode-toggle{top:4px}
+        .card{padding:13px 14px}
+      }
     </style>
   </head>
   <body>
@@ -846,14 +951,14 @@
           <div class="scorebar" id="bolt-scorebar" aria-label="Your Bolt's World progress"></div>
         </section>
 
-        <section class="toolbar" aria-labelledby="bolt-chal-h">
-          <div>
-            <h3 class="bolt-chal-head" id="bolt-chal-h">Bolt Challenges (optional)</h3>
+        <details class="toolbar bolt-chal-details" aria-labelledby="bolt-chal-h">
+          <summary id="bolt-chal-h">Bolt Challenges (optional) <span class="gcount">4 extra worlds &#9662;</span></summary>
+          <div style="margin-top:10px;">
             <p class="bolt-chal-framing">For students who <strong>finish the eight worlds and want more</strong>. These challenges are entirely opt-in: they gate nothing and unlock nothing, and they use the same Workshop, the same editor, and the same Run, Step, and Reset controls below. Pick one to load it into the board.</p>
             <div class="exnav" id="boltchalnav" style="margin-top:12px;" role="group" aria-label="Choose an optional Bolt challenge"></div>
           </div>
-          <div class="scorebar" id="bolt-chal-scorebar" aria-label="Your Bolt Challenges progress"></div>
-        </section>
+          <div class="scorebar" id="bolt-chal-scorebar" aria-label="Your Bolt Challenges progress" style="margin-top:10px;"></div>
+        </details>
 
         <div class="grid">
           <div>
@@ -1064,9 +1169,11 @@ for (int i = 0; i < 3; i++) {
           </section>
 
           <section class="card" aria-labelledby="record-h">
-            <h3 id="record-h">Your prediction record</h3>
-            <p style="font-size:.9rem; color:var(--ink-soft); margin-top:6px;">Accuracy by concept, saved in this browser. This is the record your instructor sees in aggregate: not who failed, but <em>where the class's mental models first break</em>.</p>
-            <ul class="record-list" id="record-list"></ul>
+            <details id="record-details">
+              <summary class="record-summary"><span><span id="record-h" style="font-weight:700;">Your prediction record</span> <span style="color:var(--ink-soft);">—</span> <span id="record-summary-text">0 attempted</span></span><span class="record-toggle-hint" aria-hidden="true">Details &#9662;</span></summary>
+              <p style="font-size:.9rem; color:var(--ink-soft); margin-top:8px;">Accuracy by concept, saved in this browser. This is the record your instructor sees in aggregate: not who failed, but <em>where the class's mental models first break</em>.</p>
+              <ul class="record-list" id="record-list"></ul>
+            </details>
           </section>
         </div>
       </div>
@@ -1244,21 +1351,33 @@ for (int i = 0; i < 3; i++) {
         <section class="toolbar" style="margin-top:16px;" aria-label="Your Challenges record">
           <div class="scorebar" id="ch-scorebar" style="border-top:none;padding-top:0;"></div>
         </section>
-        <h2 class="ch-section-h">Tasks</h2>
-        <p class="ch-section-sub">Six short exercises. Predict an output, complete a missing line, or spot a bug and its fix. Every answer is checked the moment you commit to it.</p>
-        <div id="ch-tasks"></div>
-        <h2 class="ch-section-h">Projects</h2>
-        <p class="ch-section-sub">Build each project in your own editor, ticking milestones as you go. At the test bench, predict the verdict before you reveal it — then mark your own program pass or fail.</p>
-        <div id="ch-projects"></div>
-        <h2 class="ch-section-h">Exam</h2>
-        <p class="ch-section-sub">Six questions, answered in order. Each answer locks and explains itself as you go; your score appears at the end.</p>
-        <section class="card" style="margin-top:14px;" aria-labelledby="ch-exam-title">
+        <details class="ch-collapse" open id="ch-tasks-wrap">
+          <summary>Tasks <span class="gcount">6 short exercises &#9662;</span></summary>
+          <div class="ch-collapse-inner">
+            <p class="ch-section-sub">Six short exercises. Predict an output, complete a missing line, or spot a bug and its fix. Every answer is checked the moment you commit to it.</p>
+            <div id="ch-tasks"></div>
+          </div>
+        </details>
+        <details class="ch-collapse" id="ch-projects-wrap">
+          <summary>Projects <span class="gcount">Guided builds &#9662;</span></summary>
+          <div class="ch-collapse-inner">
+            <p class="ch-section-sub">Build each project in your own editor, ticking milestones as you go. At the test bench, predict the verdict before you reveal it — then mark your own program pass or fail.</p>
+            <div id="ch-projects"></div>
+          </div>
+        </details>
+        <details class="ch-collapse" id="ch-exam-wrap">
+          <summary>Exam <span class="gcount">6 questions &#9662;</span></summary>
+          <div class="ch-collapse-inner">
+            <p class="ch-section-sub">Six questions, answered in order. Each answer locks and explains itself as you go; your score appears at the end.</p>
+            <section class="card" style="margin-top:10px;" aria-labelledby="ch-exam-title">
           <span class="concept-tag" id="ch-exam-tag">Exam</span>
           <h2 id="ch-exam-title" style="font-size:1.25rem;">Level exam</h2>
           <div id="ch-exam" style="margin-top:14px;"></div>
           <div class="exam-score" id="ch-exam-score" role="status"></div>
           <div class="lockrow"><button class="btn ghost" type="button" id="ch-exam-restart">Retake this exam</button></div>
-        </section>
+            </section>
+          </div>
+        </details>
         <p class="foot"><strong>One honest line:</strong> projects are built in your own editor; TraceFirst supplies the brief, the milestones, and the tests to pass. Your ticks and scores here are saved in this browser, on this device.</p>
       </div><!-- /challenges-mode -->
 
@@ -2610,17 +2729,43 @@ for (int i = 0; i < 3; i++) {
                cls: (s.correct && s.modCorrect) ? "good" : "bad" };
     }
 
+    var EX_GROUPS = [
+      { name: "Foundations", from: 0, to: 2 },
+      { name: "Loops & Functions", from: 3, to: 6 },
+      { name: "Arrays & Strings", from: 7, to: 8 },
+      { name: "Pointers", from: 9, to: 12 },
+      { name: "Recursion", from: 13, to: 15 },
+      { name: "Searching & Sorting", from: 16, to: 17 },
+      { name: "Decisions & References", from: 18, to: 19 },
+      { name: "Structured Data & Collections", from: 20, to: 22 }
+    ];
     function renderExNav() {
-      var box = $("exnav"); box.innerHTML = "";
-      EXERCISES.forEach(function (ex, i) {
-        var st = exStatus(i);
-        var b = document.createElement("button");
-        b.className = "ex-btn"; b.type = "button";
-        b.setAttribute("aria-current", state.current === i ? "true" : "false");
-        b.innerHTML = '<span class="n">' + (i + 1) + '</span><span>' + ex.concept +
-                      '<br><span class="status ' + st.cls + '">' + st.t + "</span></span>";
-        b.addEventListener("click", function () { state.current = i; renderAll(); });
-        box.appendChild(b);
+      var box = $("exnav"); box.innerHTML = ""; box.className = "ex-groups";
+      EX_GROUPS.forEach(function (g) {
+        var det = document.createElement("details");
+        det.className = "ex-group";
+        if (state.current >= g.from && state.current <= g.to) det.open = true;
+        var doneN = 0;
+        for (var k = g.from; k <= g.to; k++) { if (state.ex[k] && state.ex[k].locked) doneN++; }
+        var sum = document.createElement("summary");
+        sum.innerHTML = '<span>' + g.name + '</span><span class="gcount">' + doneN + " / " + (g.to - g.from + 1) + " attempted &#9662;</span>";
+        det.appendChild(sum);
+        var list = document.createElement("div"); list.className = "ex-group-list";
+        for (var i = g.from; i <= g.to; i++) {
+          (function (idx) {
+            var ex = EXERCISES[idx], st = exStatus(idx);
+            var shortStatus = !state.ex[idx].locked ? "Not started" : st.t;
+            var b = document.createElement("button");
+            b.className = "ex-btn ex-row"; b.type = "button";
+            b.setAttribute("aria-current", state.current === idx ? "true" : "false");
+            b.setAttribute("aria-label", "Exercise " + (idx + 1) + ": " + ex.concept + " — " + ex.title + " (" + shortStatus + ")");
+            b.innerHTML = '<span class="n">' + (idx + 1) + '</span><span class="ex-row-title">' + esc(ex.concept) + '</span><span class="status ' + st.cls + '">' + esc(shortStatus) + "</span>";
+            b.addEventListener("click", function () { state.current = idx; renderAll(); });
+            list.appendChild(b);
+          })(i);
+        }
+        det.appendChild(list);
+        box.appendChild(det);
       });
     }
 
@@ -2634,6 +2779,8 @@ for (int i = 0; i < 3; i++) {
         '<span class="metric"><strong>' + right + " / " + attempted + '</strong> <span>first predictions correct</span></span>' +
         '<span class="metric"><strong>' + modRight + " / " + modAtt + '</strong> <span>modify predictions correct</span></span>' +
         '<span class="metric"><strong>' + attempted + " / " + EXERCISES.length + '</strong> <span>exercises attempted</span></span>';
+      var recSum = document.getElementById("record-summary-text");
+      if (recSum) recSum.textContent = attempted + " attempted \u00b7 " + (attempted ? Math.round((right / attempted) * 100) + "% first-prediction accuracy" : "no predictions yet");
       var list = $("record-list"); list.innerHTML = "";
       EXERCISES.forEach(function (ex, i) {
         var s = state.ex[i], li = document.createElement("li"), stat, cls = "";
@@ -3648,24 +3795,24 @@ for (int i = 0; i < 3; i++) {
     }
 
     function renderGymNav() {
-      var box = $("gymnav"); box.innerHTML = "";
+      var box = $("gymnav"); box.innerHTML = ""; box.className = "chip-row";
       GYM_ROUNDS.forEach(function (r, i) {
         var s = gym.rounds[i], c = gymCounts(r);
         var foundN = Object.keys(s.found).length;
-        var st = s.done ? { t: "complete ✓ (verified)", cls: "good" }
-               : foundN === c.total ? { t: "spotted — process in progress", cls: "" }
-               : foundN > 0 ? { t: foundN + " of " + c.total + " bugs found", cls: "" }
-               : { t: "not started", cls: "" };
+        var stText = s.done ? "complete (verified)" : foundN === c.total ? "spotted \u2014 process in progress" : foundN > 0 ? foundN + " of " + c.total + " bugs found" : "not started";
         var b = document.createElement("button");
-        b.className = "ex-btn"; b.type = "button";
+        b.className = "chip-btn"; b.type = "button";
         b.setAttribute("aria-current", gym.current === i ? "true" : "false");
-        b.innerHTML = '<span class="n">' + (i + 1) + '</span><span>' + r.title +
-                      '<br><span class="status ' + st.cls + '">' + st.t + "</span></span>";
+        b.setAttribute("aria-label", "Round " + (i + 1) + ": " + r.title + " (" + stText + ")");
+        b.title = r.title + " \u2014 " + stText;
+        b.innerHTML = '<span class="chip-label">R' + (i + 1) + '</span>' + (s.done ? '<span class="chip-check" aria-hidden="true">\u2713</span>' : foundN > 0 ? '<span aria-hidden="true" style="font-size:.75rem;color:var(--ink-soft);">' + foundN + "/" + c.total + "</span>" : "");
         b.addEventListener("click", function () { gym.current = i; renderGym(); });
         box.appendChild(b);
       });
+      var hint = document.createElement("span"); hint.className = "chip-hint";
+      hint.textContent = "Rounds 1\u20135 \u00b7 " + GYM_ROUNDS[gym.current].title;
+      box.appendChild(hint);
     }
-
     function renderGymScore() {
       var found = 0, total = 0, clsOk = 0, clsAtt = 0, falseA = 0, verified = 0;
       var cur = gym.rounds[gym.current], curR = GYM_ROUNDS[gym.current];
@@ -4015,9 +4162,9 @@ for (int i = 0; i < 3; i++) {
         var head = document.createElement("button");
         head.type = "button"; head.className = "trans-head";
         head.setAttribute("aria-expanded", transOpen[e.id] ? "true" : "false");
-        head.innerHTML = '<span class="tnum">' + e.id + '</span><span><span class="ttitle">' + e.title + '</span><div class="traw-short">' + esc(e.raw.split("\n")[0]) + '</div></span><span class="tchev" aria-hidden="true">' + (transOpen[e.id] ? "−" : "+") + "</span>";
+        head.innerHTML = '<span class="tnum">' + e.id + '</span><span style="flex:1 1 auto;min-width:0;"><span class="ttitle">' + e.title + '</span><span class="tsummary">' + esc(e.meaning.split(". ")[0] + ".") + '</span></span><span class="tchev" aria-hidden="true">' + (transOpen[e.id] ? "−" : "+") + "</span>";
         head.addEventListener("click", function () {
-          transOpen[e.id] = !transOpen[e.id]; renderTrans($("trans-search").value);
+          var willOpen = !transOpen[e.id]; transOpen = {}; if (willOpen) transOpen[e.id] = true; renderTrans($("trans-search").value);
           if (transOpen[e.id]) announce("Opened: " + e.title);
         });
         item.appendChild(head);
@@ -4582,16 +4729,20 @@ for (int i = 0; i < 3; i++) {
       boltRobotEl.firstChild.style.transform = "rotate(" + BOLT_DIRS[st.dir].rot + "deg)";
     }
     function renderBoltNav() {
-      var box = $("boltnav"); box.innerHTML = "";
+      var box = $("boltnav"); box.innerHTML = ""; box.className = "chip-row";
       BOLT_WORLDS.forEach(function (w, i) {
         var b = document.createElement("button");
-        b.className = "ex-btn"; b.type = "button";
+        b.className = "chip-btn"; b.type = "button";
         b.setAttribute("aria-current", (!boltIsChallenge() && bolt.current === i) ? "true" : "false");
-        b.innerHTML = '<span class="n">' + (i + 1) + '</span><span>' + w.name +
-          '<br><span class="status ' + (bolt.done[i] ? "good" : "") + '">' + (bolt.done[i] ? "complete ✓" : "not finished") + "</span></span>";
+        b.setAttribute("aria-label", "World " + (i + 1) + ": " + w.name + (bolt.done[i] ? " (complete)" : " (not finished)"));
+        b.title = w.name;
+        b.innerHTML = '<span class="chip-label">' + (i + 1) + '</span>' + (bolt.done[i] ? '<span class="chip-check" aria-hidden="true">\u2713</span>' : "");
         b.addEventListener("click", function () { selectBoltWorld(i); });
         box.appendChild(b);
       });
+      var hint = document.createElement("span"); hint.className = "chip-hint";
+      hint.textContent = !boltIsChallenge() ? ("World " + (bolt.current + 1) + " \u00b7 " + BOLT_WORLDS[bolt.current].name) : "Choose a graded world 1\u20138";
+      box.appendChild(hint);
       var doneCount = bolt.done.filter(Boolean).length;
       $("bolt-scorebar").innerHTML = '<span class="metric"><strong>' + doneCount + " / " + BOLT_WORLDS.length + '</strong> <span>worlds completed</span></span>';
       renderBoltChallengeNav();
@@ -4599,17 +4750,15 @@ for (int i = 0; i < 3; i++) {
     }
     function renderBoltChallengeNav() {
       var box = $("boltchalnav"); if (!box) return;
-      box.innerHTML = "";
+      box.innerHTML = ""; box.className = "chip-row";
       BOLT_CHALLENGES.forEach(function (w, i) {
         var b = document.createElement("button");
-        b.className = "ex-btn"; b.type = "button";
+        b.className = "chip-btn"; b.type = "button";
         b.setAttribute("aria-current", (boltIsChallenge() && bolt.challengeCurrent === i) ? "true" : "false");
-        b.setAttribute("aria-label", "Optional challenge " + (i + 1) + ": " + w.name + ", par " + w.par + " actions");
-        var status;
-        if (bolt.challengeStar[i]) status = '<span class="status good">complete ★ · ' + bolt.challengeBest[i] + ' actions (par ' + w.par + ')</span>';
-        else if (bolt.challengeDone[i]) status = '<span class="status good">complete ✓ · ' + bolt.challengeBest[i] + ' actions (par ' + w.par + ')</span>';
-        else status = '<span class="status">not finished · par ' + w.par + ' actions</span>';
-        b.innerHTML = '<span class="n">' + (i + 1) + '</span><span>' + esc(w.name) + "<br>" + status + "</span>";
+        b.setAttribute("aria-label", "Optional challenge " + (i + 1) + ": " + w.name + ", par " + w.par + " actions" + (bolt.challengeDone[i] ? ", complete" : ", not finished"));
+        b.title = w.name + " \u00b7 par " + w.par;
+        var mark = bolt.challengeStar[i] ? '<span class="chip-star" aria-hidden="true">\u2605</span>' : bolt.challengeDone[i] ? '<span class="chip-check" aria-hidden="true">\u2713</span>' : "";
+        b.innerHTML = '<span class="chip-label">C' + (i + 1) + '</span>' + mark;
         b.addEventListener("click", function () { selectBoltChallenge(i); });
         box.appendChild(b);
       });
@@ -5774,18 +5923,22 @@ for (int i = 0; i < 3; i++) {
     }
     function renderMakeNav() {
       var nav = $("makenav");
-      nav.innerHTML = "";
+      nav.innerHTML = ""; nav.className = "chip-row";
       MAKE_PROMPTS.forEach(function (pr, i) {
         var st = makeState.items[i];
         var b = document.createElement("button");
-        b.type = "button";
-        b.className = "ex-btn";
+        b.type = "button"; b.className = "chip-btn";
         b.setAttribute("aria-current", i === makeState.current ? "true" : "false");
         b.setAttribute("aria-label", "Prompt " + (i + 1) + ": " + pr.title + (st.done ? " (complete)" : ""));
-        b.innerHTML = '<span class="n">' + (i + 1) + '</span><span><span style="font-weight:600;">' + esc(pr.title) + '</span><br><span class="status' + (st.done ? " good" : "") + '">' + (st.done ? "Complete" : pr.tag) + "</span></span>";
+        b.title = pr.title + " \u00b7 " + pr.tag;
+        b.innerHTML = '<span class="chip-label">' + (i + 1) + '</span>' + (st.done ? '<span class="chip-check" aria-hidden="true">\u2713</span>' : "");
         b.addEventListener("click", function () { selectMakePrompt(i); });
         nav.appendChild(b);
       });
+      var hint = document.createElement("span"); hint.className = "chip-hint";
+      var cur = MAKE_PROMPTS[makeState.current];
+      hint.textContent = "Prompt " + (makeState.current + 1) + " \u00b7 " + cur.title + " \u00b7 " + cur.tag;
+      nav.appendChild(hint);
     }
     function renderMakeTests() {
       var st = makeState.items[makeState.current];
@@ -5999,18 +6152,23 @@ for (int i = 0; i < 3; i++) {
     }
     function renderBridgeNav() {
       var nav = $("bridgenav");
-      nav.innerHTML = "";
+      nav.innerHTML = ""; nav.className = "chip-row";
       BRIDGE_ACTIVITIES.forEach(function (act, i) {
         var st = bridgeState.items[i];
+        var label = act.kind === "parsons" ? "P" + (i + 1) : "F" + (i - 2);
         var b = document.createElement("button");
-        b.type = "button";
-        b.className = "ex-btn";
+        b.type = "button"; b.className = "chip-btn";
         b.setAttribute("aria-current", i === bridgeState.current ? "true" : "false");
-        b.setAttribute("aria-label", "Activity " + (i + 1) + ": " + act.title + (st.done ? " (complete)" : ""));
-        b.innerHTML = '<span class="n">' + (i + 1) + '</span><span><span style="font-weight:600;">' + esc(act.title) + '</span><br><span class="status' + (st.done ? " good" : "") + '">' + (st.done ? "Complete" : act.tag) + "</span></span>";
+        b.setAttribute("aria-label", "Activity " + (i + 1) + " (" + label + "): " + act.title + (st.done ? " (complete)" : ""));
+        b.title = act.title + " \u00b7 " + act.tag;
+        b.innerHTML = '<span class="chip-label">' + label + '</span>' + (st.done ? '<span class="chip-check" aria-hidden="true">\u2713</span>' : "");
         b.addEventListener("click", function () { selectBridge(i); });
         nav.appendChild(b);
       });
+      var hint = document.createElement("span"); hint.className = "chip-hint";
+      var cur = BRIDGE_ACTIVITIES[bridgeState.current];
+      hint.textContent = (cur.kind === "parsons" ? "P" : "F") + " \u00b7 " + cur.title + " \u00b7 " + cur.tag;
+      nav.appendChild(hint);
     }
     function renderBridgeBody() {
       var act = BRIDGE_ACTIVITIES[bridgeState.current];
