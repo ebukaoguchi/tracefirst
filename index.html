@@ -481,6 +481,49 @@
       .exam-q .eqtext code, .ch-prompt code { font-family: "IBM Plex Mono", monospace; font-size: .9em; background: var(--panel); border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; }
       .exam-score { margin-top: 14px; border-radius: 12px; padding: 16px; background: var(--accent-soft); border: 1.5px solid var(--accent); font-size: 1rem; display: none; }
       .exam-score.show { display: block; }
+      /* ---------- Bolt's World ---------- */
+      .bolt-intro { max-width: 760px; margin-top: 22px; }
+      .bolt-intro h2 { font-family: "Source Serif 4", Georgia, serif; font-size: 1.6rem; line-height: 1.15; }
+      .bolt-intro p { margin-top: 8px; color: var(--ink-soft); }
+      .bolt-intro p strong { color: var(--ink); }
+      .bolt-order { margin-top: 14px; background: var(--accent-soft); border: 1.5px solid var(--accent); border-radius: 12px; padding: 13px 15px; font-size: .95rem; }
+      .bolt-order strong { color: var(--accent-strong); }
+      .bolt-board-wrap { margin-top: 14px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; padding: 10px; }
+      .bolt-board { position: relative; display: grid; }
+      .bolt-cell { border: 1.5px solid var(--line); border-radius: 7px; background: var(--panel); aspect-ratio: 1 / 1; display: grid; place-items: center; position: relative; margin: 2px; min-height: 0; }
+      .bolt-cell .batt { display: flex; flex-direction: column; align-items: center; gap: 1px; color: var(--amber); }
+      .bolt-cell .batt svg { width: 55%; max-width: 26px; height: auto; display: block; }
+      .bolt-cell .bcount { font-family: "IBM Plex Mono", monospace; font-size: .68rem; font-weight: 700; color: var(--amber); line-height: 1; }
+      .bolt-cell.crate { background: var(--amber-soft); border-color: var(--amber); color: #8a5a10; }
+      @media (prefers-color-scheme: dark) { .bolt-cell.crate { color: var(--amber); } }
+      .bolt-cell.crate svg { width: 72%; height: auto; display: block; }
+      .bolt-robot { position: absolute; z-index: 3; display: grid; place-items: center; pointer-events: none; transition: left .3s ease, top .3s ease; }
+      .bolt-robot svg { width: 88%; height: 88%; transition: transform .3s ease; display: block; }
+      .bolt-svg .b-body { fill: var(--panel); stroke: var(--accent); stroke-width: 2.5; }
+      .bolt-svg .b-visor { fill: var(--code-bg); }
+      .bolt-svg .b-eye { fill: var(--amber); }
+      .bolt-svg .b-ant { stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; }
+      .bolt-svg .b-anttip { fill: var(--rust); }
+      .bolt-svg .b-tread { fill: var(--ink-soft); }
+      .bolt-svg .b-chest { fill: var(--accent); }
+      .bolt-statusbar { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 12px; font-size: .9rem; }
+      .bolt-statusbar .metric strong { font-family: "IBM Plex Mono", monospace; }
+      .bolt-statusbar .metric span { color: var(--ink-soft); }
+      .bolt-editor { width: 100%; box-sizing: border-box; margin-top: 12px; background: var(--code-bg); color: var(--code-ink); border: 1px solid rgba(0,0,0,.25); border-radius: 10px; padding: 13px 14px; font-family: "IBM Plex Mono", monospace; font-size: .92rem; line-height: 1.6; min-height: 230px; resize: vertical; }
+      .bolt-editor:focus { outline: 3px solid var(--amber); outline-offset: 1px; }
+      .bolt-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+      .bolt-msg { margin-top: 12px; border-radius: 10px; padding: 12px 14px; font-size: .94rem; display: none; }
+      .bolt-msg.show { display: block; }
+      .bolt-msg.info { background: var(--panel-2); border: 1px solid var(--line); color: var(--ink); }
+      .bolt-msg.good { background: var(--accent-soft); color: var(--accent-strong); border: 1.5px solid var(--accent); font-weight: 600; }
+      .bolt-msg.bad { background: var(--rust-soft); color: var(--rust); border: 1.5px solid var(--rust); }
+      .bolt-cmds { display: grid; gap: 14px; margin-top: 12px; font-size: .93rem; }
+      .bolt-cmds h4 { font-size: .78rem; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-soft); font-family: "IBM Plex Mono", monospace; margin: 0 0 5px; }
+      .bolt-cmds code { font-family: "IBM Plex Mono", monospace; font-size: .9em; background: var(--panel-2); border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; }
+      .bolt-cmds ul { margin: 0; padding-left: 18px; display: grid; gap: 5px; }
+      .bolt-example { background: var(--code-bg); color: var(--code-ink); border-radius: 10px; padding: 12px 14px; font-family: "IBM Plex Mono", monospace; font-size: .86rem; white-space: pre; overflow-x: auto; line-height: 1.6; }
+      .bolt-hint { margin-top: 14px; }
+      @media (prefers-reduced-motion: reduce) { .bolt-robot, .bolt-robot svg { transition: none; } }
       @media (max-width: 700px) { .trans-grid, .fix-compare { grid-template-columns: 1fr; } .ch-levels { grid-template-columns: 1fr; } }
       @media (max-width: 900px) {
         .compare { grid-template-columns: 1fr; }
@@ -508,10 +551,14 @@
     <main class="wrap">
       <section class="intro">
         <h1>Predict before you run.</h1>
-        <p class="lede">TraceFirst is a first-year C++ tracer built on one rule: <strong>you never run code you have not first predicted.</strong> Commit to an answer, then step through the program and watch memory change. When your prediction and the machine disagree, TraceFirst stops at the exact statement where the two parted — and names the idea to fix.</p>
+        <p class="lede">TraceFirst is a first-year C++ tracer built on one rule: <strong>you never run code you have not first predicted.</strong> Commit to an answer, then step through the program and watch memory change. When your prediction and the machine disagree, TraceFirst stops at the exact statement where the two parted — and names the idea to fix. New to programming entirely? <strong>Start with Bolt's World</strong>, the first mode below: it teaches the logic first, and only then does the tracer ask you to predict real code.</p>
       </section>
 
       <nav class="mode-toggle" aria-label="Choose a mode">
+        <button class="mode-btn" type="button" id="mode-bolt" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4"/><circle cx="12" cy="3" r="0.5"/><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M9.5 13h.01M14.5 13h.01M9 21.5h6"/></svg>
+          Bolt's World
+        </button>
         <button class="mode-btn" type="button" id="mode-tracer" aria-pressed="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
           Prediction Tracer
@@ -529,6 +576,101 @@
           Challenges
         </button>
       </nav>
+
+      <div id="bolt-mode" hidden>
+        <section class="bolt-intro">
+          <h2>Meet Bolt — programming before the syntax gets heavy.</h2>
+          <p>Bolt is a workshop robot who understands exactly <strong>four commands</strong>: move, turn left, pick up a battery cell, put one down. That is all he will ever know. Everything Bolt does — crossing the Workshop, harvesting a row of cells, feeling his way around crates — is built by combining those four commands with loops, decisions, and functions you define yourself.</p>
+          <p>The programs are written in <strong>real C++ shape</strong>: every command ends with a semicolon, blocks wear braces, and helpers are <strong>void</strong> functions. Nothing here is a toy language you will have to unlearn. When you move on to the Prediction Tracer, the syntax will already look familiar; only the ideas will be new.</p>
+          <div class="bolt-order"><strong>Start here.</strong> This mode comes first on purpose: finish these eight worlds and you already think in sequences, loops, decisions, and functions. Then predict and trace real code in the Prediction Tracer, where the same logic wears full C++ syntax.</div>
+        </section>
+
+        <section class="toolbar" aria-label="Choose a world">
+          <div>
+            <div class="tlabel">Worlds — eight workshops, in order</div>
+            <div class="exnav" id="boltnav"></div>
+          </div>
+          <div class="scorebar" id="bolt-scorebar" aria-label="Your Bolt's World progress"></div>
+        </section>
+
+        <div class="grid">
+          <div>
+            <section class="card" aria-labelledby="bolt-title">
+              <span class="concept-tag" id="bolt-concept"></span>
+              <h2 id="bolt-title"></h2>
+              <p class="story" id="bolt-story"></p>
+              <p class="goal" id="bolt-goal"></p>
+              <div class="bolt-board-wrap">
+                <div class="bolt-board" id="bolt-board" role="img" aria-label="The Workshop board"></div>
+              </div>
+              <div class="bolt-statusbar" id="bolt-statusbar" aria-label="Bolt's position, direction, and bag"></div>
+              <div class="bolt-hint">
+                <button class="btn ghost small" type="button" id="bolt-hint-btn">Show the hint</button>
+                <div class="hintbox" id="bolt-hint-box"></div>
+              </div>
+            </section>
+          </div>
+
+          <div>
+            <section class="card" aria-labelledby="bolt-prog-h">
+              <h3 id="bolt-prog-h">Your program for Bolt</h3>
+              <p style="font-size:.9rem; color:var(--ink-soft); margin-top:6px;">Write C++-shaped code: every command ends with a semicolon, and blocks wear braces. Lines starting with <span style="font-family:'IBM Plex Mono',monospace;">//</span> are comments — notes to yourself that Bolt ignores.</p>
+              <textarea class="bolt-editor" id="bolt-editor" spellcheck="false" aria-label="Program editor for Bolt"></textarea>
+              <div class="bolt-controls">
+                <button class="btn" type="button" id="bolt-run">
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
+                  Run
+                </button>
+                <button class="btn ghost" type="button" id="bolt-step">Step</button>
+                <button class="btn ghost" type="button" id="bolt-reset">Reset</button>
+              </div>
+              <div class="bolt-msg info show" id="bolt-msg" role="status">Choose a world, write Bolt's program, then press Run or Step.</div>
+            </section>
+
+            <section class="card" aria-labelledby="bolt-cmds-h">
+              <h3 id="bolt-cmds-h">Bolt's command card</h3>
+              <div class="bolt-cmds">
+                <div>
+                  <h4>Commands — every one ends with ;</h4>
+                  <ul>
+                    <li><code>move();</code> — step one square the way Bolt is facing.</li>
+                    <li><code>turnLeft();</code> — turn 90° to Bolt's left, staying on the same square.</li>
+                    <li><code>pickCell();</code> — pick up one battery cell from the square Bolt is standing on.</li>
+                    <li><code>putCell();</code> — put one cell from Bolt's bag down on his square.</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4>Sensors — questions Bolt can ask</h4>
+                  <ul>
+                    <li><code>frontIsClear()</code> — true when the square ahead is inside the Workshop and holds no crate.</li>
+                    <li><code>cellsPresent()</code> — true when a battery cell sits on Bolt's square.</li>
+                    <li>Put <code>!</code> in front to flip the answer: <code>!frontIsClear()</code> means “something is in the way.”</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4>Patterns — decide, repeat, name</h4>
+                  <div class="bolt-example">void turnRight() {
+    turnLeft();
+    turnLeft();
+    turnLeft();
+}
+
+while (frontIsClear()) {
+    move();
+}
+
+for (int i = 0; i < 3; i++) {
+    pickCell();
+}</div>
+                  <p style="margin-top:8px;">Decide with <code>if (cellsPresent()) { ... } else { ... }</code>. Define a helper once with <code>void name() { ... }</code>, then call it anywhere with <code>name();</code>.</p>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <p class="foot"><strong>How Bolt's World fits:</strong> this mode teaches the logic of programming — sequence, repetition, decisions, decomposition — inside a world small enough to see whole. The other modes then attach real C++ to that logic: the Prediction Tracer for reading code before it runs, the Debugging Gym for finding faults, the Error Translator for compiler messages, and Challenges for graded practice. Worlds you complete are remembered only for this session.</p>
+      </div><!-- /bolt-mode -->
 
       <div id="tracer-mode">
       <div class="primm" id="primm" aria-label="The four stages of each exercise">
@@ -2544,20 +2686,509 @@
       announce(CH_LEVELS[ch.level].name + " exam reset. Question 1 is ready.");
     });
 
+    /* ---------------- Bolt's World ---------------- */
+    var BOLT_COMMANDS = { move: true, turnLeft: true, pickCell: true, putCell: true };
+    var BOLT_SENSORS = { frontIsClear: true, cellsPresent: true };
+    var BOLT_DIRS = [
+      { dx: 1, dy: 0, name: "East", rot: 0 },
+      { dx: 0, dy: 1, name: "North", rot: -90 },
+      { dx: -1, dy: 0, name: "West", rot: 180 },
+      { dx: 0, dy: -1, name: "South", rot: 90 }
+    ];
+    var BOLT_SVG = '<svg class="bolt-svg" viewBox="0 0 64 64" aria-hidden="true"><line class="b-ant" x1="24" y1="15" x2="24" y2="8"/><circle class="b-anttip" cx="24" cy="6" r="3"/><rect class="b-body" x="13" y="14" width="38" height="35" rx="10"/><rect class="b-visor" x="33" y="23" width="15" height="13" rx="6.5"/><circle class="b-eye" cx="40.5" cy="29.5" r="3"/><circle class="b-chest" cx="23" cy="30" r="3.2"/><rect class="b-tread" x="17" y="49" width="13" height="6" rx="3"/><rect class="b-tread" x="34" y="49" width="13" height="6" rx="3"/></svg>';
+    var BATT_SVG = '<svg viewBox="0 0 28 16" aria-hidden="true"><rect x="1.5" y="1.5" width="22" height="13" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="25" y="5" width="3" height="6" rx="1" fill="currentColor"/><rect x="4.5" y="4.5" width="11" height="7" rx="1.5" fill="currentColor"/></svg>';
+    var CRATE_SVG = '<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="5" width="30" height="30" rx="2"/><path d="M5 5l30 30M35 5L5 35"/></svg>';
+
+    var BOLT_WORLDS = [
+      { name: "First Steps", concept: "Sequence", w: 5, h: 3,
+        start: { x: 1, y: 2, dir: 0 }, crates: [], cells: { "4,2": 1 },
+        story: "Bolt wakes in an empty workshop with an empty bag. One battery cell sits three squares ahead of him.",
+        goalText: "Finish with the cell in Bolt's bag (bag holds 1). Where Bolt ends up standing does not matter.",
+        hint: "Three moves carry Bolt onto the cell's square. Then pick it up.",
+        goal: function (st) { return st.bag >= 1; },
+        starter: "// Bolt is facing East, and the cell is\n// three squares ahead of him.\n\n" },
+      { name: "Turn the Corner", concept: "Sequence · Turning", w: 4, h: 4,
+        start: { x: 1, y: 1, dir: 0 }, crates: [], cells: { "1,4": 1 },
+        story: "The cell waits at the top of the first column, but Bolt starts in the corner facing East, along the bottom.",
+        goalText: "Collect the cell (bag holds 1).",
+        hint: "Bolt can only turn left — but one left turn from East points him North, straight up the first column.",
+        goal: function (st) { return st.bag >= 1; },
+        starter: "// The cell is at the top of the first column.\n// Bolt only knows how to turn left.\n\n" },
+      { name: "Delivery Run", concept: "Sequence", w: 6, h: 2,
+        start: { x: 1, y: 1, dir: 0 }, crates: [], cells: { "2,1": 1, "4,1": 1, "6,1": 1 },
+        story: "A delivery run down a long hall: three battery cells wait at columns 2, 4, and 6, and Bolt passes every one of them.",
+        goalText: "Collect all three cells (bag holds 3).",
+        hint: "Walk the hall and pick on the squares that hold a cell: column 2, then 4, then 6.",
+        goal: function (st) { return st.bag >= 3; },
+        starter: "// Three cells are scattered along the hall.\n// Pick up every one Bolt passes.\n\n" },
+      { name: "The Long Hall", concept: "Loops — for", w: 10, h: 1,
+        start: { x: 1, y: 1, dir: 0 }, crates: [], cells: { "10,1": 1 },
+        story: "The Long Hall runs ten squares with a single cell at the far end. Typing move(); nine times works — but the for loop exists precisely so you do not have to.",
+        goalText: "Collect the cell (bag holds 1).",
+        hint: "A for loop can repeat move() nine times: for (int i = 0; i < 9; i++) { move(); } — then pick.",
+        goal: function (st) { return st.bag >= 1; },
+        starter: "// Nine moves is a lot of typing.\n// A for loop repeats an action:\n// for (int i = 0; i < 9; i++) { move(); }\n\n" },
+      { name: "Harvest Row", concept: "Loops — for", w: 7, h: 1,
+        start: { x: 1, y: 1, dir: 0 }, crates: [], cells: { "2,1": 1, "3,1": 1, "4,1": 1, "5,1": 1, "6,1": 1, "7,1": 1 },
+        story: "Harvest Row: a battery cell on every square from column 2 through column 7. Same two actions, over and over.",
+        goalText: "Collect all six cells (bag holds 6).",
+        hint: "Move and pick are one repeated pattern. Put both inside the loop, and repeat the pair six times.",
+        goal: function (st) { return st.bag >= 6; },
+        starter: "// Six cells in a row.\n// Move and pick, move and pick...\n\n" },
+      { name: "The Crate at the End", concept: "Loops — while · Sensors", w: 9, h: 1,
+        start: { x: 1, y: 1, dir: 0 }, crates: [[9, 1]], cells: { "8,1": 1 },
+        story: "A crate blocks the end of this hall, and nobody measured how long the hall is. The cell sits on the last clear square, right before the crate.",
+        goalText: "Collect the cell (bag holds 1) without bumping the crate.",
+        hint: "Bolt does not know how far the crate is — but while (frontIsClear()) { move(); } walks him until something is in his way, and that is exactly where the cell is.",
+        goal: function (st) { return st.bag >= 1; },
+        starter: "// Nobody measured this hall.\n// while (frontIsClear()) can walk Bolt\n// until something is in his way.\n\n" },
+      { name: "The Climber", concept: "Functions", w: 5, h: 5,
+        start: { x: 1, y: 1, dir: 0 }, crates: [], cells: { "2,2": 1, "3,3": 1, "4,4": 1 },
+        story: "Three cells climb a diagonal staircase: (2,2), (3,3), (4,4). The climb to each one is the same little dance — step east, turn, step north, turn back — and Bolt has no turn-right command.",
+        goalText: "Collect all three cells (bag holds 3) and finish standing on (4,4).",
+        hint: "Turning right takes three lefts. Write void turnRight() once, then repeat the same step pattern — move, turn toward the next cell, move, face East again, pick — three times.",
+        goal: function (st) { return st.bag >= 3 && st.x === 4 && st.y === 4; },
+        starter: "// Turning right takes three lefts.\n// Write it once, as a function:\n// void turnRight() { ... }\n\n" },
+      { name: "The Maze", concept: "Decisions — if · Sensors", w: 6, h: 6,
+        start: { x: 1, y: 1, dir: 0 },
+        crates: [[3, 1], [3, 2], [3, 3], [3, 4], [5, 2], [5, 3], [5, 4], [5, 5], [5, 6]],
+        cells: { "6,1": 1 },
+        story: "Two walls of crates guard the cell at (6,1), and the direct road along the bottom is blocked twice. There is a way through — Bolt has to climb, cross, and come back down.",
+        goalText: "Collect the cell at (6,1) (bag holds 1).",
+        hint: "Go up the second column to row 5, east through the gap, down the fourth column, and out along the bottom row.",
+        goal: function (st) { return st.bag >= 1; },
+        starter: "// Crates block the direct road.\n// Sensors and if statements let Bolt\n// check what is ahead before he moves.\n\n" }
+    ];
+
+    var bolt = {
+      current: 0, inited: false,
+      code: BOLT_WORLDS.map(function (w) { return w.starter; }),
+      done: BOLT_WORLDS.map(function () { return false; }),
+      st: null, gen: null, timer: null, actions: 0, hintShown: false
+    };
+    var boltRobotEl = null;
+
+    function boltWorld() { return BOLT_WORLDS[bolt.current]; }
+    function boltKey(x, y) { return x + "," + y; }
+    function boltIsCrate(w, x, y) {
+      for (var i = 0; i < w.crates.length; i++) if (w.crates[i][0] === x && w.crates[i][1] === y) return true;
+      return false;
+    }
+    function boltFreshState() {
+      var w = boltWorld(), cells = {};
+      Object.keys(w.cells).forEach(function (k) { cells[k] = w.cells[k]; });
+      return { x: w.start.x, y: w.start.y, dir: w.start.dir, bag: 0, cells: cells };
+    }
+    function boltFrontCell(st) { var d = BOLT_DIRS[st.dir]; return { x: st.x + d.dx, y: st.y + d.dy }; }
+    function boltFrontClear(st) {
+      var w = boltWorld(), f = boltFrontCell(st);
+      return f.x >= 1 && f.x <= w.w && f.y >= 1 && f.y <= w.h && !boltIsCrate(w, f.x, f.y);
+    }
+    function boltEvalCond(c) {
+      var v = c.sensor === "frontIsClear" ? boltFrontClear(bolt.st)
+                                         : (bolt.st.cells[boltKey(bolt.st.x, bolt.st.y)] || 0) > 0;
+      return c.neg ? !v : v;
+    }
+    function boltStopRun() { if (bolt.timer) { clearInterval(bolt.timer); bolt.timer = null; } }
+    function boltMsg(kind, html) {
+      var m = $("bolt-msg");
+      m.className = "bolt-msg show " + kind;
+      m.innerHTML = html;
+    }
+
+    function renderBoltBoard() {
+      var w = boltWorld(), board = $("bolt-board"), st = bolt.st;
+      board.style.gridTemplateColumns = "repeat(" + w.w + ", 1fr)";
+      var html = "";
+      for (var y = w.h; y >= 1; y--) {
+        for (var x = 1; x <= w.w; x++) {
+          if (boltIsCrate(w, x, y)) { html += '<div class="bolt-cell crate">' + CRATE_SVG + "</div>"; continue; }
+          var n = st.cells[boltKey(x, y)] || 0;
+          html += '<div class="bolt-cell">' + (n > 0 ? '<span class="batt">' + BATT_SVG + (n > 1 ? '<span class="bcount">×' + n + "</span>" : "") + "</span>" : "") + "</div>";
+        }
+      }
+      board.innerHTML = html;
+      if (!boltRobotEl) {
+        boltRobotEl = document.createElement("div");
+        boltRobotEl.className = "bolt-robot";
+        boltRobotEl.innerHTML = BOLT_SVG;
+      }
+      board.appendChild(boltRobotEl);
+      updateBoltRobot();
+      $("bolt-statusbar").innerHTML =
+        '<span class="metric"><strong>' + st.x + ", " + st.y + '</strong> <span>position (column, row)</span></span>' +
+        '<span class="metric"><strong>' + BOLT_DIRS[st.dir].name + '</strong> <span>facing</span></span>' +
+        '<span class="metric"><strong>' + st.bag + '</strong> <span>' + (st.bag === 1 ? "cell" : "cells") + ' in the bag</span></span>' +
+        '<span class="metric"><strong>' + (st.cells[boltKey(st.x, st.y)] || 0) + '</strong> <span>on this square</span></span>';
+      board.setAttribute("aria-label", "The Workshop: " + w.w + " columns by " + w.h + " rows. Bolt is at column " + st.x + ", row " + st.y + ", facing " + BOLT_DIRS[st.dir].name + ", carrying " + st.bag + (st.bag === 1 ? " battery cell." : " battery cells."));
+    }
+    function updateBoltRobot() {
+      if (!boltRobotEl || !bolt.st) return;
+      var w = boltWorld(), st = bolt.st;
+      boltRobotEl.style.left = ((st.x - 1) * 100 / w.w) + "%";
+      boltRobotEl.style.top = ((w.h - st.y) * 100 / w.h) + "%";
+      boltRobotEl.style.width = (100 / w.w) + "%";
+      boltRobotEl.style.height = (100 / w.h) + "%";
+      boltRobotEl.firstChild.style.transform = "rotate(" + BOLT_DIRS[st.dir].rot + "deg)";
+    }
+    function renderBoltNav() {
+      var box = $("boltnav"); box.innerHTML = "";
+      BOLT_WORLDS.forEach(function (w, i) {
+        var b = document.createElement("button");
+        b.className = "ex-btn"; b.type = "button";
+        b.setAttribute("aria-current", bolt.current === i ? "true" : "false");
+        b.innerHTML = '<span class="n">' + (i + 1) + '</span><span>' + w.name +
+          '<br><span class="status ' + (bolt.done[i] ? "good" : "") + '">' + (bolt.done[i] ? "complete ✓" : "not finished") + "</span></span>";
+        b.addEventListener("click", function () { selectBoltWorld(i); });
+        box.appendChild(b);
+      });
+      var doneCount = bolt.done.filter(Boolean).length;
+      $("bolt-scorebar").innerHTML = '<span class="metric"><strong>' + doneCount + " / " + BOLT_WORLDS.length + '</strong> <span>worlds completed this session</span></span>';
+    }
+    function renderBoltWorld() {
+      var w = boltWorld();
+      boltStopRun(); bolt.gen = null; bolt.actions = 0;
+      bolt.st = boltFreshState();
+      bolt.hintShown = false;
+      $("bolt-concept").textContent = "World " + (bolt.current + 1) + " · " + w.concept;
+      $("bolt-title").textContent = w.name;
+      $("bolt-story").textContent = w.story;
+      $("bolt-goal").innerHTML = "<b>Goal:</b> " + esc(w.goalText);
+      $("bolt-editor").value = bolt.code[bolt.current];
+      $("bolt-hint-box").className = "hintbox";
+      $("bolt-hint-box").innerHTML = "";
+      $("bolt-hint-btn").textContent = "Show the hint";
+      renderBoltBoard();
+      renderBoltNav();
+      boltMsg("info", "Write Bolt's program, then press <b>Run</b> to watch it, or <b>Step</b> to walk it one action at a time.");
+    }
+    function selectBoltWorld(i) {
+      bolt.code[bolt.current] = $("bolt-editor").value;
+      bolt.current = i;
+      renderBoltWorld();
+      announce("World " + (i + 1) + ": " + BOLT_WORLDS[i].name + ".");
+    }
+    function initBolt() {
+      if (bolt.inited) return;
+      bolt.inited = true;
+      renderBoltWorld();
+    }
+
+    /* ----- Bolt language: lexer ----- */
+    function boltLex(src) {
+      var toks = [], i = 0, line = 1;
+      while (i < src.length) {
+        var c = src.charAt(i);
+        if (c === "\n") { line++; i++; continue; }
+        if (c === " " || c === "\t" || c === "\r") { i++; continue; }
+        if (c === "/" && src.charAt(i + 1) === "/") { while (i < src.length && src.charAt(i) !== "\n") i++; continue; }
+        if (/[A-Za-z_]/.test(c)) {
+          var j = i + 1;
+          while (j < src.length && /[A-Za-z0-9_]/.test(src.charAt(j))) j++;
+          toks.push({ t: "id", v: src.slice(i, j), line: line }); i = j; continue;
+        }
+        if (/[0-9]/.test(c)) {
+          var j2 = i + 1;
+          while (j2 < src.length && /[0-9]/.test(src.charAt(j2))) j2++;
+          toks.push({ t: "num", v: parseInt(src.slice(i, j2), 10), line: line }); i = j2; continue;
+        }
+        if ("(){};!<>=".indexOf(c) >= 0 || c === "+") { toks.push({ t: "p", v: c, line: line }); i++; continue; }
+        throw { boltError: true, line: line, msg: "Line " + line + ": Bolt's programs do not use the character '" + c + "'." };
+      }
+      toks.push({ t: "eof", v: "", line: line });
+      return toks;
+    }
+
+    /* ----- Bolt language: parser ----- */
+    function boltParse(src) {
+      var toks = boltLex(src), pos = 0;
+      function peek() { return toks[pos]; }
+      function take() { return toks[pos++]; }
+      function fail(line, msg) { throw { boltError: true, line: line, msg: "Line " + line + ": " + msg }; }
+      function expectPunct(v, msg) { var tk = take(); if (tk.t !== "p" || tk.v !== v) fail(tk.line, msg); }
+      function parseBlock() {
+        var open = take();
+        if (open.t !== "p" || open.v !== "{") fail(open.line, "expected '{' to open the block");
+        var stmts = [];
+        while (!(peek().t === "p" && peek().v === "}")) {
+          if (peek().t === "eof") fail(open.line, "this block never closes — a '}' is missing");
+          stmts.push(parseStmt());
+        }
+        take();
+        return stmts;
+      }
+      function parseCond() {
+        var neg = false;
+        if (peek().t === "p" && peek().v === "!") { take(); neg = true; }
+        var s = take();
+        if (s.t !== "id" || !BOLT_SENSORS[s.v]) fail(s.line, "expected a sensor inside the parentheses — frontIsClear() or cellsPresent()");
+        expectPunct("(", "expected '()' after " + s.v);
+        expectPunct(")", "expected '()' after " + s.v);
+        return { sensor: s.v, neg: neg, line: s.line };
+      }
+      function parseStmt() {
+        var tk = peek();
+        if (tk.t === "id" && tk.v === "if") {
+          take();
+          expectPunct("(", "expected '(' after 'if'");
+          var cond = parseCond();
+          expectPunct(")", "expected ')' to close the if condition");
+          var then = parseBlock(), els = null;
+          if (peek().t === "id" && peek().v === "else") { take(); els = parseBlock(); }
+          return { kind: "if", cond: cond, then: then, els: els, line: tk.line };
+        }
+        if (tk.t === "id" && tk.v === "while") {
+          take();
+          expectPunct("(", "expected '(' after 'while'");
+          var wcond = parseCond();
+          expectPunct(")", "expected ')' to close the while condition");
+          return { kind: "while", cond: wcond, body: parseBlock(), line: tk.line };
+        }
+        if (tk.t === "id" && tk.v === "for") {
+          take();
+          expectPunct("(", "expected '(' after 'for'");
+          var tInt = take();
+          if (tInt.t !== "id" || tInt.v !== "int") fail(tInt.line, "a for loop counts with an int: for (int i = 0; i < 9; i++)");
+          var varTok = take();
+          if (varTok.t !== "id") fail(varTok.line, "the for loop needs a counter name, usually i");
+          expectPunct("=", "expected '=' in the for loop header");
+          var startTok = take();
+          if (startTok.t !== "num") fail(startTok.line, "the counter starts at a whole number, usually 0");
+          expectPunct(";", "expected ';' after the counter's start in the for loop header");
+          take();
+          expectPunct("<", "expected '<' in the for loop test, as in i < 9");
+          var nTok = take();
+          if (nTok.t !== "num") fail(nTok.line, "the for loop test ends at a whole number, as in i < 9");
+          expectPunct(";", "expected ';' after the for loop test");
+          take();
+          expectPunct("+", "expected '++' to finish the for loop header");
+          expectPunct("+", "expected '++' to finish the for loop header");
+          expectPunct(")", "expected ')' to close the for loop header");
+          return { kind: "for", count: Math.max(0, nTok.v - startTok.v), body: parseBlock(), line: tk.line };
+        }
+        if (tk.t === "id" && tk.v === "int") fail(tk.line, "Bolt's programs do not declare variables — the only int is the counter inside a for loop");
+        if (tk.t === "id") {
+          take();
+          expectPunct("(", "expected '(' after '" + tk.v + "'");
+          expectPunct(")", "'" + tk.v + "' takes nothing inside its parentheses — expected '()'");
+          if (!(peek().t === "p" && peek().v === ";")) fail(tk.line, "expected ';' after " + tk.v + "()");
+          take();
+          return { kind: "call", name: tk.v, line: tk.line };
+        }
+        fail(tk.line, "Bolt cannot read this — a line should start with a command like move();, or with if, while, for, or void");
+      }
+      function parseFunc() {
+        var kw = take();
+        var nameTok = take();
+        if (nameTok.t !== "id") fail(nameTok.line, "expected a name for the function after 'void'");
+        if (BOLT_COMMANDS[nameTok.v] || BOLT_SENSORS[nameTok.v]) fail(nameTok.line, "'" + nameTok.v + "' is already one of Bolt's own words — choose a different name for your function");
+        expectPunct("(", "expected '()' after the function name '" + nameTok.v + "'");
+        expectPunct(")", "expected '()' after the function name '" + nameTok.v + "'");
+        return { kind: "funcdef", name: nameTok.v, body: parseBlock(), line: kw.line };
+      }
+      var items = [];
+      while (peek().t !== "eof") {
+        if (peek().t === "id" && peek().v === "void") items.push(parseFunc());
+        else items.push(parseStmt());
+      }
+      var funcs = {}, main = [];
+      items.forEach(function (it) {
+        if (it.kind === "funcdef") funcs[it.name] = it; else main.push(it);
+      });
+      function validate(stmts) {
+        stmts.forEach(function (s) {
+          if (s.kind === "call") {
+            if (BOLT_SENSORS[s.name]) fail(s.line, s.name + "() is a sensor, not a command — it answers a question, so it belongs inside if or while");
+            if (!BOLT_COMMANDS[s.name] && !funcs[s.name]) fail(s.line, "'" + s.name + "' is not a command Bolt knows, and no function named " + s.name + "() is defined in this program");
+          }
+          if (s.kind === "if") { validate(s.then); if (s.els) validate(s.els); }
+          if (s.kind === "while" || s.kind === "for") validate(s.body);
+        });
+      }
+      validate(main);
+      Object.keys(funcs).forEach(function (k) { validate(funcs[k].body); });
+      return { main: main, funcs: funcs };
+    }
+
+    /* ----- Bolt language: interpreter (one yield per primitive action) ----- */
+    function* boltExec(stmts, funcs, ctx, depth) {
+      for (var k = 0; k < stmts.length; k++) {
+        var s = stmts[k];
+        if (s.kind === "call") {
+          if (BOLT_COMMANDS[s.name]) {
+            yield { action: s.name, line: s.line };
+          } else {
+            if (depth >= 25) throw { boltError: true, line: s.line, msg: "Line " + s.line + ": " + s.name + "() is calling itself, directly or in a circle — Bolt's functions cannot do that. The program has stopped." };
+            yield* boltExec(funcs[s.name].body, funcs, ctx, depth + 1);
+          }
+        } else if (s.kind === "if") {
+          if (boltEvalCond(s.cond)) yield* boltExec(s.then, funcs, ctx, depth);
+          else if (s.els) yield* boltExec(s.els, funcs, ctx, depth);
+        } else if (s.kind === "while") {
+          while (boltEvalCond(s.cond)) {
+            if (++ctx.iters > 5000) throw { boltError: true, line: s.line, msg: "Line " + s.line + ": this loop has gone around thousands of times without stopping — it may be an infinite loop. The program has stopped." };
+            yield* boltExec(s.body, funcs, ctx, depth);
+          }
+        } else if (s.kind === "for") {
+          for (var i = 0; i < s.count; i++) {
+            if (++ctx.iters > 5000) throw { boltError: true, line: s.line, msg: "Line " + s.line + ": this loop has gone around thousands of times without stopping — it may be an infinite loop. The program has stopped." };
+            yield* boltExec(s.body, funcs, ctx, depth);
+          }
+        }
+      }
+    }
+
+    /* ----- Bolt: execution driver ----- */
+    function boltPrepare() {
+      boltStopRun();
+      bolt.code[bolt.current] = $("bolt-editor").value;
+      bolt.st = boltFreshState();
+      bolt.actions = 0;
+      var prog;
+      try {
+        prog = boltParse(bolt.code[bolt.current]);
+      } catch (e) {
+        bolt.gen = null;
+        renderBoltBoard();
+        if (e && e.boltError) boltMsg("bad", "<b>The program could not start.</b> " + esc(e.msg));
+        else boltMsg("bad", "<b>The program could not start.</b> Check the semicolons and braces, and try again.");
+        return false;
+      }
+      bolt.gen = boltExec(prog.main, prog.funcs, { iters: 0 }, 0);
+      renderBoltBoard();
+      return true;
+    }
+    function boltApply(action, line) {
+      var st = bolt.st, w = boltWorld();
+      if (action === "move") {
+        var f = boltFrontCell(st);
+        if (f.x < 1 || f.x > w.w || f.y < 1 || f.y > w.h) {
+          boltMsg("bad", "<b>Bolt bumped into the edge of the Workshop.</b> Line " + line + ": there is no square beyond the border. The program has stopped.");
+          return false;
+        }
+        if (boltIsCrate(w, f.x, f.y)) {
+          boltMsg("bad", "<b>Bolt bumped into a crate.</b> Line " + line + ": crates cannot be climbed or pushed. The program has stopped — route Bolt around it.");
+          return false;
+        }
+        st.x = f.x; st.y = f.y;
+        return true;
+      }
+      if (action === "turnLeft") { st.dir = (st.dir + 1) % 4; return true; }
+      if (action === "pickCell") {
+        var k = boltKey(st.x, st.y);
+        if ((st.cells[k] || 0) < 1) {
+          boltMsg("bad", "<b>Nothing to pick up.</b> Line " + line + ": pickCell() ran on a square with no battery cell on it. The program has stopped.");
+          return false;
+        }
+        st.cells[k]--; st.bag++;
+        return true;
+      }
+      if (action === "putCell") {
+        if (st.bag < 1) {
+          boltMsg("bad", "<b>Bolt's bag is empty.</b> Line " + line + ": putCell() has no cell to put down. The program has stopped.");
+          return false;
+        }
+        var k2 = boltKey(st.x, st.y);
+        st.bag--; st.cells[k2] = (st.cells[k2] || 0) + 1;
+        return true;
+      }
+      return true;
+    }
+    function boltStepOnce() {
+      if (!bolt.gen) { if (!boltPrepare()) return; }
+      var r;
+      try {
+        r = bolt.gen.next();
+      } catch (e) {
+        bolt.gen = null; boltStopRun();
+        if (e && e.boltError) boltMsg("bad", esc(e.msg));
+        else boltMsg("bad", "Bolt's program stopped unexpectedly.");
+        return;
+      }
+      if (r.done) {
+        bolt.gen = null; boltStopRun();
+        boltMsg("info", "<b>The program ended.</b> The goal is not met yet: " + esc(boltWorld().goalText) + " Adjust the program and run it again.");
+        return;
+      }
+      bolt.actions++;
+      if (bolt.actions > 1000) {
+        bolt.gen = null; boltStopRun();
+        renderBoltBoard();
+        boltMsg("bad", "<b>Bolt stopped after 1,000 actions.</b> The program may be in an infinite loop — check that every loop can finish: a while loop's condition has to become false sooner or later.");
+        return;
+      }
+      if (!boltApply(r.value.action, r.value.line)) { bolt.gen = null; boltStopRun(); renderBoltBoard(); return; }
+      renderBoltBoard();
+      if (boltWorld().goal(bolt.st)) {
+        bolt.gen = null; boltStopRun();
+        if (!bolt.done[bolt.current]) { bolt.done[bolt.current] = true; renderBoltNav(); }
+        boltMsg("good", "World complete — " + esc(boltWorld().name) + " is solved in " + bolt.actions + (bolt.actions === 1 ? " action." : " actions.") +
+          (bolt.done.every(Boolean) ? " That is all eight worlds: Bolt's whole workshop, programmed." : " Pick the next world above whenever you are ready."));
+        announce("World complete: " + boltWorld().name);
+        return;
+      }
+      boltMsg("info", "Action " + bolt.actions + ": <b>" + r.value.action + "()</b> — from line " + r.value.line + " of your program.");
+    }
+    $("bolt-run").addEventListener("click", function () {
+      if (!boltPrepare()) return;
+      boltMsg("info", "Running…");
+      bolt.timer = setInterval(function () {
+        boltStepOnce();
+        if (!bolt.gen) boltStopRun();
+      }, 350);
+    });
+    $("bolt-step").addEventListener("click", function () {
+      boltStopRun();
+      boltStepOnce();
+    });
+    $("bolt-reset").addEventListener("click", function () {
+      boltStopRun();
+      bolt.gen = null;
+      bolt.st = boltFreshState();
+      bolt.actions = 0;
+      renderBoltBoard();
+      boltMsg("info", "World reset — Bolt is back at the start, his bag is empty, and every cell is back in place.");
+    });
+    $("bolt-editor").addEventListener("input", function () {
+      bolt.code[bolt.current] = this.value;
+      if (bolt.gen || bolt.timer) {
+        boltStopRun();
+        bolt.gen = null;
+        boltMsg("info", "Program edited — the run has been cleared. Press <b>Run</b> or <b>Step</b> to start the new program from the beginning.");
+      }
+    });
+    $("bolt-hint-btn").addEventListener("click", function () {
+      var box = $("bolt-hint-box");
+      bolt.hintShown = !bolt.hintShown;
+      if (bolt.hintShown) {
+        box.className = "hintbox show";
+        box.innerHTML = "<b>Hint:</b> " + esc(boltWorld().hint);
+        this.textContent = "Hide the hint";
+      } else {
+        box.className = "hintbox";
+        box.innerHTML = "";
+        this.textContent = "Show the hint";
+      }
+    });
+
     /* ---------------- Mode toggle ---------------- */
     function setMode(mode) {
+      $("bolt-mode").hidden = mode !== "bolt";
       $("tracer-mode").hidden = mode !== "tracer";
       $("gym-mode").hidden = mode !== "gym";
       $("translator-mode").hidden = mode !== "translator";
       $("challenges-mode").hidden = mode !== "challenges";
+      $("mode-bolt").setAttribute("aria-pressed", mode === "bolt" ? "true" : "false");
       $("mode-tracer").setAttribute("aria-pressed", mode === "tracer" ? "true" : "false");
       $("mode-gym").setAttribute("aria-pressed", mode === "gym" ? "true" : "false");
       $("mode-translator").setAttribute("aria-pressed", mode === "translator" ? "true" : "false");
       $("mode-challenges").setAttribute("aria-pressed", mode === "challenges" ? "true" : "false");
+      if (mode === "bolt") initBolt();
       if (mode === "gym") renderGym();
       if (mode === "challenges") renderChallenges();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
+    $("mode-bolt").addEventListener("click", function () { setMode("bolt"); });
     $("mode-tracer").addEventListener("click", function () { setMode("tracer"); });
     $("mode-gym").addEventListener("click", function () { setMode("gym"); });
     $("mode-translator").addEventListener("click", function () { setMode("translator"); });
