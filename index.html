@@ -660,6 +660,9 @@
       .gym-test-box .lbl:first-child { margin-top:0; }
 
       /* Journal + digest + a11y */
+      .instructors-head{display:flex;gap:14px;align-items:flex-start;justify-content:space-between}
+      .instructors-head h3{font-size:1.05rem}
+      @media(max-width:700px){.instructors-head{flex-wrap:wrap}}
       .journal-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;align-items:center}
       .journal-status{font-size:.92rem;color:var(--ink-soft);margin-top:10px;min-height:1.4em}
       .digest-textarea{width:100%;box-sizing:border-box;min-height:140px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel-2);color:var(--ink);padding:12px 14px;font-family:"IBM Plex Mono",monospace;font-size:.85rem;line-height:1.5;resize:vertical}
@@ -729,7 +732,7 @@
     <main class="wrap">
       <section class="intro">
         <h1>Predict before you run.</h1>
-        <p class="lede">TraceFirst is a first-year C++ tracer built on one rule: <strong>you never run code you have not first predicted.</strong> Commit to an answer, then step through the program and watch memory change. When your prediction and the machine disagree, TraceFirst stops at the exact statement where the two parted — and names the idea to fix. New to programming entirely? <strong>Start with Bolt's World</strong>, the first mode below: it teaches the logic first, and only then does the tracer ask you to predict real code.</p>
+        <p class="lede">TraceFirst is a first-year C++ tracer built on one rule: <strong>you never run code you have not first predicted</strong> — commit to an answer, then step through the program and watch where your prediction and the machine part. If you are new to programming entirely, <strong>start with Bolt's World</strong>, the first mode below: it teaches the logic first, and only then does the tracer ask you to predict real code.</p>
       </section>
 
       <section class="route-panel" id="start-here" aria-labelledby="route-h">
@@ -743,7 +746,6 @@
         <p class="welcome-back" id="welcome-back" role="status" hidden>Welcome back. Your progress is saved in this browser.</p>
         <div class="reset-row">
           <button class="btn ghost small" type="button" id="reset-progress-btn">Reset all progress</button>
-          <span class="reset-note">Progress is saved in this browser on this device only.</span>
         </div>
         <div class="reset-confirm" id="reset-confirm" hidden>
           <p><strong>Reset everything?</strong> This clears all saved progress in this browser.</p>
@@ -754,16 +756,16 @@
         </div>
         <div id="route-body">
           <ol class="route-steps">
-            <li><button class="route-step" type="button" data-route="bolt" data-step="1"><span class="route-num" aria-hidden="true">1</span><span class="route-text"><strong>Bolt's World, Worlds 1 to 3</strong><span>Logic before syntax: give the robot orders and watch cause and effect.</span><span class="route-detail" data-detail="1"></span></span><span class="route-state" data-state="1">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="primer" data-step="2"><span class="route-num" aria-hidden="true">2</span><span class="route-text"><strong>Meet the Code</strong><span>The primer: what the lines of a real program are.</span><span class="route-detail" data-detail="2"></span></span><span class="route-state" data-state="2">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas: variables, division, decisions, loops, functions.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Put code in order, then write a missing line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find faults in someone else's program and fix one yourself.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 23</strong><span>The rest of the sequence: recursion, searching, sorting, and the remaining course topics.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write whole programs of your own.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
-            <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Bolt Challenges, the Challenges mode, and everything else, in any order.</span></span><span class="route-state">Open</span></li>
+            <li><button class="route-step" type="button" data-route="bolt" data-step="1"><span class="route-num" aria-hidden="true">1</span><span class="route-text"><strong>Bolt's World, Worlds 1 to 3</strong><span>Logic before syntax.</span><span class="route-detail" data-detail="1"></span></span><span class="route-state" data-state="1">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="primer" data-step="2"><span class="route-num" aria-hidden="true">2</span><span class="route-text"><strong>Meet the Code</strong><span>A first program, line by line.</span><span class="route-detail" data-detail="2"></span></span><span class="route-state" data-state="2">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Order code, then write a line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find and fix faults.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 23</strong><span>The rest of the course.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write your own programs.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
+            <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
-          <p class="route-free"><strong>You do not have to follow this order.</strong> This route is a suggestion for a first visit, not a gate: every mode below stays open, and you can use any of them, in any order, at any time.</p>
+          <p class="route-free"><strong>You do not have to follow this order.</strong> Every mode below stays open, in any order, at any time.</p>
         </div>
       </section>
 
@@ -935,13 +937,6 @@ for (int i = 0; i < 3; i++) {
 
       <div id="tracer-mode" role="tabpanel" tabindex="0">
       <p class="meet-link">New to reading code? <button class="text-link" type="button" id="meet-code-link">Meet the Code first.</button> It names every line of a short program before Exercise 1 asks you to predict one.</p>
-      <div class="primm" id="primm" aria-label="The four stages of each exercise">
-        <div class="phase" data-phase="predict"><div class="pnum">Stage 1</div><div class="pname"><span class="dot"></span>Predict</div><div class="pdesc">Read the code. Say what it will print. Lock it in.</div></div>
-        <div class="phase" data-phase="trace"><div class="pnum">Stage 2</div><div class="pname"><span class="dot"></span>Run</div><div class="pdesc">Step line by line. Watch each variable's box change.</div></div>
-        <div class="phase" data-phase="investigate"><div class="pnum">Stage 3</div><div class="pname"><span class="dot"></span>Investigate</div><div class="pdesc">Compare your answer with the machine's. Find the parting line.</div></div>
-        <div class="phase" data-phase="modify"><div class="pnum">Stage 4</div><div class="pname"><span class="dot"></span>Modify</div><div class="pdesc">One value changes. Predict again, from your repaired model.</div></div>
-      </div>
-
       <div class="sr-live" aria-live="polite" aria-atomic="true" id="tracer-live"></div>
       <section class="toolbar" aria-label="Choose your field and exercise">
         <div>
@@ -1085,8 +1080,6 @@ for (int i = 0; i < 3; i++) {
         </div>
       </section>
 
-      <p class="foot"><strong>How TraceFirst works:</strong> each exercise follows PRIMM — Predict, Run, Investigate, Modify — a sequence from computing-education research. The prediction is not a quiz before the lesson; it <em>is</em> the lesson, because the step-through that follows is read against a model you have already committed to. The four field skins share one code path and one set of numbers, so mixed-major classes discuss the same machine behaviour in four different worlds.</p>
-      
       <section class="card" style="margin-top:18px;" aria-labelledby="journal-h">
         <h3 id="journal-h">Your prediction journal</h3>
         <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">Download a plain-text record of every prediction you have locked in: what you predicted, what the program printed, and — when you parted — the line where your model and the machine diverged. You can submit this file to your instructor.</p>
@@ -1097,24 +1090,6 @@ for (int i = 0; i < 3; i++) {
         <p class="journal-status" id="journal-status" role="status"></p>
       </section>
 
-      <section class="card" style="margin-top:18px;" aria-labelledby="digest-h">
-        <h3 id="digest-h">Instructor digest — where the class parted</h3>
-        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">Paste one or more exported journals below, or load journal files, then build the digest. It aggregates attempts per exercise, counts wrong predictions, and surfaces the most common wrong prediction and parting line for each exercise. Rows where anyone missed are highlighted.</p>
-        <div style="margin-top:14px;display:grid;gap:10px;">
-          <label for="digest-input" style="font-weight:700;font-size:.92rem;">Journals (paste text here)</label>
-          <textarea class="digest-textarea" id="digest-input" placeholder="Paste one or more TraceFirst prediction journals here…" aria-describedby="digest-count"></textarea>
-          <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
-            <label for="digest-files" style="font-weight:600;font-size:.92rem;">Or load files:</label>
-            <input type="file" id="digest-files" accept=".txt,text/plain" multiple aria-label="Load one or more prediction journal text files">
-          </div>
-          <div class="journal-actions" style="margin-top:2px;">
-            <button class="btn" type="button" id="build-digest-btn">Build digest</button>
-            <button class="btn ghost" type="button" id="clear-digest-btn">Clear</button>
-          </div>
-          <p class="journal-status" id="digest-count" role="status"></p>
-        </div>
-        <div id="digest-result" aria-live="polite"></div>
-      </section>
       </div><!-- /tracer-mode -->
 
       <div id="gym-mode" role="tabpanel" tabindex="0" hidden>
@@ -1350,6 +1325,37 @@ for (int i = 0; i < 3; i++) {
         </section>
         <p class="foot"><strong>Keep your work:</strong> your programs are saved in this browser, on this device, so they are here when you return. Copy a finished program into your own files as a backup.</p>
       </div><!-- /make-mode -->
+
+      <section class="card instructors" style="margin-top:26px;" aria-labelledby="instructors-h">
+        <div class="instructors-head">
+          <div>
+            <h3 id="instructors-h">For instructors</h3>
+            <p style="font-size:.92rem;color:var(--ink-soft);margin-top:4px;">Build a class digest from students' exported prediction journals: attempts per exercise, the most common wrong prediction, and discussion cards for the most-missed exercises.</p>
+          </div>
+          <button class="btn ghost small" type="button" id="instructors-toggle" aria-expanded="false" aria-controls="instructors-body">Expand</button>
+        </div>
+        <div id="instructors-body" hidden>
+          <h4 id="digest-h" style="font-size:1rem;margin-top:16px;">Instructor digest — where the class parted</h4>
+          <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">Paste one or more exported journals below, or load journal files, then build the digest. It aggregates attempts per exercise, counts wrong predictions, and surfaces the most common wrong prediction and parting line for each exercise. Rows where anyone missed are highlighted.</p>
+          <div style="margin-top:14px;display:grid;gap:10px;">
+            <label for="digest-input" style="font-weight:700;font-size:.92rem;">Journals (paste text here)</label>
+            <textarea class="digest-textarea" id="digest-input" placeholder="Paste one or more TraceFirst prediction journals here…" aria-describedby="digest-count"></textarea>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+              <label for="digest-files" style="font-weight:600;font-size:.92rem;">Or load files:</label>
+              <input type="file" id="digest-files" accept=".txt,text/plain" multiple aria-label="Load one or more prediction journal text files">
+            </div>
+            <div class="journal-actions" style="margin-top:2px;">
+              <button class="btn" type="button" id="build-digest-btn">Build digest</button>
+              <button class="btn ghost" type="button" id="clear-digest-btn">Clear</button>
+            </div>
+            <p class="journal-status" id="digest-count" role="status"></p>
+          </div>
+          <div id="digest-result" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <p class="foot"><strong>How TraceFirst works:</strong> each exercise follows PRIMM — Predict, Run, Investigate, Modify — a sequence from computing-education research. The prediction is not a quiz before the lesson; it <em>is</em> the lesson, because the step-through that follows is read against a model you have already committed to.</p>
+
       <div class="sr-live" aria-live="polite" id="live"></div>
     </main>
     <script>
@@ -6424,6 +6430,16 @@ for (int i = 0; i < 3; i++) {
     });
 
     /* ---------------- Instructor digest ---------------- */
+    var instructorsToggle = $("instructors-toggle");
+    var instructorsBody = $("instructors-body");
+    if (instructorsToggle && instructorsBody) {
+      instructorsToggle.addEventListener("click", function () {
+        var open = instructorsBody.hidden;
+        instructorsBody.hidden = !open;
+        instructorsToggle.textContent = open ? "Collapse" : "Expand";
+        instructorsToggle.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+    }
     var digestFileTexts = [];
     var filesInput = $("digest-files");
     if (filesInput) filesInput.addEventListener("change", function(){
