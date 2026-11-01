@@ -608,6 +608,32 @@
       .digest-table th{background:var(--panel-2);font-family:"IBM Plex Mono",monospace;font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
       .digest-table tr.hot td{background:var(--amber-soft)}
       .digest-summary{margin-top:12px;font-size:.95rem}
+      /* Pair prediction */
+      .pair-toggle{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+      .pair-toggle-btn{border:1.5px solid var(--line);background:var(--panel-2);color:var(--ink);border-radius:999px;padding:8px 14px;font-weight:700;font-size:.9rem}
+      .pair-toggle-btn[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-strong)}
+      .pair-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+      @media(max-width:640px){.pair-grid{grid-template-columns:1fr}.pair-vs{grid-template-columns:1fr}}
+      .pair-col{border:1px solid var(--line);border-radius:10px;padding:14px;background:var(--panel-2)}
+      .pair-col h4{margin:0;font-size:.95rem}
+      .pair-col .options{grid-template-columns:1fr}
+      .pair-status{font-size:.9rem;color:var(--ink-soft);margin-top:10px;min-height:1.3em}
+      .pair-status.locked{color:var(--accent-strong);font-weight:700}
+      .pair-agree{margin-top:14px;border-radius:10px;padding:12px 14px;background:var(--accent-soft);color:var(--accent-strong);font-weight:600}
+      .pair-differ{margin-top:14px;border:1.5px solid var(--amber);background:var(--amber-soft);border-radius:10px;padding:14px}
+      .pair-vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+      .pair-vs div{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:9px 12px;font-family:"IBM Plex Mono",monospace;font-size:.93rem}
+      .pair-vs div span{display:block;font-family:"IBM Plex Sans",sans-serif;font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);font-weight:700}
+      /* Discussion cards */
+      .discuss-section{margin-top:22px;border-top:1px dashed var(--line);padding-top:16px}
+      .discuss-section h4{font-family:"Source Serif 4",Georgia,serif;font-size:1.2rem;margin:0}
+      .discuss-card{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--panel-2);margin-top:12px}
+      .discuss-card h5{margin:0;font-size:1rem}
+      .discuss-code{margin-top:10px;background:var(--code-bg);color:var(--code-ink);border-radius:10px;padding:12px 14px;font-family:"IBM Plex Mono",monospace;font-size:.85rem;line-height:1.55;white-space:pre-wrap;word-break:break-word;overflow-x:auto}
+      .discuss-card p{margin-top:9px;font-size:.94rem}
+      .discuss-prompts{margin:10px 0 0;padding-left:20px;font-size:.94rem}
+      .discuss-prompts li{margin-top:4px}
+      .copy-status{font-size:.9rem;color:var(--ink-soft)}
       .membox .ptr-arrow{color:var(--accent-strong);font-weight:700}
       input[type="file"]{font:inherit;max-width:100%}
       @media(max-width:640px){.digest-table{min-width:0}.digest-table th,.digest-table td{padding:7px 8px;font-size:.84rem}}
@@ -815,7 +841,12 @@ for (int i = 0; i < 3; i++) {
 
           <section class="card" aria-labelledby="predict-h">
             <h3 id="predict-h">Stage 1 — Predict</h3>
-            <p class="predict-q" id="predict-q"></p>
+            <div class="pair-toggle" role="group" aria-label="Prediction mode">
+              <button class="pair-toggle-btn" type="button" id="pair-solo-btn" aria-pressed="true">Predicting solo</button>
+              <button class="pair-toggle-btn" type="button" id="pair-partner-btn" aria-pressed="false">Predicting with a partner</button>
+            </div>
+            <p class="predict-q" id="predict-q" style="margin-top:12px;"></p>
+            <div id="solo-predict-ui">
             <div class="options" id="predict-options"></div>
             <div class="lockrow">
               <button class="btn" id="lock-btn" disabled>
@@ -826,6 +857,40 @@ for (int i = 0; i < 3; i++) {
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
                 The tracer stays locked until you commit. Guessing is the point: a wrong prediction you own teaches more than a right answer you copied.
               </span>
+            </div>
+            </div>
+            <div id="pair-predict-ui" hidden>
+              <p style="font-size:.92rem;color:var(--ink-soft);margin-top:10px;">Each partner predicts on their own and locks it in. Both locks must land before the tracer opens.</p>
+              <div class="pair-grid">
+                <div class="pair-col">
+                  <h4><label for="pair-a-select">Partner A prediction</label></h4>
+                  <select id="pair-a-select" class="digest-textarea" style="min-height:0;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:.95rem;margin-top:10px;" aria-label="Partner A prediction"></select>
+                  <div class="options" id="pair-a-options" hidden></div>
+                  <div class="lockrow"><button class="btn small" type="button" id="pair-a-lock" disabled>Lock Partner A prediction</button></div>
+                  <p class="pair-status" id="pair-a-status" role="status"></p>
+                </div>
+                <div class="pair-col">
+                  <h4><label for="pair-b-select">Partner B prediction</label></h4>
+                  <select id="pair-b-select" class="digest-textarea" style="min-height:0;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:.95rem;margin-top:10px;" aria-label="Partner B prediction"></select>
+                  <div class="options" id="pair-b-options" hidden></div>
+                  <div class="lockrow"><button class="btn small" type="button" id="pair-b-lock" disabled>Lock Partner B prediction</button></div>
+                  <p class="pair-status" id="pair-b-status" role="status"></p>
+                </div>
+              </div>
+              <div class="pair-agree" id="pair-agree-note" hidden role="status"></div>
+              <div class="pair-differ" id="pair-differ" hidden>
+                <p style="font-weight:700;">Your predictions differ. Talk it over: each partner defends their answer line by line. Then agree on one joint prediction.</p>
+                <div class="pair-vs">
+                  <div><span>Partner A predicted</span><strong id="pair-differ-a"></strong></div>
+                  <div><span>Partner B predicted</span><strong id="pair-differ-b"></strong></div>
+                </div>
+                <div class="pair-col" style="margin-top:12px;">
+                  <h4><label for="joint-select">Joint prediction</label></h4>
+                  <select id="joint-select" class="digest-textarea" style="min-height:0;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:.95rem;margin-top:10px;" aria-label="Joint prediction"></select>
+                  <div class="lockrow"><button class="btn small" type="button" id="joint-lock" disabled>Lock joint prediction</button></div>
+                  <p class="pair-status" id="joint-status" role="status"></p>
+                </div>
+              </div>
             </div>
             <div class="locked-banner" id="locked-banner" role="status"></div>
           </section>
@@ -1811,13 +1876,17 @@ for (int i = 0; i < 3; i++) {
     ];
 
     /* ---------------- State (in-memory only, this session) ---------------- */
+    function freshExState() {
+      return { selected: -1, locked: false, correct: null, step: -1, traceDone: false,
+               modSelected: -1, modDone: false, modCorrect: null,
+               pair: false, pairASelected: -1, pairALocked: false,
+               pairBSelected: -1, pairBLocked: false, jointSelected: -1, jointLocked: false };
+    }
     var state = {
       skin: "health",
+      pairMode: false,
       current: 0,
-      ex: EXERCISES.map(function () {
-        return { selected: -1, locked: false, correct: null, step: -1, traceDone: false,
-                 modSelected: -1, modDone: false, modCorrect: null };
-      })
+      ex: EXERCISES.map(function () { return freshExState(); })
     };
 
     var $ = function (id) { return document.getElementById(id); };
@@ -1930,9 +1999,32 @@ for (int i = 0; i < 3; i++) {
       });
     }
 
+    function fillPairSelect(sel, ex, value) {
+      if (!sel) return;
+      var cur = sel.value;
+      sel.innerHTML = "";
+      var ph = document.createElement("option");
+      ph.value = "-1"; ph.textContent = "Choose a prediction…";
+      sel.appendChild(ph);
+      ex.options.forEach(function (opt, i) {
+        var o = document.createElement("option");
+        o.value = String(i); o.textContent = opt;
+        sel.appendChild(o);
+      });
+      sel.value = String(value);
+    }
     function renderPredict() {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
       $("predict-q").textContent = ex.question;
+      // Toggle
+      var soloBtn = $("pair-solo-btn"), partnerBtn = $("pair-partner-btn");
+      if (soloBtn) soloBtn.setAttribute("aria-pressed", state.pairMode ? "false" : "true");
+      if (partnerBtn) partnerBtn.setAttribute("aria-pressed", state.pairMode ? "true" : "false");
+      var soloUI = $("solo-predict-ui"), pairUI = $("pair-predict-ui");
+      if (soloUI) soloUI.hidden = state.pairMode;
+      if (pairUI) pairUI.hidden = !state.pairMode;
+
+      // Solo UI (unchanged behaviour)
       var box = $("predict-options"); box.innerHTML = "";
       ex.options.forEach(function (opt, i) {
         var b = document.createElement("button");
@@ -1946,7 +2038,7 @@ for (int i = 0; i < 3; i++) {
         } else {
           b.addEventListener("click", function () {
             s.selected = i; renderPredict();
-            $("lock-btn").disabled = false;
+            var lb = $("lock-btn"); if (lb) lb.disabled = false;
           });
         }
         box.appendChild(b);
@@ -1954,11 +2046,85 @@ for (int i = 0; i < 3; i++) {
       $("lock-btn").disabled = s.locked || s.selected < 0;
       $("lock-btn").style.display = s.locked ? "none" : "";
       $("lock-note").style.display = s.locked ? "none" : "";
+
+      // Pair UI
+      if (state.pairMode) {
+        var aSel = $("pair-a-select"), bSel = $("pair-b-select"), jSel = $("joint-select");
+        // Preserve in-progress select values from state; selects are static elements
+        if (document.activeElement !== aSel) fillPairSelect(aSel, ex, s.pairASelected);
+        else fillPairSelect(aSel, ex, s.pairASelected);
+        fillPairSelect(bSel, ex, s.pairBSelected);
+        aSel.disabled = s.pairALocked || s.locked;
+        bSel.disabled = s.pairBLocked || s.locked;
+        $("pair-a-lock").disabled = s.pairALocked || s.locked || s.pairASelected < 0;
+        $("pair-b-lock").disabled = s.pairBLocked || s.locked || s.pairBSelected < 0;
+        $("pair-a-lock").style.display = (s.pairALocked || s.locked) ? "none" : "";
+        $("pair-b-lock").style.display = (s.pairBLocked || s.locked) ? "none" : "";
+        var aSt = $("pair-a-status"), bSt = $("pair-b-status");
+        if (s.pairALocked) { aSt.textContent = "Partner A locked: “" + ex.options[s.pairASelected] + "”"; aSt.className = "pair-status locked"; }
+        else { aSt.textContent = s.pairASelected >= 0 ? "Partner A chose “" + ex.options[s.pairASelected] + "” — not locked yet." : "Partner A has not chosen yet."; aSt.className = "pair-status"; }
+        if (s.pairBLocked) { bSt.textContent = "Partner B locked: “" + ex.options[s.pairBSelected] + "”"; bSt.className = "pair-status locked"; }
+        else { bSt.textContent = s.pairBSelected >= 0 ? "Partner B chose “" + ex.options[s.pairBSelected] + "” — not locked yet." : "Partner B has not chosen yet."; bSt.className = "pair-status"; }
+
+        var bothLocked = s.pairALocked && s.pairBLocked;
+        var agree = bothLocked && s.pairASelected === s.pairBSelected;
+        var differ = bothLocked && !agree;
+        var agreeNote = $("pair-agree-note");
+        if (agree) {
+          agreeNote.hidden = false;
+          agreeNote.textContent = "The pair agreed: both partners predicted “" + ex.options[s.pairASelected] + "”. That agreed value is the pair's locked prediction, and the tracer is open.";
+        } else agreeNote.hidden = true;
+        var differBox = $("pair-differ");
+        if (differ && !s.locked) {
+          differBox.hidden = false;
+          $("pair-differ-a").textContent = ex.options[s.pairASelected];
+          $("pair-differ-b").textContent = ex.options[s.pairBSelected];
+          fillPairSelect(jSel, ex, s.jointSelected);
+          jSel.disabled = s.jointLocked;
+          $("joint-lock").disabled = s.jointLocked || s.jointSelected < 0;
+          $("joint-lock").style.display = s.jointLocked ? "none" : "";
+          var jSt = $("joint-status");
+          if (s.jointLocked) { jSt.textContent = "Joint prediction locked: “" + ex.options[s.jointSelected] + "”"; jSt.className = "pair-status locked"; }
+          else { jSt.textContent = s.jointSelected >= 0 ? "Joint choice: “" + ex.options[s.jointSelected] + "” — not locked yet." : "No joint prediction chosen yet."; jSt.className = "pair-status"; }
+        } else if (differ && s.locked) {
+          differBox.hidden = false;
+          $("pair-differ-a").textContent = ex.options[s.pairASelected];
+          $("pair-differ-b").textContent = ex.options[s.pairBSelected];
+          fillPairSelect(jSel, ex, s.jointSelected);
+          jSel.disabled = true;
+          $("joint-lock").disabled = true; $("joint-lock").style.display = "none";
+          var jSt2 = $("joint-status");
+          jSt2.textContent = "Joint prediction locked: “" + ex.options[s.selected] + "”"; jSt2.className = "pair-status locked";
+        } else {
+          differBox.hidden = true;
+        }
+      }
+
       var banner = $("locked-banner");
       if (s.locked) {
         banner.classList.add("show");
-        banner.textContent = "Prediction locked in: “" + ex.options[s.selected] + "”. The tracer is open — step through and hold the machine to your answer.";
+        banner.textContent = "Prediction locked in: “" + ex.options[s.selected] + "”" + (s.pair ? " (pair)" : "") + ". The tracer is open — step through and hold the machine to your answer.";
       } else banner.classList.remove("show");
+    }
+    function finalizePairPrediction(idx) {
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      s.selected = idx; s.locked = true; s.pair = true;
+      s.correct = idx === ex.correct;
+      announce("Pair prediction locked: " + ex.options[idx] + ". The tracer is now open.");
+      renderAll();
+    }
+    function setPairMode(on) {
+      if (state.pairMode === on) { renderPredict(); return; }
+      state.pairMode = on;
+      var s = state.ex[state.current];
+      // Switching back to solo mid-exercise resets that exercise's prediction stage;
+      // switching into partner mode likewise starts that exercise's stage fresh
+      // unless the exercise is already finished (Modify done).
+      if (s && !s.modDone) {
+        state.ex[state.current] = freshExState();
+      }
+      announce(on ? "Predicting with a partner. Each partner locks a prediction before the tracer opens." : "Predicting solo. This exercise's prediction stage has been reset.");
+      renderAll();
     }
 
     function renderTrace() {
@@ -2113,6 +2279,50 @@ for (int i = 0; i < 3; i++) {
       renderAll();
     });
 
+    // Pair prediction wiring
+    (function wirePair() {
+      var soloBtn = $("pair-solo-btn"), partnerBtn = $("pair-partner-btn");
+      if (soloBtn) soloBtn.addEventListener("click", function () { setPairMode(false); });
+      if (partnerBtn) partnerBtn.addEventListener("click", function () { setPairMode(true); });
+      var aSel = $("pair-a-select"), bSel = $("pair-b-select"), jSel = $("joint-select");
+      if (aSel) aSel.addEventListener("change", function () {
+        var s = state.ex[state.current]; if (s.pairALocked || s.locked) return;
+        s.pairASelected = parseInt(aSel.value, 10); if (isNaN(s.pairASelected)) s.pairASelected = -1;
+        renderPredict();
+      });
+      if (bSel) bSel.addEventListener("change", function () {
+        var s = state.ex[state.current]; if (s.pairBLocked || s.locked) return;
+        s.pairBSelected = parseInt(bSel.value, 10); if (isNaN(s.pairBSelected)) s.pairBSelected = -1;
+        renderPredict();
+      });
+      if (jSel) jSel.addEventListener("change", function () {
+        var s = state.ex[state.current]; if (s.jointLocked || s.locked) return;
+        s.jointSelected = parseInt(jSel.value, 10); if (isNaN(s.jointSelected)) s.jointSelected = -1;
+        renderPredict();
+      });
+      var aLock = $("pair-a-lock"), bLock = $("pair-b-lock"), jLock = $("joint-lock");
+      function afterPartnerLock() {
+        var s = state.ex[state.current];
+        if (s.pairALocked && s.pairBLocked && s.pairASelected === s.pairBSelected && s.pairASelected >= 0) {
+          finalizePairPrediction(s.pairASelected);
+        } else {
+          renderAll();
+        }
+      }
+      if (aLock) aLock.addEventListener("click", function () {
+        var s = state.ex[state.current]; if (s.pairASelected < 0 || s.pairALocked) return;
+        s.pairALocked = true; announce("Partner A prediction locked."); afterPartnerLock();
+      });
+      if (bLock) bLock.addEventListener("click", function () {
+        var s = state.ex[state.current]; if (s.pairBSelected < 0 || s.pairBLocked) return;
+        s.pairBLocked = true; announce("Partner B prediction locked."); afterPartnerLock();
+      });
+      if (jLock) jLock.addEventListener("click", function () {
+        var s = state.ex[state.current]; if (s.jointSelected < 0 || s.jointLocked) return;
+        s.jointLocked = true; finalizePairPrediction(s.jointSelected);
+      });
+    })();
+
     $("step-next").addEventListener("click", function () {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
       if (s.step < ex.steps.length - 1) {
@@ -2152,10 +2362,7 @@ for (int i = 0; i < 3; i++) {
       }
     });
     $("restart-all").addEventListener("click", function () {
-      state.ex = EXERCISES.map(function () {
-        return { selected: -1, locked: false, correct: null, step: -1, traceDone: false,
-                 modSelected: -1, modDone: false, modCorrect: null };
-      });
+      state.ex = EXERCISES.map(function () { return freshExState(); });
       state.current = 0; renderAll();
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
@@ -5230,7 +5437,7 @@ for (int i = 0; i < 3; i++) {
       EXERCISES.forEach(function(ex, i){
         var s = state.ex[i];
         if (!s.locked) return;
-        lines.push("Exercise: " + (i + 1) + " - " + ex.title);
+        lines.push("Exercise: " + (i + 1) + " - " + ex.title + (s.pair ? " (pair)" : ""));
         lines.push("Concept: " + ex.concept);
         lines.push("Prediction: " + ex.options[s.selected]);
         lines.push("Correct output: " + ex.options[ex.correct]);
@@ -5308,9 +5515,9 @@ for (int i = 0; i < 3; i++) {
         var L = line.trim();
         if (!L) return;
         var em = L.match(/^Exercise\s*:\s*(\d+)\s*(?:[-–—]\s*(.*))?$/i) || L.match(/^Exercise\s+(\d+)\b\s*(?:[-–—]\s*(.*))?$/i);
-        if (em) { cur = { num: parseInt(em[1],10), title: em[2]||"", prediction:null, correct:null, verdict:null, parting:null }; entries++; ensure(cur.num); if (cur.title && !agg[cur.num].title) agg[cur.num].title = cur.title; return; }
+        if (em) { var cleanTitle = (em[2]||"").replace(/\s*\(pair\)\s*$/i, "").trim(); cur = { num: parseInt(em[1],10), title: cleanTitle, prediction:null, correct:null, verdict:null, parting:null }; entries++; ensure(cur.num); if (cur.title && !agg[cur.num].title) agg[cur.num].title = cur.title; return; }
         if (!cur) return;
-        var pm = L.match(/^Prediction\s*:\s*(.+)$/i); if (pm) { cur.prediction = pm[1].trim(); return; }
+        var pm = L.match(/^Prediction\s*:\s*(.+)$/i); if (pm) { cur.prediction = pm[1].trim().replace(/\s*\(pair\)\s*$/i, "").trim(); return; }
         var cm = L.match(/^(?:Correct output|Correct)\s*:\s*(.+)$/i); if (cm) { cur.correct = cm[1].trim(); return; }
         var vm = L.match(/^Verdict\s*:\s*(.+)$/i);
         if (vm) {
@@ -5358,12 +5565,84 @@ for (int i = 0; i < 3; i++) {
       } else {
         html += '<p class="digest-summary"><strong>No misses in these journals.</strong> Every parsed prediction was correct.</p>';
       }
+      // ---- Discussion cards ----
+      var wrongNums = nums.filter(function(n){ return parsed.agg[n].wrong > 0; }).sort(function(a,b){
+        var d = parsed.agg[b].wrong - parsed.agg[a].wrong;
+        return d !== 0 ? d : a - b;
+      }).slice(0, 5);
+      var cardsText = "";
+      html += '<div class="discuss-section" id="discussion-cards"><h4>Discussion cards</h4>';
+      if (!wrongNums.length) {
+        html += '<p class="digest-summary">No discussion cards — there were no wrong predictions in these journals.</p>';
+        cardsText = "";
+      } else {
+        html += '<div class="journal-actions"><button class="btn" type="button" id="copy-cards-btn">Copy cards as text</button><span class="copy-status" id="copy-cards-status" role="status"></span></div>';
+        var textParts = [];
+        wrongNums.forEach(function(n, ci){
+          var a = parsed.agg[n];
+          var ex = EXERCISES[n-1] || null;
+          var title2 = (a.title || (ex ? ex.title : "")).replace(/\s*\(pair\)\s*$/i, "").trim();
+          var commonPred = mostCommon(a.wrongPred) || "—";
+          var actualOut = ex ? ex.options[ex.correct] : "—";
+          var partingTxt = mostCommon(a.parting) || "—";
+          var programTxt = ex ? ex.code.join("\n") : "(program not available in this page's exercise set)";
+          html += '<article class="discuss-card"><h5>Exercise ' + n + (title2 ? " — " + esc(title2) : "") + '</h5>'
+            + '<div class="discuss-code">' + esc(programTxt) + '</div>'
+            + '<p>The class\'s most common prediction: <strong>' + esc(commonPred) + '</strong></p>'
+            + '<p>What the program actually prints: <strong>' + esc(actualOut) + '</strong></p>'
+            + '<p>Where the models parted: ' + esc(partingTxt) + '</p>'
+            + '<p style="font-weight:700;margin-top:12px;">Discussion prompts</p>'
+            + '<ul class="discuss-prompts"><li>Where did the class\'s model of the machine part from the machine itself?</li><li>What would you ask the class before showing them the answer?</li></ul>'
+            + '</article>';
+          var tp = [];
+          tp.push("Discussion card — Exercise " + n + (title2 ? " — " + title2 : ""));
+          tp.push("Program:");
+          tp.push(programTxt);
+          tp.push("The class's most common prediction: " + commonPred);
+          tp.push("What the program actually prints: " + actualOut);
+          tp.push("Where the models parted: " + partingTxt);
+          tp.push("Discussion prompts:");
+          tp.push("- Where did the class's model of the machine part from the machine itself?");
+          tp.push("- What would you ask the class before showing them the answer?");
+          textParts.push(tp.join("\n"));
+        });
+        cardsText = textParts.join("\n\n");
+        html += '</div>';
+      }
+      if (!wrongNums.length) html += '</div>';
       resultBox.innerHTML = html;
+      // Store plain text for copy + wire button
+      resultBox._cardsText = cardsText;
+      window.__tfCardsText = cardsText;
+      var copyBtn = document.getElementById("copy-cards-btn");
+      if (copyBtn) copyBtn.addEventListener("click", function(){
+        var txt = window.__tfCardsText || "";
+        var status = document.getElementById("copy-cards-status");
+        function done(ok) {
+          if (status) status.textContent = ok ? "Cards copied as text — paste them into slides or notes." : "Copy failed — select the cards on the page and copy manually.";
+          announce(ok ? "Discussion cards copied as text." : "Copying the discussion cards failed.");
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(txt).then(function(){ done(true); }, function(){
+            // Fallback
+            try {
+              var ta = document.createElement("textarea"); ta.value = txt; ta.style.position = "fixed"; ta.style.opacity = "0";
+              document.body.appendChild(ta); ta.select(); var ok2 = document.execCommand("copy"); document.body.removeChild(ta); done(!!ok2);
+            } catch (e) { done(false); }
+          });
+        } else {
+          try {
+            var ta2 = document.createElement("textarea"); ta2.value = txt; ta2.style.position = "fixed"; ta2.style.opacity = "0";
+            document.body.appendChild(ta2); ta2.select(); var ok3 = document.execCommand("copy"); document.body.removeChild(ta2); done(!!ok3);
+          } catch (e) { done(false); }
+        }
+      });
       announce("Digest built from " + parsed.journalCount + " journals.");
     });
     var clearBtn = $("clear-digest-btn");
     if (clearBtn) clearBtn.addEventListener("click", function(){
       $("digest-input").value = ""; $("digest-result").innerHTML = ""; $("digest-count").textContent = "";
+      window.__tfCardsText = "";
       if (filesInput) filesInput.value = ""; digestFileTexts = [];
     });
 
