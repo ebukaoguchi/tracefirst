@@ -523,6 +523,13 @@
       .bolt-cmds ul { margin: 0; padding-left: 18px; display: grid; gap: 5px; }
       .bolt-example { background: var(--code-bg); color: var(--code-ink); border-radius: 10px; padding: 12px 14px; font-family: "IBM Plex Mono", monospace; font-size: .86rem; white-space: pre; overflow-x: auto; line-height: 1.6; }
       .bolt-hint { margin-top: 14px; }
+      .bolt-chal-head { font-family: "Source Serif 4", Georgia, serif; font-size: 1.25rem; line-height: 1.2; font-weight: 700; }
+      .bolt-chal-framing { font-size: .93rem; color: var(--ink-soft); margin-top: 6px; max-width: 720px; }
+      .bolt-chal-framing strong { color: var(--ink); }
+      .bolt-par { margin-top: 10px; display: none; align-items: center; gap: 8px; flex-wrap: wrap; font-size: .92rem; background: var(--amber-soft); border: 1px solid var(--amber); border-radius: 10px; padding: 9px 12px; }
+      .bolt-par.show { display: flex; }
+      .bolt-par .par-num { font-family: "IBM Plex Mono", monospace; font-weight: 700; }
+      .bolt-par .star { color: var(--amber); font-size: 1.05rem; line-height: 1; }
 
       /* Journal + digest + a11y */
       .journal-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;align-items:center}
@@ -610,6 +617,15 @@
           <div class="scorebar" id="bolt-scorebar" aria-label="Your Bolt's World progress"></div>
         </section>
 
+        <section class="toolbar" aria-labelledby="bolt-chal-h">
+          <div>
+            <h3 class="bolt-chal-head" id="bolt-chal-h">Bolt Challenges (optional)</h3>
+            <p class="bolt-chal-framing">For students who <strong>finish the eight worlds and want more</strong>. These challenges are entirely opt-in: they gate nothing and unlock nothing, and they use the same Workshop, the same editor, and the same Run, Step, and Reset controls below. Pick one to load it into the board.</p>
+            <div class="exnav" id="boltchalnav" style="margin-top:12px;" role="group" aria-label="Choose an optional Bolt challenge"></div>
+          </div>
+          <div class="scorebar" id="bolt-chal-scorebar" aria-label="Your Bolt Challenges progress"></div>
+        </section>
+
         <div class="grid">
           <div>
             <section class="card" aria-labelledby="bolt-title">
@@ -617,6 +633,7 @@
               <h2 id="bolt-title"></h2>
               <p class="story" id="bolt-story"></p>
               <p class="goal" id="bolt-goal"></p>
+              <p class="bolt-par" id="bolt-par" aria-label="Challenge par"></p>
               <div class="bolt-board-wrap">
                 <div class="bolt-board" id="bolt-board" role="img" aria-label="The Workshop board"></div>
               </div>
@@ -3044,15 +3061,61 @@ for (int i = 0; i < 3; i++) {
         starter: "// Crates block the direct road.\n// Sensors and if statements let Bolt\n// check what is ahead before he moves.\n\n" }
     ];
 
+    /* ----- Bolt Challenges (optional) — opt-in, tracked separately from the eight worlds.
+       Coordinates are (column, row): columns west to east, rows south to north.
+       Bolt starts at (1,1) facing East in every challenge, as in the graded worlds.
+       A challenge is checked only when the program ends. Finishing counts as
+       completed; finishing in at most par actions also earns an efficiency star. */
+    var BOLT_CHALLENGES = [
+      { name: "Double Back", concept: "Sequence · Carrying & Returning", w: 8, h: 1, par: 20,
+        start: { x: 1, y: 1, dir: 0 }, crates: [], cells: { "2,1": 1 },
+        story: "A one-row hall, eight squares long, with a single battery cell waiting one square ahead of Bolt. The job is not just to fetch it — it is to deliver it to the far end and still come home.",
+        goalText: "Pick up the battery cell, carry it to the far end of the hall (column 8), put it down there, and come back to your starting square.",
+        hint: "One move puts Bolt on the cell. Pick it up, carry it six more squares east to column 8, and put it down. Two left turns point Bolt home; seven moves walk him back to (1,1).",
+        goal: function (st) { return (st.cells["8,1"] || 0) >= 1 && st.x === 1 && st.y === 1 && st.bag === 0; },
+        starter: "// Optional challenge — Double Back.\n// Fetch the cell, deliver it to column 8,\n// put it down, and come back to (1,1).\n\n" },
+      { name: "The Slalom", concept: "Decisions · Sensors · Route Finding", w: 7, h: 5, par: 24,
+        start: { x: 1, y: 1, dir: 0 }, crates: [[3, 1], [3, 2], [3, 3], [5, 3], [5, 4], [5, 5]], cells: { "7,1": 1 },
+        story: "Two walls of crates stand across the Workshop. The first wall's gap is at the top; the second wall's gap is at the bottom. One battery cell waits at the far corner, at (7,1).",
+        goalText: "Thread your way through the two crate walls and collect the battery cell at the far corner.",
+        hint: "Climb beside the first wall and cross above it, drop back down between the two walls, cross under the second wall, then finish along the bottom row in the far corner.",
+        goal: function (st) { return st.bag >= 1; },
+        starter: "// Optional challenge — The Slalom.\n// First gap at the top, second gap at\n// the bottom. The cell waits at (7,1).\n\n" },
+      { name: "Column Harvest", concept: "Loops · Repeated Patterns", w: 6, h: 4, par: 12,
+        start: { x: 1, y: 1, dir: 0 }, crates: [], cells: { "3,1": 1, "3,2": 1, "3,3": 1, "3,4": 1 },
+        story: "Four battery cells stand stacked in a single column — column 3, one on every row from the bottom of the Workshop to the top.",
+        goalText: "Collect all four battery cells stacked in column 3.",
+        hint: "Two moves east put Bolt on the bottom cell. Pick it up, turn left to face North, then repeat the same move-and-pick pattern up the column.",
+        goal: function (st) { return st.bag >= 4; },
+        starter: "// Optional challenge — Column Harvest.\n// Four cells, one column. Find the\n// pattern once, then repeat it.\n\n" },
+      { name: "The Long Way Home", concept: "Decisions · Sensors · Route Finding", w: 9, h: 2, par: 26,
+        start: { x: 1, y: 1, dir: 0 }, crates: [[5, 1], [7, 2]], cells: { "9,2": 1 },
+        story: "A hall only two rows high and nine columns long — and a crate blocks each row in turn, so no straight line reaches the end. One battery cell waits at the end of the top row, at (9,2).",
+        goalText: "The direct road is blocked twice. Zigzag around the crates and collect the battery cell at the end of the top row.",
+        hint: "When the bottom row is blocked, step up; when the top row is blocked, step back down. The crossings are at column 4 on the way up, column 6 on the way down, and column 8 on the way up again.",
+        goal: function (st) { return st.bag >= 1; },
+        starter: "// Optional challenge — The Long Way Home.\n// Blocked below, then blocked above.\n// Zigzag: up, across, down, across, up.\n\n" }
+    ];
+
     var bolt = {
-      current: 0, inited: false,
+      current: 0, kind: "world", challengeCurrent: 0, inited: false,
       code: BOLT_WORLDS.map(function (w) { return w.starter; }),
+      challengeCode: BOLT_CHALLENGES.map(function (w) { return w.starter; }),
       done: BOLT_WORLDS.map(function () { return false; }),
+      challengeDone: BOLT_CHALLENGES.map(function () { return false; }),
+      challengeStar: BOLT_CHALLENGES.map(function () { return false; }),
+      challengeBest: BOLT_CHALLENGES.map(function () { return null; }),
       st: null, gen: null, timer: null, actions: 0, hintShown: false
     };
     var boltRobotEl = null;
 
-    function boltWorld() { return BOLT_WORLDS[bolt.current]; }
+    function boltIsChallenge() { return bolt.kind === "challenge"; }
+    function boltWorld() { return boltIsChallenge() ? BOLT_CHALLENGES[bolt.challengeCurrent] : BOLT_WORLDS[bolt.current]; }
+    function boltSaveEditor() {
+      var v = $("bolt-editor").value;
+      if (boltIsChallenge()) bolt.challengeCode[bolt.challengeCurrent] = v; else bolt.code[bolt.current] = v;
+    }
+    function boltEditorCode() { return boltIsChallenge() ? bolt.challengeCode[bolt.challengeCurrent] : bolt.code[bolt.current]; }
     function boltKey(x, y) { return x + "," + y; }
     function boltIsCrate(w, x, y) {
       for (var i = 0; i < w.crates.length; i++) if (w.crates[i][0] === x && w.crates[i][1] === y) return true;
@@ -3099,11 +3162,15 @@ for (int i = 0; i < 3; i++) {
       }
       board.appendChild(boltRobotEl);
       updateBoltRobot();
-      $("bolt-statusbar").innerHTML =
+      var statusHtml =
         '<span class="metric"><strong>' + st.x + ", " + st.y + '</strong> <span>position (column, row)</span></span>' +
         '<span class="metric"><strong>' + BOLT_DIRS[st.dir].name + '</strong> <span>facing</span></span>' +
         '<span class="metric"><strong>' + st.bag + '</strong> <span>' + (st.bag === 1 ? "cell" : "cells") + ' in the bag</span></span>' +
         '<span class="metric"><strong>' + (st.cells[boltKey(st.x, st.y)] || 0) + '</strong> <span>on this square</span></span>';
+      if (boltIsChallenge()) {
+        statusHtml += '<span class="metric"><strong>' + bolt.actions + '</strong> <span>actions used · par ' + w.par + '</span></span>';
+      }
+      $("bolt-statusbar").innerHTML = statusHtml;
       board.setAttribute("aria-label", "The Workshop: " + w.w + " columns by " + w.h + " rows. Bolt is at column " + st.x + ", row " + st.y + ", facing " + BOLT_DIRS[st.dir].name + ", carrying " + st.bag + (st.bag === 1 ? " battery cell." : " battery cells."));
     }
     function updateBoltRobot() {
@@ -3120,7 +3187,7 @@ for (int i = 0; i < 3; i++) {
       BOLT_WORLDS.forEach(function (w, i) {
         var b = document.createElement("button");
         b.className = "ex-btn"; b.type = "button";
-        b.setAttribute("aria-current", bolt.current === i ? "true" : "false");
+        b.setAttribute("aria-current", (!boltIsChallenge() && bolt.current === i) ? "true" : "false");
         b.innerHTML = '<span class="n">' + (i + 1) + '</span><span>' + w.name +
           '<br><span class="status ' + (bolt.done[i] ? "good" : "") + '">' + (bolt.done[i] ? "complete ✓" : "not finished") + "</span></span>";
         b.addEventListener("click", function () { selectBoltWorld(i); });
@@ -3128,29 +3195,70 @@ for (int i = 0; i < 3; i++) {
       });
       var doneCount = bolt.done.filter(Boolean).length;
       $("bolt-scorebar").innerHTML = '<span class="metric"><strong>' + doneCount + " / " + BOLT_WORLDS.length + '</strong> <span>worlds completed this session</span></span>';
+      renderBoltChallengeNav();
+    }
+    function renderBoltChallengeNav() {
+      var box = $("boltchalnav"); if (!box) return;
+      box.innerHTML = "";
+      BOLT_CHALLENGES.forEach(function (w, i) {
+        var b = document.createElement("button");
+        b.className = "ex-btn"; b.type = "button";
+        b.setAttribute("aria-current", (boltIsChallenge() && bolt.challengeCurrent === i) ? "true" : "false");
+        b.setAttribute("aria-label", "Optional challenge " + (i + 1) + ": " + w.name + ", par " + w.par + " actions");
+        var status;
+        if (bolt.challengeStar[i]) status = '<span class="status good">complete ★ · ' + bolt.challengeBest[i] + ' actions (par ' + w.par + ')</span>';
+        else if (bolt.challengeDone[i]) status = '<span class="status good">complete ✓ · ' + bolt.challengeBest[i] + ' actions (par ' + w.par + ')</span>';
+        else status = '<span class="status">not finished · par ' + w.par + ' actions</span>';
+        b.innerHTML = '<span class="n">' + (i + 1) + '</span><span>' + esc(w.name) + "<br>" + status + "</span>";
+        b.addEventListener("click", function () { selectBoltChallenge(i); });
+        box.appendChild(b);
+      });
+      var cDone = bolt.challengeDone.filter(Boolean).length;
+      var cStars = bolt.challengeStar.filter(Boolean).length;
+      $("bolt-chal-scorebar").innerHTML =
+        '<span class="metric"><span>challenges completed </span><strong>' + cDone + " of " + BOLT_CHALLENGES.length + '</strong></span>' +
+        '<span class="metric"><strong>' + cStars + '</strong> <span>efficiency ' + (cStars === 1 ? "star" : "stars") + ' earned (finish in at most par)</span></span>';
     }
     function renderBoltWorld() {
-      var w = boltWorld();
+      var w = boltWorld(), chal = boltIsChallenge();
       boltStopRun(); bolt.gen = null; bolt.actions = 0;
       bolt.st = boltFreshState();
       bolt.hintShown = false;
-      $("bolt-concept").textContent = "World " + (bolt.current + 1) + " · " + w.concept;
+      $("bolt-concept").textContent = chal ? "Challenge " + (bolt.challengeCurrent + 1) + " of " + BOLT_CHALLENGES.length + " · Optional · " + w.concept
+                                           : "World " + (bolt.current + 1) + " · " + w.concept;
       $("bolt-title").textContent = w.name;
       $("bolt-story").textContent = w.story;
       $("bolt-goal").innerHTML = "<b>Goal:</b> " + esc(w.goalText);
-      $("bolt-editor").value = bolt.code[bolt.current];
+      var parEl = $("bolt-par");
+      if (chal) {
+        parEl.className = "bolt-par show";
+        parEl.innerHTML = '<span><span class="star" aria-hidden="true">★</span> <b>Par:</b> <span class="par-num">' + w.par + ' actions</span> — finish the challenge at all and it counts as completed; finish in at most ' + w.par + ' actions and you also earn the efficiency star. Your action count stays visible below the board while you run.</span>';
+      } else {
+        parEl.className = "bolt-par";
+        parEl.innerHTML = "";
+      }
+      $("bolt-editor").value = boltEditorCode();
       $("bolt-hint-box").className = "hintbox";
       $("bolt-hint-box").innerHTML = "";
       $("bolt-hint-btn").textContent = "Show the hint";
       renderBoltBoard();
       renderBoltNav();
-      boltMsg("info", "Write Bolt's program, then press <b>Run</b> to watch it, or <b>Step</b> to walk it one action at a time.");
+      if (chal) boltMsg("info", "Optional challenge — nothing here is required. Write Bolt's program, then press <b>Run</b> or <b>Step</b>. Bolt's goal is checked when your program ends, and your action count shows below the board, against par " + w.par + ".");
+      else boltMsg("info", "Write Bolt's program, then press <b>Run</b> to watch it, or <b>Step</b> to walk it one action at a time.");
     }
     function selectBoltWorld(i) {
-      bolt.code[bolt.current] = $("bolt-editor").value;
+      boltSaveEditor();
+      bolt.kind = "world";
       bolt.current = i;
       renderBoltWorld();
       announce("World " + (i + 1) + ": " + BOLT_WORLDS[i].name + ".");
+    }
+    function selectBoltChallenge(i) {
+      boltSaveEditor();
+      bolt.kind = "challenge";
+      bolt.challengeCurrent = i;
+      renderBoltWorld();
+      announce("Optional challenge " + (i + 1) + ": " + BOLT_CHALLENGES[i].name + ". Par " + BOLT_CHALLENGES[i].par + " actions.");
     }
     function initBolt() {
       if (bolt.inited) return;
@@ -3325,12 +3433,12 @@ for (int i = 0; i < 3; i++) {
     /* ----- Bolt: execution driver ----- */
     function boltPrepare() {
       boltStopRun();
-      bolt.code[bolt.current] = $("bolt-editor").value;
+      boltSaveEditor();
       bolt.st = boltFreshState();
       bolt.actions = 0;
       var prog;
       try {
-        prog = boltParse(bolt.code[bolt.current]);
+        prog = boltParse(boltEditorCode());
       } catch (e) {
         bolt.gen = null;
         renderBoltBoard();
@@ -3391,6 +3499,24 @@ for (int i = 0; i < 3; i++) {
       }
       if (r.done) {
         bolt.gen = null; boltStopRun();
+        if (boltIsChallenge()) {
+          var cw = boltWorld();
+          if (cw.goal(bolt.st)) {
+            var idx = bolt.challengeCurrent;
+            var star = bolt.actions <= cw.par;
+            bolt.challengeDone[idx] = true;
+            if (star) bolt.challengeStar[idx] = true;
+            if (bolt.challengeBest[idx] === null || bolt.actions < bolt.challengeBest[idx]) bolt.challengeBest[idx] = bolt.actions;
+            renderBoltNav();
+            boltMsg("good", "Challenge complete — " + esc(cw.name) + " is finished in " + bolt.actions + (bolt.actions === 1 ? " action" : " actions") + " (par " + cw.par + ")." +
+              (bolt.challengeStar[idx] ? " <span aria-hidden=\"true\">★</span> Efficiency star earned: finished in at most par." : " It counts as completed. Run it again in at most " + cw.par + " actions if you want the efficiency star.") +
+              (bolt.challengeDone.every(Boolean) ? " That is all four optional challenges." : ""));
+            announce("Challenge complete: " + cw.name);
+          } else {
+            boltMsg("info", "<b>The program ended.</b> The challenge is not complete yet: " + esc(cw.goalText) + " You used " + bolt.actions + (bolt.actions === 1 ? " action" : " actions") + " (par " + cw.par + "). Adjust the program and run it again.");
+          }
+          return;
+        }
         boltMsg("info", "<b>The program ended.</b> The goal is not met yet: " + esc(boltWorld().goalText) + " Adjust the program and run it again.");
         return;
       }
@@ -3403,7 +3529,7 @@ for (int i = 0; i < 3; i++) {
       }
       if (!boltApply(r.value.action, r.value.line)) { bolt.gen = null; boltStopRun(); renderBoltBoard(); return; }
       renderBoltBoard();
-      if (boltWorld().goal(bolt.st)) {
+      if (!boltIsChallenge() && boltWorld().goal(bolt.st)) {
         bolt.gen = null; boltStopRun();
         if (!bolt.done[bolt.current]) { bolt.done[bolt.current] = true; renderBoltNav(); }
         boltMsg("good", "World complete — " + esc(boltWorld().name) + " is solved in " + bolt.actions + (bolt.actions === 1 ? " action." : " actions.") +
@@ -3431,10 +3557,10 @@ for (int i = 0; i < 3; i++) {
       bolt.st = boltFreshState();
       bolt.actions = 0;
       renderBoltBoard();
-      boltMsg("info", "World reset — Bolt is back at the start, his bag is empty, and every cell is back in place.");
+      boltMsg("info", (boltIsChallenge() ? "Challenge" : "World") + " reset — Bolt is back at the start, his bag is empty, and every cell is back in place.");
     });
     $("bolt-editor").addEventListener("input", function () {
-      bolt.code[bolt.current] = this.value;
+      boltSaveEditor();
       if (bolt.gen || bolt.timer) {
         boltStopRun();
         bolt.gen = null;
