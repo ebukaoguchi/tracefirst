@@ -15,13 +15,14 @@ Every exercise exists in four story skins (Health & Biology, Psychology & Social
 
 ## Current state: prototype
 
-`index.html` is a self-contained prototype with five modes. Open it in any browser; there is nothing to install and nothing is sent anywhere.
+`index.html` is a self-contained prototype with six modes. Open it in any browser; there is nothing to install and nothing is sent anywhere.
 
 - **Bolt's World:** a pre-syntax robot environment, and the recommended starting point. Students program an original workshop robot in real C++ shape (commands, loops, conditionals, their own functions) across eight graded worlds, learning the logic of programming before formal syntax. Four optional challenge worlds with action budgets (par) sit below the graded worlds for students who finish and want more.
 - **Prediction Tracer:** thirteen exercises (assignment, integer division, if/else, for loops, functions, while loops, nested loops, arrays, strings, and a four-exercise pointers sequence covering addresses, dereference, pointer arithmetic, and dynamic memory), each running the full predict, trace, verdict, and modify loop, with a per-concept prediction record for the session. Students can export a prediction journal of their session, and an instructor digest aggregates exported journals into a per-exercise view of where predictions went wrong. The tracer is fully keyboard-operable, with screen-reader announcements for each step.
 - **Debugging Gym:** five rounds of find-the-bugs exercises built from real beginner programs, faulty and corrected versions side by side at the end of each round.
 - **Error Translator:** a searchable catalogue of twenty-six beginner compiler errors, each with the raw compiler message, a plain-English translation, the cause, and a before-and-after fix.
 - **Challenges:** tasks, guided projects, and scored exams at Beginner, Intermediate, and Expert levels, drawn from real course assignments.
+- **Make:** the authorship stage that completes the PRIMM sequence. Students write complete C++ programs in an in-page editor, run them with their own test input, and check them against six guided prompts, each with a verified test bench.
 
 ## Roadmap
 

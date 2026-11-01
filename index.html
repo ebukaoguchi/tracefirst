@@ -481,6 +481,30 @@
       .exam-q .eqtext code, .ch-prompt code { font-family: "IBM Plex Mono", monospace; font-size: .9em; background: var(--panel); border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; }
       .exam-score { margin-top: 14px; border-radius: 12px; padding: 16px; background: var(--accent-soft); border: 1.5px solid var(--accent); font-size: 1rem; display: none; }
       .exam-score.show { display: block; }
+      /* ---------- Make ---------- */
+      .make-intro { max-width: 760px; margin-top: 22px; }
+      .make-intro h2 { font-family: "Source Serif 4", Georgia, serif; font-size: 1.6rem; line-height: 1.15; }
+      .make-intro p { margin-top: 8px; color: var(--ink-soft); }
+      .make-intro p strong { color: var(--ink); }
+      .make-label { font-family: "IBM Plex Mono", monospace; font-size: .72rem; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-soft); margin: 16px 0 8px; }
+      .make-editor { width: 100%; box-sizing: border-box; background: var(--code-bg); color: var(--code-ink); border: 1px solid rgba(0,0,0,.25); border-radius: 10px; padding: 13px 14px; font-family: "IBM Plex Mono", monospace; font-size: .92rem; line-height: 1.6; min-height: 300px; resize: vertical; }
+      .make-editor:focus { outline: 3px solid var(--amber); outline-offset: 1px; }
+      .make-input-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 14px; }
+      .make-input-row label { font-family: "IBM Plex Mono", monospace; font-size: .75rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-soft); }
+      .make-input { flex: 1 1 220px; font-family: "IBM Plex Mono", monospace; font-size: .95rem; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--panel-2); color: var(--ink); }
+      .make-msg { margin-top: 12px; border-radius: 10px; padding: 12px 14px; font-size: .94rem; display: none; }
+      .make-msg.show { display: block; }
+      .make-msg.info { background: var(--panel-2); border: 1px solid var(--line); color: var(--ink); }
+      .make-msg.good { background: var(--accent-soft); color: var(--accent-strong); border: 1.5px solid var(--accent); font-weight: 600; }
+      .make-msg.bad { background: var(--rust-soft); color: var(--rust); border: 1.5px solid var(--rust); }
+      .mtest-head { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+      .mstatus { font-family: "IBM Plex Mono", monospace; font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border-radius: 999px; padding: 3px 10px; border: 1px solid var(--line); color: var(--ink-soft); background: var(--panel); flex: none; }
+      .mstatus.pass { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-strong); }
+      .mstatus.fail { border-color: var(--rust); background: var(--rust-soft); color: var(--rust); }
+      .mtest-detail { margin-top: 10px; font-size: .92rem; display: grid; gap: 7px; }
+      .mtest-detail .mono { font-family: "IBM Plex Mono", monospace; font-weight: 600; word-break: break-word; }
+      .mtest-detail .lbl { font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); font-weight: 700; }
+
       /* ---------- Bolt's World ---------- */
       .bolt-intro { max-width: 760px; margin-top: 22px; }
       .bolt-intro h2 { font-family: "Source Serif 4", Georgia, serif; font-size: 1.6rem; line-height: 1.15; }
@@ -598,6 +622,10 @@
         <button class="mode-btn" type="button" id="mode-challenges" role="tab" aria-controls="challenges-mode" aria-selected="false" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M7 6H4a2 2 0 0 0 0 4h3M17 6h3a2 2 0 0 1 0 4h-3"/></svg>
           Challenges
+        </button>
+        <button class="mode-btn" type="button" id="mode-make" role="tab" aria-controls="make-mode" aria-selected="false" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+          Make
         </button>
       </nav>
 
@@ -996,6 +1024,44 @@ for (int i = 0; i < 3; i++) {
         </section>
         <p class="foot"><strong>One honest line:</strong> projects are built in your own editor; TraceFirst supplies the brief, the milestones, and the tests to pass. Nothing here is saved beyond this session.</p>
       </div><!-- /challenges-mode -->
+
+      <div id="make-mode" role="tabpanel" tabindex="0" hidden>
+        <section class="make-intro">
+          <h2>Make: write and run your own C++</h2>
+          <p>Prediction taught you to read the machine; <strong>this is where you write for it.</strong> Pick a prompt, write the whole program yourself in the editor, and run it right here. Then put it through the prompt's test bench: the machine runs your program once per test and compares what it prints with what the prompt asks for.</p>
+        </section>
+        <section class="toolbar" aria-label="Choose a Make prompt">
+          <div>
+            <div class="tlabel">Prompts — six programs to write, in order</div>
+            <div class="exnav" id="makenav"></div>
+          </div>
+          <div class="scorebar" id="make-scorebar" aria-label="Your Make progress"></div>
+        </section>
+        <section class="card" style="margin-top:18px;" aria-labelledby="make-title">
+          <span class="concept-tag" id="make-tag"></span>
+          <h2 id="make-title" style="font-size:1.25rem;"></h2>
+          <p class="ch-prompt" id="make-task"></p>
+          <div class="make-label"><label for="make-editor">Your program</label></div>
+          <textarea class="make-editor" id="make-editor" spellcheck="false" aria-label="C++ program editor"></textarea>
+          <div class="make-input-row">
+            <label for="make-input">Input (for cin)</label>
+            <input class="make-input" type="text" id="make-input" autocomplete="off" placeholder="Values your program reads, separated by spaces" />
+          </div>
+          <div class="bolt-controls">
+            <button class="btn" type="button" id="make-run">Run</button>
+            <button class="btn ghost" type="button" id="make-tests-btn">Run tests</button>
+            <button class="btn ghost small" type="button" id="make-reset">Reset to skeleton</button>
+          </div>
+          <div class="make-msg info show" id="make-msg" role="status">Write your program, then press Run. If the machine stops, its message names the line to look at.</div>
+          <div class="console" aria-label="Program output"><div class="chead">Output</div><div class="cout" id="make-out"></div></div>
+          <div class="testbench">
+            <h4>Test bench</h4>
+            <div id="make-tests"></div>
+            <p class="skin-note">Run tests feeds each test's input to a fresh run of your program and compares the printed output, ignoring differences in spacing. A prompt counts as complete when every one of its tests passes.</p>
+          </div>
+        </section>
+        <p class="foot"><strong>Keep your work:</strong> your programs live in this page only for this session, so copy a finished program into your own files before you close it.</p>
+      </div><!-- /make-mode -->
       <div class="sr-live" aria-live="polite" id="live"></div>
     </main>
     <script>
@@ -3581,6 +3647,832 @@ for (int i = 0; i < 3; i++) {
       }
     });
 
+    /* ---------------- Make mode: prompts ---------------- */
+    var MAKE_SKEL = "#include <iostream>\nusing namespace std;\n\nint main() {\n    // your code here\n    return 0;\n}\n";
+    var MAKE_SKEL_FN = "#include <iostream>\nusing namespace std;\n\n// Define your area function here, above main.\n\nint main() {\n    // your code here\n    return 0;\n}\n";
+    var MAKE_PROMPTS = [
+      { tag: "Loops", title: "Squares",
+        task: "Print the squares of the numbers 1 to 10, separated by spaces: the square of 1, then of 2, all the way to 10. This program reads no input — the numbers are fixed.",
+        tests: [ { input: "", expected: "1 4 9 16 25 36 49 64 81 100" } ] },
+      { tag: "Loops & Input", title: "Sum to N",
+        task: "Read one integer, n, from the input. Then print the sum of the numbers from 1 to n.",
+        tests: [ { input: "5", expected: "15" }, { input: "10", expected: "55" }, { input: "1", expected: "1" } ] },
+      { tag: "Decisions", title: "Largest of three",
+        task: "Read three integers from the input. Then print the largest of the three.",
+        tests: [ { input: "4 9 6", expected: "9" }, { input: "7 7 2", expected: "7" } ] },
+      { tag: "Strings", title: "Word and length",
+        task: "Read one word (a string with no spaces) from the input. Then print the word and its length, separated by a space. A string named word reports its length as word.length().",
+        tests: [ { input: "coder", expected: "coder 5" } ] },
+      { tag: "Arrays", title: "Class average",
+        task: "Store the four scores 70, 80, 90, 100 in an array, add them up, and print their average. The division comes out whole, so whole-number arithmetic is fine.",
+        tests: [ { input: "", expected: "85" } ] },
+      { tag: "Functions", title: "Area function", skel: "fn",
+        task: "Write a function named area that takes a width and a height and returns their product. Define the function above main, in the space the skeleton leaves for it. In main, print the area of a rectangle 5 wide and 3 high by calling your function.",
+        tests: [ { input: "", expected: "15" } ] }
+    ];
+
+    /* ---------------- Make mode: a small C++ interpreter ----------------
+       Covers the subset taught so far: int / double / string variables,
+       + - * / % and comparisons, cout << chains with endl, cin >>,
+       if / else, while, for, fixed-size arrays, and functions above main. */
+    function makeErr(line, msg) { return { makeError: true, line: line, msg: "Line " + line + ": " + msg }; }
+
+    function makeTokens(src) {
+      var toks = [], i = 0, line = 1, n = src.length;
+      function terr(msg, ln) { throw makeErr(ln || line, msg); }
+      while (i < n) {
+        var c = src[i];
+        if (c === "\n") { line++; i++; continue; }
+        if (c === " " || c === "\t" || c === "\r") { i++; continue; }
+        if (c === "#") { while (i < n && src[i] !== "\n") i++; continue; }
+        if (c === "/" && src[i + 1] === "/") { while (i < n && src[i] !== "\n") i++; continue; }
+        if (c === "/" && src[i + 1] === "*") {
+          var sl = line; i += 2;
+          while (i < n && !(src[i] === "*" && src[i + 1] === "/")) { if (src[i] === "\n") line++; i++; }
+          if (i >= n) terr("a comment starting here is never closed — the machine expected */ before the program ended.", sl);
+          i += 2; continue;
+        }
+        if (/[0-9]/.test(c) || (c === "." && /[0-9]/.test(src[i + 1] || ""))) {
+          var j = i, dot = false;
+          while (j < n && (/[0-9]/.test(src[j]) || (src[j] === "." && !dot))) { if (src[j] === ".") dot = true; j++; }
+          toks.push({ t: "num", v: src.slice(i, j), isDbl: dot, line: line });
+          i = j; continue;
+        }
+        if (c === '"') {
+          var j2 = i + 1, s = "", closed = false;
+          while (j2 < n) {
+            var ch = src[j2];
+            if (ch === "\\") { var nx = src[j2 + 1]; if (nx === "n") s += "\n"; else if (nx === "t") s += "\t"; else if (nx === '"') s += '"'; else if (nx === "\\") s += "\\"; else if (nx !== undefined) s += nx; j2 += 2; continue; }
+            if (ch === '"') { closed = true; break; }
+            if (ch === "\n") break;
+            s += ch; j2++;
+          }
+          if (!closed) terr("a piece of text starting here is missing its closing quote. Text in a program wears double quotes at both ends: \"like this\".");
+          toks.push({ t: "str", v: s, line: line });
+          i = j2 + 1; continue;
+        }
+        if (c === "'") {
+          var j3 = i + 1, cs = "";
+          if (src[j3] === "\\") { var e2 = src[j3 + 1]; cs = e2 === "n" ? "\n" : (e2 || ""); j3 += 2; }
+          else { cs = src[j3] || ""; j3++; }
+          if (src[j3] !== "'") terr("a character in single quotes holds exactly one character, like 'a'. For longer text, use double quotes.");
+          toks.push({ t: "str", v: cs, line: line });
+          i = j3 + 1; continue;
+        }
+        if (/[A-Za-z_]/.test(c)) {
+          var j4 = i;
+          while (j4 < n && /[A-Za-z0-9_]/.test(src[j4])) j4++;
+          toks.push({ t: "id", v: src.slice(i, j4), line: line });
+          i = j4; continue;
+        }
+        var two = src.substr(i, 2);
+        if (["<<", ">>", "==", "!=", "<=", ">=", "&&", "||", "++", "--", "+=", "-=", "*=", "/=", "%="].indexOf(two) >= 0) { toks.push({ t: "op", v: two, line: line }); i += 2; continue; }
+        if ("+-*/%<>=!(){}[];,.:".indexOf(c) >= 0) { toks.push({ t: "op", v: c, line: line }); i++; continue; }
+        terr("the machine does not use the character '" + c + "' in C++ programs like these.");
+      }
+      toks.push({ t: "eof", v: "", line: line });
+      return toks;
+    }
+
+    function makeParse(toks) {
+      var p = 0;
+      var TYPES = { "int": 1, "double": 1, "string": 1, "void": 1 };
+      function peek() { return toks[p]; }
+      function next() { return toks[p++]; }
+      function fail(tok, msg) { throw makeErr(tok.line, msg); }
+      function isOp(v) { var t = toks[p]; return t.t === "op" && t.v === v; }
+      function isId(v) { var t = toks[p]; return t.t === "id" && t.v === v; }
+      function isType() { var t = toks[p]; return t.t === "id" && !!TYPES[t.v]; }
+      function expectOp(v) {
+        var t = toks[p];
+        if (t.t === "op" && t.v === v) { p++; return t; }
+        if (v === ";") fail(t, "the machine expected a semicolon (';') here — every statement ends with one. Check the line above, too: a missing semicolon is usually reported one line late.");
+        if (v === "}") fail(t, "the machine expected a closing brace ('}') here — count the opening braces above and close each block you opened.");
+        if (v === ")") fail(t, "the machine expected a closing parenthesis (')') here — every '(' needs its ')'.");
+        if (v === "]") fail(t, "the machine expected a closing bracket (']') here — every '[' needs its ']'.");
+        fail(t, "the machine expected '" + v + "' here.");
+      }
+      function expectId() {
+        var t = toks[p];
+        if (t.t === "id") { p++; return t; }
+        fail(t, "the machine expected a name here — a variable or function name.");
+      }
+
+      function parseProgram() {
+        var funcs = {};
+        while (peek().t !== "eof") {
+          if (isId("using")) { while (peek().t !== "eof" && !isOp(";")) p++; if (isOp(";")) p++; continue; }
+          var f = parseFunction();
+          funcs[f.name] = f;
+        }
+        return funcs;
+      }
+      function parseFunction() {
+        var tt = peek();
+        if (!isType()) fail(tt, "the machine expected a function here — a return type, a name, and a body in braces. Helper functions live above main, and main itself starts with int main().");
+        var ret = next().v;
+        var nm = expectId();
+        expectOp("(");
+        var params = [];
+        if (!isOp(")")) {
+          for (;;) {
+            if (!isType()) fail(peek(), "each parameter needs a type and a name, like double width.");
+            var pt = next().v;
+            if (pt === "void") fail(peek(), "a parameter cannot be void — give it a real type: int, double, or string.");
+            var pn = expectId();
+            params.push({ type: pt, name: pn.v });
+            if (isOp(",")) { next(); continue; }
+            break;
+          }
+        }
+        expectOp(")");
+        var body = parseBlock();
+        return { name: nm.v, ret: ret, params: params, body: body, line: tt.line };
+      }
+      function parseBlock() {
+        var t = peek();
+        expectOp("{");
+        var stmts = [];
+        while (!isOp("}")) {
+          if (peek().t === "eof") fail(peek(), "the machine reached the end of the program, but the block opened at line " + t.line + " was never closed with a '}'.");
+          stmts.push(parseStmt());
+        }
+        expectOp("}");
+        return { kind: "block", stmts: stmts, line: t.line };
+      }
+      function parseDeclCore() {
+        var tt = next();
+        var decls = [];
+        for (;;) {
+          var nm = expectId();
+          var d = { name: nm.v, size: null, init: null, initList: null };
+          if (isOp("[")) {
+            next();
+            if (!isOp("]")) {
+              var sz = peek();
+              if (sz.t !== "num" || sz.isDbl) fail(sz, "an array size is a whole number written directly, like scores[4].");
+              d.size = parseInt(sz.v, 10); next();
+            }
+            expectOp("]");
+          }
+          if (isOp("=")) {
+            next();
+            if (isOp("{")) {
+              next();
+              var list = [];
+              if (!isOp("}")) {
+                for (;;) { list.push(parseExpr()); if (isOp(",")) { next(); continue; } break; }
+              }
+              expectOp("}");
+              d.initList = list;
+            } else d.init = parseExpr();
+          } else if (isOp("(")) { next(); d.init = parseExpr(); expectOp(")"); }
+          decls.push(d);
+          if (isOp(",")) { next(); continue; }
+          break;
+        }
+        return { kind: "decl", vtype: tt.v, decls: decls, line: tt.line };
+      }
+      function parseFor() {
+        var t = next();
+        expectOp("(");
+        var init = null;
+        if (isOp(";")) next();
+        else if (isType()) { init = parseDeclCore(); expectOp(";"); }
+        else { var ie = parseExpr(); expectOp(";"); init = { kind: "expr", expr: ie, line: t.line }; }
+        var cond = null;
+        if (!isOp(";")) cond = parseExpr();
+        expectOp(";");
+        var updates = [];
+        if (!isOp(")")) {
+          for (;;) { updates.push(parseExpr()); if (isOp(",")) { next(); continue; } break; }
+        }
+        expectOp(")");
+        var body = parseStmt();
+        return { kind: "for", init: init, cond: cond, updates: updates, body: body, line: t.line };
+      }
+      function parseStmt() {
+        var t = peek();
+        if (isOp("{")) return parseBlock();
+        if (isOp(";")) { next(); return { kind: "empty", line: t.line }; }
+        if (isType()) { var d = parseDeclCore(); expectOp(";"); return d; }
+        if (t.t === "id") {
+          if (t.v === "if") {
+            next(); expectOp("("); var c = parseExpr(); expectOp(")");
+            var then = parseStmt(), els = null;
+            if (isId("else")) { next(); els = parseStmt(); }
+            return { kind: "if", cond: c, then: then, els: els, line: t.line };
+          }
+          if (t.v === "while") {
+            next(); expectOp("("); var wc = parseExpr(); expectOp(")");
+            return { kind: "while", cond: wc, body: parseStmt(), line: t.line };
+          }
+          if (t.v === "for") return parseFor();
+          if (t.v === "return") {
+            next();
+            var rv = null;
+            if (!isOp(";")) rv = parseExpr();
+            expectOp(";");
+            return { kind: "return", expr: rv, line: t.line };
+          }
+          if (t.v === "cout" && toks[p + 1] && toks[p + 1].t === "op" && toks[p + 1].v === "<<") {
+            next();
+            var items = [];
+            while (isOp("<<")) { next(); items.push(parseExpr()); }
+            expectOp(";");
+            return { kind: "cout", items: items, line: t.line };
+          }
+          if (t.v === "cin" && toks[p + 1] && toks[p + 1].t === "op" && toks[p + 1].v === ">>") {
+            next();
+            var targets = [];
+            while (isOp(">>")) { next(); targets.push(parseExpr()); }
+            expectOp(";");
+            return { kind: "cin", targets: targets, line: t.line };
+          }
+        }
+        var e = parseExpr();
+        expectOp(";");
+        return { kind: "expr", expr: e, line: t.line };
+      }
+
+      function binLevel(nextFn, ops) {
+        return function () {
+          var l = nextFn();
+          while (peek().t === "op" && ops.indexOf(peek().v) >= 0) {
+            var t = next();
+            var r = nextFn();
+            l = { kind: "bin", op: t.v, l: l, r: r, line: t.line };
+          }
+          return l;
+        };
+      }
+      function parseExpr() { return parseAssign(); }
+      function parseAssign() {
+        var lhs = parseOr();
+        var t = peek();
+        if (t.t === "op" && ["=", "+=", "-=", "*=", "/=", "%="].indexOf(t.v) >= 0) {
+          next();
+          if (lhs.kind !== "var" && lhs.kind !== "index") fail(t, "the left side of '" + t.v + "' has to be a variable or an array slot — the machine needs a box to write into.");
+          var rhs = parseAssign();
+          return { kind: "assign", op: t.v, target: lhs, expr: rhs, line: t.line };
+        }
+        return lhs;
+      }
+      var parseMul = binLevel(parseUnary, ["*", "/", "%"]);
+      var parseAdd = binLevel(parseMul, ["+", "-"]);
+      var parseRel = binLevel(parseAdd, ["<", "<=", ">", ">="]);
+      var parseEq = binLevel(parseRel, ["==", "!="]);
+      var parseAnd = binLevel(parseEq, ["&&"]);
+      var parseOr = binLevel(parseAnd, ["||"]);
+      function parseUnary() {
+        var t = peek();
+        if (t.t === "op" && (t.v === "-" || t.v === "!" || t.v === "+")) {
+          next();
+          return { kind: "un", op: t.v, expr: parseUnary(), line: t.line };
+        }
+        if (t.t === "op" && (t.v === "++" || t.v === "--")) {
+          next();
+          var operand = parseUnary();
+          if (operand.kind !== "var" && operand.kind !== "index") fail(t, "'" + t.v + "' needs a variable to change, like i++.");
+          return { kind: "pre", op: t.v, target: operand, line: t.line };
+        }
+        return parsePostfix();
+      }
+      function parsePostfix() {
+        var node = parsePrimary();
+        for (;;) {
+          var t = peek();
+          if (isOp("[")) {
+            next();
+            var idx = parseExpr();
+            expectOp("]");
+            node = { kind: "index", arr: node, idx: idx, line: t.line };
+            continue;
+          }
+          if (isOp(".")) {
+            next();
+            var mn = expectId();
+            expectOp("(");
+            var margs = [];
+            if (!isOp(")")) { for (;;) { margs.push(parseExpr()); if (isOp(",")) { next(); continue; } break; } }
+            expectOp(")");
+            node = { kind: "method", obj: node, name: mn.v, args: margs, line: t.line };
+            continue;
+          }
+          if (isOp("(")) {
+            if (node.kind !== "var") fail(t, "only a function name can be called with '(...)'.");
+            next();
+            var args = [];
+            if (!isOp(")")) { for (;;) { args.push(parseExpr()); if (isOp(",")) { next(); continue; } break; } }
+            expectOp(")");
+            node = { kind: "call", name: node.name, args: args, line: t.line };
+            continue;
+          }
+          if (t.t === "op" && (t.v === "++" || t.v === "--")) {
+            next();
+            if (node.kind !== "var" && node.kind !== "index") fail(t, "'" + t.v + "' needs a variable to change, like i++.");
+            node = { kind: "post", op: t.v, target: node, line: t.line };
+            continue;
+          }
+          break;
+        }
+        return node;
+      }
+      function parsePrimary() {
+        var t = peek();
+        if (t.t === "num") { next(); return t.isDbl ? { kind: "num", val: { t: "double", v: parseFloat(t.v) }, line: t.line } : { kind: "num", val: { t: "int", v: parseInt(t.v, 10) }, line: t.line }; }
+        if (t.t === "str") { next(); return { kind: "str", val: { t: "string", v: t.v }, line: t.line }; }
+        if (t.t === "id") {
+          next();
+          if (t.v === "endl") return { kind: "endl", line: t.line };
+          if (t.v === "true") return { kind: "num", val: { t: "int", v: 1 }, line: t.line };
+          if (t.v === "false") return { kind: "num", val: { t: "int", v: 0 }, line: t.line };
+          return { kind: "var", name: t.v, line: t.line };
+        }
+        if (isOp("(")) { next(); var e = parseExpr(); expectOp(")"); return e; }
+        if (t.t === "eof") fail(t, "the program ended in the middle of a statement — the machine expected more code here.");
+        fail(t, "the machine did not expect '" + (t.v || t.t) + "' here. Check for a missing value, a doubled operator, or a statement that starts in a way C++ does not allow.");
+      }
+      return parseProgram();
+    }
+
+    function makeFmtDouble(v) {
+      if (v === 0) return "0";
+      if (!isFinite(v)) return v > 0 ? "inf" : "-inf";
+      if (Number.isInteger(v) && Math.abs(v) < 1e6) return String(v);
+      var exp = Math.floor(Math.log10(Math.abs(v)));
+      var s;
+      if (exp >= -4 && exp < 6) {
+        s = v.toFixed(Math.max(0, 5 - exp));
+        if (s.indexOf(".") >= 0) s = s.replace(/0+$/, "").replace(/\.$/, "");
+      } else {
+        s = v.toExponential(5);
+        var parts = s.split("e"), m = parts[0], ex = parts[1];
+        if (m.indexOf(".") >= 0) m = m.replace(/0+$/, "").replace(/\.$/, "");
+        var sign = ex.charAt(0) === "-" ? "-" : "+";
+        var digits = ex.replace(/^[+-]/, "");
+        if (digits.length < 2) digits = "0" + digits;
+        s = m + "e" + sign + digits;
+      }
+      return s;
+    }
+    function makeFmtVal(val, line) {
+      if (val.t === "int") return String(val.v);
+      if (val.t === "double") return makeFmtDouble(val.v);
+      if (val.t === "string") return val.v;
+      if (val.t === "endl") return "\n";
+      throw makeErr(line, "a void function hands nothing back, so there is no value here to use. Call it on its own line, as a statement by itself.");
+    }
+    function makeDefault(type) {
+      if (type === "string") return { t: "string", v: "" };
+      if (type === "double") return { t: "double", v: 0 };
+      return { t: "int", v: 0 };
+    }
+    function makeConv(val, type, line, name) {
+      if (val.t === "void") throw makeErr(line, "a void function hands nothing back, so there is no value to store in '" + name + "'.");
+      if (val.t === "endl") throw makeErr(line, "endl means 'end the line' and belongs only inside a cout chain — it cannot be stored in '" + name + "'.");
+      if (type === "int") {
+        if (val.t === "string") throw makeErr(line, "the machine cannot store text in '" + name + "', because " + name + " is an int box and holds whole numbers only.");
+        return { t: "int", v: Math.trunc(val.v) };
+      }
+      if (type === "double") {
+        if (val.t === "string") throw makeErr(line, "the machine cannot store text in '" + name + "', because " + name + " is a double box and holds numbers only.");
+        return { t: "double", v: val.v };
+      }
+      if (type === "string") {
+        if (val.t !== "string") throw makeErr(line, "the machine cannot store a number in '" + name + "', because " + name + " is a string box and holds text only.");
+        return { t: "string", v: val.v };
+      }
+      return val;
+    }
+    function makeNum(val, line, what) {
+      if (val.t === "string") throw makeErr(line, "the machine cannot use text " + what + " — that value is a string, not a number.");
+      if (val.t === "void") throw makeErr(line, "a void function hands nothing back, so there is no number to use " + what + ".");
+      if (val.t === "endl") throw makeErr(line, "endl belongs only inside a cout chain — it is not a number.");
+      return val.v;
+    }
+    function makeTruthy(val, line) {
+      if (val.t === "string") throw makeErr(line, "a condition needs a comparison or a number — text cannot be true or false on its own. Compare it instead, for example word == \"go\".");
+      if (val.t === "void" || val.t === "endl") throw makeErr(line, "a condition needs a comparison or a number here.");
+      return val.v !== 0;
+    }
+
+    function makeRunProgram(src, inputStr) {
+      var funcs;
+      try { funcs = makeParse(makeTokens(src)); }
+      catch (e) {
+        if (e && e.makeError) return { ok: false, error: e.msg, output: "" };
+        throw e;
+      }
+      if (!funcs.main) return { ok: false, error: "There is no main() in this program. Every C++ program starts inside main — the skeleton has one; keep its shape and write inside its braces.", output: "" };
+      var ctx = {
+        funcs: funcs, out: "", steps: 0, depth: 0,
+        input: inputStr && String(inputStr).trim() ? String(inputStr).trim().split(/\s+/) : [],
+        inPos: 0
+      };
+      function fail(line, msg) { throw makeErr(line, msg); }
+      function step(line) {
+        if (++ctx.steps > 100000) fail(line, "this program has taken 100,000 steps without finishing — this looks like an infinite loop. A loop ends only when its condition becomes false, so check that something inside the loop changes the values the condition tests. The program has stopped.");
+      }
+      function lookupCell(env, name, line) {
+        for (var i = env.length - 1; i >= 0; i--) {
+          if (Object.prototype.hasOwnProperty.call(env[i], name)) return env[i][name];
+        }
+        fail(line, "'" + name + "' has never been declared — the machine only knows the boxes you create. Declare it first, for example: int " + name + " = 0;");
+      }
+      function targetRef(env, node) {
+        if (node.kind === "var") {
+          var c = lookupCell(env, node.name, node.line);
+          if (c.isArr) fail(node.line, "'" + node.name + "' is a whole array — name one slot, like " + node.name + "[0], so the machine knows which box to write into.");
+          return { type: c.type, get: function () { return c.val; }, set: function (v) { c.val = v; } };
+        }
+        if (node.kind === "index" && node.arr.kind === "var") {
+          var c2 = lookupCell(env, node.arr.name, node.line);
+          if (!c2.isArr) fail(node.line, "'" + node.arr.name + "' is not an array, so it has no slots to reach with [ ].");
+          var idx = Math.trunc(makeNum(evalExpr(env, node.idx), node.line, "as an array slot number"));
+          if (idx < 0 || idx >= c2.val.length) fail(node.line, "slot " + idx + " of '" + node.arr.name + "' does not exist — the array has " + c2.val.length + " slot" + (c2.val.length === 1 ? "" : "s") + ", numbered 0 to " + (c2.val.length - 1) + ".");
+          var cellArr = c2.val;
+          return { type: c2.type, get: function () { return cellArr[idx]; }, set: function (v) { cellArr[idx] = v; } };
+        }
+        fail(node.line, "the machine needs a variable or an array slot on the left of an assignment.");
+      }
+      function arith(op, lv, rv, line) {
+        if (op === "+") {
+          if (lv.t === "string" && rv.t === "string") return { t: "string", v: lv.v + rv.v };
+          if (lv.t === "string" || rv.t === "string") fail(line, "the machine cannot join text and a number with '+'. Print them one after another with << instead, or join two pieces of text.");
+        }
+        var a = makeNum(lv, line, "in arithmetic"), b = makeNum(rv, line, "in arithmetic");
+        var bothInt = lv.t === "int" && rv.t === "int";
+        switch (op) {
+          case "+": return bothInt ? { t: "int", v: a + b } : { t: "double", v: a + b };
+          case "-": return bothInt ? { t: "int", v: a - b } : { t: "double", v: a - b };
+          case "*": return bothInt ? { t: "int", v: a * b } : { t: "double", v: a * b };
+          case "/":
+            if (b === 0 && bothInt) fail(line, "the machine cannot divide by zero — the right side of '/' is 0 here.");
+            return bothInt ? { t: "int", v: Math.trunc(a / b) } : { t: "double", v: a / b };
+          case "%":
+            if (!bothInt) fail(line, "the '%' operator gives the remainder of a whole-number division, so it needs whole numbers on both sides — at least one side here is a double or text.");
+            if (b === 0) fail(line, "the machine cannot divide by zero — the right side of '%' is 0 here.");
+            return { t: "int", v: a % b };
+        }
+        fail(line, "the machine does not know the operator '" + op + "'.");
+      }
+      function evalExpr(env, node) {
+        switch (node.kind) {
+          case "num": case "str": return node.val;
+          case "endl": return { t: "endl", v: "\n" };
+          case "var": {
+            var c = lookupCell(env, node.name, node.line);
+            if (c.isArr) fail(node.line, "'" + node.name + "' is a whole array — the machine needs one slot at a time, like " + node.name + "[0].");
+            return c.val;
+          }
+          case "index": {
+            if (node.arr.kind === "var") {
+              var c2 = lookupCell(env, node.arr.name, node.line);
+              if (c2.isArr) {
+                var idx = Math.trunc(makeNum(evalExpr(env, node.idx), node.line, "as an array slot number"));
+                if (idx < 0 || idx >= c2.val.length) fail(node.line, "slot " + idx + " of '" + node.arr.name + "' does not exist — the array has " + c2.val.length + " slot" + (c2.val.length === 1 ? "" : "s") + ", numbered 0 to " + (c2.val.length - 1) + ".");
+                return c2.val[idx];
+              }
+            }
+            var base = evalExpr(env, node.arr);
+            if (base.t === "string") {
+              var i2 = Math.trunc(makeNum(evalExpr(env, node.idx), node.line, "as a character position"));
+              if (i2 < 0 || i2 >= base.v.length) fail(node.line, "position " + i2 + " does not exist — the text has " + base.v.length + " character" + (base.v.length === 1 ? "" : "s") + ", numbered 0 to " + (base.v.length - 1) + ".");
+              return { t: "string", v: base.v.charAt(i2) };
+            }
+            fail(node.line, "square brackets reach into arrays (and into text, one character at a time). The value before them here is neither.");
+            break;
+          }
+          case "assign": {
+            var ref = targetRef(env, node.target);
+            var rv = evalExpr(env, node.expr);
+            var stored;
+            if (node.op === "=") stored = makeConv(rv, ref.type, node.line, "the box");
+            else {
+              var cur = ref.get();
+              stored = makeConv(arith(node.op.charAt(0), cur, rv, node.line), ref.type, node.line, "the box");
+            }
+            ref.set(stored);
+            return stored;
+          }
+          case "bin": {
+            if (node.op === "&&") {
+              var la = evalExpr(env, node.l);
+              if (!makeTruthy(la, node.line)) return { t: "int", v: 0 };
+              return { t: "int", v: makeTruthy(evalExpr(env, node.r), node.line) ? 1 : 0 };
+            }
+            if (node.op === "||") {
+              var lo = evalExpr(env, node.l);
+              if (makeTruthy(lo, node.line)) return { t: "int", v: 1 };
+              return { t: "int", v: makeTruthy(evalExpr(env, node.r), node.line) ? 1 : 0 };
+            }
+            var lv = evalExpr(env, node.l), rw = evalExpr(env, node.r);
+            if (["+", "-", "*", "/", "%"].indexOf(node.op) >= 0) return arith(node.op, lv, rw, node.line);
+            if (lv.t === "string" && rw.t === "string") {
+              switch (node.op) {
+                case "==": return { t: "int", v: lv.v === rw.v ? 1 : 0 };
+                case "!=": return { t: "int", v: lv.v !== rw.v ? 1 : 0 };
+                case "<": return { t: "int", v: lv.v < rw.v ? 1 : 0 };
+                case "<=": return { t: "int", v: lv.v <= rw.v ? 1 : 0 };
+                case ">": return { t: "int", v: lv.v > rw.v ? 1 : 0 };
+                case ">=": return { t: "int", v: lv.v >= rw.v ? 1 : 0 };
+              }
+            }
+            if (lv.t === "string" || rw.t === "string") fail(node.line, "the machine cannot compare text with a number — compare text with text, or numbers with numbers.");
+            var x = makeNum(lv, node.line, "in a comparison"), y = makeNum(rw, node.line, "in a comparison");
+            switch (node.op) {
+              case "==": return { t: "int", v: x === y ? 1 : 0 };
+              case "!=": return { t: "int", v: x !== y ? 1 : 0 };
+              case "<": return { t: "int", v: x < y ? 1 : 0 };
+              case "<=": return { t: "int", v: x <= y ? 1 : 0 };
+              case ">": return { t: "int", v: x > y ? 1 : 0 };
+              case ">=": return { t: "int", v: x >= y ? 1 : 0 };
+            }
+            fail(node.line, "the machine does not know the operator '" + node.op + "'.");
+            break;
+          }
+          case "un": {
+            var uv = evalExpr(env, node.expr);
+            if (node.op === "!") return { t: "int", v: makeTruthy(uv, node.line) ? 0 : 1 };
+            var un = makeNum(uv, node.line, "after a '" + node.op + "'");
+            if (node.op === "-") return uv.t === "int" ? { t: "int", v: -un } : { t: "double", v: -un };
+            return uv;
+          }
+          case "pre": case "post": {
+            var ref2 = targetRef(env, node.target);
+            var old = ref2.get();
+            var on = makeNum(old, node.line, "for '" + node.op + "'");
+            var nv = old.t === "int" ? { t: "int", v: on + (node.op === "++" ? 1 : -1) } : { t: "double", v: on + (node.op === "++" ? 1 : -1) };
+            ref2.set(nv);
+            return node.kind === "pre" ? nv : old;
+          }
+          case "call": {
+            var args = [];
+            for (var ai = 0; ai < node.args.length; ai++) args.push(evalExpr(env, node.args[ai]));
+            return callFunc(node.name, args, node.line);
+          }
+          case "method": {
+            var obj = evalExpr(env, node.obj);
+            if (obj.t === "string" && (node.name === "length" || node.name === "size")) {
+              if (node.args.length) fail(node.line, "." + node.name + "() takes nothing inside its parentheses — just ask the string: word." + node.name + "().");
+              return { t: "int", v: obj.v.length };
+            }
+            if (obj.t === "string") fail(node.line, "the text tools in these programs are .length() and .size() — '." + node.name + "()' is not one of them.");
+            fail(node.line, "'.length()' and '.size()' belong to strings here — the value before the dot is not text.");
+            break;
+          }
+        }
+        fail(node.line, "the machine could not work out that expression.");
+      }
+      function execBlock(env, node) {
+        env.push({});
+        try {
+          for (var i = 0; i < node.stmts.length; i++) execStmt(env, node.stmts[i]);
+        } finally { env.pop(); }
+      }
+      function execStmt(env, node) {
+        step(node.line);
+        switch (node.kind) {
+          case "empty": return;
+          case "block": execBlock(env, node); return;
+          case "decl": {
+            var scope = env[env.length - 1];
+            node.decls.forEach(function (d) {
+              var cell;
+              if (d.size !== null || d.initList) {
+                var sz = d.size !== null ? d.size : d.initList.length;
+                if (d.initList && d.initList.length > sz) fail(node.line, "the list for '" + d.name + "' has " + d.initList.length + " values, but the array only has " + sz + " slots.");
+                var elems = [];
+                for (var k = 0; k < sz; k++) elems.push(makeDefault(node.vtype));
+                cell = { type: node.vtype, isArr: true, val: elems };
+                scope[d.name] = cell;
+                if (d.initList) d.initList.forEach(function (e, ei) { elems[ei] = makeConv(evalExpr(env, e), node.vtype, node.line, d.name); });
+              } else {
+                cell = { type: node.vtype, isArr: false, val: makeDefault(node.vtype) };
+                scope[d.name] = cell;
+                if (d.init) cell.val = makeConv(evalExpr(env, d.init), node.vtype, node.line, d.name);
+              }
+            });
+            return;
+          }
+          case "expr": evalExpr(env, node.expr); return;
+          case "if":
+            if (makeTruthy(evalExpr(env, node.cond), node.line)) execStmt(env, node.then);
+            else if (node.els) execStmt(env, node.els);
+            return;
+          case "while":
+            while (makeTruthy(evalExpr(env, node.cond), node.line)) { step(node.line); execStmt(env, node.body); }
+            return;
+          case "for": {
+            env.push({});
+            try {
+              if (node.init) { if (node.init.kind === "decl") execStmt(env, node.init); else evalExpr(env, node.init.expr); }
+              for (;;) {
+                step(node.line);
+                if (node.cond && !makeTruthy(evalExpr(env, node.cond), node.line)) break;
+                execStmt(env, node.body);
+                for (var u = 0; u < node.updates.length; u++) evalExpr(env, node.updates[u]);
+              }
+            } finally { env.pop(); }
+            return;
+          }
+          case "return": {
+            var rv2 = node.expr ? evalExpr(env, node.expr) : null;
+            throw { makeReturn: true, value: rv2 };
+          }
+          case "cout": {
+            for (var ci = 0; ci < node.items.length; ci++) {
+              var v = evalExpr(env, node.items[ci]);
+              ctx.out += makeFmtVal(v, node.line);
+              if (ctx.out.length > 60000) fail(node.line, "this program has printed an enormous amount of output — this looks like an infinite loop printing forever. The program has stopped.");
+            }
+            return;
+          }
+          case "cin": {
+            node.targets.forEach(function (tg) {
+              var ref = targetRef(env, tg);
+              var tok = ctx.inPos < ctx.input.length ? ctx.input[ctx.inPos++] : null;
+              var val;
+              if (ref.type === "string") val = { t: "string", v: tok === null ? "" : tok };
+              else if (ref.type === "double") { var pf = tok === null ? NaN : parseFloat(tok); val = { t: "double", v: isNaN(pf) ? 0 : pf }; }
+              else { var pi = tok === null ? NaN : parseInt(tok, 10); val = { t: "int", v: isNaN(pi) ? 0 : pi }; }
+              ref.set(val);
+            });
+            return;
+          }
+        }
+        fail(node.line, "the machine could not run that statement.");
+      }
+      function callFunc(name, args, line) {
+        var f = ctx.funcs[name];
+        if (!f) fail(line, "the machine does not know a function named '" + name + "'. If it is one of yours, define it above main, like: int " + name + "() { ... } — and check the spelling at the call matches the definition.");
+        if (args.length !== f.params.length) fail(line, "'" + name + "' was defined to take " + f.params.length + " value" + (f.params.length === 1 ? "" : "s") + ", but this call hands it " + args.length + ". The call and the definition have to agree.");
+        if (++ctx.depth > 200) fail(line, "functions here are calling each other hundreds of levels deep — a function is probably calling itself, directly or in a circle. The program has stopped.");
+        var env = [{}];
+        f.params.forEach(function (pr, i) {
+          env[0][pr.name] = { type: pr.type, isArr: false, val: makeConv(args[i], pr.type, line, pr.name) };
+        });
+        var retVal = null;
+        try { execBlock(env, f.body); }
+        catch (e) {
+          if (e && e.makeReturn) retVal = e.value;
+          else throw e;
+        } finally { ctx.depth--; }
+        if (f.ret === "void") return { t: "void", v: null };
+        if (retVal === null) return makeDefault(f.ret);
+        return makeConv(retVal, f.ret, line, name);
+      }
+      try {
+        callFunc("main", [], 1);
+      } catch (e) {
+        if (e && e.makeError) return { ok: false, error: e.msg, output: ctx.out };
+        throw e;
+      }
+      return { ok: true, output: ctx.out };
+    }
+
+    /* ---------------- Make mode: page behaviour ---------------- */
+    var makeState = {
+      current: 0, built: false,
+      items: MAKE_PROMPTS.map(function () { return { code: null, done: false, results: null }; })
+    };
+    function makeSkeleton(i) { return MAKE_PROMPTS[i].skel === "fn" ? MAKE_SKEL_FN : MAKE_SKEL; }
+    function makeDoneCount() { return makeState.items.filter(function (s) { return s.done; }).length; }
+    function makeMsg(kind, html) {
+      var m = $("make-msg");
+      m.className = "make-msg show " + kind;
+      m.innerHTML = html;
+    }
+    function renderMakeScore() {
+      $("make-scorebar").innerHTML = '<div class="metric"><span>Make prompts completed</span> <strong>' + makeDoneCount() + " of " + MAKE_PROMPTS.length + "</strong></div>";
+    }
+    function renderMakeNav() {
+      var nav = $("makenav");
+      nav.innerHTML = "";
+      MAKE_PROMPTS.forEach(function (pr, i) {
+        var st = makeState.items[i];
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "ex-btn";
+        b.setAttribute("aria-current", i === makeState.current ? "true" : "false");
+        b.setAttribute("aria-label", "Prompt " + (i + 1) + ": " + pr.title + (st.done ? " (complete)" : ""));
+        b.innerHTML = '<span class="n">' + (i + 1) + '</span><span><span style="font-weight:600;">' + esc(pr.title) + '</span><br><span class="status' + (st.done ? " good" : "") + '">' + (st.done ? "Complete" : pr.tag) + "</span></span>";
+        b.addEventListener("click", function () { selectMakePrompt(i); });
+        nav.appendChild(b);
+      });
+    }
+    function renderMakeTests() {
+      var st = makeState.items[makeState.current];
+      var pr = MAKE_PROMPTS[makeState.current];
+      var box = $("make-tests");
+      box.innerHTML = "";
+      pr.tests.forEach(function (t, i) {
+        var r = st.results ? st.results[i] : null;
+        var div = document.createElement("div");
+        div.className = "testcase";
+        var html = '<div class="mtest-head"><span class="tinput">' + (t.input ? "Input: " + esc(t.input) : "No input") + "</span>";
+        if (!r) html += '<span class="mstatus">Not run</span>';
+        else if (r.pass) html += '<span class="mstatus pass">Pass</span>';
+        else html += '<span class="mstatus fail">Fail</span>';
+        html += "</div>";
+        if (r && !r.pass) {
+          html += '<div class="mtest-detail">';
+          if (r.error) html += '<div><span class="lbl">The machine stopped</span><br><span class="mono">' + esc(r.error) + "</span></div>";
+          else {
+            html += '<div><span class="lbl">Expected output</span><br><span class="mono">' + esc(t.expected) + "</span></div>";
+            html += '<div><span class="lbl">Your program printed</span><br><span class="mono">' + esc(r.actual.trim() === "" ? "(nothing)" : r.actual) + "</span></div>";
+          }
+          html += "</div>";
+        }
+        div.innerHTML = html;
+        box.appendChild(div);
+      });
+    }
+    function selectMakePrompt(i) {
+      var ed = $("make-editor");
+      if (makeState.built && ed) makeState.items[makeState.current].code = ed.value;
+      makeState.current = i;
+      var pr = MAKE_PROMPTS[i];
+      var st = makeState.items[i];
+      $("make-tag").textContent = pr.tag;
+      $("make-title").textContent = "Prompt " + (i + 1) + ": " + pr.title;
+      $("make-task").textContent = pr.task;
+      ed.value = st.code !== null ? st.code : makeSkeleton(i);
+      $("make-input").value = pr.tests.length && pr.tests[0].input ? pr.tests[0].input : "";
+      $("make-out").textContent = "";
+      makeMsg("info", "Write your program, then press Run. If the machine stops, its message names the line to look at.");
+      renderMakeNav();
+      renderMakeTests();
+      renderMakeScore();
+    }
+    function renderMake() {
+      if (!makeState.built) {
+        makeState.built = true;
+        selectMakePrompt(0);
+      } else {
+        renderMakeNav();
+        renderMakeTests();
+        renderMakeScore();
+      }
+    }
+    function normMakeOut(s) { return String(s).replace(/\s+/g, " ").trim(); }
+    $("make-editor").addEventListener("input", function () {
+      makeState.items[makeState.current].code = this.value;
+    });
+    $("make-run").addEventListener("click", function () {
+      var code = $("make-editor").value;
+      makeState.items[makeState.current].code = code;
+      var res = makeRunProgram(code, $("make-input").value);
+      $("make-out").textContent = res.output || "";
+      if (res.ok) {
+        makeMsg("good", res.output ? "Your program ran to the end. Compare its output with the prompt, then try Run tests." : "Your program ran to the end — and printed nothing. If the prompt asks for output, something that should print is not printing.");
+        announce("Your program ran to the end.");
+      } else {
+        makeMsg("bad", esc(res.error));
+        announce("The program stopped. " + res.error);
+      }
+    });
+    $("make-tests-btn").addEventListener("click", function () {
+      var code = $("make-editor").value;
+      makeState.items[makeState.current].code = code;
+      var pr = MAKE_PROMPTS[makeState.current];
+      var st = makeState.items[makeState.current];
+      var results = [];
+      var passed = 0;
+      pr.tests.forEach(function (t) {
+        var res = makeRunProgram(code, t.input);
+        if (!res.ok) results.push({ pass: false, error: res.error, actual: res.output || "" });
+        else {
+          var okRun = normMakeOut(res.output) === normMakeOut(t.expected);
+          if (okRun) passed++;
+          results.push({ pass: okRun, actual: res.output });
+        }
+      });
+      st.results = results;
+      var wasDone = st.done;
+      st.done = passed === pr.tests.length;
+      renderMakeTests();
+      renderMakeNav();
+      renderMakeScore();
+      if (st.done) {
+        makeMsg("good", (wasDone ? "Still passing" : "Every test passes") + " — " + esc(pr.title) + " is complete. Make prompts completed: " + makeDoneCount() + " of " + MAKE_PROMPTS.length + ".");
+        announce("All tests pass. " + pr.title + " is complete.");
+      } else {
+        makeMsg("info", passed + " of " + pr.tests.length + " test" + (pr.tests.length === 1 ? "" : "s") + " passed. Each failing row shows what the machine expected next to what your program printed — the difference is the clue.");
+        announce(passed + " of " + pr.tests.length + " tests passed.");
+      }
+    });
+    $("make-reset").addEventListener("click", function () {
+      var st = makeState.items[makeState.current];
+      st.code = null;
+      st.results = null;
+      $("make-editor").value = makeSkeleton(makeState.current);
+      $("make-out").textContent = "";
+      renderMakeTests();
+      makeMsg("info", "Back to the starter skeleton. Nothing else about the prompt changed.");
+    });
+
     /* ---------------- Mode toggle ---------------- */
     function setMode(mode) {
       $("bolt-mode").hidden = mode !== "bolt";
@@ -3588,7 +4480,8 @@ for (int i = 0; i < 3; i++) {
       $("gym-mode").hidden = mode !== "gym";
       $("translator-mode").hidden = mode !== "translator";
       $("challenges-mode").hidden = mode !== "challenges";
-      ["bolt","tracer","gym","translator","challenges"].forEach(function(m){
+      $("make-mode").hidden = mode !== "make";
+      ["bolt","tracer","gym","translator","challenges","make"].forEach(function(m){
         var b = $("mode-" + m);
         b.setAttribute("aria-selected", mode === m ? "true" : "false");
         b.setAttribute("aria-pressed", mode === m ? "true" : "false");
@@ -3597,6 +4490,7 @@ for (int i = 0; i < 3; i++) {
       if (mode === "bolt") initBolt();
       if (mode === "gym") renderGym();
       if (mode === "challenges") renderChallenges();
+      if (mode === "make") renderMake();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
     $("mode-bolt").addEventListener("click", function () { setMode("bolt"); });
@@ -3604,11 +4498,12 @@ for (int i = 0; i < 3; i++) {
     $("mode-gym").addEventListener("click", function () { setMode("gym"); });
     $("mode-translator").addEventListener("click", function () { setMode("translator"); });
     $("mode-challenges").addEventListener("click", function () { setMode("challenges"); });
+    $("mode-make").addEventListener("click", function () { setMode("make"); });
 
 
     /* ---------------- Mode tabs: arrow-key navigation ---------------- */
     (function(){
-      var order = ["bolt","tracer","gym","translator","challenges"];
+      var order = ["bolt","tracer","gym","translator","challenges","make"];
       var tablist = document.getElementById("mode-tablist");
       if (tablist) tablist.addEventListener("keydown", function(e){
         var cur = order.indexOf(order.filter(function(m){ return $("mode-"+m).getAttribute("aria-selected")==="true"; })[0]);
