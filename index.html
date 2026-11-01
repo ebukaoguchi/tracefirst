@@ -305,6 +305,94 @@
       .foot strong { color: var(--ink); }
       .sr-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
+      /* ---------- Mode toggle ---------- */
+      .mode-toggle {
+        display: flex; flex-wrap: wrap; gap: 6px; margin-top: 26px;
+        background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+        padding: 6px; box-shadow: var(--shadow); width: fit-content; max-width: 100%;
+      }
+      .mode-btn {
+        border: 1.5px solid transparent; background: transparent; color: var(--ink-soft);
+        border-radius: 8px; padding: 9px 16px; font-weight: 700; font-size: .95rem;
+        display: inline-flex; align-items: center; gap: 8px;
+      }
+      .mode-btn svg { width: 17px; height: 17px; flex: none; }
+      .mode-btn[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent-strong); border-color: var(--accent); }
+
+      /* ---------- Debugging Gym ---------- */
+      .gym-intro { max-width: 760px; margin-top: 22px; }
+      .gym-intro h2 { font-family: "Source Serif 4", Georgia, serif; font-size: 1.6rem; line-height: 1.15; }
+      .gym-intro p { margin-top: 8px; color: var(--ink-soft); }
+      .gym-intro p strong { color: var(--ink); }
+      .taxonomy { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+      .taxonomy .tax {
+        background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+        padding: 12px 14px; box-shadow: var(--shadow); font-size: .92rem;
+      }
+      .taxonomy .tax b { display: block; font-size: 1rem; margin-bottom: 3px; }
+      .taxonomy .tax.syntax b { color: var(--rust); }
+      .taxonomy .tax.logic b { color: var(--amber); }
+      .objectives { margin-top: 14px; font-size: .92rem; color: var(--ink-soft); }
+      .objectives li { margin-top: 4px; }
+      .objectives ul { margin: 6px 0 0; padding-left: 20px; }
+
+      #gym-code { padding: 12px 0; overflow-x: auto; }
+      .gline {
+        display: flex; width: 100%; text-align: left; background: transparent; border: none;
+        padding: 2px 14px 2px 0; white-space: pre; cursor: pointer;
+        font-family: "IBM Plex Mono", monospace; font-size: .9rem; line-height: 1.65; color: var(--code-ink);
+      }
+      .gline .ln { width: 42px; flex: none; text-align: right; padding-right: 14px; color: var(--code-dim); user-select: none; }
+      .gline:hover { background: rgba(255,255,255,.06); }
+      .gline.pending { background: var(--code-active); box-shadow: inset 3px 0 0 var(--amber); }
+      .gline.found-ok { background: rgba(62, 199, 158, .16); box-shadow: inset 3px 0 0 var(--accent); cursor: default; }
+      .gline.found-missed { background: rgba(227, 172, 60, .18); box-shadow: inset 3px 0 0 var(--amber); cursor: default; }
+      .gline.false-hit { background: rgba(239, 130, 102, .22); box-shadow: inset 3px 0 0 var(--rust); }
+      .gline .flag { margin-left: auto; padding-left: 16px; font-family: "IBM Plex Sans", sans-serif; font-size: .72rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+      .gline.found-ok .flag { color: #3ec79e; }
+      .gline.found-missed .flag { color: #e3ac3c; }
+
+      .bugcount { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+      .bugcount .chip {
+        font-family: "IBM Plex Mono", monospace; font-size: .82rem; font-weight: 600;
+        border: 1px solid var(--line); background: var(--panel-2); border-radius: 999px; padding: 4px 11px;
+      }
+      .classify-panel {
+        margin-top: 14px; border: 1.5px solid var(--amber); background: var(--amber-soft);
+        border-radius: 10px; padding: 14px; display: none;
+      }
+      .classify-panel.show { display: block; }
+      .classify-panel .cline-ref {
+        font-family: "IBM Plex Mono", monospace; font-size: .9rem; font-weight: 600;
+        background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px 11px; margin-top: 8px;
+        white-space: pre-wrap; word-break: break-word;
+      }
+      .classify-btns { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 12px; }
+      .classify-result { margin-top: 12px; font-size: .95rem; display: none; }
+      .classify-result.show { display: block; }
+      .hintbox {
+        margin-top: 14px; border: 1.5px dashed var(--amber); border-radius: 10px; padding: 13px 15px;
+        font-size: .93rem; background: var(--panel-2); display: none;
+      }
+      .hintbox.show { display: block; }
+      .hintbox b { color: var(--amber); }
+      .hintbox ul { margin: 6px 0 0; padding-left: 20px; }
+      .gym-status { margin-top: 12px; font-size: .93rem; color: var(--ink-soft); min-height: 1.4em; }
+      .gym-status b { color: var(--ink); }
+      .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; align-items: start; }
+      .compare .col-label { font-family: "IBM Plex Mono", monospace; font-size: .75rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 6px; }
+      .compare .codebox { margin-top: 0; }
+      .cline.fixed-line { background: rgba(62, 199, 158, .16); box-shadow: inset 3px 0 0 #3ec79e; opacity: 1; }
+      .sample-out {
+        margin-top: 12px; background: var(--code-bg); color: var(--code-ink); border-radius: 10px;
+        padding: 12px 14px; font-family: "IBM Plex Mono", monospace; font-size: .93rem; white-space: pre-wrap;
+      }
+      .sample-out .chead { font-size: .7rem; letter-spacing: .09em; text-transform: uppercase; color: var(--code-dim); margin-bottom: 5px; font-weight: 600; font-family: "IBM Plex Sans", sans-serif; }
+      @media (max-width: 900px) {
+        .compare { grid-template-columns: 1fr; }
+        .taxonomy { grid-template-columns: 1fr; }
+      }
+
       @media (max-width: 900px) {
         .grid { grid-template-columns: 1fr; }
         .primm { grid-template-columns: 1fr 1fr; }
@@ -329,6 +417,18 @@
         <p class="lede">TraceFirst is a first-year C++ tracer built on one rule: <strong>you never run code you have not first predicted.</strong> Commit to an answer, then step through the program and watch memory change. When your prediction and the machine disagree, TraceFirst stops at the exact statement where the two parted — and names the idea to fix.</p>
       </section>
 
+      <nav class="mode-toggle" aria-label="Choose a mode">
+        <button class="mode-btn" type="button" id="mode-tracer" aria-pressed="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          Prediction Tracer
+        </button>
+        <button class="mode-btn" type="button" id="mode-gym" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
+          Debugging Gym
+        </button>
+      </nav>
+
+      <div id="tracer-mode">
       <div class="primm" id="primm" aria-label="The four stages of each exercise">
         <div class="phase" data-phase="predict"><div class="pnum">Stage 1</div><div class="pname"><span class="dot"></span>Predict</div><div class="pdesc">Read the code. Say what it will print. Lock it in.</div></div>
         <div class="phase" data-phase="trace"><div class="pnum">Stage 2</div><div class="pname"><span class="dot"></span>Run</div><div class="pdesc">Step line by line. Watch each variable's box change.</div></div>
@@ -438,6 +538,88 @@
       </section>
 
       <p class="foot"><strong>How TraceFirst works:</strong> each exercise follows PRIMM — Predict, Run, Investigate, Modify — a sequence from computing-education research. The prediction is not a quiz before the lesson; it <em>is</em> the lesson, because the step-through that follows is read against a model you have already committed to. The four field skins share one code path and one set of numbers, so mixed-major classes discuss the same machine behaviour in four different worlds.</p>
+      </div><!-- /tracer-mode -->
+
+      <div id="gym-mode" hidden>
+        <section class="gym-intro">
+          <h2>Find the bugs. Classify them. Then prove the fix.</h2>
+          <p>Three short programs, broken on purpose — from a debugging and code-reading lab built for a first-year introductory C++ course serving CS and non-CS majors together. <strong>Click a line to accuse it of being a bug.</strong> Every accusation that lands must then be classified, because the distinction this gym trains is the one beginners blur:</p>
+          <div class="taxonomy">
+            <div class="tax syntax"><b>Syntax error</b>The code breaks a rule of the language. The compiler catches it and the program never runs.</div>
+            <div class="tax logic"><b>Logic error</b>The code is legal, compiles clean, and still does the wrong thing. Only the output exposes it.</div>
+          </div>
+          <div class="objectives">
+            <strong style="color:var(--ink);">By the end of the gym you can:</strong>
+            <ul>
+              <li>Read a program you did not write and locate its errors systematically, from a checklist, not by staring.</li>
+              <li>Distinguish syntax from logic errors, with an example of each.</li>
+              <li>Point the stream operators the right way: <span style="font-family:'IBM Plex Mono',monospace;">&lt;&lt;</span> out with <span style="font-family:'IBM Plex Mono',monospace;">cout</span>, <span style="font-family:'IBM Plex Mono',monospace;">&gt;&gt;</span> in with <span style="font-family:'IBM Plex Mono',monospace;">cin</span> — and say why <span style="font-family:'IBM Plex Mono',monospace;">main()</span> returns <span style="font-family:'IBM Plex Mono',monospace;">int</span>.</li>
+              <li>Explain operator precedence, the semicolon that detaches an <span style="font-family:'IBM Plex Mono',monospace;">if</span>, and why text needs <span style="font-family:'IBM Plex Mono',monospace;">string</span> and <span style="font-family:'IBM Plex Mono',monospace;">getline</span>.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="toolbar" aria-label="Choose a gym round">
+          <div>
+            <div class="tlabel">Rounds — the lab's three programs, in lab order</div>
+            <div class="exnav" id="gymnav"></div>
+          </div>
+          <div class="scorebar" id="gym-scorebar" aria-label="Your gym scoreboard"></div>
+        </section>
+
+        <section class="card" style="margin-top:18px;" aria-labelledby="gym-title">
+          <span class="concept-tag" id="gym-concept"></span>
+          <h2 id="gym-title"></h2>
+          <p class="story" id="gym-story"></p>
+          <div class="bugcount" id="gym-bugcount"></div>
+          <div class="codebox">
+            <div class="codehead"><span id="gym-filename">faulty.cpp — click a line to accuse it</span><span>C++</span></div>
+            <div id="gym-code" role="group" aria-label="Faulty program. Each line is a button: activate a line to accuse it of containing a bug."></div>
+          </div>
+          <p class="gym-status" id="gym-status" role="status"></p>
+          <div class="classify-panel" id="classify-panel">
+            <h3 style="font-size:1rem;">Bug found on line <span id="classify-line"></span>. Now classify it:</h3>
+            <div class="cline-ref" id="classify-ref"></div>
+            <div class="classify-btns" id="classify-btns">
+              <button class="btn" type="button" id="cls-syntax">Syntax — the compiler catches it</button>
+              <button class="btn ghost" type="button" id="cls-logic">Logic — it compiles, but lies</button>
+            </div>
+            <p class="classify-result" id="classify-result" role="status"></p>
+          </div>
+          <div class="hintbox" id="gym-hint">
+            <b>Three false alarms — here is the checklist from the lab.</b> Work the program top to bottom and ask, line by line:
+            <ul>
+              <li>Semicolons present — after every statement, including <span style="font-family:'IBM Plex Mono',monospace;">using namespace std</span> and <span style="font-family:'IBM Plex Mono',monospace;">return 0</span>?</li>
+              <li>Is <span style="font-family:'IBM Plex Mono',monospace;">main</span> declared correctly — <span style="font-family:'IBM Plex Mono',monospace;">int main()</span>?</li>
+              <li>Stream operators pointing the right way — <span style="font-family:'IBM Plex Mono',monospace;">&lt;&lt;</span> for output, <span style="font-family:'IBM Plex Mono',monospace;">&gt;&gt;</span> for input?</li>
+              <li>Types chosen well — <span style="font-family:'IBM Plex Mono',monospace;">string</span>, not <span style="font-family:'IBM Plex Mono',monospace;">char</span>, for text of more than one character, and <span style="font-family:'IBM Plex Mono',monospace;">getline</span> where the answer contains spaces?</li>
+              <li>Formulas right — and is a semicolon sitting directly after an <span style="font-family:'IBM Plex Mono',monospace;">if (condition)</span>, detaching its block?</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="card" id="gym-done-card" hidden aria-labelledby="gym-done-h">
+          <h3 id="gym-done-h">Round complete — the corrected program</h3>
+          <p style="margin-top:6px; font-size:.95rem;" id="gym-done-text"></p>
+          <div class="compare">
+            <div>
+              <div class="col-label">Faulty — as you hunted it</div>
+              <div class="codebox"><div class="codehead"><span>faulty.cpp</span><span>C++</span></div><pre id="gym-compare-faulty"></pre></div>
+            </div>
+            <div>
+              <div class="col-label">Corrected — fixed lines highlighted</div>
+              <div class="codebox"><div class="codehead"><span id="gym-fixed-name">fixed.cpp</span><span>C++</span></div><pre id="gym-compare-fixed"></pre></div>
+            </div>
+          </div>
+          <div class="sample-out"><div class="chead" id="gym-sample-head">Verified sample run</div><div id="gym-sample-out"></div></div>
+          <div class="lockrow">
+            <button class="btn" type="button" id="gym-next-btn" hidden>Next round</button>
+            <button class="btn ghost" type="button" id="gym-restart-btn">Hunt this round again</button>
+          </div>
+        </section>
+
+        <p class="foot"><strong>Where this comes from:</strong> the three programs, the bug counts, and the checklist come from a debugging lab module, <em>Find the Bugs — Debugging and Reading Code in C++</em>, built for a first-year introductory C++ course serving CS and non-CS majors together. In the lab you fix the code in an editor; here you train the step before that — seeing the bug, and knowing which kind it is. Scores live only in this session, as in the tracer.</p>
+      </div><!-- /gym-mode -->
       <div class="sr-live" aria-live="polite" id="live"></div>
     </main>
     <script>
@@ -1005,6 +1187,473 @@
     $("review-btn").addEventListener("click", function () {
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
+
+    /* ================= Debugging Gym =================
+       Source: the "Find the Bugs" debugging lab module.
+       Faulty listings are verbatim from the module README; corrected
+       programs are the module's verified .cpp files. */
+    var GYM_ROUNDS = [
+      {
+        title: "Exam average",
+        milestone: "Milestones 1–3 · The syntax hunt, then the two errors the compiler will not catch",
+        story: "This program reads a name and three exam scores, then reports the average and a pass/fail verdict. It is the lab's first faulty program: most of its wounds are syntax, but its two most expensive bugs compile clean.",
+        file: "examAverage.cpp",
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std",
+          "",
+          "double main()",
+          "{",
+          "    string name;",
+          "    int exam1, exam2, exam3;",
+          "    double average;",
+          "",
+          "    cout >> \"Enter your name: \";",
+          "    getline(cin, name);",
+          "",
+          "    cout << \"Enter Exam 1 score: \";",
+          "    cin << exam1;",
+          "",
+          "    cout << \"Enter Exam 2 score: \";",
+          "    cin >> exam2",
+          "",
+          "    cout << \"Enter Exam 3 score: \";",
+          "    cin >> exam3;",
+          "",
+          "    average = exam1 + exam2 + exam3 / 3;",
+          "",
+          "    cout << \"Student: \" >> name << endl;",
+          "    cout << \"Average: \" << average << endl;",
+          "",
+          "    if (average >= 70);",
+          "    {",
+          "        cout << \"You passed!\" << endl;",
+          "    }",
+          "    else",
+          "    {",
+          "        cout << \"You did not pass.\" << endl;",
+          "    }",
+          "",
+          "    return 0;",
+          "}"
+        ],
+        bugs: {
+          3:  { kind: "syntax", text: "Missing semicolon. <b>using namespace std</b> is a statement, and every statement ends with a semicolon — the compiler reads straight into the next line hunting for it." },
+          5:  { kind: "syntax", text: "<b>main() returns int, not double.</b> The entry point of every C++ program is declared <b>int main()</b>; a <b>double main()</b> declaration is simply wrong." },
+          11: { kind: "syntax", text: "Reversed stream operator. A prompt is <em>output</em>, and output flows through <b>cout &lt;&lt;</b>. <b>cout &gt;&gt;</b> points the stream the wrong way." },
+          15: { kind: "syntax", text: "Reversed stream operator. Input is read with <b>cin &gt;&gt;</b>. <b>cin &lt;&lt; exam1;</b> tries to push a value into the stream instead of pulling one out of it." },
+          18: { kind: "syntax", text: "Missing semicolon after <b>cin &gt;&gt; exam2</b>. Input statements end with semicolons like every other statement — this one does not." },
+          23: { kind: "logic",  text: "Operator precedence. Division binds tighter than addition, so this divides <em>only exam3</em> by 3, then adds. The compiler is satisfied; the average is wrong. The fix is parentheses and a real divisor: <b>(exam1 + exam2 + exam3) / 3.0</b>." },
+          25: { kind: "syntax", text: "Reversed stream operator inside the output chain. <b>\"Student: \" &gt;&gt; name</b> should be <b>&lt;&lt; name</b> — one wrong arrow breaks the whole cout statement." },
+          28: { kind: "logic",  text: "The semicolon after <b>if (average &gt;= 70);</b> ends the if statement on the spot. The block below it is detached, and the <b>else</b> no longer belongs to the condition. It compiles — and the verdict logic is broken." }
+        },
+        fixed: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "int main()",
+          "{",
+          "    string name;",
+          "    int exam1, exam2, exam3;",
+          "    double average;",
+          "",
+          "    cout << \"Enter your name: \";",
+          "    getline(cin, name);",
+          "",
+          "    cout << \"Enter Exam 1 score: \";",
+          "    cin >> exam1;",
+          "",
+          "    cout << \"Enter Exam 2 score: \";",
+          "    cin >> exam2;",
+          "",
+          "    cout << \"Enter Exam 3 score: \";",
+          "    cin >> exam3;",
+          "",
+          "    average = (exam1 + exam2 + exam3) / 3.0;",
+          "",
+          "    cout << \"Student: \" << name << endl;",
+          "    cout << \"Average: \" << average << endl;",
+          "",
+          "    if (average >= 70)",
+          "    {",
+          "        cout << \"You passed!\" << endl;",
+          "    }",
+          "    else",
+          "    {",
+          "        cout << \"You did not pass.\" << endl;",
+          "    }",
+          "",
+          "    return 0;",
+          "}"
+        ],
+        fixedLines: [3, 5, 11, 15, 18, 23, 25, 28],
+        sampleHead: "Verified sample run — name Ada Lovelace, scores 80, 90, 70",
+        sample: "Student: Ada Lovelace\nAverage: 80\nYou passed!"
+      },
+      {
+        title: "Student profile",
+        milestone: "Milestones 4–5 · Types and input",
+        story: "A student-profile program: name, major, classification, age, favourite programming language. Its errors are of a second kind — types and input methods chosen wrong, alongside the familiar missing semicolons and reversed arrows.",
+        file: "studentProfile.cpp",
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std",
+          "",
+          "int main()",
+          "{",
+          "    string name;",
+          "    string major;",
+          "    string classification;",
+          "    int age",
+          "    char favoriteLanguage;",
+          "",
+          "    cout << \"Enter your full name: \";",
+          "    getline(cin, name);",
+          "",
+          "    cout << \"Enter your major: \";",
+          "    getline(cin, major);",
+          "",
+          "    cout << \"Enter your classification: \";",
+          "    cin << classification;",
+          "",
+          "    cout << \"Enter your age: \";",
+          "    cin << age;",
+          "",
+          "    cout << \"Enter your favorite programming language: \";",
+          "    cin >> favoriteLanguage;",
+          "",
+          "    cout << endl;",
+          "    cout << \"----- Student Profile -----\" << endl;",
+          "    cout << \"Name: \" >> name << endl;",
+          "    cout << \"Major: \" << major << endl;",
+          "    cout << \"Classification: \" << classification << endl;",
+          "    cout << \"Age: \" << age << endl;",
+          "    cout << \"Favorite Programming Language: \" << favoriteLanguage << endl;",
+          "",
+          "    return 0",
+          "}"
+        ],
+        bugs: {
+          3:  { kind: "syntax", text: "Missing semicolon after <b>using namespace std</b> — the same wound as round 1. It is the most common syntax error in this lab because it hides at the top of the file." },
+          10: { kind: "syntax", text: "Missing semicolon after <b>int age</b>. The declaration never ends, so the compiler swallows the next line into it and reports the error somewhere it does not live." },
+          11: { kind: "logic",  text: "Wrong type. A <b>char</b> holds exactly one character; a programming language's name — C++, Python, Java — needs a <b>string</b>. The declaration compiles, and the variable can never hold the answer. Types are a design choice, so this is a logic error." },
+          20: { kind: "syntax", text: "Reversed stream operator. Reading input takes <b>cin &gt;&gt;</b>; <b>cin &lt;&lt; classification;</b> points the stream the wrong way. (In the corrected program this read also becomes a <b>getline</b>, like the name and major above it.)" },
+          23: { kind: "syntax", text: "Reversed stream operator again: <b>cin &lt;&lt; age;</b> should be <b>cin &gt;&gt; age;</b>. Output arrows on an input stream never read anything." },
+          26: { kind: "logic",  text: "Wrong input method. <b>cin &gt;&gt;</b> stops at the first space — and into a <b>char</b> it keeps a single character besides. A text answer needs a <b>string</b> read with <b>getline</b>. It compiles; it just cannot capture the answer." },
+          30: { kind: "syntax", text: "Reversed stream operator in the report: <b>\"Name: \" &gt;&gt; name</b> should be <b>&lt;&lt; name</b>. Every value in a cout chain travels through <b>&lt;&lt;</b>." },
+          36: { kind: "syntax", text: "Missing semicolon after <b>return 0</b> — the last statement of the program, and still a statement. The closing brace does not excuse it." }
+        },
+        fixed: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "int main()",
+          "{",
+          "    string name;",
+          "    string major;",
+          "    string classification;",
+          "    int age;",
+          "    string favoriteLanguage;",
+          "",
+          "    cout << \"Enter your full name: \";",
+          "    getline(cin, name);",
+          "",
+          "    cout << \"Enter your major: \";",
+          "    getline(cin, major);",
+          "",
+          "    cout << \"Enter your classification: \";",
+          "    getline(cin, classification);",
+          "",
+          "    cout << \"Enter your age: \";",
+          "    cin >> age;",
+          "    cin.ignore();",
+          "",
+          "    cout << \"Enter your favorite programming language: \";",
+          "    getline(cin, favoriteLanguage);",
+          "",
+          "    cout << endl;",
+          "    cout << \"----- Student Profile -----\" << endl;",
+          "    cout << \"Name: \" << name << endl;",
+          "    cout << \"Major: \" << major << endl;",
+          "    cout << \"Classification: \" << classification << endl;",
+          "    cout << \"Age: \" << age << endl;",
+          "    cout << \"Favorite Programming Language: \" << favoriteLanguage << endl;",
+          "",
+          "    return 0;",
+          "}"
+        ],
+        fixedLines: [3, 10, 11, 20, 23, 24, 27, 31, 37],
+        sampleHead: "Verified sample run — Jane Smith, Computer Science, Junior, 20, C++",
+        sample: "----- Student Profile -----\nName: Jane Smith\nMajor: Computer Science\nClassification: Junior\nAge: 20\nFavorite Programming Language: C++"
+      },
+      {
+        title: "Area and perimeter",
+        milestone: "Milestone 6 · Guided practice, against the clock",
+        story: "A rectangle program: read a length and a width, compute the area and the perimeter. By now the syntax wounds should look familiar — the lesson of this round is that both formulas are wrong, and both compile.",
+        file: "areaPerimeter.cpp",
+        code: [
+          "#include <iostream>",
+          "#include <iomanip>",
+          "using namespace std",
+          "",
+          "int main()",
+          "{",
+          "    double length, width;",
+          "    double area, perimeter;",
+          "",
+          "    cout << \"Enter the length: \";",
+          "    cin << length;",
+          "",
+          "    cout << \"Enter the width: \";",
+          "    cin >> width",
+          "",
+          "    area = length + width;",
+          "    perimeter = 2 * length + width;",
+          "",
+          "    cout << fixed << setprecision(2);",
+          "    cout << \"Area: \" >> area << endl;",
+          "    cout << \"Perimeter: \" << perimeter << endl",
+          "",
+          "    return 0;",
+          "}"
+        ],
+        bugs: {
+          3:  { kind: "syntax", text: "Missing semicolon after <b>using namespace std</b>. Third round, same first check on the list — that is why the checklist starts there." },
+          11: { kind: "syntax", text: "Reversed stream operator: <b>cin &lt;&lt; length;</b> should be <b>cin &gt;&gt; length;</b>. Input always flows out of the stream into the variable." },
+          14: { kind: "syntax", text: "Missing semicolon after <b>cin &gt;&gt; width</b>. The statement runs into the next line, and the compiler blames code that is innocent." },
+          16: { kind: "logic",  text: "Wrong formula. Area is <b>length * width</b>, not <b>length + width</b>. Perfectly legal C++, perfectly wrong geometry — the most expensive kind of bug in this lab, because nothing announces it." },
+          17: { kind: "logic",  text: "Wrong formula. Perimeter is <b>2 * (length + width)</b>; without the parentheses, only the length is doubled. Precedence again — the same trap as round 1's average, wearing different clothes." },
+          20: { kind: "syntax", text: "Reversed stream operator: <b>\"Area: \" &gt;&gt; area</b> should be <b>&lt;&lt; area</b>. Output chains use <b>&lt;&lt;</b> for every single value." },
+          21: { kind: "syntax", text: "Missing semicolon at the end of the Perimeter line. The statement is complete in every other way — and still unterminated." }
+        },
+        fixed: [
+          "#include <iostream>",
+          "#include <iomanip>",
+          "using namespace std;",
+          "",
+          "int main()",
+          "{",
+          "    double length, width;",
+          "    double area, perimeter;",
+          "",
+          "    cout << \"Enter the length: \";",
+          "    cin >> length;",
+          "",
+          "    cout << \"Enter the width: \";",
+          "    cin >> width;",
+          "",
+          "    area = length * width;",
+          "    perimeter = 2 * (length + width);",
+          "",
+          "    cout << fixed << setprecision(2);",
+          "    cout << \"Area: \" << area << endl;",
+          "    cout << \"Perimeter: \" << perimeter << endl;",
+          "",
+          "    return 0;",
+          "}"
+        ],
+        fixedLines: [3, 11, 14, 16, 17, 20, 21],
+        sampleHead: "Verified sample run — length 5, width 3",
+        sample: "Area: 15.00\nPerimeter: 16.00"
+      }
+    ];
+
+    function gymFreshRound() { return { found: {}, pending: null, falseAlarms: 0, lastFalse: -1, lastResult: null, done: false }; }
+    var gym = { current: 0, rounds: GYM_ROUNDS.map(gymFreshRound) };
+
+    function gymCounts(r) {
+      var syn = 0, log = 0;
+      Object.keys(r.bugs).forEach(function (k) { if (r.bugs[k].kind === "syntax") syn++; else log++; });
+      return { total: syn + log, syntax: syn, logic: log };
+    }
+
+    function renderGymNav() {
+      var box = $("gymnav"); box.innerHTML = "";
+      GYM_ROUNDS.forEach(function (r, i) {
+        var s = gym.rounds[i], c = gymCounts(r);
+        var foundN = Object.keys(s.found).length;
+        var st = s.done ? { t: "complete ✓", cls: "good" }
+               : foundN > 0 ? { t: foundN + " of " + c.total + " bugs found", cls: "" }
+               : { t: "not started", cls: "" };
+        var b = document.createElement("button");
+        b.className = "ex-btn"; b.type = "button";
+        b.setAttribute("aria-current", gym.current === i ? "true" : "false");
+        b.innerHTML = '<span class="n">' + (i + 1) + '</span><span>' + r.title +
+                      '<br><span class="status ' + st.cls + '">' + st.t + "</span></span>";
+        b.addEventListener("click", function () { gym.current = i; renderGym(); });
+        box.appendChild(b);
+      });
+    }
+
+    function renderGymScore() {
+      var found = 0, total = 0, clsOk = 0, clsAtt = 0, falseA = 0;
+      GYM_ROUNDS.forEach(function (r, i) {
+        var s = gym.rounds[i];
+        total += gymCounts(r).total;
+        Object.keys(s.found).forEach(function (k) {
+          found++; clsAtt++; if (s.found[k].clsCorrect) clsOk++;
+        });
+        falseA += s.falseAlarms;
+      });
+      $("gym-scorebar").innerHTML =
+        '<span class="metric"><strong>' + found + " / " + total + '</strong> <span>bugs found</span></span>' +
+        '<span class="metric"><strong>' + clsOk + " / " + clsAtt + '</strong> <span>classified correctly</span></span>' +
+        '<span class="metric"><strong>' + falseA + '</strong> <span>false alarms</span></span>';
+    }
+
+    function renderGymCode() {
+      var r = GYM_ROUNDS[gym.current], s = gym.rounds[gym.current];
+      var box = $("gym-code"); box.innerHTML = "";
+      r.code.forEach(function (line, i) {
+        var ln = i + 1;
+        var b = document.createElement("button");
+        b.type = "button";
+        var cls = "gline", flag = "";
+        if (s.found[ln]) {
+          cls += s.found[ln].clsCorrect ? " found-ok" : " found-missed";
+          flag = s.found[ln].clsCorrect ? r.bugs[ln].kind + " ✓" : r.bugs[ln].kind + " · class missed";
+          b.disabled = true;
+        } else if (s.pending === ln) cls += " pending";
+        else if (s.lastFalse === ln) cls += " false-hit";
+        b.className = cls;
+        b.setAttribute("aria-label", "Line " + ln + (s.found[ln] ? ": bug found, " + r.bugs[ln].kind : ": accuse this line"));
+        b.innerHTML = '<span class="ln">' + ln + '</span><span>' + (esc(line) || " ") + '</span>' + (flag ? '<span class="flag">' + flag + "</span>" : "");
+        if (!s.found[ln]) b.addEventListener("click", function () { gymAccuse(ln); });
+        box.appendChild(b);
+      });
+    }
+
+    function renderGymPanel() {
+      var r = GYM_ROUNDS[gym.current], s = gym.rounds[gym.current];
+      var panel = $("classify-panel");
+      if (s.pending !== null) {
+        panel.classList.add("show");
+        $("classify-line").textContent = s.pending;
+        $("classify-ref").textContent = r.code[s.pending - 1].trim();
+        $("classify-btns").style.display = "";
+        var res = $("classify-result"); res.className = "classify-result"; res.innerHTML = "";
+      } else if (s.lastResult) {
+        panel.classList.add("show");
+        $("classify-line").textContent = s.lastResult.line;
+        $("classify-ref").textContent = r.code[s.lastResult.line - 1].trim();
+        $("classify-btns").style.display = "none";
+        var res2 = $("classify-result");
+        res2.className = "classify-result show";
+        res2.innerHTML = s.lastResult.html;
+      } else panel.classList.remove("show");
+      $("gym-hint").classList.toggle("show", s.falseAlarms >= 3);
+    }
+
+    function renderGymRoundHead() {
+      var r = GYM_ROUNDS[gym.current], s = gym.rounds[gym.current];
+      var c = gymCounts(r);
+      var foundN = Object.keys(s.found).length;
+      $("gym-concept").textContent = "Round " + (gym.current + 1) + " · " + r.milestone;
+      $("gym-title").textContent = r.title;
+      $("gym-story").textContent = r.story;
+      $("gym-filename").textContent = "faulty " + r.file + " — click a line to accuse it";
+      $("gym-bugcount").innerHTML =
+        '<span class="chip">' + c.total + " bugs: " + c.syntax + " syntax · " + c.logic + " logic</span>" +
+        '<span class="chip">' + foundN + " found</span>" +
+        '<span class="chip">' + s.falseAlarms + " false alarm" + (s.falseAlarms === 1 ? "" : "s") + "</span>";
+      var st = $("gym-status");
+      if (s.done) st.innerHTML = "<b>Round complete.</b> All " + c.total + " bugs found. The corrected program is below — compare it line by line with the one you hunted.";
+      else if (s.pending !== null) st.innerHTML = "Line " + s.pending + " accused. <b>Classify the bug below</b> before you hunt the next one.";
+      else if (foundN === 0 && s.falseAlarms === 0) st.innerHTML = "Hunt from the top, the way the checklist works. <b>" + c.total + " bugs</b> are hiding in this program.";
+      else st.innerHTML = "<b>" + (c.total - foundN) + " bug" + (c.total - foundN === 1 ? "" : "s") + " still hiding.</b> Keep working the checklist.";
+    }
+
+    function renderGymDone() {
+      var r = GYM_ROUNDS[gym.current], s = gym.rounds[gym.current];
+      var card = $("gym-done-card");
+      card.hidden = !s.done;
+      if (!s.done) return;
+      var clsOk = 0;
+      Object.keys(s.found).forEach(function (k) { if (s.found[k].clsCorrect) clsOk++; });
+      $("gym-done-text").innerHTML = "You found all <b>" + gymCounts(r).total + " bugs</b> with <b>" + clsOk + " of " + gymCounts(r).total +
+        " classifications correct</b> and <b>" + s.falseAlarms + " false alarm" + (s.falseAlarms === 1 ? "" : "s") +
+        "</b>. In the lab, this is the moment you open the corrected file and check your list against it:";
+      $("gym-fixed-name").textContent = r.file + " (corrected)";
+      function fill(pre, lines, fixedSet) {
+        pre.innerHTML = "";
+        lines.forEach(function (line, i) {
+          var d = document.createElement("div");
+          d.className = "cline" + (fixedSet && fixedSet.indexOf(i + 1) >= 0 ? " fixed-line" : "");
+          d.innerHTML = '<span class="ln">' + (i + 1) + '</span><span>' + (esc(line) || " ") + "</span>";
+          pre.appendChild(d);
+        });
+      }
+      fill($("gym-compare-faulty"), r.code, null);
+      fill($("gym-compare-fixed"), r.fixed, r.fixedLines);
+      $("gym-sample-head").textContent = r.sampleHead;
+      $("gym-sample-out").textContent = r.sample;
+      var next = $("gym-next-btn");
+      next.hidden = gym.current >= GYM_ROUNDS.length - 1;
+      next.textContent = gym.current < GYM_ROUNDS.length - 1 ? "Next round: " + GYM_ROUNDS[gym.current + 1].title : "";
+    }
+
+    function renderGym() { renderGymNav(); renderGymScore(); renderGymRoundHead(); renderGymCode(); renderGymPanel(); renderGymDone(); }
+
+    function gymAccuse(ln) {
+      var r = GYM_ROUNDS[gym.current], s = gym.rounds[gym.current];
+      if (s.done || s.found[ln]) return;
+      if (r.bugs[ln]) {
+        s.pending = ln; s.lastFalse = -1; s.lastResult = null;
+        announce("Bug found on line " + ln + ". Now classify it: syntax or logic?");
+      } else {
+        if (s.pending !== null) { announce("Classify the bug on line " + s.pending + " first — one accusation at a time."); return; }
+        s.falseAlarms++; s.lastFalse = ln;
+        announce("Line " + ln + " is clean. False alarm number " + s.falseAlarms + "." +
+                 (s.falseAlarms === 3 ? " The lab checklist is now shown as a hint." : ""));
+      }
+      renderGym();
+    }
+
+    function gymClassify(kind) {
+      var r = GYM_ROUNDS[gym.current], s = gym.rounds[gym.current];
+      if (s.pending === null) return;
+      var ln = s.pending, bug = r.bugs[ln];
+      var ok = kind === bug.kind;
+      s.found[ln] = { clsCorrect: ok };
+      s.pending = null;
+      s.lastResult = { line: ln, html:
+        (ok ? "<b>Classified correctly — " + bug.kind + ".</b> " : "<b>Bug banked, classification missed.</b> This one is <b>" + bug.kind + "</b>. ") + bug.text };
+      var foundN = Object.keys(s.found).length;
+      if (foundN === gymCounts(r).total) {
+        s.done = true;
+        announce("Round complete. All " + foundN + " bugs found. The corrected program is shown below.");
+      } else {
+        announce((ok ? "Correct classification." : "Classification missed — it was " + bug.kind + ".") + " " + (gymCounts(r).total - foundN) + " bugs remain.");
+      }
+      renderGym();
+      if (s.done) $("gym-done-card").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    $("cls-syntax").addEventListener("click", function () { gymClassify("syntax"); });
+    $("cls-logic").addEventListener("click", function () { gymClassify("logic"); });
+    $("gym-next-btn").addEventListener("click", function () {
+      if (gym.current < GYM_ROUNDS.length - 1) { gym.current++; renderGym(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+    });
+    $("gym-restart-btn").addEventListener("click", function () {
+      gym.rounds[gym.current] = gymFreshRound(); renderGym();
+      document.querySelector("#gym-title").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    /* ---------------- Mode toggle ---------------- */
+    function setMode(gymMode) {
+      $("tracer-mode").hidden = gymMode;
+      $("gym-mode").hidden = !gymMode;
+      $("mode-tracer").setAttribute("aria-pressed", gymMode ? "false" : "true");
+      $("mode-gym").setAttribute("aria-pressed", gymMode ? "true" : "false");
+      if (gymMode) renderGym();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    $("mode-tracer").addEventListener("click", function () { setMode(false); });
+    $("mode-gym").addEventListener("click", function () { setMode(true); });
 
     renderSkins();
     renderAll();
