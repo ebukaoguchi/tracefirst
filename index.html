@@ -236,6 +236,18 @@
       .membox .vval { font-family: "IBM Plex Mono", monospace; font-size: 1.55rem; font-weight: 600; margin-top: 2px; }
       .membox.changed { border-color: var(--amber); animation: flash 0.7s ease; }
       @keyframes flash { 0% { background: var(--amber-soft); } 100% { background: var(--panel-2); } }
+      .membox.wide { flex: 1 1 230px; }
+      .mem-fields { display: grid; gap: 4px; margin-top: 7px; }
+      .mem-field { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; border-top: 1px dashed var(--line); padding-top: 4px; font-family: "IBM Plex Mono", monospace; }
+      .mem-field .flabel { font-size: .72rem; color: var(--ink-soft); font-weight: 600; letter-spacing: .05em; text-transform: uppercase; }
+      .mem-field .fval { font-size: 1.15rem; font-weight: 600; }
+      .mem-elems { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+      .mem-elem { border: 1.5px solid var(--accent); background: var(--accent-soft); border-radius: 7px; min-width: 36px; text-align: center; padding: 3px 8px; font-family: "IBM Plex Mono", monospace; font-weight: 600; font-size: 1.05rem; line-height: 1.25; }
+      .mem-elem small { display: block; font-size: .6rem; color: var(--ink-soft); font-weight: 600; letter-spacing: .04em; }
+      .mem-grid2 { display: grid; gap: 5px; margin-top: 8px; }
+      .mem-grid-row { display: flex; gap: 5px; }
+      .mem-grid-row .mem-elem { flex: 1 1 0; }
+      .mem-empty-inline { margin-top: 7px; font-size: .88rem; color: var(--ink-soft); font-family: "IBM Plex Mono", monospace; }
       .callstack { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
       .stack-frame { border: 1.5px solid var(--line); border-radius: 10px; background: var(--panel-2); padding: 9px 12px; }
       .stack-frame.top-frame { border-color: var(--amber); background: var(--amber-soft); }
@@ -747,7 +759,7 @@
             <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas: variables, division, decisions, loops, functions.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Put code in order, then write a missing line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find faults in someone else's program and fix one yourself.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 16</strong><span>The rest of the sequence, up to recursion.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 23</strong><span>The rest of the sequence: recursion, searching, sorting, and the remaining course topics.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write whole programs of your own.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
             <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Bolt Challenges, the Challenges mode, and everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
@@ -2167,6 +2179,384 @@ for (int i = 0; i < 3; i++) {
           correct: 0,
           explain: "sumTo(4) is the sub-answer you watched return in the trace: 4 + sumTo(3) = 4 + 6 = <b>10</b>."
         }
+      },
+      {
+        concept: "Searching",
+        title: "Binary search",
+        goal: "Binary search halves the remaining range with every probe — and the answer it reports is an <b>index</b>, counting from 0, not a position counting from 1.",
+        stories: {
+          health:   "A lab system keeps seven <strong>reference values in sorted order</strong> — 5, 12, 19, 24, 31, 38, 45 — and uses binary search to locate <strong>31</strong>. The program prints where the search lands.",
+          psych:    "A survey platform keeps seven <strong>scale codes in sorted order</strong> — 5, 12, 19, 24, 31, 38, 45 — and uses binary search to locate <strong>31</strong>. The program prints where the search lands.",
+          business: "A stock system keeps seven <strong>product codes in sorted order</strong> — 5, 12, 19, 24, 31, 38, 45 — and uses binary search to locate <strong>31</strong>. The program prints where the search lands.",
+          arts:     "A media archive keeps seven <strong>track numbers in sorted order</strong> — 5, 12, 19, 24, 31, 38, 45 — and uses binary search to locate <strong>31</strong>. The program prints where the search lands."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int nums[7] = {5, 12, 19, 24, 31, 38, 45};",
+          "    int target = 31;",
+          "    int first = 0, last = 6, pos = -1;",
+          "    while (first <= last) {",
+          "        int mid = (first + last) / 2;",
+          "        if (nums[mid] == target) { pos = mid; break; }",
+          "        else if (nums[mid] < target) { first = mid + 1; }",
+          "        else { last = mid - 1; }",
+          "    }",
+          "    cout << pos;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["4", "5", "3", "-1"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 10, text: "You counted positions from 1: 31 is the <em>fifth</em> value in the list. But the search works in <b>indexes, which start at 0</b>. The parting step is the last mid calculation, <b>(4 + 4) / 2 = 4</b>: the halving went mid 3 (24, too small), mid 5 (38, too big), mid 4 — found. The program stores and prints the index, <b>4</b>." },
+          2: { step: 4, text: "3 is only the <em>first</em> probe: mid = (0 + 6) / 2 = 3, and nums[3] is 24 — too small. A binary search does not stop at its first look; each probe throws away half the range and probes again. Follow first and last as they close in." },
+          3: { step: 11, text: "-1 is where <b>pos</b> starts — the “not found” sentinel. It survives only if the loop never finds the target. Here the third probe lands exactly on 31, and the found branch sets <b>pos = mid</b> before the break, overwriting the -1." }
+        },
+        steps: [
+          { line: 4, vars: { nums: ["int[7]", "{5, 12, 19, 24, 31, 38, 45}"] }, out: "", note: "The sorted array <b>nums</b> holds seven values at indexes <b>0 to 6</b>. 31 sits at index 4 — keep that in mind; the search has to discover it by halving, not by looking." },
+          { line: 5, vars: { nums: ["int[7]", "{5, 12, 19, 24, 31, 38, 45}"], target: ["int", "31"] }, out: "", note: "The <b>target</b> is <b>31</b>." },
+          { line: 6, vars: { nums: ["int[7]", "{5, 12, 19, 24, 31, 38, 45}"], target: ["int", "31"], first: ["int", "0"], last: ["int", "6"], pos: ["int", "-1"] }, out: "", note: "The search range starts as the whole array: <b>first = 0</b>, <b>last = 6</b>. <b>pos = -1</b> means “not found yet”." },
+          { line: 7, vars: { nums: ["int[7]", "{5, 12, 19, 24, 31, 38, 45}"], target: ["int", "31"], first: ["int", "0"], last: ["int", "6"], pos: ["int", "-1"] }, out: "", note: "Test: is <b>0 &lt;= 6</b>? <b>True</b> — there is still range to search." },
+          { line: 8, vars: { nums: ["int[7]", "{5, 12, 19, 24, 31, 38, 45}"], target: ["int", "31"], first: ["int", "0"], last: ["int", "6"], pos: ["int", "-1"], mid: ["int", "3"] }, out: "", note: "First probe: <b>mid = (0 + 6) / 2 = 3</b> — the middle index of the whole range." },
+          { line: 9, vars: { nums: ["int[7]", "{5, 12, 19, 24, 31, 38, 45}"], target: ["int", "31"], first: ["int", "0"], last: ["int", "6"], pos: ["int", "-1"], mid: ["int", "3"] }, out: "", note: "Is <b>nums[3] == 31</b>? nums[3] is <b>24</b> — <b>false</b>. Not found, this time." },
+          { line: 10, vars: { nums: ["int[7]", "{5, 12, 19, 24, 31, 38, 45}"], target: ["int", "31"], first: ["int", "4"], last: ["int", "6"], pos: ["int", "-1"], mid: ["int", "3"] }, out: "", note: "24 &lt; 31, so the target — if it exists — is in the <em>upper</em> half. <b>first = mid + 1 = 4</b>: everything at index 3 and below is discarded in one step." },
+          { line: 8, vars: { nums: ["int[7]", "{5, 12, 19, 24, 31, 38, 45}"], target: ["int", "31"], first: ["int", "4"], last: ["int", "6"], pos: ["int", "-1"], mid: ["int", "5"] }, out: "", note: "Second probe on the smaller range: <b>mid = (4 + 6) / 2 = 5</b>." },
+          { line: 9, vars: { nums: ["int[7]", "{5, 12, 19, 24, 31, 38, 45}"], target: ["int", "31"], first: ["int", "4"], last: ["int", "6"], pos: ["int", "-1"], mid: ["int", "5"] }, out: "", note: "Is <b>nums[5] == 31</b>? nums[5] is <b>38</b> — <b>false</b> again." },
+          { line: 11, vars: { nums: ["int[7]", "{5, 12, 19, 24, 31, 38, 45}"], target: ["int", "31"], first: ["int", "4"], last: ["int", "4"], pos: ["int", "-1"], mid: ["int", "5"] }, out: "", note: "38 is <em>not</em> less than 31, so the else branch runs: <b>last = mid - 1 = 4</b>. The range has narrowed to a single index: 4." },
+          { line: 8, vars: { nums: ["int[7]", "{5, 12, 19, 24, 31, 38, 45}"], target: ["int", "31"], first: ["int", "4"], last: ["int", "4"], pos: ["int", "-1"], mid: ["int", "4"] }, out: "", note: "<b>The parting step.</b> Third probe: <b>mid = (4 + 4) / 2 = 4</b>. The search lands on index 4 because indexes start at 0 — the halving went mid 3 (24, too small), mid 5 (38, too big), mid 4." },
+          { line: 9, vars: { nums: ["int[7]", "{5, 12, 19, 24, 31, 38, 45}"], target: ["int", "31"], first: ["int", "4"], last: ["int", "4"], pos: ["int", "4"], mid: ["int", "4"] }, out: "", note: "Is <b>nums[4] == 31</b>? <b>Yes.</b> <b>pos = mid = 4</b>, and <b>break</b> leaves the loop at once." },
+          { line: 13, vars: { nums: ["int[7]", "{5, 12, 19, 24, 31, 38, 45}"], target: ["int", "31"], first: ["int", "4"], last: ["int", "4"], pos: ["int", "4"], mid: ["int", "4"] }, out: "4", note: "The program prints <b>pos</b>: <b>4</b> — an index, not a count from 1." },
+          { line: 14, vars: { nums: ["int[7]", "{5, 12, 19, 24, 31, 38, 45}"], target: ["int", "31"], first: ["int", "4"], last: ["int", "4"], pos: ["int", "4"], mid: ["int", "4"] }, out: "4", note: "The program ends. Final answer: <b>4</b>." }
+        ],
+        modify: {
+          prompt: "The target changes from 31 to 19. The array and the search are untouched. What prints now?",
+          code: 'int nums[7] = {5, 12, 19, 24, 31, 38, 45};\nint target = <mark>19</mark>;\nint first = 0, last = 6, pos = -1;\nwhile (first <= last) {\n    int mid = (first + last) / 2;\n    if (nums[mid] == target) { pos = mid; break; }\n    else if (nums[mid] < target) { first = mid + 1; }\n    else { last = mid - 1; }\n}\ncout << pos;',
+          options: ["2", "3", "4", "1"],
+          correct: 0,
+          explain: "The probes go: mid 3 (24, too big, so last = 2), mid 1 (12, too small, so first = 2), mid 2 — found. 19 sits at index <b>2</b>."
+        }
+      },
+      {
+        concept: "Sorting",
+        title: "Bubble sort",
+        goal: "One pass of bubble sort only guarantees that the <b>largest</b> value has bubbled to the end. The outer loop runs pass after pass until the whole array is in order.",
+        stories: {
+          health:   "Five <strong>recovery times</strong> — 29, 10, 14, 37, 13 — are stored in an array, out of order. A bubble sort program puts them in ascending order and prints the array.",
+          psych:    "Five <strong>response scores</strong> — 29, 10, 14, 37, 13 — are stored in an array, out of order. A bubble sort program puts them in ascending order and prints the array.",
+          business: "Five <strong>daily totals</strong> — 29, 10, 14, 37, 13 — are stored in an array, out of order. A bubble sort program puts them in ascending order and prints the array.",
+          arts:     "Five <strong>running times</strong> — 29, 10, 14, 37, 13 — are stored in an array, out of order. A bubble sort program puts them in ascending order and prints the array."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int a[5] = {29, 10, 14, 37, 13};",
+          "    for (int i = 0; i < 4; i++) {",
+          "        for (int j = 0; j < 4 - i; j++) {",
+          "            if (a[j] > a[j + 1]) {",
+          "                int t = a[j]; a[j] = a[j + 1]; a[j + 1] = t;",
+          "            }",
+          "        }",
+          "    }",
+          "    for (int i = 0; i < 5; i++) { cout << a[i] << \" \"; }",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["10 13 14 29 37", "10 14 29 13 37", "29 10 14 37 13", "10 14 13 29 37"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 7, text: "That is the array after <b>one pass</b> — and it is the classic bubble-sort trap. The parting step is in the <b>second pass</b>: it still swaps <b>29 and 13</b>. One pass only guarantees the largest value has bubbled to the end; the rest of the array can still be out of order, and here it is." },
+          2: { step: 2, text: "That is the array exactly as it started — as if the sort never touched it. But the parting step comes early: the <b>very first comparison</b>, 29 &gt; 10, swaps, and the array changes from that moment on. Sorting rewrites the same boxes, one swap at a time." },
+          3: { step: 9, text: "So close: that is the array after <b>two</b> passes. One swap remains — in the third pass, <b>14 and 13</b> are still out of order, and the inner loop finds and swaps them. The program does not print until every pass the outer loop asks for has run." }
+        },
+        steps: [
+          { line: 4, vars: { a: ["int[5]", "{29, 10, 14, 37, 13}"] }, out: "", note: "The array <b>a</b> starts unsorted: <b>29, 10, 14, 37, 13</b>. Watch the whole row of boxes as you step — a sort is a sequence of small swaps, not one rearrangement." },
+          { line: 5, vars: { a: ["int[5]", "{29, 10, 14, 37, 13}"], i: ["int", "0"] }, out: "", note: "<b>Pass 1</b> begins (i = 0). The inner loop will compare neighbours from j = 0 to j = 3, swapping any pair that is out of order." },
+          { line: 8, vars: { a: ["int[5]", "{10, 29, 14, 37, 13}"], i: ["int", "0"], j: ["int", "0"] }, out: "", note: "j = 0: is <b>29 &gt; 10</b>? Yes — swap. The 29 moves one step right: <b>{10, 29, 14, 37, 13}</b>." },
+          { line: 8, vars: { a: ["int[5]", "{10, 14, 29, 37, 13}"], i: ["int", "0"], j: ["int", "1"] }, out: "", note: "j = 1: is <b>29 &gt; 14</b>? Yes — swap again: <b>{10, 14, 29, 37, 13}</b>. The 29 is bubbling rightward." },
+          { line: 7, vars: { a: ["int[5]", "{10, 14, 29, 37, 13}"], i: ["int", "0"], j: ["int", "2"] }, out: "", note: "j = 2: is <b>29 &gt; 37</b>? <b>No</b> — this pair is already in order, so nothing swaps. Not every comparison changes the array." },
+          { line: 8, vars: { a: ["int[5]", "{10, 14, 29, 13, 37}"], i: ["int", "0"], j: ["int", "3"] }, out: "", note: "j = 3: is <b>37 &gt; 13</b>? Yes — swap: <b>{10, 14, 29, 13, 37}</b>. Pass 1 is over. The largest value, 37, has reached the end — but look at the middle: 29 still sits before 13. The array is <em>not</em> sorted yet." },
+          { line: 5, vars: { a: ["int[5]", "{10, 14, 29, 13, 37}"], i: ["int", "1"] }, out: "", note: "<b>Pass 2</b> begins (i = 1). The inner loop runs one comparison shorter this time — the 37 at the end is settled and is left alone." },
+          { line: 8, vars: { a: ["int[5]", "{10, 14, 13, 29, 37}"], i: ["int", "1"], j: ["int", "2"] }, out: "", note: "<b>The parting step.</b> In pass 2, j = 0 and j = 1 find nothing to swap — then j = 2 compares <b>29 &gt; 13</b> and swaps: <b>{10, 14, 13, 29, 37}</b>. A second pass was not a formality; it did real work. One pass only guarantees the largest value has bubbled to the end." },
+          { line: 5, vars: { a: ["int[5]", "{10, 14, 13, 29, 37}"], i: ["int", "2"] }, out: "", note: "<b>Pass 3</b> begins (i = 2), shorter still: only j = 0 and j = 1 are compared." },
+          { line: 8, vars: { a: ["int[5]", "{10, 13, 14, 29, 37}"], i: ["int", "2"], j: ["int", "1"] }, out: "", note: "j = 0 is fine (10 &lt; 14), but j = 1 compares <b>14 &gt; 13</b> and swaps: <b>{10, 13, 14, 29, 37}</b>. The last out-of-order pair is fixed." },
+          { line: 5, vars: { a: ["int[5]", "{10, 13, 14, 29, 37}"], i: ["int", "3"] }, out: "", note: "<b>Pass 4</b> (i = 3) compares only the first pair: 10 &lt; 13, no swap. The outer loop then ends — the array has been in order since pass 3, and this final pass confirms it." },
+          { line: 12, vars: { a: ["int[5]", "{10, 13, 14, 29, 37}"], i: ["int", "5"] }, out: "10 13 14 29 37", note: "The print loop walks the finished array: <b>10 13 14 29 37</b>." },
+          { line: 13, vars: { a: ["int[5]", "{10, 13, 14, 29, 37}"], i: ["int", "5"] }, out: "10 13 14 29 37", note: "The program ends. Final answer: <b>10 13 14 29 37</b> — three passes of real swaps, not one." }
+        ],
+        modify: {
+          prompt: "The array changes to {8, 3, 6, 1}, and the loops shrink to fit four elements. The sorting logic is untouched. What prints now?",
+          code: 'int a[4] = {<mark>8, 3, 6, 1</mark>};\nfor (int i = 0; i < 3; i++) {\n    for (int j = 0; j < 3 - i; j++) {\n        if (a[j] > a[j + 1]) {\n            int t = a[j]; a[j] = a[j + 1]; a[j + 1] = t;\n        }\n    }\n}\nfor (int i = 0; i < 4; i++) { cout << a[i] << " "; }',
+          options: ["1 3 6 8", "3 6 1 8", "1 3 8 6", "8 3 6 1"],
+          correct: 0,
+          explain: "Pass 1 gives {3, 6, 1, 8} — tempting, but not sorted. Pass 2 swaps 6 and 1, pass 3 confirms the order: <b>1 3 6 8</b>."
+        }
+      },
+      {
+        concept: "Decisions · switch",
+        title: "The missing break",
+        goal: "A <b>switch</b> jumps to the matching case and then keeps running downward — case labels are entry points, not separate blocks. Only a <b>break</b> stops the fall.",
+        stories: {
+          health:   "A clinic scheduler turns a <strong>day number</strong> into a label: 1 is Mon, 2 is Tue, 3 is Wed, anything else is Other. Today the day number is <strong>2</strong>. The program prints the label — watch exactly where it stops.",
+          psych:    "A study scheduler turns a <strong>session-day number</strong> into a label: 1 is Mon, 2 is Tue, 3 is Wed, anything else is Other. Today the day number is <strong>2</strong>. The program prints the label — watch exactly where it stops.",
+          business: "A rota program turns a <strong>day number</strong> into a label: 1 is Mon, 2 is Tue, 3 is Wed, anything else is Other. Today the day number is <strong>2</strong>. The program prints the label — watch exactly where it stops.",
+          arts:     "A rehearsal calendar turns a <strong>day number</strong> into a label: 1 is Mon, 2 is Tue, 3 is Wed, anything else is Other. Today the day number is <strong>2</strong>. The program prints the label — watch exactly where it stops."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int day = 2;",
+          "    switch (day) {",
+          "        case 1: cout << \"Mon \";",
+          "        case 2: cout << \"Tue \";",
+          "        case 3: cout << \"Wed \";",
+          "        break;",
+          "        default: cout << \"Other\";",
+          "    }",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["Tue Wed", "Tue", "Wed", "Other"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 3, text: "You expected the switch to stop after the matching case — the way an if / else stops. It does not. The parting step is the next line down: control <b>falls from case 2 into case 3</b> because case 2 has no <b>break</b>. The break inside case 3 is what finally stops it, one label too late." },
+          2: { step: 1, text: "Wed does print — but not first, and not alone. The switch jumps <b>directly to the matching case</b>, case 2, so Tue prints first; Wed appears only because control then falls through into case 3. Starting at case 3 would mean day matched 3, and it matched 2." },
+          3: { step: 1, text: "<b>default</b> runs only when <em>no</em> case matches. Here day is 2 and case 2 exists, so control jumps to case 2 and default is never reached — the break in case 3 sees to that as well." }
+        },
+        steps: [
+          { line: 4, vars: { day: ["int", "2"] }, out: "", note: "The box <b>day</b> holds <b>2</b>." },
+          { line: 5, vars: { day: ["int", "2"] }, out: "", note: "The <b>switch</b> compares day against each case label and jumps <b>straight to the match</b>: case 2. case 1 is skipped entirely — its code does not run." },
+          { line: 7, vars: { day: ["int", "2"] }, out: "Tue", note: "case 2's statement runs and prints <b>Tue</b>. In an if / else, the story would end here. In a switch, what happens next depends entirely on whether a break follows — and after this line, there is none." },
+          { line: 8, vars: { day: ["int", "2"] }, out: "Tue Wed", note: "<b>The parting step.</b> With no break after case 2, control simply continues into the next line — which happens to be case 3's statement. It prints <b>Wed</b>. The case 3 label does not re-test anything; labels do not block the fall." },
+          { line: 9, vars: { day: ["int", "2"] }, out: "Tue Wed", note: "Now the <b>break</b> runs, and it exits the switch at once. default is never reached. The break belonged to case 3 — case 2 needed one of its own." },
+          { line: 12, vars: { day: ["int", "2"] }, out: "Tue Wed", note: "The program ends. Final answer: <b>Tue Wed</b> — one intended label, one fallen-through label." }
+        ],
+        modify: {
+          prompt: "The day changes from 2 to 3. The switch — missing break and all — is untouched. What prints now?",
+          code: 'int day = <mark>3</mark>;\nswitch (day) {\n    case 1: cout << "Mon ";\n    case 2: cout << "Tue ";\n    case 3: cout << "Wed ";\n    break;\n    default: cout << "Other";\n}',
+          options: ["Wed", "Wed Other", "Tue Wed", "Other"],
+          correct: 0,
+          explain: "This time control starts at case 3, prints <b>Wed</b>, and immediately meets the break — so it stops before default. The missing break only bites when there is a case <em>below</em> the match to fall into."
+        }
+      },
+      {
+        concept: "Functions · reference parameters",
+        title: "One changes, one does not",
+        goal: "A parameter declared <b>int&amp;</b> is not a copy — it is <b>another name for the caller's own variable</b>. A plain <b>int</b> parameter is a private copy, and changes to it stay inside the function.",
+        stories: {
+          health:   "Two readings both start at <strong>10</strong>. A helper function is asked to <strong>add 5 to each</strong>: one is handed over as a copy, the other by reference. The main program prints both values afterwards.",
+          psych:    "Two scores both start at <strong>10</strong>. A helper function is asked to <strong>add 5 to each</strong>: one is handed over as a copy, the other by reference. The main program prints both values afterwards.",
+          business: "Two balances both start at <strong>10</strong>. A helper function is asked to <strong>add 5 to each</strong>: one is handed over as a copy, the other by reference. The main program prints both values afterwards.",
+          arts:     "Two levels both start at <strong>10</strong>. A helper function is asked to <strong>add 5 to each</strong>: one is handed over as a copy, the other by reference. The main program prints both values afterwards."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "void addFive(int a, int& b) {",
+          "    a += 5;",
+          "    b += 5;",
+          "}",
+          "",
+          "int main() {",
+          "    int x = 10;",
+          "    int y = 10;",
+          "    addFive(x, y);",
+          "    cout << x << \" \" << y;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["10 15", "15 15", "10 10", "15 10"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 4, text: "You treated the two parameters alike — and they are not alike. The parting step is <b>a += 5;</b>: it changes only the function's <b>private copy</b> of x, and that copy is thrown away when the function returns. <b>b</b> is a reference, another name for y itself, so b += 5 really does change y. x stays 10; y becomes 15." },
+          2: { step: 5, text: "x is indeed protected — but y is not. The parting step is <b>b += 5;</b>: because b was declared <b>int&amp;</b>, b is not a copy of y, it <em>is</em> y under a second name. Writing to b writes into main's y box, and the change survives the return." },
+          3: { step: 4, text: "You swapped which parameter is which. Read the declaration again: <b>int a</b> comes first and receives x — a is the copy, so x is the one that stays 10. <b>int&amp; b</b> receives y — b is the reference, so y is the one that changes to 15." }
+        },
+        steps: [
+          { line: 9, vars: { x: ["int", "10"] }, out: "", note: "In main, <b>x</b> starts at <b>10</b>." },
+          { line: 10, vars: { x: ["int", "10"], y: ["int", "10"] }, out: "", note: "And <b>y</b> also starts at <b>10</b>. Two identical values — what happens to them will differ entirely because of how they are handed over." },
+          { line: 11, vars: { x: ["int", "10"], y: ["int", "10"] }, out: "", note: "The call <b>addFive(x, y)</b>: x goes to the first parameter, y to the second. main pauses here." },
+          { line: 3, vars: { x: ["int", "10"], y: ["int", "10"], a: ["int", "10"], b: ["int&", "→ y"] }, out: "", note: "Inside the function, two very different boxes appear. <b>a</b> is a fresh box holding a <b>copy</b> of x's 10. <b>b</b> holds no value of its own: declared <b>int&amp;</b>, it is <b>another name for y itself</b> — read its box as “→ y”." },
+          { line: 4, vars: { x: ["int", "10"], y: ["int", "10"], a: ["int", "15"], b: ["int&", "→ y"] }, out: "", note: "<b>The parting step.</b> <b>a += 5;</b> makes the copy 15 — and changes nothing else. <b>x in main is still 10</b>, and it will still be 10 when the copy is discarded at the return." },
+          { line: 5, vars: { x: ["int", "10"], y: ["int", "15"], a: ["int", "15"], b: ["int&", "→ y"] }, out: "", note: "<b>b += 5;</b> writes through the reference into <b>y itself</b>: y becomes <b>15</b>, in main's box, permanently." },
+          { line: 12, vars: { x: ["int", "10"], y: ["int", "15"] }, out: "10 15", note: "The function has returned; a and b are gone. What remains in main: <b>x is 10, y is 15</b>. Output: <b>10 15</b>." },
+          { line: 13, vars: { x: ["int", "10"], y: ["int", "15"] }, out: "10 15", note: "The program ends. Final answer: <b>10 15</b> — same function, same +5, two different fates." }
+        ],
+        modify: {
+          prompt: "Both starting values change from 10 to 20. The function is untouched. What prints now?",
+          code: 'void addFive(int a, int& b) {\n    a += 5;\n    b += 5;\n}\nint x = <mark>20</mark>;\nint y = <mark>20</mark>;\naddFive(x, y);\ncout << x << " " << y;',
+          options: ["20 25", "25 25", "20 20", "25 20"],
+          correct: 0,
+          explain: "The copy still absorbs its +5 and vanishes, so x stays <b>20</b>; the reference still writes home, so y becomes <b>25</b>: <b>20 25</b>."
+        }
+      },
+      {
+        concept: "Structured data",
+        title: "A record, not variables",
+        goal: "A <b>struct</b> bundles named fields into <b>one</b> variable. <b>s.score</b> reaches the score field inside the single box s — the fields live together and travel together.",
+        stories: {
+          health:   "A training app keeps one <strong>learner record</strong>: a name, <strong>Ada</strong>, and a score. The score is set to <strong>72</strong>, then a 10-point bonus is added to it. The program prints the record.",
+          psych:    "A study app keeps one <strong>participant record</strong>: a name, <strong>Ada</strong>, and a score. The score is set to <strong>72</strong>, then a 10-point bonus is added to it. The program prints the record.",
+          business: "A training portal keeps one <strong>trainee record</strong>: a name, <strong>Ada</strong>, and a score. The score is set to <strong>72</strong>, then a 10-point bonus is added to it. The program prints the record.",
+          arts:     "A workshop app keeps one <strong>student record</strong>: a name, <strong>Ada</strong>, and a score. The score is set to <strong>72</strong>, then a 10-point bonus is added to it. The program prints the record."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "struct Student {",
+          "    string name;",
+          "    int score;",
+          "};",
+          "",
+          "int main() {",
+          "    Student s;",
+          "    s.name = \"Ada\";",
+          "    s.score = 72;",
+          "    s.score += 10;",
+          "    cout << s.name << \" \" << s.score;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["Ada 82", "Ada 72", "Ada 10", "82 Ada"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 3, text: "You read the score before its last update. The parting step is <b>s.score += 10;</b>: it reads the member (72), adds 10, and stores the result <b>back in the same member</b> — 82. The += line is easy to skim past because it mentions no new variable, but it writes just like any other assignment." },
+          2: { step: 3, text: "10 is the amount <em>added</em>, not the new score. <b>+=</b> never replaces: it reads the member's current value (72), adds 10, and stores <b>82</b> back. A plain <b>s.score = 10;</b> would have printed 10 — this line says +=." },
+          3: { step: 4, text: "The values are right; the order is swapped. The cout statement names the fields in order — <b>s.name</b> first, then <b>s.score</b> — so the name prints first: <b>Ada 82</b>. A prediction has to match the output's order as well as its contents." }
+        },
+        steps: [
+          { line: 10, vars: { s: ["Student", "name: —, score: —"] }, boxes: [{ name: "s", type: "Student", fields: [["name", "—"], ["score", "—"]] }], out: "", note: "<b>Student s;</b> creates <b>one</b> box with <b>two labelled fields</b> inside it: <b>name</b> and <b>score</b>. There are not two separate variables — there is one record, s, and its fields are reached through it. Neither field holds a value yet." },
+          { line: 11, vars: { s: ["Student", "name: \"Ada\", score: —"] }, boxes: [{ name: "s", type: "Student", fields: [["name", "\"Ada\""], ["score", "—"]] }], out: "", note: "<b>s.name = \"Ada\";</b> writes into the name field of s — the dot says “the name field inside this record”. The score field is still unset." },
+          { line: 12, vars: { s: ["Student", "name: \"Ada\", score: 72"] }, boxes: [{ name: "s", type: "Student", fields: [["name", "\"Ada\""], ["score", "72"]] }], out: "", note: "<b>s.score = 72;</b> fills the second field. The record now reads: name Ada, score 72." },
+          { line: 13, vars: { s: ["Student", "name: \"Ada\", score: 82"] }, boxes: [{ name: "s", type: "Student", fields: [["name", "\"Ada\""], ["score", "82"]] }], out: "", note: "<b>The parting step.</b> <b>s.score += 10;</b> reads the member, adds 10, and stores it back in the same member: <b>82</b>. Watch the score field change inside the one box." },
+          { line: 14, vars: { s: ["Student", "name: \"Ada\", score: 82"] }, boxes: [{ name: "s", type: "Student", fields: [["name", "\"Ada\""], ["score", "82"]] }], out: "Ada 82", note: "The print reads the fields in the order written: name, then score — <b>Ada 82</b>." },
+          { line: 15, vars: { s: ["Student", "name: \"Ada\", score: 82"] }, boxes: [{ name: "s", type: "Student", fields: [["name", "\"Ada\""], ["score", "82"]] }], out: "Ada 82", note: "The program ends. Final answer: <b>Ada 82</b>." }
+        ],
+        modify: {
+          prompt: "The bonus changes from 10 to 5: the line becomes s.score += 5. Nothing else changes. What prints now?",
+          code: 'Student s;\ns.name = "Ada";\ns.score = 72;\ns.score += <mark>5</mark>;\ncout << s.name << " " << s.score;',
+          options: ["Ada 77", "Ada 72", "Ada 82", "Ada 5"],
+          correct: 0,
+          explain: "The member still updates in place: 72 + 5 = <b>77</b>, so the record prints <b>Ada 77</b>."
+        }
+      },
+      {
+        concept: "Vectors",
+        title: "A vector grows",
+        goal: "<b>push_back</b> appends one element and grows the vector; <b>size()</b> reports how many elements it holds <em>now</em>; and <b>v[2]</b> is the <em>third</em> element — indexes still count from 0.",
+        stories: {
+          health:   "A tracking app collects readings into a <strong>vector</strong> that starts empty: it appends <strong>4</strong>, then <strong>7</strong>, then <strong>9</strong>. It prints the vector's size and the sum of its first and third elements.",
+          psych:    "A survey app collects responses into a <strong>vector</strong> that starts empty: it appends <strong>4</strong>, then <strong>7</strong>, then <strong>9</strong>. It prints the vector's size and the sum of its first and third elements.",
+          business: "A sales app collects daily figures into a <strong>vector</strong> that starts empty: it appends <strong>4</strong>, then <strong>7</strong>, then <strong>9</strong>. It prints the vector's size and the sum of its first and third elements.",
+          arts:     "A media app collects counts into a <strong>vector</strong> that starts empty: it appends <strong>4</strong>, then <strong>7</strong>, then <strong>9</strong>. It prints the vector's size and the sum of its first and third elements."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <vector>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    vector<int> v;",
+          "    v.push_back(4);",
+          "    v.push_back(7);",
+          "    v.push_back(9);",
+          "    cout << v.size() << \" \" << v[0] + v[2];",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["3 13", "3 11", "3 16", "2 13"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 4, text: "You read <b>v[2]</b> as the <em>second</em> value pushed. The parting step is the final cout line: indexes count from 0, so <b>v[2] is the third element, 9</b> — and the sum is 4 + 9 = <b>13</b>. Your 11 came from 4 + 7, which is v[0] + v[1]: the second element lives at index 1, not 2." },
+          2: { step: 4, text: "16 is 7 + 9 — the last two elements. But the expression is <b>v[0] + v[2]</b>: the first element (4) plus the third (9) = <b>13</b>. The indexes in the print statement, not the positions you expect, decide which elements are added." },
+          3: { step: 3, text: "Count the pushes: the vector starts empty and <b>three</b> push_back lines run, each adding exactly one element. By the final push the size is already <b>3</b> — size() counts elements, and every push counts." }
+        },
+        steps: [
+          { line: 5, vars: { v: ["vector<int>", "{} (size 0)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: [] }], out: "", note: "The vector <b>v</b> is created <b>empty</b>: no element boxes yet, and its size is 0. Unlike an array, a vector does not fix its length at declaration — it grows as elements are pushed in." },
+          { line: 6, vars: { v: ["vector<int>", "{4} (size 1)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["4"] }], out: "", note: "<b>v.push_back(4)</b> appends the first element. The row of element boxes grows to one: index 0 holds <b>4</b>. Size: 1." },
+          { line: 7, vars: { v: ["vector<int>", "{4, 7} (size 2)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["4", "7"] }], out: "", note: "<b>v.push_back(7)</b> appends a second box at index 1: <b>7</b>. Size: 2." },
+          { line: 8, vars: { v: ["vector<int>", "{4, 7, 9} (size 3)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["4", "7", "9"] }], out: "", note: "<b>v.push_back(9)</b> appends the third element, at index 2: <b>9</b>. Size: 3. Note the last element's address: it is <b>v[2]</b>, not v[3] and not “the second one”." },
+          { line: 9, vars: { v: ["vector<int>", "{4, 7, 9} (size 3)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["4", "7", "9"] }], out: "3 13", note: "<b>The parting step.</b> The print: <b>v.size()</b> is <b>3</b> after three push_backs, and <b>v[0] + v[2]</b> is the first element plus the <b>third</b> — 4 + 9 = <b>13</b>. Output: <b>3 13</b>." },
+          { line: 10, vars: { v: ["vector<int>", "{4, 7, 9} (size 3)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["4", "7", "9"] }], out: "3 13", note: "The program ends. Final answer: <b>3 13</b>." }
+        ],
+        modify: {
+          prompt: "A fourth push is added after the others: v.push_back(2). The print statement is untouched. What prints now?",
+          code: 'vector<int> v;\nv.push_back(4);\nv.push_back(7);\nv.push_back(9);\nv.push_back(<mark>2</mark>);\ncout << v.size() << " " << v[0] + v[2];',
+          options: ["4 13", "4 11", "3 13", "4 15"],
+          correct: 0,
+          explain: "The size grows to <b>4</b>, but the sum does not move: v[0] and v[2] are still 4 and 9, and the new element sits at index 3, which the print never reads. <b>4 13</b>."
+        }
+      },
+      {
+        concept: "Arrays · two-dimensional",
+        title: "Two rows deep",
+        goal: "A two-dimensional array is indexed <b>[row][column]</b>, and a nested loop sums <b>every</b> cell: the inner loop runs in full for <em>each</em> row, not just the first.",
+        stories: {
+          health:   "A chart stores six values in a grid of <strong>two rows and three columns</strong>: 2, 4, 6 on the first row and 1, 3, 5 on the second. A program adds up <strong>every cell</strong> in the grid and prints the total.",
+          psych:    "A results table stores six values in a grid of <strong>two rows and three columns</strong>: 2, 4, 6 on the first row and 1, 3, 5 on the second. A program adds up <strong>every cell</strong> in the grid and prints the total.",
+          business: "A sales grid stores six values in <strong>two rows and three columns</strong>: 2, 4, 6 on the first row and 1, 3, 5 on the second. A program adds up <strong>every cell</strong> in the grid and prints the total.",
+          arts:     "A programme grid stores six values in <strong>two rows and three columns</strong>: 2, 4, 6 on the first row and 1, 3, 5 on the second. A program adds up <strong>every cell</strong> in the grid and prints the total."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int grid[2][3] = {{2, 4, 6}, {1, 3, 5}};",
+          "    int sum = 0;",
+          "    for (int r = 0; r < 2; r++) {",
+          "        for (int c = 0; c < 3; c++) {",
+          "            sum += grid[r][c];",
+          "        }",
+          "    }",
+          "    cout << sum;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["21", "12", "9", "6"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 6, text: "12 is the <b>first row only</b> — 2 + 4 + 6. The parting step is the <b>outer loop's second pass</b>: r becomes 1, and the inner loop runs <em>again, in full</em>, over row 1, adding 1 + 3 + 5 on top of the 12 already accumulated. Nested loops repeat the inner loop for every outer step; stopping after one outer pass sums half the grid." },
+          2: { step: 5, text: "9 is the <b>second row only</b> — 1 + 3 + 5. But the inner loop reached row 1 only after finishing row 0, and those additions are still in the box: by the time row 1 is summed, <b>sum</b> already holds 12, so the running total passes 9's row on its way to 21." },
+          3: { step: 3, text: "6 is the <em>number of cells</em> — you counted boxes instead of adding their contents. The body says <b>sum += grid[r][c]</b>: each pass adds the <b>value</b> stored at that row and column, so the very first pass already puts 2 into sum, not 1." }
+        },
+        steps: [
+          { line: 4, vars: { grid: ["int[2][3]", "{{2, 4, 6}, {1, 3, 5}}"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["2", "4", "6"], ["1", "3", "5"]] }], out: "", note: "The grid is one array with <b>two rows and three columns</b>. Every cell has two indexes: <b>grid[row][column]</b>. Row 0 is {2, 4, 6}; row 1 is {1, 3, 5}." },
+          { line: 5, vars: { grid: ["int[2][3]", "{{2, 4, 6}, {1, 3, 5}}"], sum: ["int", "0"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["2", "4", "6"], ["1", "3", "5"]] }, { name: "sum", type: "int", value: "0" }], out: "", note: "The accumulator <b>sum</b> starts at 0 — nothing has been added yet." },
+          { line: 6, vars: { grid: ["int[2][3]", "{{2, 4, 6}, {1, 3, 5}}"], sum: ["int", "0"], r: ["int", "0"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["2", "4", "6"], ["1", "3", "5"]] }, { name: "sum", type: "int", value: "0" }, { name: "r", type: "int", value: "0" }], out: "", note: "The outer loop sets <b>r = 0</b>: this pass will work on <b>row 0</b>. The row counter chooses <em>which row</em> the inner loop walks." },
+          { line: 8, vars: { grid: ["int[2][3]", "{{2, 4, 6}, {1, 3, 5}}"], sum: ["int", "2"], r: ["int", "0"], c: ["int", "0"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["2", "4", "6"], ["1", "3", "5"]] }, { name: "sum", type: "int", value: "2" }, { name: "r", type: "int", value: "0" }, { name: "c", type: "int", value: "0" }], out: "", note: "c = 0: <b>grid[0][0]</b> is 2. sum = <b>2</b>." },
+          { line: 8, vars: { grid: ["int[2][3]", "{{2, 4, 6}, {1, 3, 5}}"], sum: ["int", "6"], r: ["int", "0"], c: ["int", "1"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["2", "4", "6"], ["1", "3", "5"]] }, { name: "sum", type: "int", value: "6" }, { name: "r", type: "int", value: "0" }, { name: "c", type: "int", value: "1" }], out: "", note: "c = 1: <b>grid[0][1]</b> is 4. sum = 2 + 4 = <b>6</b>." },
+          { line: 8, vars: { grid: ["int[2][3]", "{{2, 4, 6}, {1, 3, 5}}"], sum: ["int", "12"], r: ["int", "0"], c: ["int", "2"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["2", "4", "6"], ["1", "3", "5"]] }, { name: "sum", type: "int", value: "12" }, { name: "r", type: "int", value: "0" }, { name: "c", type: "int", value: "2" }], out: "", note: "c = 2: <b>grid[0][2]</b> is 6. sum = <b>12</b> — row 0 is fully summed. This 12 is exactly where a first-row-only prediction stops. The program does not." },
+          { line: 6, vars: { grid: ["int[2][3]", "{{2, 4, 6}, {1, 3, 5}}"], sum: ["int", "12"], r: ["int", "1"], c: ["int", "3"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["2", "4", "6"], ["1", "3", "5"]] }, { name: "sum", type: "int", value: "12" }, { name: "r", type: "int", value: "1" }, { name: "c", type: "int", value: "3" }], out: "", note: "<b>The parting step.</b> The inner loop ends (c reached 3), the outer loop steps: <b>r = 1</b>. Now the inner loop will run <b>again, in full</b>, over row 1 — nested loops repeat the inner loop for every outer step." },
+          { line: 8, vars: { grid: ["int[2][3]", "{{2, 4, 6}, {1, 3, 5}}"], sum: ["int", "13"], r: ["int", "1"], c: ["int", "0"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["2", "4", "6"], ["1", "3", "5"]] }, { name: "sum", type: "int", value: "13" }, { name: "r", type: "int", value: "1" }, { name: "c", type: "int", value: "0" }], out: "", note: "Row 1, c = 0: <b>grid[1][0]</b> is 1. sum = 12 + 1 = <b>13</b> — the second row adds <em>on top of</em> the first." },
+          { line: 8, vars: { grid: ["int[2][3]", "{{2, 4, 6}, {1, 3, 5}}"], sum: ["int", "16"], r: ["int", "1"], c: ["int", "1"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["2", "4", "6"], ["1", "3", "5"]] }, { name: "sum", type: "int", value: "16" }, { name: "r", type: "int", value: "1" }, { name: "c", type: "int", value: "1" }], out: "", note: "c = 1: <b>grid[1][1]</b> is 3. sum = <b>16</b>." },
+          { line: 8, vars: { grid: ["int[2][3]", "{{2, 4, 6}, {1, 3, 5}}"], sum: ["int", "21"], r: ["int", "1"], c: ["int", "2"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["2", "4", "6"], ["1", "3", "5"]] }, { name: "sum", type: "int", value: "21" }, { name: "r", type: "int", value: "1" }, { name: "c", type: "int", value: "2" }], out: "", note: "c = 2: <b>grid[1][2]</b> is 5. sum = <b>21</b>. Every cell in both rows has now been added." },
+          { line: 11, vars: { grid: ["int[2][3]", "{{2, 4, 6}, {1, 3, 5}}"], sum: ["int", "21"], r: ["int", "2"], c: ["int", "3"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["2", "4", "6"], ["1", "3", "5"]] }, { name: "sum", type: "int", value: "21" }, { name: "r", type: "int", value: "2" }, { name: "c", type: "int", value: "3" }], out: "21", note: "Both loops are done (r reached 2), and the program prints <b>sum</b>: <b>21</b>." },
+          { line: 12, vars: { grid: ["int[2][3]", "{{2, 4, 6}, {1, 3, 5}}"], sum: ["int", "21"], r: ["int", "2"], c: ["int", "3"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["2", "4", "6"], ["1", "3", "5"]] }, { name: "sum", type: "int", value: "21" }, { name: "r", type: "int", value: "2" }, { name: "c", type: "int", value: "3" }], out: "21", note: "The program ends. Final answer: <b>21</b> — all six cells, both rows." }
+        ],
+        modify: {
+          prompt: "The last cell of the first row changes from 6 to 10: the grid becomes {{2, 4, 10}, {1, 3, 5}}. Nothing else changes. What prints now?",
+          code: 'int grid[2][3] = {{2, 4, <mark>10</mark>}, {1, 3, 5}};\nint sum = 0;\nfor (int r = 0; r < 2; r++) {\n    for (int c = 0; c < 3; c++) {\n        sum += grid[r][c];\n    }\n}\ncout << sum;',
+          options: ["25", "21", "16", "12"],
+          correct: 0,
+          explain: "Only one cell changes, by +4, and the nested loops still visit every cell: 21 + 4 = <b>25</b>."
+        }
       }
 
     ];
@@ -2423,6 +2813,22 @@ for (int i = 0; i < 3; i++) {
       renderAll();
     }
 
+    /* Memory boxes for a step: a step may carry explicit `boxes` (for the
+       struct / vector / 2D-array displays); otherwise boxes derive from vars. */
+    function memBoxesOf(step) {
+      if (step.boxes) return step.boxes;
+      return Object.keys(step.vars || {}).map(function (name) {
+        return { name: name, type: step.vars[name][0], value: step.vars[name][1] };
+      });
+    }
+    function boxAria(box) {
+      var base = box.name + ", type " + box.type;
+      if (box.fields) return base + ", " + box.fields.map(function (f) { return f[0] + " is " + f[1]; }).join(", ");
+      if (box.elems) return base + (box.elems.length ? ", elements " + box.elems.join(", ") + ", size " + box.elems.length : ", empty, size 0");
+      if (box.grid) return base + ", rows: " + box.grid.map(function (r) { return r.join(" "); }).join("; ");
+      return base + ", value " + (box.value || "");
+    }
+
     function renderTrace() {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
       $("trace-locked").style.display = s.locked ? "none" : "";
@@ -2444,21 +2850,43 @@ for (int i = 0; i < 3; i++) {
           ? "Memory is empty — the program has not started. No boxes exist yet."
           : "No variable boxes exist at this moment. Watch this space: boxes appear when declarations run.") + "</div>";
       } else {
-        var prev = s.step > 0 ? ex.steps[s.step - 1].vars : {};
-        Object.keys(step.vars).forEach(function (name) {
+        var prevStep = s.step > 0 ? ex.steps[s.step - 1] : null;
+        var prevBoxes = prevStep ? memBoxesOf(prevStep) : [];
+        memBoxesOf(step).forEach(function (box) {
           var d = document.createElement("div");
-          var changed = !prev[name] || prev[name][1] !== step.vars[name][1];
-          d.className = "membox" + (changed && s.step >= 0 ? " changed" : "");
-          var vtype = step.vars[name][0], vval = step.vars[name][1];
+          var prevBox = null;
+          prevBoxes.forEach(function (pb) { if (pb.name === box.name) prevBox = pb; });
+          var changed = !prevBox || JSON.stringify(prevBox) !== JSON.stringify(box);
+          d.className = "membox" + (box.wide ? " wide" : "") + (changed && s.step >= 0 ? " changed" : "");
+          var vtype = box.type, vval = box.value || "";
           var isPtr = vtype.indexOf("*") !== -1 || vval.indexOf("→") === 0;
           var ptrTarget = "";
           if (vval.indexOf("→") === 0) ptrTarget = vval.slice(1).trim();
           d.setAttribute("role", "group");
-          d.setAttribute("aria-label", name + ", type " + vtype + ", value " + vval + (ptrTarget ? ", points to " + ptrTarget : ""));
+          d.setAttribute("aria-label", boxAria(box) + (ptrTarget ? ", points to " + ptrTarget : ""));
           d.setAttribute("tabindex", "0");
-          d.innerHTML = '<div class="vname"><span>' + name + '</span><span class="vtype">' + vtype +
-                        '</span></div><div class="vval">' + (isPtr ? '<span class="ptr-arrow" aria-hidden="true"></span>' : "") + esc(vval) + "</div>" +
-                        (ptrTarget ? '<div style="font-size:.78rem;color:var(--ink-soft);font-family:monospace;">points to ' + esc(ptrTarget) + "</div>" : "");
+          var html = '<div class="vname"><span>' + esc(box.name) + '</span><span class="vtype">' + esc(vtype) + "</span></div>";
+          if (box.fields) {
+            html += '<div class="mem-fields">' + box.fields.map(function (f) {
+              return '<div class="mem-field"><span class="flabel">' + esc(f[0]) + '</span><span class="fval">' + esc(f[1]) + "</span></div>";
+            }).join("") + "</div>";
+          } else if (box.elems) {
+            html += box.elems.length
+              ? '<div class="mem-elems">' + box.elems.map(function (v, ei) {
+                  return '<span class="mem-elem">' + esc(v) + "<small>[" + ei + "]</small></span>";
+                }).join("") + "</div>"
+              : '<div class="mem-empty-inline">no elements yet · size 0</div>';
+          } else if (box.grid) {
+            html += '<div class="mem-grid2">' + box.grid.map(function (row, ri) {
+              return '<div class="mem-grid-row">' + row.map(function (v, ci) {
+                return '<span class="mem-elem">' + esc(v) + "<small>[" + ri + "][" + ci + "]</small></span>";
+              }).join("") + "</div>";
+            }).join("") + "</div>";
+          } else {
+            html += '<div class="vval">' + (isPtr ? '<span class="ptr-arrow" aria-hidden="true"></span>' : "") + esc(vval) + "</div>" +
+                    (ptrTarget ? '<div style="font-size:.78rem;color:var(--ink-soft);font-family:monospace;">points to ' + esc(ptrTarget) + "</div>" : "");
+          }
+          d.innerHTML = html;
           mem.appendChild(d);
         });
       }
@@ -2519,7 +2947,7 @@ for (int i = 0; i < 3; i++) {
       card.hidden = false;
       $("modify-prompt").textContent = ex.modify.prompt;
       $("modify-code").innerHTML = ex.modify.code.split("\n").map(function (l) {
-        return l.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/&lt;mark&gt;/g, "<mark>").replace(/&lt;\/mark&gt;/g, "</mark>");
+        return l.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/&lt;mark>/g, "<mark>").replace(/&lt;\/mark>/g, "</mark>");
       }).join("\n");
       var box = $("modify-options"); box.innerHTML = "";
       ex.modify.options.forEach(function (opt, i) {
@@ -5761,6 +6189,8 @@ for (int i = 0; i < 3; i++) {
       var boltN = 0, tracerN = 0, bridgeN = 0, gymN = 0, makeN = 0;
       try { if (typeof bolt !== "undefined" && bolt && bolt.done) boltN = bolt.done.filter(Boolean).length; } catch (e) {}
       try { tracerN = state.ex.filter(function (s) { return s.locked; }).length; } catch (e) {}
+      var tracerRest = 0;
+      try { tracerRest = state.ex.slice(5).filter(function (s) { return s.locked; }).length; } catch (e) {}
       try { if (typeof bridgeDoneCount === "function") bridgeN = bridgeDoneCount(); } catch (e) {}
       try { if (typeof gym !== "undefined" && gym && gym.rounds) gymN = gym.rounds.filter(function (r) { return r.done; }).length; } catch (e) {}
       try { if (typeof makeDoneCount === "function") makeN = makeDoneCount(); } catch (e) {}
@@ -5772,7 +6202,7 @@ for (int i = 0; i < 3; i++) {
           3: tracerN >= 5,
           4: bridgeN >= 2,
           5: gymN >= 1,
-          6: tracerN >= 10,
+          6: tracerRest >= 18,
           7: makeN >= 3
         },
         details: {
@@ -5781,7 +6211,7 @@ for (int i = 0; i < 3; i++) {
           3: Math.min(tracerN, 5) + " of 5 exercises recorded",
           4: Math.min(bridgeN, 2) + " of 2 activities done",
           5: gymN >= 1 ? "Round 1 verified" : "No round verified yet",
-          6: Math.min(tracerN, 10) + " of 10 exercises recorded",
+          6: Math.min(tracerRest, 18) + " of 18 exercises recorded",
           7: Math.min(makeN, 3) + " of 3 prompts done"
         }
       };
