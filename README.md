@@ -37,4 +37,4 @@ Design references, for ambition rather than imitation: Alice (Carnegie Mellon) f
 
 ## License
 
-To be decided. The prototype is published for review and feedback; no licence is granted yet beyond viewing.
+MIT — see [LICENSE](LICENSE). Copyright (c) 2026 Ebuka Philip Oguchi.
