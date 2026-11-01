@@ -305,6 +305,45 @@
       .foot strong { color: var(--ink); }
       .sr-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
+      /* ---------- Start Here route + Meet the Code primer ---------- */
+      .route-panel{margin-top:26px;background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:18px 20px}
+      .route-head{display:flex;gap:14px;align-items:flex-start;justify-content:space-between}
+      .route-head h2{font-family:"Source Serif 4",Georgia,serif;font-size:1.45rem;line-height:1.15;font-weight:700}
+      .route-sub{margin-top:5px;color:var(--ink-soft);font-size:.93rem;max-width:640px}
+      .route-steps{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:8px}
+      .route-step{width:100%;text-align:left;display:flex;gap:12px;align-items:flex-start;border:1.5px solid var(--line);background:var(--panel-2);color:var(--ink);border-radius:10px;padding:11px 13px}
+      .route-step:hover{border-color:var(--amber)}
+      .route-step.is-done{border-color:var(--accent);background:var(--accent-soft)}
+      .route-num{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:.85rem;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--panel);border:1px solid var(--line);flex:none;margin-top:1px}
+      .route-step.is-done .route-num{background:var(--accent);border-color:var(--accent);color:#fff}
+      .route-text{display:grid;gap:1px;flex:1 1 auto;min-width:0}
+      .route-text strong{font-size:.98rem;line-height:1.3}
+      .route-text span{font-size:.88rem;color:var(--ink-soft);line-height:1.45}
+      .route-state{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);flex:none;padding-top:5px;text-align:right}
+      .route-step.is-done .route-state{color:var(--accent-strong)}
+      .route-detail{display:block;font-size:.8rem !important;color:var(--ink-soft)}
+      .route-open{display:flex;gap:12px;align-items:flex-start;border:1.5px dashed var(--line);background:transparent;color:var(--ink);border-radius:10px;padding:11px 13px}
+      .route-free{margin-top:14px;font-size:.9rem;color:var(--ink-soft);border-top:1px dashed var(--line);padding-top:12px}
+      .route-free strong{color:var(--ink)}
+      .primer-panel{margin-top:18px;background:var(--panel);border:1.5px solid var(--accent);border-radius:14px;box-shadow:var(--shadow);padding:20px}
+      .primer-panel h2{font-family:"Source Serif 4",Georgia,serif;font-size:1.4rem;line-height:1.2}
+      .primer-panel .primer-lede{margin-top:7px;color:var(--ink-soft);max-width:700px;font-size:.95rem}
+      .primer-lines{margin-top:16px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+      .primer-line{display:grid;grid-template-columns:minmax(190px,300px) 1fr;gap:0;border-top:1px solid var(--line)}
+      .primer-line:first-child{border-top:none}
+      .primer-line code{font-family:"IBM Plex Mono",monospace;font-size:.88rem;line-height:1.55;background:var(--code-bg);color:var(--code-ink);padding:10px 14px;white-space:pre;overflow-x:auto;display:block}
+      .primer-line p{padding:10px 14px;font-size:.92rem;line-height:1.5;background:var(--panel-2)}
+      .primer-line p .primer-arrow{color:var(--accent-strong);font-weight:700;margin-right:6px}
+      .primer-rules{margin-top:16px;background:var(--accent-soft);border:1px solid var(--accent);border-radius:10px;padding:13px 15px}
+      .primer-rules h3{font-size:.95rem;margin-bottom:6px;color:var(--accent-strong)}
+      .primer-rules ul{margin:0;padding-left:20px;display:grid;gap:4px;font-size:.94rem}
+      .primer-foot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+      .primer-status{font-size:.9rem;color:var(--ink-soft)}
+      .primer-status.done{color:var(--accent-strong);font-weight:700}
+      .meet-link{margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 14px;box-shadow:var(--shadow);font-size:.94rem}
+      .text-link{background:none;border:none;padding:0;color:var(--accent-strong);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+      @media(max-width:700px){.primer-line{grid-template-columns:1fr}.primer-line code{padding-bottom:4px}.primer-line p{padding-top:4px}.route-head{flex-wrap:wrap}.route-state{display:none}}
+
       /* ---------- Mode toggle ---------- */
       .mode-toggle {
         display: flex; flex-wrap: wrap; gap: 6px; margin-top: 26px;
@@ -668,6 +707,59 @@
         <p class="lede">TraceFirst is a first-year C++ tracer built on one rule: <strong>you never run code you have not first predicted.</strong> Commit to an answer, then step through the program and watch memory change. When your prediction and the machine disagree, TraceFirst stops at the exact statement where the two parted — and names the idea to fix. New to programming entirely? <strong>Start with Bolt's World</strong>, the first mode below: it teaches the logic first, and only then does the tracer ask you to predict real code.</p>
       </section>
 
+      <section class="route-panel" id="start-here" aria-labelledby="route-h">
+        <div class="route-head">
+          <div>
+            <h2 id="route-h">New here? Start here.</h2>
+            <p class="route-sub" id="route-progress">A first route through TraceFirst, in order. Ticks appear as you finish each step in this session.</p>
+          </div>
+          <button class="btn ghost small" type="button" id="route-toggle" aria-expanded="true" aria-controls="route-body">Collapse</button>
+        </div>
+        <div id="route-body">
+          <ol class="route-steps">
+            <li><button class="route-step" type="button" data-route="bolt" data-step="1"><span class="route-num" aria-hidden="true">1</span><span class="route-text"><strong>Bolt's World, Worlds 1 to 3</strong><span>Logic before syntax: give the robot orders and watch cause and effect.</span><span class="route-detail" data-detail="1"></span></span><span class="route-state" data-state="1">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="primer" data-step="2"><span class="route-num" aria-hidden="true">2</span><span class="route-text"><strong>Meet the Code</strong><span>The primer: what the lines of a real program are.</span><span class="route-detail" data-detail="2"></span></span><span class="route-state" data-state="2">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas: variables, division, decisions, loops, functions.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Put code in order, then write a missing line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find faults in someone else's program and fix one yourself.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 13</strong><span>The rest of the sequence, up to pointers.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write whole programs of your own.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
+            <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Bolt Challenges, the Challenges mode, and everything else, in any order.</span></span><span class="route-state">Open</span></li>
+          </ol>
+          <p class="route-free"><strong>You do not have to follow this order.</strong> This route is a suggestion for a first visit, not a gate: every mode below stays open, and you can use any of them, in any order, at any time.</p>
+        </div>
+      </section>
+
+      <section class="primer-panel" id="meet-the-code" aria-labelledby="primer-h" hidden>
+        <span class="concept-tag">Meet the Code · Before the tracer</span>
+        <h2 id="primer-h" tabindex="-1">Meet the Code: what a program's lines are</h2>
+        <p class="primer-lede">Bolt gave you the logic. This is the same logic wearing real C++ clothing. Read the program once, line by line, with the note beside each line. There is nothing to predict yet, and nothing to run.</p>
+        <div class="primer-lines" aria-label="A short C++ program, with a plain-language note for each line">
+          <div class="primer-line"><code>#include &lt;iostream&gt;</code><p><span class="primer-arrow" aria-hidden="true">→</span>This line brings in the tools for printing to the screen and reading input. Almost every program you meet here starts with it.</p></div>
+          <div class="primer-line"><code>using namespace std;</code><p><span class="primer-arrow" aria-hidden="true">→</span>This lets the program write cout instead of std::cout. It appears once, near the top.</p></div>
+          <div class="primer-line"><code>int main() {</code><p><span class="primer-arrow" aria-hidden="true">→</span>Every program starts running here, at main. The { opens the body of the program.</p></div>
+          <div class="primer-line"><code>    int score = 25;</code><p><span class="primer-arrow" aria-hidden="true">→</span>A statement: it makes a box named score and puts 25 in it. The ; ends the statement, the way a full stop ends a sentence.</p></div>
+          <div class="primer-line"><code>    score = score + 5;</code><p><span class="primer-arrow" aria-hidden="true">→</span>This reads the value in the box, adds 5, and puts the answer back in the same box.</p></div>
+          <div class="primer-line"><code>    cout &lt;&lt; score;</code><p><span class="primer-arrow" aria-hidden="true">→</span>cout sends a value to the screen. The &lt;&lt; points the way the value flows: out of the program, onto the screen.</p></div>
+          <div class="primer-line"><code>    return 0;</code><p><span class="primer-arrow" aria-hidden="true">→</span>main hands 0 back to the computer to say: finished, and nothing went wrong.</p></div>
+          <div class="primer-line"><code>}</code><p><span class="primer-arrow" aria-hidden="true">→</span>This } closes the body of main. Every { must have its }.</p></div>
+        </div>
+        <div class="primer-rules">
+          <h3>Three rules to carry into the tracer</h3>
+          <ul>
+            <li>A semicolon ends a statement.</li>
+            <li>Braces { } group lines into one block.</li>
+            <li>The tracer will show you the boxes. Predict what is in them before you run.</li>
+          </ul>
+        </div>
+        <div class="primer-foot">
+          <button class="btn" type="button" id="primer-read-btn">I have read the code</button>
+          <span class="primer-status" id="primer-read-status" role="status"></span>
+          <button class="btn ghost small" type="button" id="primer-close-btn">Close the primer</button>
+          <button class="btn ghost small" type="button" id="primer-to-tracer">Go to the Prediction Tracer</button>
+        </div>
+      </section>
+
       <nav class="mode-toggle" role="tablist" aria-label="Choose a mode" id="mode-tablist">
         <button class="mode-btn" type="button" id="mode-bolt" role="tab" aria-controls="bolt-mode" aria-selected="false" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4"/><circle cx="12" cy="3" r="0.5"/><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M9.5 13h.01M14.5 13h.01M9 21.5h6"/></svg>
@@ -805,6 +897,7 @@ for (int i = 0; i < 3; i++) {
       </div><!-- /bolt-mode -->
 
       <div id="tracer-mode" role="tabpanel" tabindex="0">
+      <p class="meet-link">New to reading code? <button class="text-link" type="button" id="meet-code-link">Meet the Code first.</button> It names every line of a short program before Exercise 1 asks you to predict one.</p>
       <div class="primm" id="primm" aria-label="The four stages of each exercise">
         <div class="phase" data-phase="predict"><div class="pnum">Stage 1</div><div class="pname"><span class="dot"></span>Predict</div><div class="pdesc">Read the code. Say what it will print. Lock it in.</div></div>
         <div class="phase" data-phase="trace"><div class="pnum">Stage 2</div><div class="pname"><span class="dot"></span>Run</div><div class="pdesc">Step line by line. Watch each variable's box change.</div></div>
@@ -2238,6 +2331,7 @@ for (int i = 0; i < 3; i++) {
     function renderAll() {
       renderExNav(); renderScore(); renderStory(); renderPredict(); renderTrace();
       renderInvestigate(); renderModify(); renderPrimm();
+      if (typeof renderRoute === "function") renderRoute();
     }
 
 
@@ -3161,7 +3255,7 @@ for (int i = 0; i < 3; i++) {
       next.textContent = gym.current < GYM_ROUNDS.length - 1 ? "Next round: " + GYM_ROUNDS[gym.current + 1].title : "";
     }
 
-    function renderGym() { renderGymNav(); renderGymScore(); renderGymRoundHead(); renderGymCode(); renderGymPanel(); renderGymHypo(); renderGymFix(); renderGymDone(); }
+    function renderGym() { renderGymNav(); renderGymScore(); renderGymRoundHead(); renderGymCode(); renderGymPanel(); renderGymHypo(); renderGymFix(); renderGymDone(); if (typeof renderRoute === "function") renderRoute(); }
 
     function gymAccuse(ln) {
       var r = GYM_ROUNDS[gym.current], s = gym.rounds[gym.current];
@@ -3837,6 +3931,7 @@ for (int i = 0; i < 3; i++) {
       var doneCount = bolt.done.filter(Boolean).length;
       $("bolt-scorebar").innerHTML = '<span class="metric"><strong>' + doneCount + " / " + BOLT_WORLDS.length + '</strong> <span>worlds completed this session</span></span>';
       renderBoltChallengeNav();
+      if (typeof renderRoute === "function") renderRoute();
     }
     function renderBoltChallengeNav() {
       var box = $("boltchalnav"); if (!box) return;
@@ -4993,6 +5088,7 @@ for (int i = 0; i < 3; i++) {
     }
     function renderMakeScore() {
       $("make-scorebar").innerHTML = '<div class="metric"><span>Make prompts completed</span> <strong>' + makeDoneCount() + " of " + MAKE_PROMPTS.length + "</strong></div>";
+      if (typeof renderRoute === "function") renderRoute();
     }
     function renderMakeNav() {
       var nav = $("makenav");
@@ -5186,6 +5282,7 @@ for (int i = 0; i < 3; i++) {
     function bridgeAllBlocks(act) { return act.blocks.concat([act.distractor]); }
     function renderBridgeScore() {
       $("bridge-scorebar").innerHTML = '<div class="metric"><span>Bridge activities completed</span> <strong>' + bridgeDoneCount() + " of " + BRIDGE_ACTIVITIES.length + "</strong></div>";
+      if (typeof renderRoute === "function") renderRoute();
     }
     function renderBridgeNav() {
       var nav = $("bridgenav");
@@ -5371,6 +5468,149 @@ for (int i = 0; i < 3; i++) {
       bridgeMsg("info", act.kind === "parsons" ? "Every block is back in the tray. Build the program again from the top." : "The missing lines are cleared. Type them again.");
     });
 
+    /* ---------------- Start Here route + Meet the Code primer ----------------
+       Session-only state. Progress is derived live from the existing
+       completion state (bolt.done, state.ex locked, bridgeState, gym.rounds,
+       makeState) so Fix 2 persistence can later hydrate those same sources
+       (plus primerRead) without redesigning the route. */
+    var primerOpened = false;
+    var primerRead = false;
+    var routeManualExpand = false;
+    var routeCollapsed = false;
+    var routeLastSig = "";
+    function routeProgress() {
+      var boltN = 0, tracerN = 0, bridgeN = 0, gymN = 0, makeN = 0;
+      try { if (typeof bolt !== "undefined" && bolt && bolt.done) boltN = bolt.done.filter(Boolean).length; } catch (e) {}
+      try { tracerN = state.ex.filter(function (s) { return s.locked; }).length; } catch (e) {}
+      try { if (typeof bridgeDoneCount === "function") bridgeN = bridgeDoneCount(); } catch (e) {}
+      try { if (typeof gym !== "undefined" && gym && gym.rounds) gymN = gym.rounds.filter(function (r) { return r.done; }).length; } catch (e) {}
+      try { if (typeof makeDoneCount === "function") makeN = makeDoneCount(); } catch (e) {}
+      return {
+        bolt: boltN, tracer: tracerN, bridge: bridgeN, gym: gymN, make: makeN,
+        steps: {
+          1: boltN >= 3,
+          2: !!(primerOpened && primerRead),
+          3: tracerN >= 5,
+          4: bridgeN >= 2,
+          5: gymN >= 1,
+          6: tracerN >= 10,
+          7: makeN >= 3
+        },
+        details: {
+          1: boltN + " of 3 worlds done",
+          2: primerRead ? "Primer read" : (primerOpened ? "Primer opened — finish it and press the button at its foot" : "Not opened yet"),
+          3: Math.min(tracerN, 5) + " of 5 exercises recorded",
+          4: Math.min(bridgeN, 2) + " of 2 activities done",
+          5: gymN >= 1 ? "Round 1 verified" : "No round verified yet",
+          6: Math.min(tracerN, 10) + " of 10 exercises recorded",
+          7: Math.min(makeN, 3) + " of 3 prompts done"
+        }
+      };
+    }
+    function renderRoute() {
+      var panel = document.getElementById("start-here");
+      if (!panel) return;
+      var p = routeProgress();
+      var doneCount = [1,2,3,4,5,6,7].filter(function (n) { return p.steps[n]; }).length;
+      var allDone = doneCount === 7;
+      var sig = [p.bolt, p.tracer, p.bridge, p.gym, p.make, primerOpened, primerRead, routeManualExpand, routeCollapsed, allDone].join("|");
+      if (sig === routeLastSig) return;
+      routeLastSig = sig;
+      var progressEl = document.getElementById("route-progress");
+      if (progressEl) progressEl.textContent = allDone
+        ? "Route complete in this session — all seven steps done. Well done: you have gone from Bolt to writing your own programs."
+        : "A first route through TraceFirst, in order. " + doneCount + " of 7 steps done in this session.";
+      [1,2,3,4,5,6,7].forEach(function (n) {
+        var btn = panel.querySelector('[data-step="' + n + '"]');
+        var stateEl = panel.querySelector('[data-state="' + n + '"]');
+        var detailEl = panel.querySelector('[data-detail="' + n + '"]');
+        var numEl = btn ? btn.querySelector(".route-num") : null;
+        if (btn) {
+          btn.classList.toggle("is-done", !!p.steps[n]);
+          btn.setAttribute("aria-label", btn.textContent.replace(/\s+/g, " ").trim() + (p.steps[n] ? " — done" : ""));
+        }
+        if (numEl) numEl.textContent = p.steps[n] ? "✓" : String(n);
+        if (stateEl) stateEl.textContent = p.steps[n] ? "Done ✓" : "Not yet";
+        if (detailEl) detailEl.textContent = p.details[n];
+      });
+      var body = document.getElementById("route-body");
+      var toggle = document.getElementById("route-toggle");
+      var collapsed = routeCollapsed || (allDone && !routeManualExpand);
+      if (body) body.hidden = collapsed;
+      if (toggle) {
+        toggle.textContent = collapsed ? "Expand" : "Collapse";
+        toggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      }
+      panel.classList.toggle("is-complete", allDone);
+      // Primer read button state
+      var readBtn = document.getElementById("primer-read-btn");
+      var readStatus = document.getElementById("primer-read-status");
+      if (readBtn) {
+        readBtn.textContent = primerRead ? "I have read the code ✓" : "I have read the code";
+        readBtn.disabled = !!primerRead;
+      }
+      if (readStatus) {
+        readStatus.textContent = primerRead ? "Read — Step 2 of the route is ticked." : "";
+        readStatus.className = "primer-status" + (primerRead ? " done" : "");
+      }
+    }
+    function openPrimer() {
+      primerOpened = true;
+      var panel = document.getElementById("meet-the-code");
+      if (panel) {
+        panel.hidden = false;
+        panel.scrollIntoView({ behavior: "smooth", block: "start" });
+        var h = document.getElementById("primer-h");
+        if (h) { try { h.focus({ preventScroll: true }); } catch (e) {} }
+      }
+      routeLastSig = ""; renderRoute();
+      announce("Meet the Code is open. Read each line with its note, then press I have read the code at the foot of the primer.");
+    }
+    function closePrimer() {
+      var panel = document.getElementById("meet-the-code");
+      if (panel) panel.hidden = true;
+    }
+    (function wireRoute() {
+      var panel = document.getElementById("start-here");
+      if (panel) panel.querySelectorAll("[data-route]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var dest = btn.getAttribute("data-route");
+          if (dest === "primer") { openPrimer(); return; }
+          if (typeof setMode === "function") setMode(dest);
+          routeLastSig = ""; renderRoute();
+          setTimeout(function () { var el = document.getElementById(dest + "-mode"); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 450);
+        });
+      });
+      var toggle = document.getElementById("route-toggle");
+      if (toggle) toggle.addEventListener("click", function () {
+        var body = document.getElementById("route-body");
+        var isHidden = body ? body.hidden : false;
+        var p = routeProgress();
+        var allDone = [1,2,3,4,5,6,7].every(function (n) { return p.steps[n]; });
+        if (allDone && isHidden) { routeManualExpand = true; routeCollapsed = false; }
+        else if (allDone && !isHidden && routeManualExpand) { routeManualExpand = false; }
+        else { routeCollapsed = !isHidden; if (!routeCollapsed) routeManualExpand = true; }
+        routeLastSig = ""; renderRoute();
+      });
+      var meetLink = document.getElementById("meet-code-link");
+      if (meetLink) meetLink.addEventListener("click", openPrimer);
+      var readBtn = document.getElementById("primer-read-btn");
+      if (readBtn) readBtn.addEventListener("click", function () {
+        primerOpened = true; primerRead = true;
+        routeLastSig = ""; renderRoute();
+        announce("Primer marked as read. Step 2 of the Start Here route is done.");
+        var panel2 = document.getElementById("start-here");
+        if (panel2) panel2.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+      var closeBtn = document.getElementById("primer-close-btn");
+      if (closeBtn) closeBtn.addEventListener("click", closePrimer);
+      var toTracer = document.getElementById("primer-to-tracer");
+      if (toTracer) toTracer.addEventListener("click", function () { if (typeof setMode === "function") setMode("tracer"); });
+      // Safety net: completion can change inside Bolt/Make runs that do not
+      // all funnel through the patched renderers above.
+      setInterval(function () { renderRoute(); }, 900);
+    })();
+
     /* ---------------- Mode toggle ---------------- */
     function setMode(mode) {
       $("bolt-mode").hidden = mode !== "bolt";
@@ -5391,6 +5631,7 @@ for (int i = 0; i < 3; i++) {
       if (mode === "challenges") renderChallenges();
       if (mode === "bridge") renderBridge();
       if (mode === "make") renderMake();
+      if (typeof renderRoute === "function") { routeLastSig = ""; renderRoute(); }
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
     $("mode-bolt").addEventListener("click", function () { setMode("bolt"); });
