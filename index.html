@@ -236,6 +236,14 @@
       .membox .vval { font-family: "IBM Plex Mono", monospace; font-size: 1.55rem; font-weight: 600; margin-top: 2px; }
       .membox.changed { border-color: var(--amber); animation: flash 0.7s ease; }
       @keyframes flash { 0% { background: var(--amber-soft); } 100% { background: var(--panel-2); } }
+      .callstack { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+      .stack-frame { border: 1.5px solid var(--line); border-radius: 10px; background: var(--panel-2); padding: 9px 12px; }
+      .stack-frame.top-frame { border-color: var(--amber); background: var(--amber-soft); }
+      .stack-frame .fname { font-family: "IBM Plex Mono", monospace; font-weight: 700; font-size: .92rem; display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+      .stack-frame .fname .ftag { font-family: "IBM Plex Sans", sans-serif; font-size: .68rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
+      .stack-frame.top-frame .fname .ftag { color: var(--amber); }
+      .stack-frame .fvars { font-family: "IBM Plex Mono", monospace; font-size: .85rem; color: var(--ink-soft); margin-top: 2px; }
+      .stack-frame .fvars b { color: var(--ink); }
       .console {
         margin-top: 14px; background: var(--code-bg); color: var(--code-ink); border-radius: 10px;
         padding: 12px 14px; font-family: "IBM Plex Mono", monospace; font-size: .95rem; min-height: 52px;
@@ -739,7 +747,7 @@
             <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas: variables, division, decisions, loops, functions.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Put code in order, then write a missing line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find faults in someone else's program and fix one yourself.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 13</strong><span>The rest of the sequence, up to pointers.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 16</strong><span>The rest of the sequence, up to recursion.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write whole programs of your own.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
             <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Bolt Challenges, the Challenges mode, and everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
@@ -1041,6 +1049,8 @@ for (int i = 0; i < 3; i++) {
               <div class="stepbar"><i id="stepbar-fill"></i></div>
               <h3 style="margin-top:18px; font-size:.85rem; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;">Memory</h3>
               <div class="memory" id="memory"></div>
+              <h3 id="stack-h" style="margin-top:18px; font-size:.85rem; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;" hidden>Call stack — newest call on top</h3>
+              <div class="callstack" id="callstack" hidden></div>
               <div class="console"><div class="chead">Program output</div><div class="cout" id="cout"></div></div>
               <div class="stepnote" id="stepnote"></div>
             </div>
@@ -1298,7 +1308,7 @@ for (int i = 0; i < 3; i++) {
         </section>
         <section class="toolbar" aria-label="Choose a Make prompt">
           <div>
-            <div class="tlabel">Prompts — six programs to write, in order</div>
+            <div class="tlabel">Prompts — ten programs to write, in order</div>
             <div class="exnav" id="makenav"></div>
           </div>
           <div class="scorebar" id="make-scorebar" aria-label="Your Make progress"></div>
@@ -1323,7 +1333,7 @@ for (int i = 0; i < 3; i++) {
           <div class="testbench">
             <h4>Test bench</h4>
             <div id="make-tests"></div>
-            <p class="skin-note">Run tests feeds each test's input to a fresh run of your program and compares the printed output, ignoring differences in spacing. A prompt counts as complete when every one of its tests passes.</p>
+            <p class="skin-note">Run tests feeds each test's input to a fresh run of your program and compares the printed output, ignoring differences in spacing. Some prompts also have hidden tests: you see only how many of them passed, never their inputs or expected outputs. A prompt counts as complete when every visible and every hidden test passes.</p>
           </div>
         </section>
         <p class="foot"><strong>Keep your work:</strong> your programs are saved in this browser, on this device, so they are here when you return. Copy a finished program into your own files as a backup.</p>
@@ -1981,6 +1991,182 @@ for (int i = 0; i < 3; i++) {
           correct: 0,
           explain: "Four passes fill and print the first four squares: <b>1 4 9 16</b>. The fifth slot was allocated but is never filled or printed."
         }
+      },
+      {
+        concept: "Recursion",
+        title: "Factorial",
+        goal: "A recursive function calls <b>itself</b> with a smaller argument. Nothing finishes until the <b>base case</b> returns — then each waiting call completes on the way back up, using the value the deeper call handed it.",
+        stories: {
+          health:   "A program computes <strong>4 factorial</strong> — written 4! — by asking a function to multiply a number by the factorial of the number below it, all the way down to 1. The program prints one number.",
+          psych:    "A program computes <strong>4 factorial</strong> — written 4! — by asking a function to multiply a number by the factorial of the number below it, all the way down to 1. The program prints one number.",
+          business: "A program computes <strong>4 factorial</strong> — written 4! — by asking a function to multiply a number by the factorial of the number below it, all the way down to 1. The program prints one number.",
+          arts:     "A program computes <strong>4 factorial</strong> — written 4! — by asking a function to multiply a number by the factorial of the number below it, all the way down to 1. The program prints one number."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int fact(int n) {",
+          "    if (n <= 1) { return 1; }",
+          "    return n * fact(n - 1);",
+          "}",
+          "",
+          "int main() {",
+          "    cout << fact(4);",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["24", "10", "4", "1"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 10, text: "10 is what you get by <b>adding</b> on the way down: 4 + 3 + 2 + 1. But nothing is added, and nothing finishes on the way down. The parting step is the <b>return line on the way back up</b>: the values are <b>multiplied</b> as the calls return — fact(2) returns 2, then fact(3) returns 3 × 2 = 6, then fact(4) returns 4 × 6 = <b>24</b>. Nothing completes until the deepest call returns 1." },
+          2: { step: 3, text: "4 is just the first argument — the value main handed in. <b>fact(4)</b> does not return 4: its return line asks for <b>4 × fact(3)</b>, so the function calls itself before anything can come back. Watch the call stack grow from here." },
+          3: { step: 9, text: "1 is only the <b>base case</b> — what the deepest call, fact(1), returns. It is not the final answer: three waiting calls still have multiplications to do with it on the way back up (2 × 1, 3 × 2, 4 × 6)." }
+        },
+        steps: [
+          { line: 9, vars: {}, frames: [{ name: "main", vars: {} }], out: "", note: "<b>main</b> starts and reaches the print. Before anything can print, the call <b>fact(4)</b> must finish. Watch the <b>call stack</b> beside the memory boxes: every call adds a frame, every return removes one." },
+          { line: 3, vars: { n: ["int", "4"] }, frames: [{ name: "main", vars: {} }, { name: "fact", vars: { n: ["int", "4"] } }], out: "", note: "Control enters <b>fact</b> with its own box: <b>n = 4</b>. A new frame sits on top of main's. main is paused, mid-statement." },
+          { line: 4, vars: { n: ["int", "4"] }, frames: [{ name: "main", vars: {} }, { name: "fact", vars: { n: ["int", "4"] } }], out: "", note: "The base-case test: is <b>4 &lt;= 1</b>? <b>False</b> — this call cannot finish yet." },
+          { line: 5, vars: { n: ["int", "4"] }, frames: [{ name: "main", vars: {} }, { name: "fact", vars: { n: ["int", "4"] } }], out: "", note: "The return line needs <b>fact(3)</b> before it can multiply. So fact(4) calls fact(3) — and <b>waits</b>. Its frame stays on the stack, holding n = 4." },
+          { line: 3, vars: { n: ["int", "3"] }, frames: [{ name: "main", vars: {} }, { name: "fact", vars: { n: ["int", "4"] } }, { name: "fact", vars: { n: ["int", "3"] } }], out: "", note: "A second <b>fact</b> frame, with its own <b>n = 3</b>. Same function, different box — each call gets a fresh n. The stack is now three frames deep." },
+          { line: 5, vars: { n: ["int", "3"] }, frames: [{ name: "main", vars: {} }, { name: "fact", vars: { n: ["int", "4"] } }, { name: "fact", vars: { n: ["int", "3"] } }], out: "", note: "3 &lt;= 1 is false too, so fact(3) calls <b>fact(2)</b> and waits. Still nothing has returned — and nothing has printed." },
+          { line: 3, vars: { n: ["int", "2"] }, frames: [{ name: "main", vars: {} }, { name: "fact", vars: { n: ["int", "4"] } }, { name: "fact", vars: { n: ["int", "3"] } }, { name: "fact", vars: { n: ["int", "2"] } }], out: "", note: "A third fact frame: <b>n = 2</b>. The memory boxes above show the <em>current</em> (top) frame's n; the stack shows every waiting call at once." },
+          { line: 5, vars: { n: ["int", "2"] }, frames: [{ name: "main", vars: {} }, { name: "fact", vars: { n: ["int", "4"] } }, { name: "fact", vars: { n: ["int", "3"] } }, { name: "fact", vars: { n: ["int", "2"] } }], out: "", note: "fact(2) calls <b>fact(1)</b> and waits. One more call should reach the base case." },
+          { line: 3, vars: { n: ["int", "1"] }, frames: [{ name: "main", vars: {} }, { name: "fact", vars: { n: ["int", "4"] } }, { name: "fact", vars: { n: ["int", "3"] } }, { name: "fact", vars: { n: ["int", "2"] } }, { name: "fact", vars: { n: ["int", "1"] } }], out: "", note: "The deepest call: <b>fact(1)</b>, n = 1. The stack is at its tallest — five frames. No call below this one will be made." },
+          { line: 4, vars: { n: ["int", "1"] }, frames: [{ name: "main", vars: {} }, { name: "fact", vars: { n: ["int", "4"] } }, { name: "fact", vars: { n: ["int", "3"] } }, { name: "fact", vars: { n: ["int", "2"] } }, { name: "fact", vars: { n: ["int", "1"] } }], out: "", note: "The base case: <b>1 &lt;= 1 is true</b>, so this call <b>returns 1</b> — without calling fact again. This is the only call that finishes without waiting for another." },
+          { line: 5, vars: { n: ["int", "2"] }, frames: [{ name: "main", vars: {} }, { name: "fact", vars: { n: ["int", "4"] } }, { name: "fact", vars: { n: ["int", "3"] } }, { name: "fact", vars: { n: ["int", "2"] } }], out: "", note: "<b>The way back up begins.</b> fact(1)'s frame is gone, and fact(2) can finally finish its return line: <b>2 × 1 = 2</b>. fact(2) returns <b>2</b>. The values are multiplied as the calls return — nothing was ever added." },
+          { line: 5, vars: { n: ["int", "3"] }, frames: [{ name: "main", vars: {} }, { name: "fact", vars: { n: ["int", "4"] } }, { name: "fact", vars: { n: ["int", "3"] } }], out: "", note: "fact(3) receives the 2 and completes: <b>3 × 2 = 6</b>. fact(3) returns <b>6</b>, and its frame leaves the stack." },
+          { line: 5, vars: { n: ["int", "4"] }, frames: [{ name: "main", vars: {} }, { name: "fact", vars: { n: ["int", "4"] } }], out: "", note: "fact(4) receives the 6 and completes: <b>4 × 6 = 24</b>. The last fact frame returns <b>24</b> to main." },
+          { line: 9, vars: {}, frames: [{ name: "main", vars: {} }], out: "24", note: "Back in main, the call is replaced by its result and the print runs: <b>24</b>. The stack is back to a single frame." },
+          { line: 10, vars: {}, frames: [{ name: "main", vars: {} }], out: "24", note: "The program ends. Final answer: <b>24</b> — 4 × 3 × 2 × 1, multiplied on the way back up." }
+        ],
+        modify: {
+          prompt: "The call changes from fact(4) to fact(5). The function is untouched. What prints now?",
+          code: 'int fact(int n) {\n    if (n <= 1) { return 1; }\n    return n * fact(n - 1);\n}\ncout << fact(<mark>5</mark>);',
+          options: ["120", "15", "25", "24"],
+          correct: 0,
+          explain: "One deeper call: fact(5) returns <b>5 × fact(4)</b>, and fact(4) is the 24 you just traced — 5 × 24 = <b>120</b>."
+        }
+      },
+      {
+        concept: "Recursion",
+        title: "Countdown",
+        goal: "Where a statement sits relative to the recursive call decides <b>when</b> it runs: code <b>before</b> the call runs on the way down; code after it would run on the way back up.",
+        stories: {
+          health:   "A launch-style <strong>countdown</strong> program: a function prints its number, then calls itself with one less, until zero — where it prints <strong>go</strong> instead. The program prints one line of output.",
+          psych:    "A launch-style <strong>countdown</strong> program: a function prints its number, then calls itself with one less, until zero — where it prints <strong>go</strong> instead. The program prints one line of output.",
+          business: "A launch-style <strong>countdown</strong> program: a function prints its number, then calls itself with one less, until zero — where it prints <strong>go</strong> instead. The program prints one line of output.",
+          arts:     "A launch-style <strong>countdown</strong> program: a function prints its number, then calls itself with one less, until zero — where it prints <strong>go</strong> instead. The program prints one line of output."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "void countDown(int n) {",
+          "    if (n == 0) { cout << \"go\"; return; }",
+          "    cout << n << \" \";",
+          "    countDown(n - 1);",
+          "}",
+          "",
+          "int main() {",
+          "    countDown(3);",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["3 2 1 go", "1 2 3 go", "3 2 1", "go 3 2 1"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 3, text: "That order would need the numbers to print <b>as the calls unwind</b> — on the way back up. But look at the parting step: the <b>cout line runs BEFORE the recursive call</b>, so each number prints <b>on the way down</b>, while its call is first entered: 3 prints before countDown(2) even exists. The order is 3, then 2, then 1." },
+          2: { step: 12, text: "The numbers are right, but the program does not end at 1. The call <b>countDown(0)</b> still happens, and its base case prints <b>go</b>. A base case that prints is still output — count it." },
+          3: { step: 3, text: "<b>go</b> is printed by the <em>deepest</em> call, countDown(0) — the last call made, not the first. The numbers print on the way down, before that call exists, so go can only come last." }
+        },
+        steps: [
+          { line: 10, vars: {}, frames: [{ name: "main", vars: {} }], out: "", note: "<b>main</b> calls <b>countDown(3)</b>. Watch the call stack: each smaller countdown is a new frame, and the prints happen inside those frames." },
+          { line: 3, vars: { n: ["int", "3"] }, frames: [{ name: "main", vars: {} }, { name: "countDown", vars: { n: ["int", "3"] } }], out: "", note: "The first call enters with <b>n = 3</b>." },
+          { line: 4, vars: { n: ["int", "3"] }, frames: [{ name: "main", vars: {} }, { name: "countDown", vars: { n: ["int", "3"] } }], out: "", note: "Base-case test: is <b>3 == 0</b>? <b>False</b> — this call continues past the if." },
+          { line: 5, vars: { n: ["int", "3"] }, frames: [{ name: "main", vars: {} }, { name: "countDown", vars: { n: ["int", "3"] } }], out: "3 ", note: "<b>The print runs now — before the recursive call below it.</b> 3 prints on the way <em>down</em>. Output so far: <b>3 </b>. This is the parting line for the prediction “1 2 3 go”." },
+          { line: 6, vars: { n: ["int", "3"] }, frames: [{ name: "main", vars: {} }, { name: "countDown", vars: { n: ["int", "3"] } }], out: "3 ", note: "Only now does this call make the next one: <b>countDown(2)</b>. The countDown(3) frame waits underneath." },
+          { line: 3, vars: { n: ["int", "2"] }, frames: [{ name: "main", vars: {} }, { name: "countDown", vars: { n: ["int", "3"] } }, { name: "countDown", vars: { n: ["int", "2"] } }], out: "3 ", note: "A new frame with <b>n = 2</b>. Its base-case test (2 == 0) fails, so it reaches its own print line." },
+          { line: 5, vars: { n: ["int", "2"] }, frames: [{ name: "main", vars: {} }, { name: "countDown", vars: { n: ["int", "3"] } }, { name: "countDown", vars: { n: ["int", "2"] } }], out: "3 2 ", note: "Again the print comes first: <b>2</b> lands after the 3. Output: <b>3 2 </b>." },
+          { line: 6, vars: { n: ["int", "2"] }, frames: [{ name: "main", vars: {} }, { name: "countDown", vars: { n: ["int", "3"] } }, { name: "countDown", vars: { n: ["int", "2"] } }], out: "3 2 ", note: "countDown(2) calls <b>countDown(1)</b> and waits." },
+          { line: 3, vars: { n: ["int", "1"] }, frames: [{ name: "main", vars: {} }, { name: "countDown", vars: { n: ["int", "3"] } }, { name: "countDown", vars: { n: ["int", "2"] } }, { name: "countDown", vars: { n: ["int", "1"] } }], out: "3 2 ", note: "A new frame with <b>n = 1</b>. 1 == 0 is false, so it too reaches the print line." },
+          { line: 5, vars: { n: ["int", "1"] }, frames: [{ name: "main", vars: {} }, { name: "countDown", vars: { n: ["int", "3"] } }, { name: "countDown", vars: { n: ["int", "2"] } }, { name: "countDown", vars: { n: ["int", "1"] } }], out: "3 2 1 ", note: "The third print on the way down: <b>1</b>. Output: <b>3 2 1 </b> — descending, because every print happened before its call went deeper." },
+          { line: 6, vars: { n: ["int", "1"] }, frames: [{ name: "main", vars: {} }, { name: "countDown", vars: { n: ["int", "3"] } }, { name: "countDown", vars: { n: ["int", "2"] } }, { name: "countDown", vars: { n: ["int", "1"] } }], out: "3 2 1 ", note: "countDown(1) calls <b>countDown(0)</b> — the call that can finally stop the descent." },
+          { line: 3, vars: { n: ["int", "0"] }, frames: [{ name: "main", vars: {} }, { name: "countDown", vars: { n: ["int", "3"] } }, { name: "countDown", vars: { n: ["int", "2"] } }, { name: "countDown", vars: { n: ["int", "1"] } }, { name: "countDown", vars: { n: ["int", "0"] } }], out: "3 2 1 ", note: "The deepest frame: <b>n = 0</b>. The stack is five frames tall, and this call takes a different path through the function." },
+          { line: 4, vars: { n: ["int", "0"] }, frames: [{ name: "main", vars: {} }, { name: "countDown", vars: { n: ["int", "3"] } }, { name: "countDown", vars: { n: ["int", "2"] } }, { name: "countDown", vars: { n: ["int", "1"] } }, { name: "countDown", vars: { n: ["int", "0"] } }], out: "3 2 1 go", note: "Base case: <b>0 == 0 is true</b>, so this call prints <b>go</b> and returns at once — it never reaches the number-print line. Output: <b>3 2 1 go</b>." },
+          { line: 6, vars: { n: ["int", "1"] }, frames: [{ name: "main", vars: {} }, { name: "countDown", vars: { n: ["int", "3"] } }, { name: "countDown", vars: { n: ["int", "2"] } }, { name: "countDown", vars: { n: ["int", "1"] } }], out: "3 2 1 go", note: "countDown(0)'s frame is gone. countDown(1) has nothing left after its call, so it returns too — <b>silently</b>. There is no code after the recursive call, so the way back up prints nothing. The remaining frames unwind the same way." },
+          { line: 10, vars: {}, frames: [{ name: "main", vars: {} }], out: "3 2 1 go", note: "All countDown frames have returned; only main remains. The output stands: <b>3 2 1 go</b>." },
+          { line: 11, vars: {}, frames: [{ name: "main", vars: {} }], out: "3 2 1 go", note: "The program ends. Final answer: <b>3 2 1 go</b> — printed on the way down, ended by the base case." }
+        ],
+        modify: {
+          prompt: "The call changes from countDown(3) to countDown(2). The function is untouched. What prints now?",
+          code: 'void countDown(int n) {\n    if (n == 0) { cout << "go"; return; }\n    cout << n << " ";\n    countDown(n - 1);\n}\ncountDown(<mark>2</mark>);',
+          options: ["2 1 go", "1 2 go", "2 1", "3 2 1 go"],
+          correct: 0,
+          explain: "One fewer call on the way down: 2 prints, then 1 prints, then the base case prints go — <b>2 1 go</b>."
+        }
+      },
+      {
+        concept: "Recursion",
+        title: "Sum, recursively",
+        goal: "A recursive call's result is a <b>whole sub-answer</b>, not just its argument: <b>sumTo(4)</b> returns the sum 1..4, and the outer call adds its own number to that.",
+        stories: {
+          health:   "A program adds the numbers <strong>1 to 5</strong> by asking a function for the sum up to a number — where the sum up to 5 is 5 plus the sum up to 4, and so on down to zero. The program prints one number.",
+          psych:    "A program adds the numbers <strong>1 to 5</strong> by asking a function for the sum up to a number — where the sum up to 5 is 5 plus the sum up to 4, and so on down to zero. The program prints one number.",
+          business: "A program adds the numbers <strong>1 to 5</strong> by asking a function for the sum up to a number — where the sum up to 5 is 5 plus the sum up to 4, and so on down to zero. The program prints one number.",
+          arts:     "A program adds the numbers <strong>1 to 5</strong> by asking a function for the sum up to a number — where the sum up to 5 is 5 plus the sum up to 4, and so on down to zero. The program prints one number."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int sumTo(int n) {",
+          "    if (n == 0) { return 0; }",
+          "    return n + sumTo(n - 1);",
+          "}",
+          "",
+          "int main() {",
+          "    cout << sumTo(5);",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["15", "9", "5", "20"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 17, text: "9 is 5 + 4 — reading <b>sumTo(4)</b> as if it were just <b>4</b>. The parting step is the return line: <b>sumTo(4) does not return 4; it returns 4 + sumTo(3)</b>, and the chain resolves to <b>10</b>, so main receives 5 + 10 = <b>15</b>. Every recursive call returns a finished sub-sum, not its argument." },
+          2: { step: 3, text: "5 is only the outermost argument. <b>sumTo(5)</b> cannot return until <b>sumTo(4)</b> answers, and that answer is itself a sum — follow the call stack down and then watch the sub-sums come back up." },
+          3: { step: 18, text: "The additions on the way back up are 1, 3, 6, 10, <b>15</b> — each call adds only its own n to the sub-sum below it. There is no second addition of 5: the outermost call contributes its 5 exactly once." }
+        },
+        steps: [
+          { line: 9, vars: {}, frames: [{ name: "main", vars: {} }], out: "", note: "<b>main</b> reaches the print, but <b>sumTo(5)</b> must finish first. Watch the call stack grow as each call asks the next one down." },
+          { line: 3, vars: { n: ["int", "5"] }, frames: [{ name: "main", vars: {} }, { name: "sumTo", vars: { n: ["int", "5"] } }], out: "", note: "The first call: <b>sumTo(5)</b>, with its own n = 5." },
+          { line: 4, vars: { n: ["int", "5"] }, frames: [{ name: "main", vars: {} }, { name: "sumTo", vars: { n: ["int", "5"] } }], out: "", note: "Base-case test: is <b>5 == 0</b>? <b>False</b>." },
+          { line: 5, vars: { n: ["int", "5"] }, frames: [{ name: "main", vars: {} }, { name: "sumTo", vars: { n: ["int", "5"] } }], out: "", note: "The return line is <b>5 + sumTo(4)</b> — and sumTo(4) has not answered yet. sumTo(5) waits, holding its 5. Nothing is added yet." },
+          { line: 3, vars: { n: ["int", "4"] }, frames: [{ name: "main", vars: {} }, { name: "sumTo", vars: { n: ["int", "5"] } }, { name: "sumTo", vars: { n: ["int", "4"] } }], out: "", note: "<b>sumTo(4)</b> enters with n = 4. Keep this frame in mind: what it eventually returns is the crux of this exercise." },
+          { line: 5, vars: { n: ["int", "4"] }, frames: [{ name: "main", vars: {} }, { name: "sumTo", vars: { n: ["int", "5"] } }, { name: "sumTo", vars: { n: ["int", "4"] } }], out: "", note: "sumTo(4)'s return line is <b>4 + sumTo(3)</b> — so it calls sumTo(3) and waits too. It will not return 4; it will return 4 plus whatever sumTo(3) brings back." },
+          { line: 3, vars: { n: ["int", "3"] }, frames: [{ name: "main", vars: {} }, { name: "sumTo", vars: { n: ["int", "5"] } }, { name: "sumTo", vars: { n: ["int", "4"] } }, { name: "sumTo", vars: { n: ["int", "3"] } }], out: "", note: "<b>sumTo(3)</b> enters with n = 3, and in turn asks for sumTo(2)." },
+          { line: 5, vars: { n: ["int", "3"] }, frames: [{ name: "main", vars: {} }, { name: "sumTo", vars: { n: ["int", "5"] } }, { name: "sumTo", vars: { n: ["int", "4"] } }, { name: "sumTo", vars: { n: ["int", "3"] } }], out: "", note: "sumTo(3) waits on <b>sumTo(2)</b>. Four frames are now waiting; no addition has completed." },
+          { line: 3, vars: { n: ["int", "2"] }, frames: [{ name: "main", vars: {} }, { name: "sumTo", vars: { n: ["int", "5"] } }, { name: "sumTo", vars: { n: ["int", "4"] } }, { name: "sumTo", vars: { n: ["int", "3"] } }, { name: "sumTo", vars: { n: ["int", "2"] } }], out: "", note: "<b>sumTo(2)</b> enters with n = 2, and asks for sumTo(1)." },
+          { line: 5, vars: { n: ["int", "2"] }, frames: [{ name: "main", vars: {} }, { name: "sumTo", vars: { n: ["int", "5"] } }, { name: "sumTo", vars: { n: ["int", "4"] } }, { name: "sumTo", vars: { n: ["int", "3"] } }, { name: "sumTo", vars: { n: ["int", "2"] } }], out: "", note: "sumTo(2) waits on <b>sumTo(1)</b>." },
+          { line: 3, vars: { n: ["int", "1"] }, frames: [{ name: "main", vars: {} }, { name: "sumTo", vars: { n: ["int", "5"] } }, { name: "sumTo", vars: { n: ["int", "4"] } }, { name: "sumTo", vars: { n: ["int", "3"] } }, { name: "sumTo", vars: { n: ["int", "2"] } }, { name: "sumTo", vars: { n: ["int", "1"] } }], out: "", note: "<b>sumTo(1)</b> enters with n = 1, and asks for sumTo(0)." },
+          { line: 5, vars: { n: ["int", "1"] }, frames: [{ name: "main", vars: {} }, { name: "sumTo", vars: { n: ["int", "5"] } }, { name: "sumTo", vars: { n: ["int", "4"] } }, { name: "sumTo", vars: { n: ["int", "3"] } }, { name: "sumTo", vars: { n: ["int", "2"] } }, { name: "sumTo", vars: { n: ["int", "1"] } }], out: "", note: "sumTo(1) waits on <b>sumTo(0)</b> — the call that can stop the descent." },
+          { line: 3, vars: { n: ["int", "0"] }, frames: [{ name: "main", vars: {} }, { name: "sumTo", vars: { n: ["int", "5"] } }, { name: "sumTo", vars: { n: ["int", "4"] } }, { name: "sumTo", vars: { n: ["int", "3"] } }, { name: "sumTo", vars: { n: ["int", "2"] } }, { name: "sumTo", vars: { n: ["int", "1"] } }, { name: "sumTo", vars: { n: ["int", "0"] } }], out: "", note: "The deepest call: <b>sumTo(0)</b>, n = 0. The stack is seven frames tall." },
+          { line: 4, vars: { n: ["int", "0"] }, frames: [{ name: "main", vars: {} }, { name: "sumTo", vars: { n: ["int", "5"] } }, { name: "sumTo", vars: { n: ["int", "4"] } }, { name: "sumTo", vars: { n: ["int", "3"] } }, { name: "sumTo", vars: { n: ["int", "2"] } }, { name: "sumTo", vars: { n: ["int", "1"] } }, { name: "sumTo", vars: { n: ["int", "0"] } }], out: "", note: "Base case: <b>0 == 0 is true</b>, so sumTo(0) <b>returns 0</b> without calling further. Now the waiting calls can finish, one by one." },
+          { line: 5, vars: { n: ["int", "1"] }, frames: [{ name: "main", vars: {} }, { name: "sumTo", vars: { n: ["int", "5"] } }, { name: "sumTo", vars: { n: ["int", "4"] } }, { name: "sumTo", vars: { n: ["int", "3"] } }, { name: "sumTo", vars: { n: ["int", "2"] } }, { name: "sumTo", vars: { n: ["int", "1"] } }], out: "", note: "sumTo(1) completes: <b>1 + 0 = 1</b>. It returns <b>1</b> — the sum 1..1." },
+          { line: 5, vars: { n: ["int", "2"] }, frames: [{ name: "main", vars: {} }, { name: "sumTo", vars: { n: ["int", "5"] } }, { name: "sumTo", vars: { n: ["int", "4"] } }, { name: "sumTo", vars: { n: ["int", "3"] } }, { name: "sumTo", vars: { n: ["int", "2"] } }], out: "", note: "sumTo(2) completes: <b>2 + 1 = 3</b>. It returns <b>3</b> — the sum 1..2." },
+          { line: 5, vars: { n: ["int", "3"] }, frames: [{ name: "main", vars: {} }, { name: "sumTo", vars: { n: ["int", "5"] } }, { name: "sumTo", vars: { n: ["int", "4"] } }, { name: "sumTo", vars: { n: ["int", "3"] } }], out: "", note: "sumTo(3) completes: <b>3 + 3 = 6</b>. It returns <b>6</b> — the sum 1..3." },
+          { line: 5, vars: { n: ["int", "4"] }, frames: [{ name: "main", vars: {} }, { name: "sumTo", vars: { n: ["int", "5"] } }, { name: "sumTo", vars: { n: ["int", "4"] } }], out: "", note: "<b>The parting step.</b> sumTo(4) completes: <b>4 + 6 = 10</b>. It returns <b>10</b>, not 4 — the chain below it resolved to 6, so this call hands up the whole sum 1..4. A prediction of 9 stopped one link too early." },
+          { line: 5, vars: { n: ["int", "5"] }, frames: [{ name: "main", vars: {} }, { name: "sumTo", vars: { n: ["int", "5"] } }], out: "", note: "sumTo(5) receives the 10 and completes: <b>5 + 10 = 15</b>. The last sumTo frame returns <b>15</b> to main." },
+          { line: 9, vars: {}, frames: [{ name: "main", vars: {} }], out: "15", note: "Back in main, the print runs: <b>15</b>." },
+          { line: 10, vars: {}, frames: [{ name: "main", vars: {} }], out: "15", note: "The program ends. Final answer: <b>15</b> — 1 + 2 + 3 + 4 + 5, added on the way back up." }
+        ],
+        modify: {
+          prompt: "The call changes from sumTo(5) to sumTo(4). The function is untouched. What prints now?",
+          code: 'int sumTo(int n) {\n    if (n == 0) { return 0; }\n    return n + sumTo(n - 1);\n}\ncout << sumTo(<mark>4</mark>);',
+          options: ["10", "15", "9", "4"],
+          correct: 0,
+          explain: "sumTo(4) is the sub-answer you watched return in the trace: 4 + sumTo(3) = 4 + 6 = <b>10</b>."
+        }
       }
 
     ];
@@ -2059,7 +2245,7 @@ for (int i = 0; i < 3; i++) {
         else if (!s.modDone) { stat = s.correct ? "prediction ✓" : "prediction ✗"; cls = s.correct ? "good" : "bad"; }
         else { stat = "prediction " + (s.correct ? "✓" : "✗") + " · modify " + (s.modCorrect ? "✓" : "✗");
                cls = (s.correct && s.modCorrect) ? "good" : "bad"; }
-        var rlabel = ex.concept === "Pointers" ? ex.concept + " · " + ex.title : ex.concept;
+        var rlabel = (ex.concept === "Pointers" || ex.concept === "Recursion") ? ex.concept + " · " + ex.title : ex.concept;
         li.innerHTML = '<span class="rconcept">' + rlabel + '</span><span class="rstat ' + cls + '">' + stat + "</span>";
         list.appendChild(li);
       });
@@ -2241,7 +2427,7 @@ for (int i = 0; i < 3; i++) {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
       $("trace-locked").style.display = s.locked ? "none" : "";
       $("trace-ui").hidden = !s.locked;
-      if (!s.locked) { renderCode(-1); return; }
+      if (!s.locked) { renderCode(-1); var cs0 = $("callstack"); if (cs0) { cs0.hidden = true; cs0.innerHTML = ""; } var sh0 = $("stack-h"); if (sh0) sh0.hidden = true; return; }
       var step = s.step >= 0 ? ex.steps[s.step] : null;
       renderCode(step ? step.line : -1);
       $("stepmeta").textContent = s.step < 0
@@ -2275,6 +2461,26 @@ for (int i = 0; i < 3; i++) {
                         (ptrTarget ? '<div style="font-size:.78rem;color:var(--ink-soft);font-family:monospace;">points to ' + esc(ptrTarget) + "</div>" : "");
           mem.appendChild(d);
         });
+      }
+      var stackBox = $("callstack"), stackH = $("stack-h");
+      if (stackBox && stackH) {
+        if (step && step.frames && step.frames.length) {
+          stackH.hidden = false; stackBox.hidden = false; stackBox.innerHTML = "";
+          // Newest call on top: render frames in reverse (top frame first).
+          for (var fi = step.frames.length - 1; fi >= 0; fi--) {
+            (function (frame, isTop) {
+              var fd = document.createElement("div");
+              fd.className = "stack-frame" + (isTop ? " top-frame" : "");
+              fd.setAttribute("role", "group");
+              var varParts = Object.keys(frame.vars || {}).map(function (vn) { return vn + " = " + frame.vars[vn][1]; });
+              fd.setAttribute("aria-label", "Call frame " + frame.name + (varParts.length ? ", " + varParts.join(", ") : ", no variables") + (isTop ? " (current call)" : ""));
+              fd.setAttribute("tabindex", "0");
+              var varsHtml = varParts.length ? Object.keys(frame.vars).map(function (vn) { return "<b>" + esc(vn) + "</b> = " + esc(frame.vars[vn][1]) + " <span style=\"font-size:.72rem;\">" + esc(frame.vars[vn][0]) + "</span>"; }).join(" &nbsp;·&nbsp; ") : "no variables";
+              fd.innerHTML = '<div class="fname"><span>' + esc(frame.name) + '()</span><span class="ftag">' + (isTop ? "current call" : "waiting") + '</span></div><div class="fvars">' + varsHtml + "</div>";
+              stackBox.appendChild(fd);
+            })(step.frames[fi], fi === step.frames.length - 1);
+          }
+        } else { stackH.hidden = true; stackBox.hidden = true; stackBox.innerHTML = ""; }
       }
       $("cout").innerHTML = step && step.out ? esc(step.out) : '<span class="cursor"></span>';
       $("stepnote").innerHTML = step ? step.note :
@@ -2368,6 +2574,13 @@ for (int i = 0; i < 3; i++) {
       });
       var prevOut = s.step > 0 ? ex.steps[s.step - 1].out : "";
       if (step.out && step.out !== prevOut) parts.push("Output is now: " + step.out);
+      if (step.frames && step.frames.length) {
+        var frameDesc = step.frames.map(function (fr) {
+          var vp = Object.keys(fr.vars || {}).map(function (vn) { return vn + " = " + fr.vars[vn][1]; });
+          return fr.name + (vp.length ? "(" + vp.join(", ") + ")" : "()");
+        });
+        parts.push("Call stack, bottom to top: " + frameDesc.join(", then ") + ". Stack depth " + step.frames.length + ".");
+      }
       if (s.step === ex.steps.length - 1) {
         if (s.correct) parts.push("Trace complete. Verdict: your prediction was correct — you predicted " + ex.options[s.selected] + " and the program printed " + ex.options[ex.correct] + ".");
         else {
@@ -4355,7 +4568,23 @@ for (int i = 0; i < 3; i++) {
         tests: [ { input: "", expected: "85" } ] },
       { tag: "Functions", title: "Area function", skel: "fn",
         task: "Write a function named area that takes a width and a height and returns their product. Define the function above main, in the space the skeleton leaves for it. In main, print the area of a rectangle 5 wide and 3 high by calling your function.",
-        tests: [ { input: "", expected: "15" } ] }
+        tests: [ { input: "", expected: "15" } ] },
+      { tag: "Strings", title: "Count the vowels",
+        task: "Read one word, then print how many vowels (a, e, i, o, u, lowercase) it contains.",
+        tests: [ { input: "programming", expected: "3" } ],
+        hiddenTests: [ { input: "sky", expected: "0" }, { input: "aeiou", expected: "5" } ] },
+      { tag: "Arrays", title: "Reverse it",
+        task: "Read a count n, then n integers, then print them in reverse order, separated by spaces.",
+        tests: [ { input: "4 1 2 3 4", expected: "4 3 2 1" } ],
+        hiddenTests: [ { input: "3 9 8 7", expected: "7 8 9" } ] },
+      { tag: "Arrays", title: "Double each",
+        task: "Read three integers into an array, then print each one doubled, separated by spaces.",
+        tests: [ { input: "1 2 3", expected: "2 4 6" } ],
+        hiddenTests: [ { input: "5 5 5", expected: "10 10 10" } ] },
+      { tag: "Loops & Decisions", title: "Count the evens",
+        task: "Read a count n, then n integers, then print how many of them are even.",
+        tests: [ { input: "5 1 2 3 4 6", expected: "3" } ],
+        hiddenTests: [ { input: "4 7 9 11 13", expected: "0" } ] }
     ];
 
     /* ---------------- Make mode: a small C++ interpreter ----------------
@@ -4498,13 +4727,13 @@ for (int i = 0; i < 3; i++) {
         var decls = [];
         for (;;) {
           var nm = expectId();
-          var d = { name: nm.v, size: null, init: null, initList: null };
+          var d = { name: nm.v, size: null, sizeExpr: null, init: null, initList: null };
           if (isOp("[")) {
             next();
             if (!isOp("]")) {
               var sz = peek();
-              if (sz.t !== "num" || sz.isDbl) fail(sz, "an array size is a whole number written directly, like scores[4].");
-              d.size = parseInt(sz.v, 10); next();
+              if (sz.t === "num" && !sz.isDbl) { d.size = parseInt(sz.v, 10); next(); }
+              else d.sizeExpr = parseExpr();
             }
             expectOp("]");
           }
@@ -4984,8 +5213,10 @@ for (int i = 0; i < 3; i++) {
             var scope = env[env.length - 1];
             node.decls.forEach(function (d) {
               var cell;
-              if (d.size !== null || d.initList) {
-                var sz = d.size !== null ? d.size : d.initList.length;
+              if (d.size !== null || d.sizeExpr || d.initList) {
+                var sz = d.size !== null ? d.size : (d.sizeExpr ? Math.trunc(makeNum(evalExpr(env, d.sizeExpr), node.line, "as an array size")) : d.initList.length);
+                if (sz < 0) fail(node.line, "an array size cannot be negative — '" + d.name + "' was asked for " + sz + " slots.");
+                if (sz > 10000) fail(node.line, "that array size is far larger than these programs need — check the value used as the size of '" + d.name + "'.");
                 if (d.initList && d.initList.length > sz) fail(node.line, "the list for '" + d.name + "' has " + d.initList.length + " values, but the array only has " + sz + " slots.");
                 var elems = [];
                 for (var k = 0; k < sz; k++) elems.push(makeDefault(node.vtype));
@@ -5094,7 +5325,7 @@ for (int i = 0; i < 3; i++) {
     /* ---------------- Make mode: page behaviour ---------------- */
     var makeState = {
       current: 0, built: false,
-      items: MAKE_PROMPTS.map(function () { return { code: null, done: false, results: null }; })
+      items: MAKE_PROMPTS.map(function () { return { code: null, done: false, results: null, hiddenPassed: null }; })
     };
     function makeSkeleton(i) { return MAKE_PROMPTS[i].skel === "fn" ? MAKE_SKEL_FN : MAKE_SKEL; }
     function makeDoneCount() { return makeState.items.filter(function (s) { return s.done; }).length; }
@@ -5148,6 +5379,22 @@ for (int i = 0; i < 3; i++) {
         div.innerHTML = html;
         box.appendChild(div);
       });
+      var hidden = pr.hiddenTests || [];
+      if (hidden.length) {
+        var hdiv = document.createElement("div");
+        hdiv.className = "testcase";
+        hdiv.setAttribute("data-hidden-tests", "true");
+        var hhtml = '<div class="mtest-head"><span class="tinput">Hidden tests</span>';
+        if (st.hiddenPassed === null || st.hiddenPassed === undefined) hhtml += '<span class="mstatus">Not run</span>';
+        else if (st.hiddenPassed === hidden.length) hhtml += '<span class="mstatus pass">Pass</span>';
+        else hhtml += '<span class="mstatus fail">Fail</span>';
+        hhtml += "</div>";
+        hhtml += '<div class="mtest-detail"><div>' + (st.hiddenPassed === null || st.hiddenPassed === undefined
+          ? "Hidden tests: not run yet. Run tests to check them — only the count is ever shown."
+          : "Hidden tests: " + st.hiddenPassed + " of " + hidden.length + " passed") + "</div></div>";
+        hdiv.innerHTML = hhtml;
+        box.appendChild(hdiv);
+      }
     }
     function selectMakePrompt(i) {
       var ed = $("make-editor");
@@ -5214,8 +5461,15 @@ for (int i = 0; i < 3; i++) {
         }
       });
       st.results = results;
+      var hidden = pr.hiddenTests || [];
+      var hiddenPassed = 0;
+      hidden.forEach(function (t) {
+        var res = makeRunProgram(code, t.input);
+        if (res.ok && normMakeOut(res.output) === normMakeOut(t.expected)) hiddenPassed++;
+      });
+      st.hiddenPassed = hidden.length ? hiddenPassed : null;
       var wasDone = st.done;
-      st.done = passed === pr.tests.length;
+      st.done = passed === pr.tests.length && hiddenPassed === hidden.length;
       renderMakeTests();
       renderMakeNav();
       renderMakeScore();
@@ -5223,14 +5477,18 @@ for (int i = 0; i < 3; i++) {
         makeMsg("good", (wasDone ? "Still passing" : "Every test passes") + " — " + esc(pr.title) + " is complete. Make prompts completed: " + makeDoneCount() + " of " + MAKE_PROMPTS.length + ".");
         announce("All tests pass. " + pr.title + " is complete.");
       } else {
-        makeMsg("info", passed + " of " + pr.tests.length + " test" + (pr.tests.length === 1 ? "" : "s") + " passed. Each failing row shows what the machine expected next to what your program printed — the difference is the clue.");
-        announce(passed + " of " + pr.tests.length + " tests passed.");
+        var msg = passed + " of " + pr.tests.length + " visible test" + (pr.tests.length === 1 ? "" : "s") + " passed.";
+        if (hidden.length) msg += " Hidden tests: " + hiddenPassed + " of " + hidden.length + " passed.";
+        msg += " Each failing visible row shows what the machine expected next to what your program printed — the difference is the clue.";
+        makeMsg("info", msg);
+        announce(passed + " of " + pr.tests.length + " visible tests passed." + (hidden.length ? " Hidden tests: " + hiddenPassed + " of " + hidden.length + " passed." : ""));
       }
     });
     $("make-reset").addEventListener("click", function () {
       var st = makeState.items[makeState.current];
       st.code = null;
       st.results = null;
+      st.hiddenPassed = null;
       $("make-editor").value = makeSkeleton(makeState.current);
       $("make-out").textContent = "";
       renderMakeTests();
@@ -5957,7 +6215,7 @@ for (int i = 0; i < 3; i++) {
       } catch (e) {}
       try {
         makeState.items.forEach(function (it) {
-          data.make.push({ code: it.code, done: !!it.done, results: it.results || null });
+          data.make.push({ code: it.code, done: !!it.done, results: it.results || null, hiddenPassed: (typeof it.hiddenPassed === "number" ? it.hiddenPassed : null) });
         });
       } catch (e) {}
       try { data.challenges = { level: ch.level, data: ch.data }; } catch (e) {}
@@ -6080,6 +6338,7 @@ for (int i = 0; i < 3; i++) {
             if (typeof sv.code === "string") makeState.items[i].code = sv.code;
             makeState.items[i].done = !!sv.done;
             makeState.items[i].results = Array.isArray(sv.results) ? sv.results : null;
+            makeState.items[i].hiddenPassed = (typeof sv.hiddenPassed === "number") ? sv.hiddenPassed : null;
           });
         }
       } catch (e) {}
