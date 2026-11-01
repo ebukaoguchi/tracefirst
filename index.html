@@ -505,6 +505,20 @@
       .mtest-detail .mono { font-family: "IBM Plex Mono", monospace; font-weight: 600; word-break: break-word; }
       .mtest-detail .lbl { font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); font-weight: 700; }
 
+      /* ---------- Bridge ---------- */
+      .bridge-intro { max-width: 760px; margin-top: 22px; }
+      .bridge-intro h2 { font-family: "Source Serif 4", Georgia, serif; font-size: 1.6rem; line-height: 1.15; }
+      .bridge-intro p { margin-top: 8px; color: var(--ink-soft); }
+      .bridge-zone-label { font-family: "IBM Plex Mono", monospace; font-size: .72rem; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-soft); margin: 18px 0 8px; }
+      .bridge-blocks { display: grid; gap: 8px; }
+      .bridge-block { text-align: left; width: 100%; border: 1.5px solid var(--line); background: var(--panel-2); color: var(--ink); border-radius: 10px; padding: 10px 12px; font-family: "IBM Plex Mono", monospace; font-size: .88rem; line-height: 1.55; white-space: pre-wrap; word-break: break-word; }
+      .bridge-block:hover { border-color: var(--amber); }
+      .bridge-block.in-answer { background: var(--accent-soft); border-color: var(--accent); }
+      .bridge-empty { border: 1.5px dashed var(--line); border-radius: 10px; padding: 14px; color: var(--ink-soft); font-size: .92rem; }
+      .bridge-slot { flex: 1 1 auto; min-width: 0; box-sizing: border-box; background: rgba(255,255,255,.07); color: var(--code-ink); border: 1.5px dashed var(--amber); border-radius: 6px; padding: 5px 9px; font-family: "IBM Plex Mono", monospace; font-size: .88rem; }
+      .bridge-slot::placeholder { color: var(--code-dim); }
+      .bridge-slot:focus { outline: 3px solid var(--amber); outline-offset: 1px; }
+
       /* ---------- Bolt's World ---------- */
       .bolt-intro { max-width: 760px; margin-top: 22px; }
       .bolt-intro h2 { font-family: "Source Serif 4", Georgia, serif; font-size: 1.6rem; line-height: 1.15; }
@@ -622,6 +636,10 @@
         <button class="mode-btn" type="button" id="mode-challenges" role="tab" aria-controls="challenges-mode" aria-selected="false" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M7 6H4a2 2 0 0 0 0 4h3M17 6h3a2 2 0 0 1 0 4h-3"/></svg>
           Challenges
+        </button>
+        <button class="mode-btn" type="button" id="mode-bridge" role="tab" aria-controls="bridge-mode" aria-selected="false" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18c5-7 13-7 18 0"/><path d="M3 18h18"/><path d="M7.5 15.5V21M12 13.5V21M16.5 15.5V21"/></svg>
+          Bridge
         </button>
         <button class="mode-btn" type="button" id="mode-make" role="tab" aria-controls="make-mode" aria-selected="false" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -1024,6 +1042,32 @@ for (int i = 0; i < 3; i++) {
         </section>
         <p class="foot"><strong>One honest line:</strong> projects are built in your own editor; TraceFirst supplies the brief, the milestones, and the tests to pass. Nothing here is saved beyond this session.</p>
       </div><!-- /challenges-mode -->
+
+      <div id="bridge-mode" role="tabpanel" tabindex="0" hidden>
+        <section class="bridge-intro">
+          <h2>Bridge: from reading code to writing it.</h2>
+          <p>First put a program's lines in order, then write the missing lines yourself.</p>
+        </section>
+        <section class="toolbar" aria-label="Choose a Bridge activity">
+          <div>
+            <div class="tlabel">Activities — three Parsons, then three faded, in order</div>
+            <div class="exnav" id="bridgenav"></div>
+          </div>
+          <div class="scorebar" id="bridge-scorebar" aria-label="Your Bridge progress"></div>
+        </section>
+        <section class="card" style="margin-top:18px;" aria-labelledby="bridge-title">
+          <span class="concept-tag" id="bridge-tag"></span>
+          <h2 id="bridge-title" style="font-size:1.25rem;"></h2>
+          <p class="ch-prompt" id="bridge-task"></p>
+          <div id="bridge-body"></div>
+          <div class="bolt-controls">
+            <button class="btn" type="button" id="bridge-check">Check</button>
+            <button class="btn ghost small" type="button" id="bridge-reset">Start over</button>
+          </div>
+          <div class="make-msg info show" id="bridge-msg" role="status">Build or complete the program, then press Check. The machine runs what you assembled and compares what it prints.</div>
+        </section>
+        <p class="foot"><strong>How Bridge fits:</strong> the tracer taught you to read programs other people wrote; Make asks you to write whole programs from a blank editor. Bridge is the rung between them — first ordering lines, then supplying them — and it judges by behaviour: any arrangement or line that makes the program print the right thing passes.</p>
+      </div><!-- /bridge-mode -->
 
       <div id="make-mode" role="tabpanel" tabindex="0" hidden>
         <section class="make-intro">
@@ -4473,6 +4517,257 @@ for (int i = 0; i < 3; i++) {
       makeMsg("info", "Back to the starter skeleton. Nothing else about the prompt changed.");
     });
 
+    /* ---------------- Bridge mode: Parsons + faded completion ----------------
+       Judged by behaviour: the assembled program runs through the same
+       interpreter Make uses (makeRunProgram) and passes when its output
+       matches the expected output, ignoring spacing differences. */
+    var BRIDGE_ACTIVITIES = [
+      { kind: "parsons", tag: "Parsons · Loops", title: "Add them up", expected: "15",
+        distractor: "sum += 1;",
+        trayOrder: [2, 5, 0, 8, 3, 7, 1, 6, 4],
+        blocks: [
+          "#include <iostream>\nusing namespace std;",
+          "int main() {",
+          "int sum = 0;",
+          "for (int i = 1; i <= 5; i++) {",
+          "sum += i;",
+          "}",
+          "cout << sum;",
+          "return 0;\n}"
+        ] },
+      { kind: "parsons", tag: "Parsons · Decisions", title: "Warm or cool", expected: "warm",
+        distractor: "if (temp <= 70) {",
+        trayOrder: [4, 1, 8, 0, 6, 9, 3, 5, 2, 7],
+        blocks: [
+          "#include <iostream>\nusing namespace std;",
+          "int main() {",
+          "int temp = 78;",
+          "if (temp >= 70) {",
+          "cout << \"warm\";",
+          "} else {",
+          "cout << \"cool\";",
+          "}",
+          "return 0;\n}"
+        ] },
+      { kind: "parsons", tag: "Parsons · Functions", title: "Area by function", expected: "20",
+        distractor: "return w + h;",
+        trayOrder: [3, 6, 1, 7, 0, 4, 2, 5],
+        blocks: [
+          "#include <iostream>\nusing namespace std;",
+          "double area(double w, double h) {",
+          "return w * h;",
+          "}",
+          "int main() {",
+          "cout << area(4, 5);",
+          "return 0;\n}"
+        ] },
+      { kind: "faded", tag: "Faded · Loops", title: "Squares, one line missing", expected: "1 4 9 16 25", slots: 1,
+        template: "#include <iostream>\nusing namespace std;\nint main() {\n    for (int i = 1; i <= 5; i++) {\n        [[0]]\n    }\n    return 0;\n}" },
+      { kind: "faded", tag: "Faded · Arrays", title: "Find the maximum", expected: "19", slots: 1,
+        template: "#include <iostream>\nusing namespace std;\nint main() {\n    int nums[3] = {12, 7, 19};\n    int max = nums[0];\n    for (int i = 1; i < 3; i++) {\n        [[0]]\n    }\n    cout << max;\n    return 0;\n}" },
+      { kind: "faded", tag: "Faded · Arrays", title: "Average, two lines missing", expected: "85", slots: 2,
+        template: "#include <iostream>\nusing namespace std;\nint main() {\n    int scores[4] = {70, 80, 90, 100};\n    int total = 0;\n    for (int i = 0; i < 4; i++) {\n        [[0]]\n    }\n    [[1]]\n    return 0;\n}" }
+    ];
+    var bridgeState = {
+      current: 0, built: false,
+      items: BRIDGE_ACTIVITIES.map(function (act) {
+        return { done: false, answer: [], slots: act.kind === "faded" ? act.template.match(/\[\[\d+\]\]/g).map(function () { return ""; }) : [] };
+      })
+    };
+    function bridgeDoneCount() { return bridgeState.items.filter(function (s) { return s.done; }).length; }
+    function bridgeMsg(kind, html) {
+      var m = $("bridge-msg");
+      m.className = "make-msg show " + kind;
+      m.innerHTML = html;
+    }
+    function bridgeAllBlocks(act) { return act.blocks.concat([act.distractor]); }
+    function renderBridgeScore() {
+      $("bridge-scorebar").innerHTML = '<div class="metric"><span>Bridge activities completed</span> <strong>' + bridgeDoneCount() + " of " + BRIDGE_ACTIVITIES.length + "</strong></div>";
+    }
+    function renderBridgeNav() {
+      var nav = $("bridgenav");
+      nav.innerHTML = "";
+      BRIDGE_ACTIVITIES.forEach(function (act, i) {
+        var st = bridgeState.items[i];
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "ex-btn";
+        b.setAttribute("aria-current", i === bridgeState.current ? "true" : "false");
+        b.setAttribute("aria-label", "Activity " + (i + 1) + ": " + act.title + (st.done ? " (complete)" : ""));
+        b.innerHTML = '<span class="n">' + (i + 1) + '</span><span><span style="font-weight:600;">' + esc(act.title) + '</span><br><span class="status' + (st.done ? " good" : "") + '">' + (st.done ? "Complete" : act.tag) + "</span></span>";
+        b.addEventListener("click", function () { selectBridge(i); });
+        nav.appendChild(b);
+      });
+    }
+    function renderBridgeBody() {
+      var act = BRIDGE_ACTIVITIES[bridgeState.current];
+      var st = bridgeState.items[bridgeState.current];
+      var body = $("bridge-body");
+      body.innerHTML = "";
+      if (act.kind === "parsons") {
+        var all = bridgeAllBlocks(act);
+        var ansLabel = document.createElement("div");
+        ansLabel.className = "bridge-zone-label";
+        ansLabel.textContent = "Your program — click a block to send it back to the tray";
+        body.appendChild(ansLabel);
+        var ansBox = document.createElement("div");
+        ansBox.className = "bridge-blocks";
+        if (!st.answer.length) {
+          var empty = document.createElement("div");
+          empty.className = "bridge-empty";
+          empty.textContent = "Nothing here yet. Click blocks in the tray below to build the program, top to bottom.";
+          ansBox.appendChild(empty);
+        }
+        st.answer.forEach(function (bi) {
+          var b = document.createElement("button");
+          b.type = "button";
+          b.className = "bridge-block in-answer";
+          b.textContent = all[bi];
+          b.setAttribute("aria-label", "Remove this block from your program: " + all[bi].replace(/\n/g, " "));
+          b.addEventListener("click", function () {
+            st.answer.splice(st.answer.indexOf(bi), 1);
+            renderBridgeBody();
+          });
+          ansBox.appendChild(b);
+        });
+        body.appendChild(ansBox);
+        var trayLabel = document.createElement("div");
+        trayLabel.className = "bridge-zone-label";
+        trayLabel.textContent = "Tray — click a block to add it to your program";
+        body.appendChild(trayLabel);
+        var trayBox = document.createElement("div");
+        trayBox.className = "bridge-blocks";
+        var remaining = act.trayOrder.filter(function (bi) { return st.answer.indexOf(bi) < 0; });
+        if (!remaining.length) {
+          var none = document.createElement("div");
+          none.className = "bridge-empty";
+          none.textContent = "The tray is empty — every block is in your program.";
+          trayBox.appendChild(none);
+        }
+        remaining.forEach(function (bi) {
+          var b = document.createElement("button");
+          b.type = "button";
+          b.className = "bridge-block";
+          b.textContent = all[bi];
+          b.setAttribute("aria-label", "Add this block to your program: " + all[bi].replace(/\n/g, " "));
+          b.addEventListener("click", function () {
+            st.answer.push(bi);
+            renderBridgeBody();
+          });
+          trayBox.appendChild(b);
+        });
+        body.appendChild(trayBox);
+      } else {
+        var label = document.createElement("div");
+        label.className = "bridge-zone-label";
+        label.textContent = act.slots === 1 ? "The program, with one line missing — type the missing line" : "The program, with two lines missing — type each missing line";
+        body.appendChild(label);
+        var codebox = document.createElement("div");
+        codebox.className = "codebox";
+        var head = document.createElement("div");
+        head.className = "codehead";
+        head.innerHTML = "<span>program.cpp</span><span>C++</span>";
+        codebox.appendChild(head);
+        var pre = document.createElement("div");
+        pre.style.padding = "12px 0";
+        act.template.split("\n").forEach(function (lineText, li) {
+          var row = document.createElement("div");
+          row.className = "cline";
+          var ln = document.createElement("span");
+          ln.className = "ln";
+          ln.textContent = String(li + 1);
+          row.appendChild(ln);
+          var m = lineText.match(/\[\[(\d+)\]\]/);
+          if (m) {
+            var k = parseInt(m[1], 10);
+            var input = document.createElement("input");
+            input.type = "text";
+            input.className = "bridge-slot";
+            input.value = st.slots[k] || "";
+            input.placeholder = "type the missing line here";
+            input.spellcheck = false;
+            input.autocomplete = "off";
+            input.setAttribute("aria-label", "Missing line " + (k + 1) + " of the program");
+            input.addEventListener("input", function () { st.slots[k] = this.value; });
+            row.appendChild(input);
+          } else {
+            var span = document.createElement("span");
+            span.textContent = lineText;
+            row.appendChild(span);
+          }
+          pre.appendChild(row);
+        });
+        codebox.appendChild(pre);
+        body.appendChild(codebox);
+      }
+    }
+    function selectBridge(i) {
+      bridgeState.current = i;
+      var act = BRIDGE_ACTIVITIES[i];
+      $("bridge-tag").textContent = act.tag;
+      $("bridge-title").textContent = "Activity " + (i + 1) + ": " + act.title;
+      $("bridge-task").textContent = act.kind === "parsons"
+        ? "Click blocks in the tray to build this program in order. One block in the tray does not belong — leave it out. The finished program should print: " + act.expected
+        : "Type each missing line. Any line that makes the program behave correctly passes. The finished program should print: " + act.expected;
+      bridgeMsg("info", "Build or complete the program, then press Check. The machine runs what you assembled and compares what it prints.");
+      renderBridgeNav();
+      renderBridgeBody();
+      renderBridgeScore();
+    }
+    function renderBridge() {
+      if (!bridgeState.built) {
+        bridgeState.built = true;
+        selectBridge(0);
+      } else {
+        renderBridgeNav();
+        renderBridgeBody();
+        renderBridgeScore();
+      }
+    }
+    function bridgeAssemble() {
+      var act = BRIDGE_ACTIVITIES[bridgeState.current];
+      var st = bridgeState.items[bridgeState.current];
+      if (act.kind === "parsons") {
+        var all = bridgeAllBlocks(act);
+        return st.answer.map(function (bi) { return all[bi]; }).join("\n");
+      }
+      return act.template.replace(/\[\[(\d+)\]\]/g, function (_, k) { return st.slots[parseInt(k, 10)] || ""; });
+    }
+    $("bridge-check").addEventListener("click", function () {
+      var act = BRIDGE_ACTIVITIES[bridgeState.current];
+      var st = bridgeState.items[bridgeState.current];
+      if (act.kind === "parsons" && !st.answer.length) {
+        bridgeMsg("info", "Your program is empty — click blocks in the tray to build it first.");
+        announce("Your program is empty. Add blocks from the tray first.");
+        return;
+      }
+      var res = makeRunProgram(bridgeAssemble(), "");
+      if (!res.ok) {
+        bridgeMsg("bad", esc(res.error));
+        announce("The program stopped. " + res.error);
+        return;
+      }
+      if (normMakeOut(res.output) === normMakeOut(act.expected)) {
+        var wasDone = st.done;
+        st.done = true;
+        renderBridgeNav();
+        renderBridgeScore();
+        bridgeMsg("good", (wasDone ? "Still passing" : "That is right") + " — your program printed " + esc(normMakeOut(res.output)) + ". " + esc(act.title) + " is complete. Bridge activities completed: " + bridgeDoneCount() + " of " + BRIDGE_ACTIVITIES.length + ".");
+        announce(act.title + " is complete. Bridge activities completed: " + bridgeDoneCount() + " of " + BRIDGE_ACTIVITIES.length + ".");
+      } else {
+        bridgeMsg("bad", "Your program ran, but it printed " + esc(res.output.trim() === "" ? "(nothing)" : res.output.trim()) + " instead of " + esc(act.expected) + ". Look at what it printed, rethink the " + (act.kind === "parsons" ? "order" : "missing line") + ", and check again.");
+        announce("Your program printed " + (res.output.trim() === "" ? "nothing" : res.output.trim()) + " instead of " + act.expected + ".");
+      }
+    });
+    $("bridge-reset").addEventListener("click", function () {
+      var act = BRIDGE_ACTIVITIES[bridgeState.current];
+      var st = bridgeState.items[bridgeState.current];
+      st.answer = [];
+      if (act.kind === "faded") st.slots = st.slots.map(function () { return ""; });
+      renderBridgeBody();
+      bridgeMsg("info", act.kind === "parsons" ? "Every block is back in the tray. Build the program again from the top." : "The missing lines are cleared. Type them again.");
+    });
+
     /* ---------------- Mode toggle ---------------- */
     function setMode(mode) {
       $("bolt-mode").hidden = mode !== "bolt";
@@ -4480,8 +4775,9 @@ for (int i = 0; i < 3; i++) {
       $("gym-mode").hidden = mode !== "gym";
       $("translator-mode").hidden = mode !== "translator";
       $("challenges-mode").hidden = mode !== "challenges";
+      $("bridge-mode").hidden = mode !== "bridge";
       $("make-mode").hidden = mode !== "make";
-      ["bolt","tracer","gym","translator","challenges","make"].forEach(function(m){
+      ["bolt","tracer","gym","translator","challenges","bridge","make"].forEach(function(m){
         var b = $("mode-" + m);
         b.setAttribute("aria-selected", mode === m ? "true" : "false");
         b.setAttribute("aria-pressed", mode === m ? "true" : "false");
@@ -4490,6 +4786,7 @@ for (int i = 0; i < 3; i++) {
       if (mode === "bolt") initBolt();
       if (mode === "gym") renderGym();
       if (mode === "challenges") renderChallenges();
+      if (mode === "bridge") renderBridge();
       if (mode === "make") renderMake();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
@@ -4498,12 +4795,13 @@ for (int i = 0; i < 3; i++) {
     $("mode-gym").addEventListener("click", function () { setMode("gym"); });
     $("mode-translator").addEventListener("click", function () { setMode("translator"); });
     $("mode-challenges").addEventListener("click", function () { setMode("challenges"); });
+    $("mode-bridge").addEventListener("click", function () { setMode("bridge"); });
     $("mode-make").addEventListener("click", function () { setMode("make"); });
 
 
     /* ---------------- Mode tabs: arrow-key navigation ---------------- */
     (function(){
-      var order = ["bolt","tracer","gym","translator","challenges","make"];
+      var order = ["bolt","tracer","gym","translator","challenges","bridge","make"];
       var tablist = document.getElementById("mode-tablist");
       if (tablist) tablist.addEventListener("keydown", function(e){
         var cur = order.indexOf(order.filter(function(m){ return $("mode-"+m).getAttribute("aria-selected")==="true"; })[0]);
