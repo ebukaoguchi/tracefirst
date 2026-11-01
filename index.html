@@ -317,7 +317,7 @@
         display: inline-flex; align-items: center; gap: 8px;
       }
       .mode-btn svg { width: 17px; height: 17px; flex: none; }
-      .mode-btn[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent-strong); border-color: var(--accent); }
+      .mode-btn[aria-pressed="true"], .mode-btn[aria-selected="true"] { background: var(--accent-soft); color: var(--accent-strong); border-color: var(--accent); }
 
       /* ---------- Debugging Gym ---------- */
       .gym-intro { max-width: 760px; margin-top: 22px; }
@@ -523,6 +523,23 @@
       .bolt-cmds ul { margin: 0; padding-left: 18px; display: grid; gap: 5px; }
       .bolt-example { background: var(--code-bg); color: var(--code-ink); border-radius: 10px; padding: 12px 14px; font-family: "IBM Plex Mono", monospace; font-size: .86rem; white-space: pre; overflow-x: auto; line-height: 1.6; }
       .bolt-hint { margin-top: 14px; }
+
+      /* Journal + digest + a11y */
+      .journal-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;align-items:center}
+      .journal-status{font-size:.92rem;color:var(--ink-soft);margin-top:10px;min-height:1.4em}
+      .digest-textarea{width:100%;box-sizing:border-box;min-height:140px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel-2);color:var(--ink);padding:12px 14px;font-family:"IBM Plex Mono",monospace;font-size:.85rem;line-height:1.5;resize:vertical}
+      .digest-textarea:focus,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+      button:focus-visible,[tabindex]:focus-visible,a:focus-visible,.gline:focus-visible,.opt-btn:focus-visible,.ex-btn:focus-visible,.mode-btn:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+      .codebox .gline:focus-visible{outline:3px solid var(--amber);outline-offset:-3px}
+      .digest-table-wrap{overflow-x:auto;margin-top:14px}
+      .digest-table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:560px}
+      .digest-table th,.digest-table td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+      .digest-table th{background:var(--panel-2);font-family:"IBM Plex Mono",monospace;font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+      .digest-table tr.hot td{background:var(--amber-soft)}
+      .digest-summary{margin-top:12px;font-size:.95rem}
+      .membox .ptr-arrow{color:var(--accent-strong);font-weight:700}
+      input[type="file"]{font:inherit;max-width:100%}
+      @media(max-width:640px){.digest-table{min-width:0}.digest-table th,.digest-table td{padding:7px 8px;font-size:.84rem}}
       @media (prefers-reduced-motion: reduce) { .bolt-robot, .bolt-robot svg { transition: none; } }
       @media (max-width: 700px) { .trans-grid, .fix-compare { grid-template-columns: 1fr; } .ch-levels { grid-template-columns: 1fr; } }
       @media (max-width: 900px) {
@@ -554,30 +571,30 @@
         <p class="lede">TraceFirst is a first-year C++ tracer built on one rule: <strong>you never run code you have not first predicted.</strong> Commit to an answer, then step through the program and watch memory change. When your prediction and the machine disagree, TraceFirst stops at the exact statement where the two parted — and names the idea to fix. New to programming entirely? <strong>Start with Bolt's World</strong>, the first mode below: it teaches the logic first, and only then does the tracer ask you to predict real code.</p>
       </section>
 
-      <nav class="mode-toggle" aria-label="Choose a mode">
-        <button class="mode-btn" type="button" id="mode-bolt" aria-pressed="false">
+      <nav class="mode-toggle" role="tablist" aria-label="Choose a mode" id="mode-tablist">
+        <button class="mode-btn" type="button" id="mode-bolt" role="tab" aria-controls="bolt-mode" aria-selected="false" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4"/><circle cx="12" cy="3" r="0.5"/><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M9.5 13h.01M14.5 13h.01M9 21.5h6"/></svg>
           Bolt's World
         </button>
-        <button class="mode-btn" type="button" id="mode-tracer" aria-pressed="true">
+        <button class="mode-btn" type="button" id="mode-tracer" role="tab" aria-controls="tracer-mode" aria-selected="true" aria-pressed="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
           Prediction Tracer
         </button>
-        <button class="mode-btn" type="button" id="mode-gym" aria-pressed="false">
+        <button class="mode-btn" type="button" id="mode-gym" role="tab" aria-controls="gym-mode" aria-selected="false" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
           Debugging Gym
         </button>
-        <button class="mode-btn" type="button" id="mode-translator" aria-pressed="false">
+        <button class="mode-btn" type="button" id="mode-translator" role="tab" aria-controls="translator-mode" aria-selected="false" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h9M8.5 3v2c0 3-1.8 5.6-4 7M6 8c.6 2 2.3 4.2 4.5 5.5M13 21l4.5-10L22 21M14.8 17h5.4"/></svg>
           Error Translator
         </button>
-        <button class="mode-btn" type="button" id="mode-challenges" aria-pressed="false">
+        <button class="mode-btn" type="button" id="mode-challenges" role="tab" aria-controls="challenges-mode" aria-selected="false" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M7 6H4a2 2 0 0 0 0 4h3M17 6h3a2 2 0 0 1 0 4h-3"/></svg>
           Challenges
         </button>
       </nav>
 
-      <div id="bolt-mode" hidden>
+      <div id="bolt-mode" role="tabpanel" tabindex="0" hidden>
         <section class="bolt-intro">
           <h2>Meet Bolt — programming before the syntax gets heavy.</h2>
           <p>Bolt is a workshop robot who understands exactly <strong>four commands</strong>: move, turn left, pick up a battery cell, put one down. That is all he will ever know. Everything Bolt does — crossing the Workshop, harvesting a row of cells, feeling his way around crates — is built by combining those four commands with loops, decisions, and functions you define yourself.</p>
@@ -617,12 +634,12 @@
               <p style="font-size:.9rem; color:var(--ink-soft); margin-top:6px;">Write C++-shaped code: every command ends with a semicolon, and blocks wear braces. Lines starting with <span style="font-family:'IBM Plex Mono',monospace;">//</span> are comments — notes to yourself that Bolt ignores.</p>
               <textarea class="bolt-editor" id="bolt-editor" spellcheck="false" aria-label="Program editor for Bolt"></textarea>
               <div class="bolt-controls">
-                <button class="btn" type="button" id="bolt-run">
+                <button class="btn" type="button" id="bolt-run" aria-label="Run Bolt program from the beginning">
                   <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
                   Run
                 </button>
-                <button class="btn ghost" type="button" id="bolt-step">Step</button>
-                <button class="btn ghost" type="button" id="bolt-reset">Reset</button>
+                <button class="btn ghost" type="button" id="bolt-step" aria-label="Step Bolt through one action of your program">Step</button>
+                <button class="btn ghost" type="button" id="bolt-reset" aria-label="Reset Bolt to the start of this world">Reset</button>
               </div>
               <div class="bolt-msg info show" id="bolt-msg" role="status">Choose a world, write Bolt's program, then press Run or Step.</div>
             </section>
@@ -672,7 +689,7 @@ for (int i = 0; i < 3; i++) {
         <p class="foot"><strong>How Bolt's World fits:</strong> this mode teaches the logic of programming — sequence, repetition, decisions, decomposition — inside a world small enough to see whole. The other modes then attach real C++ to that logic: the Prediction Tracer for reading code before it runs, the Debugging Gym for finding faults, the Error Translator for compiler messages, and Challenges for graded practice. Worlds you complete are remembered only for this session.</p>
       </div><!-- /bolt-mode -->
 
-      <div id="tracer-mode">
+      <div id="tracer-mode" role="tabpanel" tabindex="0">
       <div class="primm" id="primm" aria-label="The four stages of each exercise">
         <div class="phase" data-phase="predict"><div class="pnum">Stage 1</div><div class="pname"><span class="dot"></span>Predict</div><div class="pdesc">Read the code. Say what it will print. Lock it in.</div></div>
         <div class="phase" data-phase="trace"><div class="pnum">Stage 2</div><div class="pname"><span class="dot"></span>Run</div><div class="pdesc">Step line by line. Watch each variable's box change.</div></div>
@@ -680,6 +697,7 @@ for (int i = 0; i < 3; i++) {
         <div class="phase" data-phase="modify"><div class="pnum">Stage 4</div><div class="pname"><span class="dot"></span>Modify</div><div class="pdesc">One value changes. Predict again, from your repaired model.</div></div>
       </div>
 
+      <div class="sr-live" aria-live="polite" aria-atomic="true" id="tracer-live"></div>
       <section class="toolbar" aria-label="Choose your field and exercise">
         <div>
           <div class="tlabel">Your field — same code, your world</div>
@@ -750,10 +768,10 @@ for (int i = 0; i < 3; i++) {
             </div>
             <div id="trace-ui" hidden>
               <div class="trace-controls">
-                <button class="btn small ghost" id="step-back">← Back</button>
-                <button class="btn small" id="step-next">Step →</button>
-                <button class="btn small ghost" id="run-all">Run to end</button>
-                <button class="btn small ghost" id="trace-reset">Restart</button>
+                <button class="btn small ghost" id="step-back" aria-label="Step back to the previous line">← Back</button>
+                <button class="btn small" id="step-next" aria-label="Step forward to the next line">Step →</button>
+                <button class="btn small ghost" id="run-all" aria-label="Run tracer to the end">Run to end</button>
+                <button class="btn small ghost" id="trace-reset" aria-label="Restart tracer from the beginning">Restart</button>
               </div>
               <div class="stepmeta" id="stepmeta"></div>
               <div class="stepbar"><i id="stepbar-fill"></i></div>
@@ -782,9 +800,38 @@ for (int i = 0; i < 3; i++) {
       </section>
 
       <p class="foot"><strong>How TraceFirst works:</strong> each exercise follows PRIMM — Predict, Run, Investigate, Modify — a sequence from computing-education research. The prediction is not a quiz before the lesson; it <em>is</em> the lesson, because the step-through that follows is read against a model you have already committed to. The four field skins share one code path and one set of numbers, so mixed-major classes discuss the same machine behaviour in four different worlds.</p>
+      
+      <section class="card" style="margin-top:18px;" aria-labelledby="journal-h">
+        <h3 id="journal-h">Your prediction journal</h3>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">Download a plain-text record of every prediction you locked in this session: what you predicted, what the program printed, and — when you parted — the line where your model and the machine diverged. You can submit this file to your instructor.</p>
+        <div class="journal-actions">
+          <button class="btn" type="button" id="export-journal-btn">Export my prediction journal</button>
+          <span style="font-size:.88rem;color:var(--ink-soft);">Downloads <span style="font-family:'IBM Plex Mono',monospace;">tracefirst-journal.txt</span> · nothing leaves this page until you share the file.</span>
+        </div>
+        <p class="journal-status" id="journal-status" role="status"></p>
+      </section>
+
+      <section class="card" style="margin-top:18px;" aria-labelledby="digest-h">
+        <h3 id="digest-h">Instructor digest — where the class parted</h3>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">Paste one or more exported journals below, or load journal files, then build the digest. It aggregates attempts per exercise, counts wrong predictions, and surfaces the most common wrong prediction and parting line for each exercise. Rows where anyone missed are highlighted.</p>
+        <div style="margin-top:14px;display:grid;gap:10px;">
+          <label for="digest-input" style="font-weight:700;font-size:.92rem;">Journals (paste text here)</label>
+          <textarea class="digest-textarea" id="digest-input" placeholder="Paste one or more TraceFirst prediction journals here…" aria-describedby="digest-count"></textarea>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+            <label for="digest-files" style="font-weight:600;font-size:.92rem;">Or load files:</label>
+            <input type="file" id="digest-files" accept=".txt,text/plain" multiple aria-label="Load one or more prediction journal text files">
+          </div>
+          <div class="journal-actions" style="margin-top:2px;">
+            <button class="btn" type="button" id="build-digest-btn">Build digest</button>
+            <button class="btn ghost" type="button" id="clear-digest-btn">Clear</button>
+          </div>
+          <p class="journal-status" id="digest-count" role="status"></p>
+        </div>
+        <div id="digest-result" aria-live="polite"></div>
+      </section>
       </div><!-- /tracer-mode -->
 
-      <div id="gym-mode" hidden>
+      <div id="gym-mode" role="tabpanel" tabindex="0" hidden>
         <section class="gym-intro">
           <h2>Find the bugs. Classify them. Then prove the fix.</h2>
           <p>Five short programs, broken on purpose — the first three from a debugging and code-reading lab built for a first-year introductory C++ course serving CS and non-CS majors together, the last two extending the same hunt to loops, arrays, and functions. <strong>Click a line to accuse it of being a bug.</strong> Every accusation that lands must then be classified, because the distinction this gym trains is the one beginners blur:</p>
@@ -865,7 +912,7 @@ for (int i = 0; i < 3; i++) {
         <p class="foot"><strong>Where this comes from:</strong> the first three programs, their bug counts, and the checklist come from a debugging lab module, <em>Find the Bugs — Debugging and Reading Code in C++</em>, built for a first-year introductory C++ course serving CS and non-CS majors together; rounds 4 and 5 are written in the same style, against the same checklist. In the lab you fix the code in an editor; here you train the step before that — seeing the bug, and knowing which kind it is. Scores live only in this session, as in the tracer.</p>
       </div><!-- /gym-mode -->
 
-      <div id="translator-mode" hidden>
+      <div id="translator-mode" role="tabpanel" tabindex="0" hidden>
         <section class="trans-intro">
           <h2>Read the error. It is telling you where to look.</h2>
           <p>A compiler message is not a verdict. It is a note from the program that checks your code, written in shorthand. <strong>Pick the error you just hit, or search for a word in it,</strong> and TraceFirst will translate it into plain English: what it means, what in your code causes it, and how to fix it.</p>
@@ -906,7 +953,7 @@ for (int i = 0; i < 3; i++) {
         <p class="foot"><strong>How to use this translator well:</strong> do not hunt through all 26. Copy two or three distinctive words from the message you actually got into the search box. The raw messages here use the wording of g++, the compiler in most introductory courses; other compilers phrase the same problems slightly differently, but the cause and the fix do not change.</p>
       </div><!-- /translator-mode -->
 
-      <div id="challenges-mode" hidden>
+      <div id="challenges-mode" role="tabpanel" tabindex="0" hidden>
         <section class="ch-intro">
           <h2>Tasks, projects, and an exam — at your level.</h2>
           <p>Pick a level and work in three parts: <strong>short tasks</strong> checked instantly, <strong>guided projects</strong> with milestones and a prediction-first test bench, and a <strong>six-question exam</strong> scored at the end. Start where you are honest, not where you wish you were — the levels share ideas, so finishing one prepares the next.</p>
@@ -1388,7 +1435,205 @@ for (int i = 0; i < 3; i++) {
           correct: 0,
           explain: "Two characters are appended this time: \"code\" + \"rs\" = <b>coders</b>, and its length is <b>6</b>. Whatever is appended, length() counts all of it."
         }
+      },
+      {
+        concept: "Pointers",
+        title: "Writing through a pointer",
+        goal: "A pointer holds an address. <b>*ptr</b> means \u201Cthe value at that address\u201D — writing through it writes into the original variable itself.",
+        stories: {
+          health:   "A score starts at <strong>25</strong>. A pointer is set to point at that score, then a value of <strong>40</strong> is written through the pointer. The program prints the score and the value through the pointer.",
+          psych:    "A score starts at <strong>25</strong>. A pointer is set to point at that score, then a value of <strong>40</strong> is written through the pointer. The program prints the score and the value through the pointer.",
+          business: "A score starts at <strong>25</strong>. A pointer is set to point at that score, then a value of <strong>40</strong> is written through the pointer. The program prints the score and the value through the pointer.",
+          arts:     "A score starts at <strong>25</strong>. A pointer is set to point at that score, then a value of <strong>40</strong> is written through the pointer. The program prints the score and the value through the pointer."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int score = 25;",
+          "    int* ptr = &score;",
+          "    *ptr = 40;",
+          "    cout << score << \" \" << *ptr;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["40 40", "25 40", "40 25", "25 25"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "You kept <b>score</b> at its old value. The parting line is <b>*ptr = 40;</b> — writing through ptr changes score itself, because ptr holds score's address. There is only one box; ptr is another way to reach it." },
+          2: { step: 2, text: "Both reads see the same box after the write. <b>*ptr = 40;</b> changed score to 40, so <b>score</b> and <b>*ptr</b> both read 40 — the 25 is gone from both views." },
+          3: { step: 2, text: "The write did happen — through the pointer. <b>*ptr = 40;</b> follows the address in ptr into score's box and replaces 25 with 40, so both printed values are 40." }
+        },
+        steps: [
+          { line: 4, vars: { score: ["int", "25"] }, out: "", note: "A box named <b>score</b> holds <b>25</b>. Every variable lives at an address in memory; score is no exception." },
+          { line: 5, vars: { score: ["int", "25"], ptr: ["int*", "→ score"] }, out: "", note: "<b>ptr</b> is created holding the <b>address of score</b> (&score). Read the memory panel: <b>ptr → score</b>. ptr does not copy 25 — it points at the box that holds it." },
+          { line: 6, vars: { score: ["int", "40"], ptr: ["int*", "→ score"] }, out: "", note: "<b>*ptr = 40;</b> follows the address and writes <b>40</b> into score's box. <b>score becomes 40</b> — this is the parting line for the prediction \u201C25 40\u201D." },
+          { line: 7, vars: { score: ["int", "40"], ptr: ["int*", "→ score"] }, out: "40 40", note: "Both reads reach the same box: <b>score</b> is 40 and <b>*ptr</b> is 40. Output: <b>40 40</b>." },
+          { line: 8, vars: { score: ["int", "40"], ptr: ["int*", "→ score"] }, out: "40 40", note: "The program ends. Final answer: <b>40 40</b>." }
+        ],
+        modify: {
+          prompt: "Same program, one change: the value written through the pointer is 55 instead of 40. What prints now?",
+          code: 'int score = 25;\nint* ptr = &score;\n*ptr = <mark>55</mark>;\ncout << score << " " << *ptr;',
+          options: ["55 55", "25 55", "55 25", "40 40"],
+          correct: 0,
+          explain: "Writing <b>55</b> through ptr writes it into score itself, so both reads print <b>55</b>: <b>55 55</b>."
+        }
+      },
+      {
+        concept: "Pointers",
+        title: "Swapping through pointers",
+        goal: "Passing <b>&x</b> and <b>&y</b> hands a function the addresses of the caller's variables — so the function can write back into them.",
+        stories: {
+          health:   "Two values, <strong>x = 5</strong> and <strong>y = 12</strong>, are handed to a swap function by address. The function exchanges the values stored at those addresses, and main prints x and y afterwards.",
+          psych:    "Two values, <strong>x = 5</strong> and <strong>y = 12</strong>, are handed to a swap function by address. The function exchanges the values stored at those addresses, and main prints x and y afterwards.",
+          business: "Two values, <strong>x = 5</strong> and <strong>y = 12</strong>, are handed to a swap function by address. The function exchanges the values stored at those addresses, and main prints x and y afterwards.",
+          arts:     "Two values, <strong>x = 5</strong> and <strong>y = 12</strong>, are handed to a swap function by address. The function exchanges the values stored at those addresses, and main prints x and y afterwards."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "void swapNums(int* a, int* b) {",
+          "    int temp = *a;",
+          "    *a = *b;",
+          "    *b = temp;",
+          "}",
+          "",
+          "int main() {",
+          "    int x = 5;",
+          "    int y = 12;",
+          "    swapNums(&x, &y);",
+          "    cout << x << \" \" << y;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["12 5", "5 12", "12 12", "5 5"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 4, text: "You assumed the swap cannot reach back into main. It can — because main handed over <b>addresses</b>. The parting line is <b>*a = *b;</b>: the function writes through the addresses it was handed, so <b>x itself changes</b> to 12." },
+          2: { step: 4, text: "x does become 12 at <b>*a = *b;</b> — but the swap is not finished. <b>temp</b> saved the old 5, and <b>*b = temp;</b> writes it into y, so y ends at 5, not 12." },
+          3: { step: 3, text: "The old value of x is not lost: <b>int temp = *a;</b> saves 5 before anything is overwritten. That saved 5 is what lands in y, and x receives y's 12." }
+        },
+        steps: [
+          { line: 10, vars: { x: ["int", "5"] }, out: "", note: "In main, <b>x</b> holds <b>5</b>." },
+          { line: 11, vars: { x: ["int", "5"], y: ["int", "12"] }, out: "", note: "And <b>y</b> holds <b>12</b>." },
+          { line: 12, vars: { x: ["int", "5"], y: ["int", "12"], a: ["int*", "→ x"], b: ["int*", "→ y"] }, out: "", note: "The call <b>swapNums(&x, &y)</b> hands over addresses: <b>a → x</b> and <b>b → y</b>. Control enters the function; main is paused." },
+          { line: 4, vars: { x: ["int", "5"], y: ["int", "12"], a: ["int*", "→ x"], b: ["int*", "→ y"], temp: ["int", "5"] }, out: "", note: "<b>temp = *a</b> reads through a into x and saves <b>5</b>. Without this save, the next line would destroy it." },
+          { line: 5, vars: { x: ["int", "12"], y: ["int", "12"], a: ["int*", "→ x"], b: ["int*", "→ y"], temp: ["int", "5"] }, out: "", note: "<b>*a = *b;</b> writes y's value (12) through a into <b>x itself</b>. <b>x becomes 12</b> — in main's box, not a copy." },
+          { line: 6, vars: { x: ["int", "12"], y: ["int", "5"], a: ["int*", "→ x"], b: ["int*", "→ y"], temp: ["int", "5"] }, out: "", note: "<b>*b = temp;</b> writes the saved 5 through b into y. <b>y becomes 5</b>. The swap is complete and the function returns." },
+          { line: 13, vars: { x: ["int", "12"], y: ["int", "5"] }, out: "12 5", note: "Back in main, the pointers and temp are gone, but their writes remain: <b>x is 12, y is 5</b>. Output: <b>12 5</b>." },
+          { line: 14, vars: { x: ["int", "12"], y: ["int", "5"] }, out: "12 5", note: "The program ends. Final answer: <b>12 5</b>." }
+        ],
+        modify: {
+          prompt: "The starting values change: x is 8 and y is 3. The swap function is untouched. What prints now?",
+          code: 'int x = <mark>8</mark>;\nint y = <mark>3</mark>;\nswapNums(&x, &y);\ncout << x << " " << y;',
+          options: ["3 8", "8 3", "3 3", "8 8"],
+          correct: 0,
+          explain: "A swap exchanges whatever it is given: x receives y's <b>3</b> and y receives x's saved <b>8</b>, so the output is <b>3 8</b>."
+        }
+      },
+      {
+        concept: "Pointers",
+        title: "Pointer arithmetic",
+        goal: "<b>p + n</b> points n <em>elements</em> further along an array — not n bytes, and not the nth value from 1. <b>*(p + 2)</b> is the third element.",
+        stories: {
+          health:   "Four values are stored in order: <strong>10, 20, 30, 40</strong>. A pointer starts at the first element. The program prints the element one step along, and a total made from the first element plus the element two steps along.",
+          psych:    "Four values are stored in order: <strong>10, 20, 30, 40</strong>. A pointer starts at the first element. The program prints the element one step along, and a total made from the first element plus the element two steps along.",
+          business: "Four values are stored in order: <strong>10, 20, 30, 40</strong>. A pointer starts at the first element. The program prints the element one step along, and a total made from the first element plus the element two steps along.",
+          arts:     "Four values are stored in order: <strong>10, 20, 30, 40</strong>. A pointer starts at the first element. The program prints the element one step along, and a total made from the first element plus the element two steps along."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int values[4] = {10, 20, 30, 40};",
+          "    int* p = values;",
+          "    int total = *p + *(p + 2);",
+          "    cout << *(p + 1) << \" \" << total;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["20 40", "20 30", "10 40", "30 40"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "Your first value is right; the total is the trap. <b>*(p + 2)</b> is not the second element — p + 2 lands on the <b>third</b> element (30), counting the element p points at as offset 0. So total is 10 + 30 = <b>40</b>, not 30. The parting line is the total line itself." },
+          2: { step: 2, text: "<b>*(p + 1)</b> steps one element past the first, so it reads the <b>second</b> element, 20 — not the element p already points at. Offsets start at 0: p + 0 is 10, p + 1 is 20." },
+          3: { step: 2, text: "30 is <b>*(p + 2)</b> alone — a piece of the total, not the first printed value. The first value printed is <b>*(p + 1)</b>, the second element: <b>20</b>." }
+        },
+        steps: [
+          { line: 4, vars: { values: ["int[4]", "{10, 20, 30, 40}"] }, out: "", note: "The array <b>values</b> holds 10, 20, 30, 40 at offsets 0, 1, 2, 3." },
+          { line: 5, vars: { values: ["int[4]", "{10, 20, 30, 40}"], p: ["int*", "→ values[0]"] }, out: "", note: "An array's name on its own means the address of its first element, so <b>p → values[0]</b>, the 10. <b>*p</b> is 10." },
+          { line: 6, vars: { values: ["int[4]", "{10, 20, 30, 40}"], p: ["int*", "→ values[0]"], total: ["int", "40"] }, out: "", note: "The total line: <b>*p</b> is 10, and <b>*(p + 2)</b> steps two elements to the <b>third</b> element, 30. <b>total becomes 40</b>. This is the parting line for \u201C20 30\u201D." },
+          { line: 7, vars: { values: ["int[4]", "{10, 20, 30, 40}"], p: ["int*", "→ values[0]"], total: ["int", "40"] }, out: "20 40", note: "<b>*(p + 1)</b> is the second element, <b>20</b>, and total is 40. Output: <b>20 40</b>." },
+          { line: 8, vars: { values: ["int[4]", "{10, 20, 30, 40}"], p: ["int*", "→ values[0]"], total: ["int", "40"] }, out: "20 40", note: "The program ends. Final answer: <b>20 40</b>." }
+        ],
+        modify: {
+          prompt: "The array changes to {5, 15, 25, 35}. The pointer lines are untouched. What prints now?",
+          code: 'int values[4] = {<mark>5, 15, 25, 35</mark>};\nint* p = values;\nint total = *p + *(p + 2);\ncout << *(p + 1) << " " << total;',
+          options: ["15 30", "15 20", "5 30", "25 30"],
+          correct: 0,
+          explain: "<b>*(p + 1)</b> is now 15, and total is *p + *(p + 2) = 5 + 25 = <b>30</b>: <b>15 30</b>. Same offsets, new values."
+        }
+      },
+      {
+        concept: "Pointers",
+        title: "Memory on request",
+        goal: "<b>new int[5]</b> asks for memory at run time and hands back a pointer to it. The pointer is then indexed like an array — and handed back with <b>delete[]</b>.",
+        stories: {
+          health:   "A program asks for room for <strong>five numbers</strong> at run time, fills each slot with a square number — 1 squared, 2 squared, and so on — prints them all, then returns the memory.",
+          psych:    "A program asks for room for <strong>five numbers</strong> at run time, fills each slot with a square number — 1 squared, 2 squared, and so on — prints them all, then returns the memory.",
+          business: "A program asks for room for <strong>five numbers</strong> at run time, fills each slot with a square number — 1 squared, 2 squared, and so on — prints them all, then returns the memory.",
+          arts:     "A program asks for room for <strong>five numbers</strong> at run time, fills each slot with a square number — 1 squared, 2 squared, and so on — prints them all, then returns the memory."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int* squares = new int[5];",
+          "    for (int i = 0; i < 5; i++) {",
+          "        squares[i] = (i + 1) * (i + 1);",
+          "    }",
+          "    for (int i = 0; i < 5; i++) {",
+          "        cout << squares[i] << \" \";",
+          "    }",
+          "    delete[] squares;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["1 4 9 16 25", "0 1 4 9 16", "1 4 9 16", "0 1 4 9 16 25"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "That sequence is <b>i * i</b>, starting at i = 0. The code stores <b>(i + 1) * (i + 1)</b>: the parting line is the fill line, <b>squares[i] = (i + 1) * (i + 1);</b> — its first stored value is 1, not 0, and every value shifts up one square." },
+          2: { step: 5, text: "Count the passes: <b>i &lt; 5</b> gives i = 0, 1, 2, 3, 4 — <b>five</b> fills and five prints. The last square, 25, is stored and printed like the rest." },
+          3: { step: 1, text: "Six values cannot come from a five-slot array filled by a loop that runs five times — and the first value is wrong besides: the fill line stores <b>(0 + 1) * (0 + 1) = 1</b> first, not 0." }
+        },
+        steps: [
+          { line: 4, vars: { squares: ["int*", "→ new int[5]"] }, out: "", note: "<b>new int[5]</b> reserves five int slots at run time. <b>squares → new int[5]</b>: the pointer holds the address of the first slot. The slots exist, but hold no values yet." },
+          { line: 6, vars: { squares: ["int*", "→ new int[5]"], i: ["int", "0"] }, out: "", note: "Fill pass i = 0: <b>squares[0] = (0 + 1) * (0 + 1) = 1</b>. The first value stored is <b>1, not 0</b> — the parting line for \u201C0 1 4 9 16\u201D. Slots so far: {1, ?, ?, ?, ?}." },
+          { line: 6, vars: { squares: ["int*", "→ new int[5]"], i: ["int", "1"] }, out: "", note: "i = 1: squares[1] = 2 * 2 = <b>4</b>. Slots: {1, 4, ?, ?, ?}." },
+          { line: 6, vars: { squares: ["int*", "→ new int[5]"], i: ["int", "2"] }, out: "", note: "i = 2: squares[2] = 3 * 3 = <b>9</b>. Slots: {1, 4, 9, ?, ?}." },
+          { line: 6, vars: { squares: ["int*", "→ new int[5]"], i: ["int", "3"] }, out: "", note: "i = 3: squares[3] = 4 * 4 = <b>16</b>. Slots: {1, 4, 9, 16, ?}." },
+          { line: 6, vars: { squares: ["int*", "→ new int[5]"], i: ["int", "4"] }, out: "", note: "i = 4: squares[4] = 5 * 5 = <b>25</b>. Slots: {1, 4, 9, 16, 25}. The next test, i &lt; 5, fails and the fill loop ends." },
+          { line: 9, vars: { squares: ["int*", "→ new int[5]"], i: ["int", "4"] }, out: "1 4 9 16 25", note: "The second loop prints each slot with a space after it: <b>1 4 9 16 25</b>." },
+          { line: 11, vars: { squares: ["int*", "→ new int[5]"] }, out: "1 4 9 16 25", note: "<b>delete[] squares;</b> hands the five slots back. After this line the pointer must not be used again — the memory is no longer the program's." },
+          { line: 12, vars: { squares: ["int*", "→ new int[5]"] }, out: "1 4 9 16 25", note: "The program ends. Final answer: <b>1 4 9 16 25</b>." }
+        ],
+        modify: {
+          prompt: "Both loops now run while i < 4 instead of i < 5. The fill formula is untouched. What prints now?",
+          code: 'int* squares = new int[5];\nfor (int i = 0; i < <mark>4</mark>; i++) {\n    squares[i] = (i + 1) * (i + 1);\n}\nfor (int i = 0; i < <mark>4</mark>; i++) {\n    cout << squares[i] << " ";\n}',
+          options: ["1 4 9 16", "1 4 9 16 25", "0 1 4 9", "1 4 9"],
+          correct: 0,
+          explain: "Four passes fill and print the first four squares: <b>1 4 9 16</b>. The fifth slot was allocated but is never filled or printed."
+        }
       }
+
     ];
 
     /* ---------------- State (in-memory only, this session) ---------------- */
@@ -1403,7 +1648,7 @@ for (int i = 0; i < 3; i++) {
 
     var $ = function (id) { return document.getElementById(id); };
     var live = $("live");
-    function announce(msg) { live.textContent = msg; }
+    function announce(msg) { live.textContent = msg; var tl = document.getElementById("tracer-live"); if (tl) { tl.textContent = ""; setTimeout(function(){ tl.textContent = msg; }, 30); } }
     function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
 
     /* ---------------- Rendering ---------------- */
@@ -1461,7 +1706,8 @@ for (int i = 0; i < 3; i++) {
         else if (!s.modDone) { stat = s.correct ? "prediction ✓" : "prediction ✗"; cls = s.correct ? "good" : "bad"; }
         else { stat = "prediction " + (s.correct ? "✓" : "✗") + " · modify " + (s.modCorrect ? "✓" : "✗");
                cls = (s.correct && s.modCorrect) ? "good" : "bad"; }
-        li.innerHTML = '<span class="rconcept">' + ex.concept + '</span><span class="rstat ' + cls + '">' + stat + "</span>";
+        var rlabel = ex.concept === "Pointers" ? ex.concept + " · " + ex.title : ex.concept;
+        li.innerHTML = '<span class="rconcept">' + rlabel + '</span><span class="rstat ' + cls + '">' + stat + "</span>";
         list.appendChild(li);
       });
       var allDone = state.ex.every(function (s) { return s.modDone; });
@@ -1567,8 +1813,16 @@ for (int i = 0; i < 3; i++) {
           var d = document.createElement("div");
           var changed = !prev[name] || prev[name][1] !== step.vars[name][1];
           d.className = "membox" + (changed && s.step >= 0 ? " changed" : "");
-          d.innerHTML = '<div class="vname"><span>' + name + '</span><span class="vtype">' + step.vars[name][0] +
-                        '</span></div><div class="vval">' + step.vars[name][1] + "</div>";
+          var vtype = step.vars[name][0], vval = step.vars[name][1];
+          var isPtr = vtype.indexOf("*") !== -1 || vval.indexOf("→") === 0;
+          var ptrTarget = "";
+          if (vval.indexOf("→") === 0) ptrTarget = vval.slice(1).trim();
+          d.setAttribute("role", "group");
+          d.setAttribute("aria-label", name + ", type " + vtype + ", value " + vval + (ptrTarget ? ", points to " + ptrTarget : ""));
+          d.setAttribute("tabindex", "0");
+          d.innerHTML = '<div class="vname"><span>' + name + '</span><span class="vtype">' + vtype +
+                        '</span></div><div class="vval">' + (isPtr ? '<span class="ptr-arrow" aria-hidden="true"></span>' : "") + esc(vval) + "</div>" +
+                        (ptrTarget ? '<div style="font-size:.78rem;color:var(--ink-soft);font-family:monospace;">points to ' + esc(ptrTarget) + "</div>" : "");
           mem.appendChild(d);
         });
       }
@@ -1646,6 +1900,35 @@ for (int i = 0; i < 3; i++) {
       renderInvestigate(); renderModify(); renderPrimm();
     }
 
+
+    function describeStep() {
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      if (s.step < 0) return "Tracer ready. No statement has run yet.";
+      var step = ex.steps[s.step];
+      var prev = s.step > 0 ? ex.steps[s.step - 1].vars : {};
+      var parts = [];
+      parts.push("Step " + (s.step + 1) + " of " + ex.steps.length + ". Line " + (step.line + 1) + " executed: " + ex.code[step.line].trim());
+      Object.keys(step.vars).forEach(function (name) {
+        if (!prev[name] || prev[name][1] !== step.vars[name][1]) {
+          var vv = step.vars[name][1];
+          var extra = vv.indexOf("→") === 0 ? " (points to " + vv.slice(1).trim() + ")" : "";
+          parts.push(name + " is now " + vv + extra);
+        }
+      });
+      var prevOut = s.step > 0 ? ex.steps[s.step - 1].out : "";
+      if (step.out && step.out !== prevOut) parts.push("Output is now: " + step.out);
+      if (s.step === ex.steps.length - 1) {
+        if (s.correct) parts.push("Trace complete. Verdict: your prediction was correct — you predicted " + ex.options[s.selected] + " and the program printed " + ex.options[ex.correct] + ".");
+        else {
+          var d = ex.diagnoses[s.selected];
+          var pStep = d ? ex.steps[d.step] : null;
+          var pLine = pStep ? (pStep.line + 1) : "";
+          var pText = pStep ? ex.code[pStep.line].trim() : "";
+          parts.push("Trace complete. Verdict: your prediction parted from the machine. You predicted " + ex.options[s.selected] + "; the program printed " + ex.options[ex.correct] + ". The parting step is step " + ((d ? d.step : 0) + 1) + ", line " + pLine + ": " + pText + ".");
+        }
+      }
+      return parts.join(". ");
+    }
     /* ---------------- Wiring ---------------- */
     $("lock-btn").addEventListener("click", function () {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
@@ -1660,23 +1943,24 @@ for (int i = 0; i < 3; i++) {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
       if (s.step < ex.steps.length - 1) {
         s.step++;
-        if (s.step === ex.steps.length - 1) { s.traceDone = true; announce("Trace complete. Compare your prediction in Stage 3."); }
+        if (s.step === ex.steps.length - 1) { s.traceDone = true; }
         renderAll();
+        announce(describeStep());
       }
     });
     $("step-back").addEventListener("click", function () {
       var s = state.ex[state.current];
-      if (s.step > -1) { s.step--; s.traceDone = false; renderAll(); }
+      if (s.step > -1) { s.step--; s.traceDone = false; renderAll(); announce(describeStep()); }
     });
     $("run-all").addEventListener("click", function () {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
       s.step = ex.steps.length - 1; s.traceDone = true;
-      announce("Trace complete. Compare your prediction in Stage 3.");
       renderAll();
+      announce(describeStep());
     });
     $("trace-reset").addEventListener("click", function () {
       var s = state.ex[state.current];
-      s.step = -1; s.traceDone = false; renderAll();
+      s.step = -1; s.traceDone = false; renderAll(); announce("Tracer restarted. Memory is empty.");
     });
 
     $("modify-btn").addEventListener("click", function () {
@@ -3178,11 +3462,12 @@ for (int i = 0; i < 3; i++) {
       $("gym-mode").hidden = mode !== "gym";
       $("translator-mode").hidden = mode !== "translator";
       $("challenges-mode").hidden = mode !== "challenges";
-      $("mode-bolt").setAttribute("aria-pressed", mode === "bolt" ? "true" : "false");
-      $("mode-tracer").setAttribute("aria-pressed", mode === "tracer" ? "true" : "false");
-      $("mode-gym").setAttribute("aria-pressed", mode === "gym" ? "true" : "false");
-      $("mode-translator").setAttribute("aria-pressed", mode === "translator" ? "true" : "false");
-      $("mode-challenges").setAttribute("aria-pressed", mode === "challenges" ? "true" : "false");
+      ["bolt","tracer","gym","translator","challenges"].forEach(function(m){
+        var b = $("mode-" + m);
+        b.setAttribute("aria-selected", mode === m ? "true" : "false");
+        b.setAttribute("aria-pressed", mode === m ? "true" : "false");
+        b.tabIndex = mode === m ? 0 : -1;
+      });
       if (mode === "bolt") initBolt();
       if (mode === "gym") renderGym();
       if (mode === "challenges") renderChallenges();
@@ -3193,6 +3478,179 @@ for (int i = 0; i < 3; i++) {
     $("mode-gym").addEventListener("click", function () { setMode("gym"); });
     $("mode-translator").addEventListener("click", function () { setMode("translator"); });
     $("mode-challenges").addEventListener("click", function () { setMode("challenges"); });
+
+
+    /* ---------------- Mode tabs: arrow-key navigation ---------------- */
+    (function(){
+      var order = ["bolt","tracer","gym","translator","challenges"];
+      var tablist = document.getElementById("mode-tablist");
+      if (tablist) tablist.addEventListener("keydown", function(e){
+        var cur = order.indexOf(order.filter(function(m){ return $("mode-"+m).getAttribute("aria-selected")==="true"; })[0]);
+        if (cur < 0) cur = 1;
+        var nxt = null;
+        if (e.key === "ArrowRight") nxt = (cur + 1) % order.length;
+        else if (e.key === "ArrowLeft") nxt = (cur - 1 + order.length) % order.length;
+        else if (e.key === "Home") nxt = 0;
+        else if (e.key === "End") nxt = order.length - 1;
+        if (nxt !== null) { e.preventDefault(); setMode(order[nxt]); var b = $("mode-" + order[nxt]); if (b) b.focus(); }
+      });
+    })();
+
+    /* ---------------- Prediction journal export ---------------- */
+    function partingInfo(ex, s) {
+      if (s.correct || s.selected < 0) return null;
+      var d = ex.diagnoses[s.selected];
+      if (!d) return null;
+      var st = ex.steps[d.step];
+      if (!st) return null;
+      return { step: d.step, line: st.line + 1, text: ex.code[st.line].trim() };
+    }
+    function buildJournalText() {
+      var attempted = state.ex.filter(function(s){ return s.locked; });
+      var right = state.ex.filter(function(s){ return s.locked && s.correct; }).length;
+      var lines = [];
+      lines.push("TraceFirst prediction journal");
+      lines.push("Session score: " + right + " of " + EXERCISES.length + " correct (" + attempted.length + " attempted)");
+      lines.push("");
+      EXERCISES.forEach(function(ex, i){
+        var s = state.ex[i];
+        if (!s.locked) return;
+        lines.push("Exercise: " + (i + 1) + " - " + ex.title);
+        lines.push("Concept: " + ex.concept);
+        lines.push("Prediction: " + ex.options[s.selected]);
+        lines.push("Correct output: " + ex.options[ex.correct]);
+        lines.push("Verdict: " + (s.correct ? "correct" : "parted"));
+        if (!s.correct) {
+          var pi = partingInfo(ex, s);
+          if (pi) lines.push("Parting line: Line " + pi.line + ": " + pi.text);
+          else lines.push("Parting line: (see Stage 3 explanation)");
+          var d = ex.diagnoses[s.selected];
+          if (d) lines.push("Parting step: Step " + (d.step + 1));
+        }
+        lines.push("");
+      });
+      return lines.join("\n");
+    }
+    var exportBtn = $("export-journal-btn");
+    if (exportBtn) exportBtn.addEventListener("click", function(){
+      var attempted = state.ex.filter(function(s){ return s.locked; }).length;
+      var status = $("journal-status");
+      if (attempted === 0) {
+        if (status) status.textContent = "Nothing to export yet — lock in at least one prediction above, then export your journal.";
+        announce("Nothing to export yet. Lock in a prediction first.");
+        return;
+      }
+      var text = buildJournalText();
+      var blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url; a.download = "tracefirst-journal.txt";
+      document.body.appendChild(a); a.click();
+      setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 400);
+      if (status) status.textContent = "Journal exported — " + attempted + " exercise" + (attempted===1?"":"s") + " included. The file is tracefirst-journal.txt in your downloads.";
+      announce("Prediction journal exported with " + attempted + " exercises.");
+    });
+
+    /* ---------------- Instructor digest ---------------- */
+    var digestFileTexts = [];
+    var filesInput = $("digest-files");
+    if (filesInput) filesInput.addEventListener("change", function(){
+      var files = Array.prototype.slice.call(this.files || []);
+      if (!files.length) return;
+      digestFileTexts = [];
+      var pending = files.length;
+      files.forEach(function(f){
+        var reader = new FileReader();
+        reader.onload = function(){
+          digestFileTexts.push(String(reader.result || ""));
+          pending--;
+          if (pending === 0) {
+            var ta = $("digest-input");
+            var combined = digestFileTexts.join("\n");
+            ta.value = ta.value.trim() ? (ta.value.replace(/\s+$/,"") + "\n\n" + combined) : combined;
+            $("digest-count").textContent = "Loaded " + files.length + " journal file" + (files.length===1?"":"s") + " into the box above. Press Build digest.";
+          }
+        };
+        reader.onerror = function(){ pending--; };
+        reader.readAsText(f);
+      });
+    });
+    function mostCommon(map) {
+      var best = null, bestN = 0;
+      Object.keys(map).forEach(function(k){ if (map[k] > bestN) { bestN = map[k]; best = k; } });
+      return best;
+    }
+    function parseJournals(raw) {
+      var journalCount = (raw.match(/TraceFirst prediction journal/gi) || []).length;
+      var agg = {}; // num -> {title, attempts, wrong, wrongPred:{}, parting:{}}
+      var entries = 0;
+      var current = null;
+      function flush(){ /* entries counted on verdict/prediction capture below */ }
+      var linesAll = raw.split(/\r?\n/);
+      var cur = null;
+      function ensure(n){ if (!agg[n]) agg[n] = { attempts:0, wrong:0, wrongPred:{}, parting:{} }; return agg[n]; }
+      linesAll.forEach(function(line){
+        var L = line.trim();
+        if (!L) return;
+        var em = L.match(/^Exercise\s*:\s*(\d+)\s*(?:[-–—]\s*(.*))?$/i) || L.match(/^Exercise\s+(\d+)\b\s*(?:[-–—]\s*(.*))?$/i);
+        if (em) { cur = { num: parseInt(em[1],10), title: em[2]||"", prediction:null, correct:null, verdict:null, parting:null }; entries++; ensure(cur.num); if (cur.title && !agg[cur.num].title) agg[cur.num].title = cur.title; return; }
+        if (!cur) return;
+        var pm = L.match(/^Prediction\s*:\s*(.+)$/i); if (pm) { cur.prediction = pm[1].trim(); return; }
+        var cm = L.match(/^(?:Correct output|Correct)\s*:\s*(.+)$/i); if (cm) { cur.correct = cm[1].trim(); return; }
+        var vm = L.match(/^Verdict\s*:\s*(.+)$/i);
+        if (vm) {
+          cur.verdict = vm[1].trim();
+          var a = ensure(cur.num); a.attempts++;
+          var isWrong = /parted|wrong|incorrect/i.test(cur.verdict) || (cur.prediction !== null && cur.correct !== null && cur.prediction !== cur.correct);
+          if (isWrong) {
+            a.wrong++;
+            if (cur.prediction) a.wrongPred[cur.prediction] = (a.wrongPred[cur.prediction]||0)+1;
+            // parting may appear on following lines; store ref to cur for later capture
+            cur._agg = a; cur._wrong = true;
+          }
+          return;
+        }
+        var plm = L.match(/^Parting line\s*:\s*(.+)$/i);
+        if (plm && cur._agg && cur._wrong) { cur._agg.parting[plm[1].trim()] = (cur._agg.parting[plm[1].trim()]||0)+1; return; }
+        // tolerant: prediction without verdict — count at next exercise handled implicitly; ignore other lines
+      });
+      if (journalCount === 0 && entries > 0) journalCount = 1;
+      return { journalCount: journalCount, agg: agg, entries: entries };
+    }
+    var buildBtn = $("build-digest-btn");
+    if (buildBtn) buildBtn.addEventListener("click", function(){
+      var raw = $("digest-input").value || "";
+      var resultBox = $("digest-result");
+      var countEl = $("digest-count");
+      if (!raw.trim()) { countEl.textContent = "Nothing to build from yet — paste a journal or load journal files first."; resultBox.innerHTML = ""; return; }
+      var parsed = parseJournals(raw);
+      var nums = Object.keys(parsed.agg).map(function(k){return parseInt(k,10);}).filter(function(n){ return parsed.agg[n].attempts > 0; }).sort(function(a,b){return a-b;});
+      if (!nums.length) { countEl.textContent = "Read " + parsed.journalCount + " journal(s), but found no parseable exercise entries. Check that the text includes lines like \u201CExercise: 1 - ...\u201D, \u201CPrediction:\u201D and \u201CVerdict:\u201D."; resultBox.innerHTML = ""; return; }
+      countEl.textContent = "Read " + parsed.journalCount + " journal" + (parsed.journalCount===1?"":"s") + " — " + parsed.entries + " exercise entries found, " + nums.reduce(function(s,n){return s+parsed.agg[n].attempts;},0) + " with a verdict.";
+      var html = '<div class="digest-table-wrap"><table class="digest-table"><caption class="sr-live">Instructor misconception digest by exercise</caption><thead><tr><th scope="col">Exercise</th><th scope="col">Attempts</th><th scope="col">Wrong</th><th scope="col">Most common wrong prediction</th><th scope="col">Most common parting line</th></tr></thead><tbody>';
+      var mostMissed = null;
+      nums.forEach(function(n){
+        var a = parsed.agg[n];
+        if (!mostMissed || a.wrong > parsed.agg[mostMissed].wrong) mostMissed = n;
+        var title = a.title || (EXERCISES[n-1] ? EXERCISES[n-1].title : "");
+        html += '<tr' + (a.wrong > 0 ? ' class="hot"' : '') + '><td><strong>' + n + (title ? " — " + esc(title) : "") + '</strong></td><td>' + a.attempts + '</td><td>' + a.wrong + '</td><td>' + (a.wrong ? esc(mostCommon(a.wrongPred) || "—") : "—") + '</td><td>' + (a.wrong ? esc(mostCommon(a.parting) || "—") : "—") + '</td></tr>';
+      });
+      html += "</tbody></table></div>";
+      if (mostMissed !== null && parsed.agg[mostMissed].wrong > 0) {
+        var mm = parsed.agg[mostMissed];
+        var mmTitle = mm.title || (EXERCISES[mostMissed-1] ? EXERCISES[mostMissed-1].title : "");
+        html += '<p class="digest-summary"><strong>Most-missed exercise:</strong> Exercise ' + mostMissed + (mmTitle ? " — " + esc(mmTitle) : "") + ", missed " + mm.wrong + " of " + mm.attempts + " time" + (mm.attempts===1?"":"s") + " across all journals read.</p>";
+      } else {
+        html += '<p class="digest-summary"><strong>No misses in these journals.</strong> Every parsed prediction was correct.</p>';
+      }
+      resultBox.innerHTML = html;
+      announce("Digest built from " + parsed.journalCount + " journals.");
+    });
+    var clearBtn = $("clear-digest-btn");
+    if (clearBtn) clearBtn.addEventListener("click", function(){
+      $("digest-input").value = ""; $("digest-result").innerHTML = ""; $("digest-count").textContent = "";
+      if (filesInput) filesInput.value = ""; digestFileTexts = [];
+    });
 
     renderSkins();
     renderAll();
