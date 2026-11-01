@@ -388,6 +388,52 @@
         padding: 12px 14px; font-family: "IBM Plex Mono", monospace; font-size: .93rem; white-space: pre-wrap;
       }
       .sample-out .chead { font-size: .7rem; letter-spacing: .09em; text-transform: uppercase; color: var(--code-dim); margin-bottom: 5px; font-weight: 600; font-family: "IBM Plex Sans", sans-serif; }
+      /* ---------- Error Translator ---------- */
+      .trans-intro { max-width: 760px; margin-top: 22px; }
+      .trans-intro h2 { font-family: "Source Serif 4", Georgia, serif; font-size: 1.6rem; line-height: 1.15; }
+      .trans-intro p { margin-top: 8px; color: var(--ink-soft); }
+      .trans-intro p strong { color: var(--ink); }
+      .sample-errors { display: grid; gap: 8px; margin-top: 14px; }
+      .sample-err-btn { text-align: left; border: 1.5px solid var(--line); background: var(--panel-2); border-radius: 10px; padding: 11px 13px; display: flex; gap: 10px; align-items: flex-start; width: 100%; }
+      .sample-err-btn:hover { border-color: var(--amber); }
+      .sample-err-btn .enum { font-family: "IBM Plex Mono", monospace; font-size: .75rem; font-weight: 700; background: var(--rust-soft); color: var(--rust); border-radius: 999px; padding: 2px 8px; flex: none; margin-top: 1px; }
+      .sample-err-btn code { font-family: "IBM Plex Mono", monospace; font-size: .85rem; word-break: break-word; }
+      .sample-err-btn span.hint { display: block; font-size: .82rem; color: var(--ink-soft); margin-top: 2px; font-family: "IBM Plex Sans", sans-serif; }
+      .trans-searchbar { margin-top: 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; box-shadow: var(--shadow); display: grid; gap: 12px; }
+      .trans-searchbar label { font-family: "IBM Plex Mono", monospace; font-size: .72rem; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-soft); }
+      .trans-search-row { display: flex; gap: 8px; flex-wrap: wrap; }
+      .trans-search-row input { flex: 1 1 240px; font: inherit; font-size: 1rem; padding: 11px 13px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--panel-2); color: var(--ink); }
+      .trans-search-row input:focus { outline: 3px solid var(--amber); outline-offset: 1px; border-color: var(--amber); }
+      .trans-count { font-size: .88rem; color: var(--ink-soft); }
+      .trans-list { display: grid; gap: 10px; margin-top: 14px; }
+      .trans-item { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
+      .trans-item.open { border-color: var(--accent); }
+      .trans-head { width: 100%; text-align: left; background: transparent; border: none; padding: 15px 16px; display: flex; gap: 12px; align-items: flex-start; }
+      .trans-head .tnum { font-family: "IBM Plex Mono", monospace; font-size: .78rem; font-weight: 700; width: 28px; height: 28px; border-radius: 50%; background: var(--panel-2); border: 1px solid var(--line); display: grid; place-items: center; flex: none; }
+      .trans-item.open .tnum { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-strong); }
+      .trans-head .ttitle { font-weight: 700; font-size: 1rem; line-height: 1.25; }
+      .trans-head .traw-short { font-family: "IBM Plex Mono", monospace; font-size: .82rem; color: var(--rust); margin-top: 3px; word-break: break-word; }
+      .trans-head .tchev { margin-left: auto; flex: none; color: var(--ink-soft); font-size: 1.1rem; line-height: 1; padding-top: 2px; }
+      .trans-body { border-top: 1px dashed var(--line); padding: 16px; display: none; }
+      .trans-item.open .trans-body { display: block; }
+      .trans-raw { background: var(--code-bg); color: #f2c9bc; border-radius: 10px; padding: 12px 14px; font-family: "IBM Plex Mono", monospace; font-size: .88rem; white-space: pre-wrap; word-break: break-word; line-height: 1.5; }
+      .trans-raw .rlabel { display: block; font-family: "IBM Plex Sans", sans-serif; font-size: .68rem; letter-spacing: .09em; text-transform: uppercase; color: var(--code-dim); font-weight: 700; margin-bottom: 6px; }
+      .trans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+      .trans-grid h4, .trans-fix h4 { font-size: .78rem; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-soft); margin: 0 0 6px; font-family: "IBM Plex Mono", monospace; }
+      .trans-grid p { font-size: .95rem; }
+      .trans-fix { margin-top: 14px; }
+      .fix-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .fix-box { border-radius: 10px; padding: 11px 12px; font-family: "IBM Plex Mono", monospace; font-size: .86rem; white-space: pre-wrap; word-break: break-word; line-height: 1.55; }
+      .fix-box.before { background: var(--rust-soft); border: 1px solid var(--rust); color: var(--ink); }
+      .fix-box.after { background: var(--accent-soft); border: 1px solid var(--accent); color: var(--ink); }
+      .fix-box .flabel { display: block; font-family: "IBM Plex Sans", sans-serif; font-size: .7rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; margin-bottom: 5px; }
+      .fix-box.before .flabel { color: var(--rust); }
+      .fix-box.after .flabel { color: var(--accent-strong); }
+      .trans-method { margin-top: 18px; background: var(--accent-soft); border: 1.5px solid var(--accent); border-radius: 12px; padding: 16px; font-size: .97rem; }
+      .trans-method strong { color: var(--accent-strong); }
+      .trans-empty { background: var(--panel); border: 1.5px dashed var(--line); border-radius: 12px; padding: 20px; text-align: center; color: var(--ink-soft); display: none; }
+      .trans-empty.show { display: block; }
+      @media (max-width: 700px) { .trans-grid, .fix-compare { grid-template-columns: 1fr; } }
       @media (max-width: 900px) {
         .compare { grid-template-columns: 1fr; }
         .taxonomy { grid-template-columns: 1fr; }
@@ -425,6 +471,10 @@
         <button class="mode-btn" type="button" id="mode-gym" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
           Debugging Gym
+        </button>
+        <button class="mode-btn" type="button" id="mode-translator" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h9M8.5 3v2c0 3-1.8 5.6-4 7M6 8c.6 2 2.3 4.2 4.5 5.5M13 21l4.5-10L22 21M14.8 17h5.4"/></svg>
+          Error Translator
         </button>
       </nav>
 
@@ -620,6 +670,47 @@
 
         <p class="foot"><strong>Where this comes from:</strong> the three programs, the bug counts, and the checklist come from a debugging lab module, <em>Find the Bugs — Debugging and Reading Code in C++</em>, built for a first-year introductory C++ course serving CS and non-CS majors together. In the lab you fix the code in an editor; here you train the step before that — seeing the bug, and knowing which kind it is. Scores live only in this session, as in the tracer.</p>
       </div><!-- /gym-mode -->
+
+      <div id="translator-mode" hidden>
+        <section class="trans-intro">
+          <h2>Read the error. It is telling you where to look.</h2>
+          <p>A compiler message is not a verdict. It is a note from the program that checks your code, written in shorthand. <strong>Pick the error you just hit, or search for a word in it,</strong> and TraceFirst will translate it into plain English: what it means, what in your code causes it, and how to fix it.</p>
+        </section>
+
+        <section class="card" style="margin-top:18px;" aria-labelledby="sample-h">
+          <span class="concept-tag">Start here · From code to error to meaning</span>
+          <h2 id="sample-h" style="font-size:1.25rem;">One broken program, three real errors</h2>
+          <p class="story">This is the kind of program a first week produces. It will not compile. The compiler stops and reports the three errors below — in this order. <strong>Tap any error to jump to its translation.</strong></p>
+          <div class="codebox">
+            <div class="codehead"><span>firstProgram.cpp — will not compile</span><span>C++</span></div>
+            <pre><div class="cline"><span class="ln">1</span><span>#include &lt;iostream&gt;</span></div><div class="cline"><span class="ln">2</span><span>using namespace std</span></div><div class="cline"><span class="ln">3</span><span></span></div><div class="cline"><span class="ln">4</span><span>int main() {</span></div><div class="cline"><span class="ln">5</span><span>    int score = 85</span></div><div class="cline"><span class="ln">6</span><span>    Cout &lt;&lt; "Your score is " &lt;&lt; scroe &lt;&lt; endl;</span></div><div class="cline"><span class="ln">7</span><span>    return 0;</span></div><div class="cline"><span class="ln">8</span><span>}</span></div></pre>
+          </div>
+          <div class="sample-errors" role="group" aria-label="Compiler errors from the sample program">
+            <button type="button" class="sample-err-btn" data-jump="1"><span class="enum">Error 1</span><span><code>firstProgram.cpp:4:1: error: expected ';' before '}' token — reported near line 4</code><span class="hint">Actually caused on line 2. Tap to see why the compiler points at the wrong line →</span></span></button>
+            <button type="button" class="sample-err-btn" data-jump="18"><span class="enum">Error 2</span><span><code>firstProgram.cpp:6:5: error: 'Cout' was not declared in this scope</code><span class="hint">One capital letter. Tap for the translation →</span></span></button>
+            <button type="button" class="sample-err-btn" data-jump="3"><span class="enum">Error 3</span><span><code>firstProgram.cpp:6:32: error: 'scroe' was not declared in this scope</code><span class="hint">A typo the compiler cannot guess. Tap for the translation →</span></span></button>
+          </div>
+          <p style="font-size:.9rem;color:var(--ink-soft);margin-top:12px;">Fix them in order. Fix Error 1, compile again, and the list gets shorter. That loop — read, fix one, recompile — is the whole method.</p>
+        </section>
+
+        <div class="trans-searchbar">
+          <div>
+            <label for="trans-search">Search the translator</label>
+            <div class="trans-search-row" style="margin-top:8px;">
+              <input type="search" id="trans-search" placeholder="Try: semicolon, cout, string, brace, include…" autocomplete="off">
+              <button class="btn ghost small" type="button" id="trans-clear">Show all 20</button>
+            </div>
+          </div>
+          <p class="trans-count" id="trans-count" role="status">Showing all 20 errors — ordered by how early beginners usually meet them.</p>
+        </div>
+
+        <div class="trans-list" id="trans-list" aria-label="Compiler error catalogue"></div>
+        <div class="trans-empty" id="trans-empty">No error matches that search. Try a single word from the message — <strong>declared</strong>, <strong>expected</strong>, <strong>token</strong> — or a cause like <strong>semicolon</strong> or <strong>quotes</strong>.</div>
+
+        <div class="trans-method"><strong>The method:</strong> an error message names the line where the compiler gave up, which is not always the line where the mistake is; read the first error first, fix it, compile again.</div>
+
+        <p class="foot"><strong>How to use this translator well:</strong> do not hunt through all 20. Copy two or three distinctive words from the message you actually got into the search box. The raw messages here use the wording of g++, the compiler in most introductory courses; other compilers phrase the same problems slightly differently, but the cause and the fix do not change.</p>
+      </div><!-- /translator-mode -->
       <div class="sr-live" aria-live="polite" id="live"></div>
     </main>
     <script>
@@ -1643,17 +1734,92 @@
       document.querySelector("#gym-title").scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
+    /* ================= Error Translator ================= */
+    var TRANS = [
+      { id:1, title:"Missing semicolon", raw:"error: expected ';' before '}' token\n  — also seen as: error: expected ';' before 'cout'", meaning:"The compiler was still waiting for a semicolon to end the previous statement when it ran into the next thing. It only notices the gap when it hits something it cannot attach to the unfinished statement.", cause:"A statement above is missing its ending ; — most often the line directly above where the error is reported. The report points at the NEXT line, not the guilty one. Check using namespace std, declarations, cin/cout lines, and return 0 first.", before:"int score = 85\ncout << score << endl;", after:"int score = 85;\ncout << score << endl;", keys:"semicolon expected token next line missing ; statement" },
+      { id:2, title:"cout / cin not declared — missing include or namespace", raw:"error: 'cout' was not declared in this scope", meaning:"The compiler has never heard of the name cout (or cin, endl). As far as it knows, that word does not exist in your program.", cause:"You used cout/cin without giving the compiler access to them: either #include <iostream> is missing, or using namespace std; is missing and you did not write std::cout.", before:"#include <iostream>\n// using namespace std; is missing\nint main() {\n    cout << \"Hi\" << endl;\n}", after:"#include <iostream>\nusing namespace std;\nint main() {\n    cout << \"Hi\" << endl;\n}", keys:"cout cin not declared scope iostream namespace std include endl" },
+      { id:3, title:"Undeclared variable — usually a typo", raw:"error: 'scroe' was not declared in this scope", meaning:"You used a name that was never declared. The compiler does not guess what you meant, even when the intended name is one letter away.", cause:"The name in the error is spelled differently from its declaration — a typo, a swapped pair of letters, or a variable used before it was declared. Compare the two spellings character by character.", before:"int score = 85;\ncout << scroe << endl;", after:"int score = 85;\ncout << score << endl;", keys:"undeclared not declared scope typo scroe variable name spelling" },
+      { id:4, title:"Missing closing brace", raw:"error: expected '}' at end of input", meaning:"You opened more { braces than you closed. The compiler reached the end of the file still waiting for a } that never arrived.", cause:"A function, if block, or loop is missing its closing }. Count opens and closes, and indent honestly — the block whose closing brace sits at the wrong level is usually where the missing one belongs.", before:"int main() {\n    int x = 5;\n    if (x > 0) {\n        cout << x;\n    }\n// missing } for main", after:"int main() {\n    int x = 5;\n    if (x > 0) {\n        cout << x;\n    }\n}", keys:"brace closing expected end of input missing } bracket" },
+      { id:5, title:"Missing closing parenthesis", raw:"error: expected ')' before ';' token", meaning:"A ( was opened and never closed before the statement ended. The compiler hit the ; while still inside the parentheses.", cause:"An if condition, a function call, or an expression is short one ). Count the parentheses on that line — opens and closes must match before the semicolon.", before:"if (score >= 70 {\n    cout << \"Pass\";\n}", after:"if (score >= 70) {\n    cout << \"Pass\";\n}", keys:"parenthesis expected ) bracket missing closing condition" },
+      { id:6, title:"Reversed stream operators", raw:"error: no match for 'operator>>' (operand types are 'std::ostream' and 'int')\n  — the cin version reads: no match for 'operator<<'", meaning:"The arrows point against the flow of data. This is the same bug the Debugging Gym hunts, now in the compiler's own words: no version of that operator exists for the direction you asked for.", cause:"Output flows cout << value; input flows cin >> variable. The operator follows the data: out of the variable into the screen, out of the keyboard into the variable. If the arrows point at cin/cout the wrong way, flip them.", before:"cout >> score;\ncin << name;", after:"cout << score;\ncin >> name;", keys:"operator no match stream reversed cout cin >> << direction gym" },
+      { id:7, title:"string without its header", raw:"error: 'string' does not name a type", meaning:"The compiler does not recognise the word string as a type at all. It is not that your variable is wrong — the type itself is unknown here.", cause:"string lives in a different header from cout. Without #include <string> (and std:: or using namespace std;), the type has not been introduced.", before:"#include <iostream>\nusing namespace std;\nint main() {\n    string name;\n}", after:"#include <iostream>\n#include <string>\nusing namespace std;\nint main() {\n    string name;\n}", keys:"string does not name a type header include std type" },
+      { id:8, title:"Text without quotes", raw:"error: 'Hello' was not declared in this scope", meaning:"A bare word is read as a variable name, not as text. Hello with no quotes asks the compiler for a variable called Hello — and there is none.", cause:"Text (a string literal) must be wrapped in double quotes. Anything unquoted is code: a name, a number, or a keyword. This is why printing a word and printing a variable are different statements.", before:"cout << Hello << endl;\ncout << name << endl; // prints the variable", after:"cout << \"Hello\" << endl;\ncout << name << endl; // still the variable", keys:"quotes text hello not declared bare word string literal variable" },
+      { id:9, title:"Assignment written backwards", raw:"error: lvalue required as left operand of assignment", meaning:"The left side of = must be a place that can hold a value — a variable. A number like 5 is a value, not a container, so nothing can be assigned into it.", cause:"The assignment is reversed. = in C++ means 'store the right side into the left side', not the equals sign from algebra. Variable goes on the left, value or expression on the right.", before:"int x;\n5 = x;", after:"int x;\nx = 5;", keys:"lvalue left operand assignment backwards 5 = x assign" },
+      { id:10, title:"Redeclaring a variable", raw:"error: redeclaration of 'int total'", meaning:"You declared the same name twice in the same scope. One box per name: the compiler refuses to build a second box with an identical label.", cause:"The type was repeated on a later line instead of just assigning a new value. To change a variable, use its name alone — no type. Declaring it again with int/double/string in front is a new declaration, and it clashes.", before:"int total = 10;\nint total = 20;", after:"int total = 10;\ntotal = 20; // assign, do not redeclare", keys:"redeclaration redeclare duplicate declaration total same name twice" },
+      { id:11, title:"Missing type in a declaration", raw:"error: ISO C++ forbids declaration of 'total' with no type", meaning:"Every declaration must start with a type. A name on its own does not tell the compiler what kind of box to build, so it refuses.", cause:"The type was left off the first time the variable appears. Later assignments need no type, but the birth of the variable does. Name the type once: int, double, string, and so on.", before:"total = 0;\ncout << total;", after:"int total = 0;\ncout << total;", keys:"no type forbids declaration iso missing int type declare" },
+      { id:12, title:"setprecision without <iomanip>", raw:"error: 'setprecision' was not declared in this scope", meaning:"setprecision is a real name, but it has not been brought into your program. The compiler cannot use a tool it was never handed.", cause:"Formatting tools — setprecision, fixed, setw — live in <iomanip>, not <iostream>. Include that header alongside iostream whenever you format output.", before:"#include <iostream>\nusing namespace std;\ncout << setprecision(2) << price;", after:"#include <iostream>\n#include <iomanip>\nusing namespace std;\ncout << setprecision(2) << price;", keys:"setprecision iomanip not declared formatting fixed setw scope" },
+      { id:13, title:"Unterminated string — missing closing quote", raw:"error: missing terminating \" character", meaning:"A string opened with \" and never closed. Everything after the opening quote — semicolons, code, new lines — is swallowed as text until the compiler gives up.", cause:"One double quote is missing at the end of the text. Check any cout line where the colour/syntax in your editor runs on past where the text should end: that run-on is the symptom.", before:"cout << \"Your score is << endl;", after:"cout << \"Your score is \" << endl;", keys:"unterminated string missing terminating quote character closing" },
+      { id:14, title:"Misspelled include header", raw:"fatal error: iostrem: No such file or directory", meaning:"Fatal means the compiler stopped before it even read your code: it went looking for a header file with that exact name and there is none. Every later error is a consequence of this one.", cause:"The header name is misspelled — a dropped or swapped letter. Header names are file names, spelled exactly: iostream, iomanip, string, cmath. Fix the spelling and most of the cascade disappears.", before:"#include <iostrem>", after:"#include <iostream>", keys:"fatal iostrem no such file directory include misspelled header spelling compilation terminated" },
+      { id:15, title:"main returning the wrong type", raw:"error: '::main' must return 'int'", meaning:"main is not an ordinary function whose return type you choose. The operating system expects main to hand back an int status code, and the language enforces it.", cause:"main was declared with the wrong type — double main(), void main(), and friends. This is the Debugging Gym's double main() case in compiler wording. The declaration is int main(), always.", before:"double main() {\n    // ...\n    return 0;\n}", after:"int main() {\n    // ...\n    return 0;\n}", keys:"main must return int double main wrong type gym" },
+      { id:16, title:"No main at all — a linker error", raw:"undefined reference to `main'\ncollect2: error: ld returned 1 exit status", meaning:"Your code compiled — every file was legal — but there is no starting point to run. The linker, the program that assembles compiled code into an executable, reports this; the compiler itself found nothing wrong.", cause:"There is no int main() anywhere: it was omitted, misnamed (e.g. mian, Main), or the file with main in it was not included. Compiler vs linker in one line: the compiler checks each file's language; the linker checks that the pieces, including main, are all present.", before:"// a helper with no entry point\nint add(int a, int b) {\n    return a + b;\n}", after:"int add(int a, int b) {\n    return a + b;\n}\nint main() {\n    cout << add(2, 3);\n    return 0;\n}", keys:"undefined reference main linker link ld undefined no main collect2" },
+      { id:17, title:"Keyword used as a variable name", raw:"error: expected unqualified-id before 'int'\n  — same family: expected unqualified-id before 'class'", meaning:"You tried to name a variable with a word the language has already reserved. int, class, return, for, while and their kin are the language's own vocabulary and cannot be reused as names.", cause:"A declaration like int class = 3; or int int = 3; puts a keyword where a name belongs. Choose a name that describes the value instead: score, classSize, intValue.", before:"int class = 3;\ncout << class;", after:"int classSize = 3;\ncout << classSize;", keys:"keyword unqualified-id expected before int class reserved word variable name" },
+      { id:18, title:"Case sensitivity — Cout is not cout", raw:"error: 'Cout' was not declared in this scope", meaning:"Cout and cout are two different names as far as C++ is concerned. C++ is case-sensitive: capitals are not decoration, they change the name.", cause:"A capital letter crept in — Cout, Cin, Endl, Int, String. Every standard name in an introductory program is lowercase: cout, cin, endl, int, string. Match the case exactly.", before:"Cout << \"Hi\" << Endl;", after:"cout << \"Hi\" << endl;", keys:"case Cout capital sensitive not declared scope uppercase lowercase" },
+      { id:19, title:"Missing > on an include", raw:"error: missing terminating > character", meaning:"The include's angle brackets work like quotes: < opens a header name and > must close it. Without the >, the compiler reads past the end of the line looking for the close.", cause:"The include line is short its closing >. While you are there, check its partner too: #include lines take angle brackets and no semicolon — see the next entry.", before:"#include <iostream\nusing namespace std;", after:"#include <iostream>\nusing namespace std;", keys:"missing terminating > include angle bracket character header" },
+      { id:20, title:"Semicolon after the #include line", raw:"warning: extra tokens at end of #include directive\n  — the line looks like: #include <iostream>;", meaning:"Nothing on a #include line may follow the closing >. The ; is an extra token, and the compiler is warning you it does not belong there. The include line takes no semicolon.", cause:"A semicolon habit applied one line too early. #include is a preprocessor directive, not a C++ statement, so it is not ended with ;. (using namespace std; does take one — the directive does not.)", before:"#include <iostream>;\nusing namespace std;", after:"#include <iostream>\nusing namespace std;", keys:"extra tokens include directive semicolon preprocessor warning tokens end" }
+    ];
+    var transOpen = {};
+    function renderTrans(filter) {
+      var q = (filter || "").trim().toLowerCase();
+      var list = $("trans-list"); list.innerHTML = "";
+      var shown = 0;
+      TRANS.forEach(function (e) {
+        var hay = (e.title + " " + e.raw + " " + e.meaning + " " + e.cause + " " + e.keys).toLowerCase();
+        if (q && hay.indexOf(q) === -1) {
+          // allow multi-word search: every word must appear
+          var words = q.split(/\s+/);
+          var ok = words.every(function (w) { return hay.indexOf(w) !== -1; });
+          if (!ok) return;
+        }
+        shown++;
+        var item = document.createElement("div");
+        item.className = "trans-item" + (transOpen[e.id] ? " open" : "");
+        item.id = "trans-" + e.id;
+        var head = document.createElement("button");
+        head.type = "button"; head.className = "trans-head";
+        head.setAttribute("aria-expanded", transOpen[e.id] ? "true" : "false");
+        head.innerHTML = '<span class="tnum">' + e.id + '</span><span><span class="ttitle">' + e.title + '</span><div class="traw-short">' + esc(e.raw.split("\n")[0]) + '</div></span><span class="tchev" aria-hidden="true">' + (transOpen[e.id] ? "−" : "+") + "</span>";
+        head.addEventListener("click", function () {
+          transOpen[e.id] = !transOpen[e.id]; renderTrans($("trans-search").value);
+          if (transOpen[e.id]) announce("Opened: " + e.title);
+        });
+        item.appendChild(head);
+        var body = document.createElement("div"); body.className = "trans-body";
+        body.innerHTML = '<div class="trans-raw"><span class="rlabel">As g++ prints it</span>' + esc(e.raw) + '</div>' +
+          '<div class="trans-grid"><div><h4>In plain English</h4><p>' + e.meaning + '</p></div><div><h4>What in your code causes it</h4><p>' + e.cause + '</p></div></div>' +
+          '<div class="trans-fix"><h4>The fix — before → after</h4><div class="fix-compare"><div class="fix-box before"><span class="flabel">Before — broken</span>' + esc(e.before) + '</div><div class="fix-box after"><span class="flabel">After — fixed</span>' + esc(e.after) + "</div></div></div>";
+        item.appendChild(body);
+        list.appendChild(item);
+      });
+      $("trans-empty").classList.toggle("show", shown === 0);
+      $("trans-count").textContent = q ? ("Showing " + shown + " of 20 errors matching \u201C" + filter.trim() + "\u201D.") : "Showing all 20 errors — ordered by how early beginners usually meet them.";
+    }
+    document.querySelectorAll(".sample-err-btn").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var id = parseInt(b.getAttribute("data-jump"), 10);
+        $("trans-search").value = ""; transOpen = {}; transOpen[id] = true; renderTrans("");
+        var el = $("trans-" + id);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+        announce("Jumped to translation number " + id + ".");
+      });
+    });
+    $("trans-search").addEventListener("input", function () { renderTrans(this.value); });
+    $("trans-clear").addEventListener("click", function () { $("trans-search").value = ""; renderTrans(""); $("trans-search").focus(); });
+    renderTrans("");
+
     /* ---------------- Mode toggle ---------------- */
-    function setMode(gymMode) {
-      $("tracer-mode").hidden = gymMode;
-      $("gym-mode").hidden = !gymMode;
-      $("mode-tracer").setAttribute("aria-pressed", gymMode ? "false" : "true");
-      $("mode-gym").setAttribute("aria-pressed", gymMode ? "true" : "false");
-      if (gymMode) renderGym();
+    function setMode(mode) {
+      $("tracer-mode").hidden = mode !== "tracer";
+      $("gym-mode").hidden = mode !== "gym";
+      $("translator-mode").hidden = mode !== "translator";
+      $("mode-tracer").setAttribute("aria-pressed", mode === "tracer" ? "true" : "false");
+      $("mode-gym").setAttribute("aria-pressed", mode === "gym" ? "true" : "false");
+      $("mode-translator").setAttribute("aria-pressed", mode === "translator" ? "true" : "false");
+      if (mode === "gym") renderGym();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
-    $("mode-tracer").addEventListener("click", function () { setMode(false); });
-    $("mode-gym").addEventListener("click", function () { setMode(true); });
+    $("mode-tracer").addEventListener("click", function () { setMode("tracer"); });
+    $("mode-gym").addEventListener("click", function () { setMode("gym"); });
+    $("mode-translator").addEventListener("click", function () { setMode("translator"); });
 
     renderSkins();
     renderAll();
