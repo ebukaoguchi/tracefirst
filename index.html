@@ -325,6 +325,11 @@
       .route-open{display:flex;gap:12px;align-items:flex-start;border:1.5px dashed var(--line);background:transparent;color:var(--ink);border-radius:10px;padding:11px 13px}
       .route-free{margin-top:14px;font-size:.9rem;color:var(--ink-soft);border-top:1px dashed var(--line);padding-top:12px}
       .route-free strong{color:var(--ink)}
+      .welcome-back{margin-top:12px;background:var(--accent-soft);border:1px solid var(--accent);border-radius:10px;padding:10px 13px;font-size:.93rem;color:var(--accent-strong);font-weight:600}
+      .reset-row{margin-top:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+      .reset-note{font-size:.88rem;color:var(--ink-soft)}
+      .reset-confirm{margin-top:10px;border:1.5px solid var(--rust);background:var(--rust-soft);border-radius:10px;padding:12px 14px;font-size:.93rem}
+      .reset-confirm .lockrow{margin-top:10px}
       .primer-panel{margin-top:18px;background:var(--panel);border:1.5px solid var(--accent);border-radius:14px;box-shadow:var(--shadow);padding:20px}
       .primer-panel h2{font-family:"Source Serif 4",Georgia,serif;font-size:1.4rem;line-height:1.2}
       .primer-panel .primer-lede{margin-top:7px;color:var(--ink-soft);max-width:700px;font-size:.95rem}
@@ -711,9 +716,21 @@
         <div class="route-head">
           <div>
             <h2 id="route-h">New here? Start here.</h2>
-            <p class="route-sub" id="route-progress">A first route through TraceFirst, in order. Ticks appear as you finish each step in this session.</p>
+            <p class="route-sub" id="route-progress">A first route through TraceFirst, in order. Ticks appear as you finish each step. Your progress is saved in this browser, on this device — there is no account and nothing is sent anywhere.</p>
           </div>
           <button class="btn ghost small" type="button" id="route-toggle" aria-expanded="true" aria-controls="route-body">Collapse</button>
+        </div>
+        <p class="welcome-back" id="welcome-back" role="status" hidden>Welcome back. Your progress is saved in this browser.</p>
+        <div class="reset-row">
+          <button class="btn ghost small" type="button" id="reset-progress-btn">Reset all progress</button>
+          <span class="reset-note">Progress is saved in this browser on this device only.</span>
+        </div>
+        <div class="reset-confirm" id="reset-confirm" hidden>
+          <p><strong>Reset everything?</strong> This clears all saved progress in this browser.</p>
+          <div class="lockrow">
+            <button class="btn small" type="button" id="reset-confirm-btn">Confirm reset</button>
+            <button class="btn ghost small" type="button" id="reset-cancel-btn">Cancel</button>
+          </div>
         </div>
         <div id="route-body">
           <ol class="route-steps">
@@ -893,7 +910,7 @@ for (int i = 0; i < 3; i++) {
           </div>
         </div>
 
-        <p class="foot"><strong>How Bolt's World fits:</strong> this mode teaches the logic of programming — sequence, repetition, decisions, decomposition — inside a world small enough to see whole. The other modes then attach real C++ to that logic: the Prediction Tracer for reading code before it runs, the Debugging Gym for finding faults, the Error Translator for compiler messages, and Challenges for graded practice. Worlds you complete are remembered only for this session.</p>
+        <p class="foot"><strong>How Bolt's World fits:</strong> this mode teaches the logic of programming — sequence, repetition, decisions, decomposition — inside a world small enough to see whole. The other modes then attach real C++ to that logic: the Prediction Tracer for reading code before it runs, the Debugging Gym for finding faults, the Error Translator for compiler messages, and Challenges for graded practice. Worlds you complete are saved in this browser, on this device.</p>
       </div><!-- /bolt-mode -->
 
       <div id="tracer-mode" role="tabpanel" tabindex="0">
@@ -916,7 +933,7 @@ for (int i = 0; i < 3; i++) {
           <div class="tlabel">Exercises</div>
           <div class="exnav" id="exnav"></div>
         </div>
-        <div class="scorebar" id="scorebar" aria-label="Your session record"></div>
+        <div class="scorebar" id="scorebar" aria-label="Your saved record"></div>
       </section>
 
       <div class="grid">
@@ -1031,7 +1048,7 @@ for (int i = 0; i < 3; i++) {
 
           <section class="card" aria-labelledby="record-h">
             <h3 id="record-h">Your prediction record</h3>
-            <p style="font-size:.9rem; color:var(--ink-soft); margin-top:6px;">Accuracy by concept, for this session. This is the record your instructor sees in aggregate: not who failed, but <em>where the class's mental models first break</em>.</p>
+            <p style="font-size:.9rem; color:var(--ink-soft); margin-top:6px;">Accuracy by concept, saved in this browser. This is the record your instructor sees in aggregate: not who failed, but <em>where the class's mental models first break</em>.</p>
             <ul class="record-list" id="record-list"></ul>
           </section>
         </div>
@@ -1050,7 +1067,7 @@ for (int i = 0; i < 3; i++) {
       
       <section class="card" style="margin-top:18px;" aria-labelledby="journal-h">
         <h3 id="journal-h">Your prediction journal</h3>
-        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">Download a plain-text record of every prediction you locked in this session: what you predicted, what the program printed, and — when you parted — the line where your model and the machine diverged. You can submit this file to your instructor.</p>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">Download a plain-text record of every prediction you have locked in: what you predicted, what the program printed, and — when you parted — the line where your model and the machine diverged. You can submit this file to your instructor.</p>
         <div class="journal-actions">
           <button class="btn" type="button" id="export-journal-btn">Export my prediction journal</button>
           <span style="font-size:.88rem;color:var(--ink-soft);">Downloads <span style="font-family:'IBM Plex Mono',monospace;">tracefirst-journal.txt</span> · nothing leaves this page until you share the file.</span>
@@ -1227,7 +1244,7 @@ for (int i = 0; i < 3; i++) {
           <p>Pick a level and work in three parts: <strong>short tasks</strong> checked instantly, <strong>guided projects</strong> with milestones and a prediction-first test bench, and a <strong>six-question exam</strong> scored at the end. Start where you are honest, not where you wish you were — the levels share ideas, so finishing one prepares the next.</p>
         </section>
         <div class="ch-levels" id="ch-levels" role="group" aria-label="Choose your level"></div>
-        <section class="toolbar" style="margin-top:16px;" aria-label="Your Challenges session record">
+        <section class="toolbar" style="margin-top:16px;" aria-label="Your Challenges record">
           <div class="scorebar" id="ch-scorebar" style="border-top:none;padding-top:0;"></div>
         </section>
         <h2 class="ch-section-h">Tasks</h2>
@@ -1245,7 +1262,7 @@ for (int i = 0; i < 3; i++) {
           <div class="exam-score" id="ch-exam-score" role="status"></div>
           <div class="lockrow"><button class="btn ghost" type="button" id="ch-exam-restart">Retake this exam</button></div>
         </section>
-        <p class="foot"><strong>One honest line:</strong> projects are built in your own editor; TraceFirst supplies the brief, the milestones, and the tests to pass. Nothing here is saved beyond this session.</p>
+        <p class="foot"><strong>One honest line:</strong> projects are built in your own editor; TraceFirst supplies the brief, the milestones, and the tests to pass. Your ticks and scores here are saved in this browser, on this device.</p>
       </div><!-- /challenges-mode -->
 
       <div id="bridge-mode" role="tabpanel" tabindex="0" hidden>
@@ -1309,7 +1326,7 @@ for (int i = 0; i < 3; i++) {
             <p class="skin-note">Run tests feeds each test's input to a fresh run of your program and compares the printed output, ignoring differences in spacing. A prompt counts as complete when every one of its tests passes.</p>
           </div>
         </section>
-        <p class="foot"><strong>Keep your work:</strong> your programs live in this page only for this session, so copy a finished program into your own files before you close it.</p>
+        <p class="foot"><strong>Keep your work:</strong> your programs are saved in this browser, on this device, so they are here when you return. Copy a finished program into your own files as a backup.</p>
       </div><!-- /make-mode -->
       <div class="sr-live" aria-live="polite" id="live"></div>
     </main>
@@ -1968,7 +1985,7 @@ for (int i = 0; i < 3; i++) {
 
     ];
 
-    /* ---------------- State (in-memory only, this session) ---------------- */
+    /* ---------------- State (persisted in this browser — see persistence block at the end) ---------------- */
     function freshExState() {
       return { selected: -1, locked: false, correct: null, step: -1, traceDone: false,
                modSelected: -1, modDone: false, modCorrect: null,
@@ -3712,7 +3729,7 @@ for (int i = 0; i < 3; i++) {
         scoreBox.className = "exam-score show";
         scoreBox.innerHTML = "<b>Exam complete: " + sc + " of " + lv.exam.length + ".</b> " +
           (sc === lv.exam.length ? "A clean paper at this level. The next level is ready when you are." : sc >= 4 ? "A strong pass. Re-read the explanations for the questions you missed, then retake when ready." : "Below the line for now. The tasks above cover exactly these ideas — work them, then retake.") +
-          (d.exam.best !== null ? " Best score this session: " + d.exam.best + " / " + lv.exam.length + "." : "");
+          (d.exam.best !== null ? " Best score: " + d.exam.best + " / " + lv.exam.length + "." : "");
       } else { scoreBox.className = "exam-score"; scoreBox.innerHTML = ""; }
     }
     $("ch-exam-restart").addEventListener("click", function () {
@@ -3929,7 +3946,7 @@ for (int i = 0; i < 3; i++) {
         box.appendChild(b);
       });
       var doneCount = bolt.done.filter(Boolean).length;
-      $("bolt-scorebar").innerHTML = '<span class="metric"><strong>' + doneCount + " / " + BOLT_WORLDS.length + '</strong> <span>worlds completed this session</span></span>';
+      $("bolt-scorebar").innerHTML = '<span class="metric"><strong>' + doneCount + " / " + BOLT_WORLDS.length + '</strong> <span>worlds completed</span></span>';
       renderBoltChallengeNav();
       if (typeof renderRoute === "function") renderRoute();
     }
@@ -5151,8 +5168,12 @@ for (int i = 0; i < 3; i++) {
     }
     function renderMake() {
       if (!makeState.built) {
-        makeState.built = true;
+        // Select first, flag built second: selectMakePrompt captures the
+        // editor into the outgoing prompt only when built is already true,
+        // so flagging first would overwrite a restored program (or the
+        // skeleton) with the still-empty editor on first open.
         selectMakePrompt(0);
+        makeState.built = true;
       } else {
         renderMakeNav();
         renderMakeTests();
@@ -5469,10 +5490,10 @@ for (int i = 0; i < 3; i++) {
     });
 
     /* ---------------- Start Here route + Meet the Code primer ----------------
-       Session-only state. Progress is derived live from the existing
-       completion state (bolt.done, state.ex locked, bridgeState, gym.rounds,
-       makeState) so Fix 2 persistence can later hydrate those same sources
-       (plus primerRead) without redesigning the route. */
+       Progress is derived live from the existing completion state
+       (bolt.done, state.ex locked, bridgeState, gym.rounds, makeState);
+       the persistence block at the end hydrates those same sources
+       (plus primerRead) from this browser's local storage. */
     var primerOpened = false;
     var primerRead = false;
     var routeManualExpand = false;
@@ -5518,8 +5539,8 @@ for (int i = 0; i < 3; i++) {
       routeLastSig = sig;
       var progressEl = document.getElementById("route-progress");
       if (progressEl) progressEl.textContent = allDone
-        ? "Route complete in this session — all seven steps done. Well done: you have gone from Bolt to writing your own programs."
-        : "A first route through TraceFirst, in order. " + doneCount + " of 7 steps done in this session.";
+        ? "Route complete — all seven steps done. Your progress is saved in this browser. Well done: you have gone from Bolt to writing your own programs."
+        : "A first route through TraceFirst, in order. " + doneCount + " of 7 steps done. Your progress is saved in this browser, on this device — there is no account and nothing is sent anywhere.";
       [1,2,3,4,5,6,7].forEach(function (n) {
         var btn = panel.querySelector('[data-step="' + n + '"]');
         var stateEl = panel.querySelector('[data-state="' + n + '"]');
@@ -5887,8 +5908,233 @@ for (int i = 0; i < 3; i++) {
       if (filesInput) filesInput.value = ""; digestFileTexts = [];
     });
 
+    /* ---------------- Persistence: progress saved in this browser ----------------
+       One key, local storage only, on the visitor's own machine. No account,
+       nothing sent anywhere. Any storage failure (private mode, quota,
+       blocked storage) degrades silently to session-only behaviour. */
+    var TF_KEY = "tracefirst-progress-v1";
+    var tfLastSaved = null;
+    var tfStorageOk = true;
+    var tfResetting = false;
+    function tfStorage() {
+      try {
+        var t = "__tf_probe__";
+        window.localStorage.setItem(t, "1");
+        window.localStorage.removeItem(t);
+        return window.localStorage;
+      } catch (e) { tfStorageOk = false; return null; }
+    }
+    function tfCollect() {
+      var data = { v: 1, primerRead: !!primerRead, tracer: [], bolt: null, gym: [], bridge: [], make: [], challenges: null };
+      // Tracer: only locked / modify-completed exercises carry a record.
+      state.ex.forEach(function (s, i) {
+        if (!s.locked && !s.modDone) { data.tracer.push(null); return; }
+        data.tracer.push({
+          selected: s.selected, locked: !!s.locked, correct: s.correct,
+          traceDone: !!s.traceDone, modSelected: s.modSelected,
+          modDone: !!s.modDone, modCorrect: s.modCorrect, pair: !!s.pair,
+          pairASelected: s.pairASelected, pairALocked: !!s.pairALocked,
+          pairBSelected: s.pairBSelected, pairBLocked: !!s.pairBLocked,
+          jointSelected: s.jointSelected, jointLocked: !!s.jointLocked
+        });
+      });
+      try {
+        data.bolt = {
+          done: bolt.done.slice(), challengeDone: bolt.challengeDone.slice(),
+          challengeStar: bolt.challengeStar.slice(), challengeBest: bolt.challengeBest.slice(),
+          code: bolt.code.slice(), challengeCode: bolt.challengeCode.slice()
+        };
+      } catch (e) {}
+      // Gym: only rounds passed at Verify persist; an unfinished round
+      // restarts at Spot on the next visit.
+      try {
+        gym.rounds.forEach(function (r) { data.gym.push(r && r.done ? r : null); });
+      } catch (e) {}
+      try {
+        bridgeState.items.forEach(function (it) {
+          data.bridge.push({ done: !!it.done, answer: (it.answer || []).slice(), slots: (it.slots || []).slice() });
+        });
+      } catch (e) {}
+      try {
+        makeState.items.forEach(function (it) {
+          data.make.push({ code: it.code, done: !!it.done, results: it.results || null });
+        });
+      } catch (e) {}
+      try { data.challenges = { level: ch.level, data: ch.data }; } catch (e) {}
+      return data;
+    }
+    function tfHasProgress(d) {
+      if (!d) return false;
+      if (d.primerRead) return true;
+      if ((d.tracer || []).some(function (x) { return !!x; })) return true;
+      if (d.bolt && ((d.bolt.done || []).some(Boolean) || (d.bolt.challengeDone || []).some(Boolean))) return true;
+      if ((d.gym || []).some(function (x) { return !!x; })) return true;
+      if ((d.bridge || []).some(function (x) { return x && x.done; })) return true;
+      if ((d.make || []).some(function (x) { return x && (x.done || (typeof x.code === "string" && x.code.trim() !== "")); })) return true;
+      if (d.challenges && d.challenges.data) {
+        var cd = d.challenges.data, found = false;
+        Object.keys(cd).forEach(function (k) {
+          var lv = cd[k]; if (!lv) return;
+          if (lv.exam && lv.exam.best !== null && lv.exam.best !== undefined) found = true;
+          Object.keys(lv.tasks || {}).forEach(function (t) { if (lv.tasks[t] && lv.tasks[t].done) found = true; });
+          Object.keys(lv.projects || {}).forEach(function (p) {
+            (lv.projects[p].tests || []).forEach(function (t) { if (t && t.revealed) found = true; });
+          });
+        });
+        if (found) return true;
+      }
+      return false;
+    }
+    function tfSave() {
+      if (tfResetting || !tfStorageOk) return;
+      var store = null;
+      try { store = window.localStorage; } catch (e) { tfStorageOk = false; return; }
+      if (!store) return;
+      try {
+        var text = JSON.stringify(tfCollect());
+        if (text === tfLastSaved) return;
+        store.setItem(TF_KEY, text);
+        tfLastSaved = text;
+      } catch (e) { /* quota / private mode: stay silent, session-only */ }
+    }
+    function tfLoad() {
+      var store = tfStorage();
+      if (!store) return null;
+      try {
+        var raw = store.getItem(TF_KEY);
+        if (!raw) return null;
+        tfLastSaved = raw;
+        var d = JSON.parse(raw);
+        return (d && typeof d === "object") ? d : null;
+      } catch (e) { return null; }
+    }
+    function tfHydrate(d) {
+      if (!d) return;
+      // Tracer
+      if (Array.isArray(d.tracer)) {
+        d.tracer.forEach(function (sv, i) {
+          if (!sv || !EXERCISES[i]) return;
+          var s = freshExState();
+          if (typeof sv.selected === "number") s.selected = sv.selected;
+          s.locked = !!sv.locked;
+          s.correct = (sv.correct === true || sv.correct === false) ? sv.correct : null;
+          s.traceDone = !!sv.traceDone && s.locked;
+          s.step = s.traceDone ? EXERCISES[i].steps.length - 1 : -1;
+          if (typeof sv.modSelected === "number") s.modSelected = sv.modSelected;
+          s.modDone = !!sv.modDone;
+          s.modCorrect = (sv.modCorrect === true || sv.modCorrect === false) ? sv.modCorrect : null;
+          s.pair = !!sv.pair;
+          if (typeof sv.pairASelected === "number") s.pairASelected = sv.pairASelected;
+          s.pairALocked = !!sv.pairALocked;
+          if (typeof sv.pairBSelected === "number") s.pairBSelected = sv.pairBSelected;
+          s.pairBLocked = !!sv.pairBLocked;
+          if (typeof sv.jointSelected === "number") s.jointSelected = sv.jointSelected;
+          s.jointLocked = !!sv.jointLocked;
+          if (s.locked || s.modDone) state.ex[i] = s;
+        });
+      }
+      // Bolt
+      try {
+        if (d.bolt) {
+          var bd = d.bolt;
+          function boolArr(src, n) { var out = []; for (var i = 0; i < n; i++) out.push(!!(src && src[i])); return out; }
+          function strArr(src, fallback) { return fallback.map(function (f, i) { return (src && typeof src[i] === "string") ? src[i] : f; }); }
+          bolt.done = boolArr(bd.done, BOLT_WORLDS.length);
+          bolt.challengeDone = boolArr(bd.challengeDone, BOLT_CHALLENGES.length);
+          bolt.challengeStar = boolArr(bd.challengeStar, BOLT_CHALLENGES.length);
+          bolt.challengeBest = BOLT_CHALLENGES.map(function (_, i) {
+            return (bd.challengeBest && typeof bd.challengeBest[i] === "number") ? bd.challengeBest[i] : null;
+          });
+          bolt.code = strArr(bd.code, BOLT_WORLDS.map(function (w) { return w.starter; }));
+          bolt.challengeCode = strArr(bd.challengeCode, BOLT_CHALLENGES.map(function (w) { return w.starter; }));
+        }
+      } catch (e) {}
+      // Gym: completed rounds only
+      try {
+        if (Array.isArray(d.gym)) {
+          d.gym.forEach(function (sv, i) {
+            if (!sv || !GYM_ROUNDS[i] || !sv.done) return;
+            var r = gymFreshRound();
+            Object.keys(r).forEach(function (k) { if (Object.prototype.hasOwnProperty.call(sv, k)) r[k] = sv[k]; });
+            r.done = true; r.pending = null;
+            gym.rounds[i] = r;
+          });
+        }
+      } catch (e) {}
+      // Bridge
+      try {
+        if (Array.isArray(d.bridge)) {
+          d.bridge.forEach(function (sv, i) {
+            if (!sv || !bridgeState.items[i]) return;
+            bridgeState.items[i].done = !!sv.done;
+            if (Array.isArray(sv.answer)) bridgeState.items[i].answer = sv.answer.slice();
+            if (Array.isArray(sv.slots)) bridgeState.items[i].slots = sv.slots.slice();
+          });
+        }
+      } catch (e) {}
+      // Make: code text + completion
+      try {
+        if (Array.isArray(d.make)) {
+          d.make.forEach(function (sv, i) {
+            if (!sv || !makeState.items[i]) return;
+            if (typeof sv.code === "string") makeState.items[i].code = sv.code;
+            makeState.items[i].done = !!sv.done;
+            makeState.items[i].results = Array.isArray(sv.results) ? sv.results : null;
+          });
+        }
+      } catch (e) {}
+      // Challenges
+      try {
+        if (d.challenges && d.challenges.data && typeof d.challenges.data === "object") {
+          ch.data = d.challenges.data;
+          if (d.challenges.level && CH_LEVELS[d.challenges.level]) ch.level = d.challenges.level;
+        }
+      } catch (e) {}
+      // Primer
+      if (d.primerRead) { primerRead = true; primerOpened = true; }
+    }
+    var tfLoaded = tfLoad();
+    var tfReturning = tfHasProgress(tfLoaded);
+    try { tfHydrate(tfLoaded); } catch (e) {}
+    if (tfReturning) {
+      var wb = document.getElementById("welcome-back");
+      if (wb) wb.hidden = false;
+    }
+    // Reset all progress: inline confirmation, then clear + reload fresh.
+    (function wireReset() {
+      var btn = document.getElementById("reset-progress-btn");
+      var box = document.getElementById("reset-confirm");
+      var yes = document.getElementById("reset-confirm-btn");
+      var no = document.getElementById("reset-cancel-btn");
+      if (btn && box) btn.addEventListener("click", function () {
+        box.hidden = false;
+        btn.disabled = true;
+        if (yes) yes.focus();
+      });
+      if (no && box && btn) no.addEventListener("click", function () {
+        box.hidden = true;
+        btn.disabled = false;
+        btn.focus();
+      });
+      if (yes) yes.addEventListener("click", function () {
+        // Block every save path (poll, pagehide, visibility) before clearing,
+        // or the unload flush would write the in-memory progress straight back.
+        tfResetting = true;
+        try { window.localStorage.removeItem(TF_KEY); } catch (e) {}
+        tfLastSaved = null;
+        window.location.reload();
+      });
+    })();
+    // Save on every change: a light poll catches editor typing and every
+    // mode's mutations (all state above is plain data); pagehide flushes
+    // the final state if the tab closes between polls.
+    setInterval(tfSave, 700);
+    window.addEventListener("pagehide", tfSave);
+    document.addEventListener("visibilitychange", function () { if (document.hidden) tfSave(); });
+
     renderSkins();
     renderAll();
+    if (typeof renderRoute === "function") { routeLastSig = ""; renderRoute(); }
     </script>
   </body>
 </html>
