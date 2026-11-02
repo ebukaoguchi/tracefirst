@@ -237,6 +237,20 @@
       .stepmeta { font-family: "IBM Plex Mono", monospace; font-size: .8rem; color: var(--ink-soft); margin-top: 10px; }
       .stepbar { height: 6px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 99px; overflow: hidden; margin-top: 6px; }
       .stepbar i { display: block; height: 100%; background: var(--accent); width: 0%; transition: width .25s ease; }
+      /* Animated playback: controls row, gutter execution marker, jump arcs */
+      .play-controls { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; margin-top: 10px; border-top: 1px dashed var(--line); padding-top: 10px; }
+      .spd-btn { border: 1.5px solid transparent; background: transparent; color: var(--ink-soft); border-radius: 6px; padding: 5px 11px; font-weight: 700; font-size: .85rem; font-family: "IBM Plex Mono", monospace; }
+      .spd-btn:hover { color: var(--ink); }
+      .spd-btn[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent-strong); border-color: var(--accent); }
+      .codebox.flowbox { position: relative; }
+      .flow-marker { position: absolute; left: 4px; top: 0; width: 0; height: 0; border-top: 6px solid transparent; border-bottom: 6px solid transparent; border-left: 10px solid var(--amber); opacity: 0; pointer-events: none; z-index: 3; transition: transform .45s ease, opacity .25s ease; }
+      .flow-svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; overflow: hidden; }
+      .flow-svg path { fill: none; stroke-width: 2.5; stroke-linecap: round; opacity: 0; transition: opacity .3s ease; }
+      .flow-svg path.fwd { stroke: var(--accent); }
+      .flow-svg path.back { stroke: var(--amber); }
+      .flow-svg path.show { opacity: .95; }
+      .cline.skipped-flash { opacity: .35; }
+      .parting-note { margin-top: 10px; border: 1.5px solid var(--amber); background: var(--amber-soft); border-radius: 10px; padding: 11px 14px; font-size: .92rem; }
       .memory { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; min-height: 86px; }
       .mem-empty { color: var(--ink-soft); font-size: .92rem; border: 1.5px dashed var(--line); border-radius: 10px; padding: 16px; width: 100%; }
       .membox {
@@ -768,6 +782,8 @@
         .membox.changed { animation: none; }
         .console .cursor { animation: none; }
         .stepbar i { transition: none; }
+        .flow-marker { transition: none !important; }
+        .flow-svg path { transition: none !important; }
       }
 
       /* ---------- Declutter pass: tighter spacing, grouping & collapse ---------- */
@@ -1424,9 +1440,11 @@ for (int i = 0; i < 3; i++) {
             <h2 id="ex-title"></h2>
             <p class="story" id="ex-story"></p>
             <p class="goal" id="ex-goal"></p>
-            <div class="codebox">
+            <div class="codebox flowbox">
               <div class="codehead"><span>program.cpp</span><span>C++</span></div>
               <pre id="code" aria-label="Program code"></pre>
+              <svg class="flow-svg" id="flow-svg" aria-hidden="true" focusable="false"><path id="flow-arc" d=""></path></svg>
+              <div class="flow-marker" id="flow-marker" aria-hidden="true"></div>
             </div>
           </section>
 
@@ -1518,6 +1536,16 @@ for (int i = 0; i < 3; i++) {
                 <button class="btn small ghost" id="run-all" aria-label="Run tracer to the end">Run to end</button>
                 <button class="btn small ghost" id="trace-reset" aria-label="Restart tracer from the beginning">Restart</button>
               </div>
+              <div class="play-controls">
+                <button class="btn small" type="button" id="play-toggle" aria-pressed="false" aria-label="Play the trace automatically">▶ Play</button>
+                <span class="bits-label" id="speed-label">Playback speed</span>
+                <div class="bits-group" role="group" aria-labelledby="speed-label">
+                  <button type="button" class="spd-btn speed-btn" data-speed="0.5" aria-pressed="false">0.5×</button>
+                  <button type="button" class="spd-btn speed-btn" data-speed="1" aria-pressed="true">1×</button>
+                  <button type="button" class="spd-btn speed-btn" data-speed="2" aria-pressed="false">2×</button>
+                </div>
+                <span class="bits-note">Plays one step at a time. The marker in the code margin slides for sequence, arcs over a skipped branch, and loops back up at a loop's edge. A wrong prediction pauses playback at the parting step.</span>
+              </div>
               <div class="bits-toggle">
                 <span class="bits-label" id="bits-label">Memory values</span>
                 <div class="bits-group" role="group" aria-labelledby="bits-label">
@@ -1535,6 +1563,7 @@ for (int i = 0; i < 3; i++) {
               <div class="callstack" id="callstack" hidden></div>
               <div class="console"><div class="chead">Program output</div><div class="cout" id="cout"></div></div>
               <div class="stepnote" id="stepnote"></div>
+              <div class="parting-note" id="parting-note" hidden role="status"></div>
             </div>
           </section>
 
@@ -3512,6 +3541,10 @@ int main() {
        (see the persistence block); older saves without the field load as
        decimal, and the field alone never counts as progress. */
     var bitsFormat = "dec";
+    /* Playback speed for the tracer's animated playback (0.5 / 1 / 2).
+       Persisted additively as `playbackSpeed` inside tracefirst-progress-v1,
+       exactly like bitsFormat: a view preference only, never progress. */
+    var playbackSpeed = 1;
     function parseIntStrict(raw) {
       var t = String(raw == null ? "" : raw).trim();
       return /^-?\d+$/.test(t) ? parseInt(t, 10) : null;
@@ -3715,7 +3748,7 @@ int main() {
             b.setAttribute("aria-current", state.current === idx ? "true" : "false");
             b.setAttribute("aria-label", "Exercise " + (idx + 1) + ": " + ex.concept + " — " + ex.title + " (" + shortStatus + ")");
             b.innerHTML = '<span class="n">' + (idx + 1) + '</span><span class="ex-row-title">' + esc(ex.concept) + '</span><span class="status ' + st.cls + '">' + esc(shortStatus) + "</span>";
-            b.addEventListener("click", function () { state.current = idx; renderAll(); });
+            b.addEventListener("click", function () { stopPlayback(); state.current = idx; renderAll(); });
             list.appendChild(b);
           })(i);
         });
@@ -3947,9 +3980,10 @@ int main() {
       syncBitsToggle();
       $("trace-locked").style.display = s.locked ? "none" : "";
       $("trace-ui").hidden = !s.locked;
-      if (!s.locked) { renderCode(-1); var cs0 = $("callstack"); if (cs0) { cs0.hidden = true; cs0.innerHTML = ""; } var sh0 = $("stack-h"); if (sh0) sh0.hidden = true; return; }
+      if (!s.locked) { renderCode(-1); flowUpdate(-1); var cs0 = $("callstack"); if (cs0) { cs0.hidden = true; cs0.innerHTML = ""; } var sh0 = $("stack-h"); if (sh0) sh0.hidden = true; return; }
       var step = s.step >= 0 ? ex.steps[s.step] : null;
       renderCode(step ? step.line : -1);
+      flowUpdate(step ? step.line : -1);
       $("stepmeta").textContent = s.step < 0
         ? "Ready. Press Step to run the first statement."
         : "Step " + (s.step + 1) + " of " + ex.steps.length + " · line " + (step.line + 1);
@@ -3957,6 +3991,9 @@ int main() {
       $("step-back").disabled = s.step < 0;
       $("step-next").disabled = s.step >= ex.steps.length - 1;
       $("run-all").disabled = s.step >= ex.steps.length - 1;
+      syncPlayUI();
+      var pn0 = $("parting-note");
+      if (pn0 && !(partingPauseActive && partingPauseEx === state.current && s.step === partingStepIndex())) pn0.hidden = true;
 
       var mem = $("memory"); mem.innerHTML = "";
       if (!step || Object.keys(step.vars).length === 0) {
@@ -4049,6 +4086,7 @@ int main() {
           '<div class="vs"><div><span>You predicted</span>' + esc(mine) + '</div><div><span>The program printed</span>' + esc(actual) + "</div></div>" +
           "<p>" + d.text + '</p><button class="btn small ghost jump" id="jump-btn" type="button">Jump to the parting step</button></div>';
         $("jump-btn").addEventListener("click", function () {
+          stopPlayback();
           state.ex[state.current].step = d.step;
           state.ex[state.current].traceDone = false;
           renderAll();
@@ -4193,29 +4231,13 @@ int main() {
       });
     })();
 
-    $("step-next").addEventListener("click", function () {
-      var ex = EXERCISES[state.current], s = state.ex[state.current];
-      if (s.step < ex.steps.length - 1) {
-        s.step++;
-        if (s.step === ex.steps.length - 1) { s.traceDone = true; }
-        renderAll();
-        announce(describeStep());
-      }
-    });
-    $("step-back").addEventListener("click", function () {
-      var s = state.ex[state.current];
-      if (s.step > -1) { s.step--; s.traceDone = false; renderAll(); announce(describeStep()); }
-    });
-    $("run-all").addEventListener("click", function () {
-      var ex = EXERCISES[state.current], s = state.ex[state.current];
-      s.step = ex.steps.length - 1; s.traceDone = true;
-      renderAll();
-      announce(describeStep());
-    });
-    $("trace-reset").addEventListener("click", function () {
-      var s = state.ex[state.current];
-      s.step = -1; s.traceDone = false; renderAll(); announce("Tracer restarted. Memory is empty.");
-    });
+    /* Manual step controls: each pauses playback first, then runs the same
+       step functions the playback timer drives (defined in the playback
+       block below), so manual and played steps are indistinguishable. */
+    $("step-next").addEventListener("click", function () { stopPlayback(); traceAdvance(); });
+    $("step-back").addEventListener("click", function () { stopPlayback(); traceRetreat(); });
+    $("run-all").addEventListener("click", function () { stopPlayback(); traceRunAll(); });
+    $("trace-reset").addEventListener("click", function () { stopPlayback(); traceRestart(); });
 
     // Bits view toggle: three native buttons (Tab reaches each one, the
     // global focus-visible outline applies); Left/Right arrows also move
@@ -4232,6 +4254,229 @@ int main() {
           setBitsFormat(nxt.getAttribute("data-bits"));
         });
       });
+    })();
+
+    /* ---------------- Animated playback & the control-flow marker ----------------
+       Playback drives the SAME step functions as the manual buttons
+       (traceAdvance / traceRetreat / traceRunAll / traceRestart), so state,
+       memory boxes, output, aria-live announcements, and completion
+       (traceDone → Investigate) behave identically however a step was
+       reached, and completion fires exactly once. The execution marker
+       lives in the code gutter (the line-number strip): it slides for
+       sequence; a temporary SVG arc — replaced, never queued — shows a
+       forward skip (selection: the untaken branch) with the skipped lines
+       briefly dimmed, or a backward jump (iteration: the loop back-edge,
+       and call/return line changes in the function and recursion
+       exercises). Under prefers-reduced-motion the marker jumps instantly
+       and arcs are omitted; steps still auto-advance at the chosen speed.
+       A wrong prediction auto-pauses playback once per run-through at the
+       diagnosis's parting step and surfaces that diagnosis in place.
+       Playback state is session-only; the chosen speed persists additively
+       as `playbackSpeed`. Lecture mode below keeps its own separate
+       stepping implementation and is intentionally not routed through
+       this block. */
+    var playback = { timer: null, playing: false, exIdx: -1, partingPaused: false };
+    var partingPauseActive = false, partingPauseEx = -1;
+    var flowPrevLine = -1, flowPrevEx = -1, flowArcTimer = null;
+    function reducedMotion() {
+      try { return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); } catch (e) { return false; }
+    }
+    function speedMs() { return Math.round(1000 / playbackSpeed); }
+
+    /* The four step operations, extracted verbatim from the manual button
+       handlers so playback and clicking share one code path. */
+    function traceAdvance() {
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      if (s.step < ex.steps.length - 1) {
+        s.step++;
+        if (s.step === ex.steps.length - 1) { s.traceDone = true; }
+        renderAll();
+        announce(describeStep());
+        return true;
+      }
+      return false;
+    }
+    function traceRetreat() {
+      var s = state.ex[state.current];
+      if (s.step > -1) { s.step--; s.traceDone = false; renderAll(); announce(describeStep()); }
+    }
+    function traceRunAll() {
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      s.step = ex.steps.length - 1; s.traceDone = true;
+      renderAll();
+      announce(describeStep());
+    }
+    function traceRestart() {
+      var s = state.ex[state.current];
+      s.step = -1; s.traceDone = false; renderAll(); announce("Tracer restarted. Memory is empty.");
+    }
+
+    /* The diagnosis parting step for the current exercise, or -1 when the
+       prediction was right (or nothing is locked / no diagnosis exists). */
+    function partingStepIndex() {
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      if (!s || !s.locked || s.correct) return -1;
+      var d = ex.diagnoses ? ex.diagnoses[s.selected] : null;
+      return d && typeof d.step === "number" ? d.step : -1;
+    }
+
+    function clearFlowArc() {
+      if (flowArcTimer) { clearTimeout(flowArcTimer); flowArcTimer = null; }
+      var arc = $("flow-arc"); if (arc) arc.classList.remove("show");
+    }
+    function drawFlowArc(fromLine, toLine) {
+      var svg = $("flow-svg"), arc = $("flow-arc"), pre = $("code");
+      if (!svg || !arc || !pre || reducedMotion()) return;
+      var box = pre.parentNode;
+      var fromEl = pre.children[fromLine], toEl = pre.children[toLine];
+      if (!box || !fromEl || !toEl) return;
+      var y1 = fromEl.offsetTop + fromEl.offsetHeight / 2;
+      var y2 = toEl.offsetTop + toEl.offsetHeight / 2;
+      svg.setAttribute("viewBox", "0 0 " + box.clientWidth + " " + box.clientHeight);
+      arc.setAttribute("d", "M 36 " + y1 + " C 15 " + y1 + ", 15 " + y2 + ", 36 " + y2);
+      arc.setAttribute("class", (toLine > fromLine ? "fwd" : "back") + " show");
+      if (flowArcTimer) clearTimeout(flowArcTimer);
+      var life = playback.playing ? Math.round(speedMs() * 0.7) : 700;
+      if (life < 260) life = 260;
+      flowArcTimer = setTimeout(function () { arc.classList.remove("show"); flowArcTimer = null; }, life);
+    }
+    /* Called from renderTrace on every render with the now-current line
+       (-1 = no line). Decides slide vs. arc from the previous line. */
+    function flowUpdate(line) {
+      var marker = $("flow-marker"), pre = $("code");
+      if (!marker || !pre) return;
+      if (line < 0) { marker.style.opacity = "0"; clearFlowArc(); flowPrevLine = -1; flowPrevEx = state.current; return; }
+      var el = pre.children[line];
+      if (!el) { marker.style.opacity = "0"; flowPrevLine = -1; flowPrevEx = state.current; return; }
+      var y = el.offsetTop + el.offsetHeight / 2 - 6;
+      var sameEx = flowPrevEx === state.current;
+      marker.style.opacity = "1";
+      if (!sameEx || flowPrevLine < 0) {
+        // First line of an exercise (or an exercise switch): place, don't travel.
+        marker.style.transition = "none";
+        marker.style.transform = "translateY(" + y + "px)";
+        void marker.offsetWidth;
+        marker.style.transition = "";
+        clearFlowArc();
+      } else {
+        marker.style.transitionDuration = (playback.playing && !reducedMotion()) ? Math.round(speedMs() * 0.75) + "ms" : "";
+        marker.style.transform = "translateY(" + y + "px)";
+        if (line !== flowPrevLine) {
+          // An arc shows for ANY backward move (the loop back-edge — even
+          // one line up, as in Exercises 4 and 6 — and call/return jumps)
+          // and for forward jumps of more than one line (a taken branch
+          // skipping lines, which also flashes the skipped lines below).
+          // An adjacent forward step is sequence: slide only.
+          if (line < flowPrevLine || line - flowPrevLine > 1) {
+            drawFlowArc(flowPrevLine, line);
+            if (line > flowPrevLine) {
+              var skipped = [];
+              for (var i = flowPrevLine + 1; i < line; i++) {
+                if (pre.children[i]) { pre.children[i].classList.add("skipped-flash"); skipped.push(pre.children[i]); }
+              }
+              if (skipped.length) {
+                var flashMs = playback.playing ? Math.round(speedMs() * 0.7) : 700;
+                setTimeout(function () { skipped.forEach(function (el2) { el2.classList.remove("skipped-flash"); }); }, flashMs);
+              }
+            }
+          } else clearFlowArc();
+        }
+      }
+      flowPrevLine = line; flowPrevEx = state.current;
+    }
+
+    function syncSpeedUI() {
+      document.querySelectorAll(".speed-btn").forEach(function (b) {
+        b.setAttribute("aria-pressed", parseFloat(b.getAttribute("data-speed")) === playbackSpeed ? "true" : "false");
+      });
+    }
+    function syncPlayUI() {
+      var btn = $("play-toggle"); if (!btn) return;
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      btn.textContent = playback.playing ? "❚❚ Pause" : "▶ Play";
+      btn.setAttribute("aria-pressed", playback.playing ? "true" : "false");
+      btn.setAttribute("aria-label", playback.playing ? "Pause the playback" : "Play the trace automatically");
+      // At the final step Play disables exactly like Step does, until the
+      // student steps back or restarts.
+      btn.disabled = !s.locked || (!playback.playing && s.step >= ex.steps.length - 1);
+      syncSpeedUI();
+    }
+    function setPlaybackSpeed(v) {
+      if (v !== 0.5 && v !== 1 && v !== 2) return;
+      if (playbackSpeed !== v) {
+        playbackSpeed = v;
+        announce("Playback speed " + v + "×.");
+        try { tfSave(); } catch (e) {}
+      }
+      syncSpeedUI();
+    }
+    function startPlayback() {
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      if (!s.locked || s.step >= ex.steps.length - 1) { syncPlayUI(); return; }
+      // A fresh pass that will cross the parting step re-arms the auto-pause.
+      var pi = partingStepIndex();
+      if (pi >= 0 && s.step < pi) playback.partingPaused = false;
+      partingPauseActive = false;
+      var pn = $("parting-note"); if (pn) pn.hidden = true;
+      playback.playing = true;
+      playback.exIdx = state.current;
+      syncPlayUI();
+      if (playback.timer) clearTimeout(playback.timer);
+      playback.timer = setTimeout(playTick, speedMs());
+    }
+    function stopPlayback() {
+      if (playback.timer) { clearTimeout(playback.timer); playback.timer = null; }
+      playback.playing = false;
+      partingPauseActive = false;
+      var pn = $("parting-note"); if (pn) pn.hidden = true;
+      syncPlayUI();
+    }
+    function playTick() {
+      playback.timer = null;
+      if (!playback.playing) return;
+      // Context guards: exercise switched, mode left, lecture opened, or
+      // the tab hidden — stop rather than leave an orphaned timer.
+      var tm = $("tracer-mode");
+      if (state.current !== playback.exIdx || !tm || tm.hidden || tm.classList.contains("lecture-on") || document.hidden) { stopPlayback(); return; }
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      if (!s.locked) { stopPlayback(); return; }
+      if (!traceAdvance()) { stopPlayback(); return; }
+      var pi = partingStepIndex();
+      if (pi >= 0 && pi < ex.steps.length - 1 && s.step === pi && !playback.partingPaused) {
+        // Parting step reached: pause once for this run-through and surface
+        // the same diagnosis text the Investigate stage shows. Play resumes.
+        playback.partingPaused = true;
+        playback.playing = false;
+        partingPauseActive = true; partingPauseEx = state.current;
+        syncPlayUI();
+        var d = ex.diagnoses[s.selected];
+        var pn = $("parting-note");
+        if (pn && d) {
+          pn.innerHTML = "<b>Playback paused at the parting step</b> — step " + (pi + 1) + " of " + ex.steps.length + ", line " + (ex.steps[pi].line + 1) + ". " + d.text + " Press <b>Play</b> to keep stepping from here.";
+          pn.hidden = false;
+        }
+        return;
+      }
+      if (s.step >= ex.steps.length - 1) { playback.playing = false; syncPlayUI(); return; }
+      playback.timer = setTimeout(playTick, speedMs());
+    }
+    (function wirePlayback() {
+      var toggle = $("play-toggle");
+      if (toggle) toggle.addEventListener("click", function () {
+        if (playback.playing) stopPlayback(); else startPlayback();
+      });
+      var sbtns = Array.prototype.slice.call(document.querySelectorAll(".speed-btn"));
+      sbtns.forEach(function (b, i) {
+        b.addEventListener("click", function () { setPlaybackSpeed(parseFloat(b.getAttribute("data-speed"))); });
+        b.addEventListener("keydown", function (ev) {
+          if (ev.key !== "ArrowRight" && ev.key !== "ArrowLeft") return;
+          ev.preventDefault();
+          var nxt = sbtns[(i + (ev.key === "ArrowRight" ? 1 : sbtns.length - 1)) % sbtns.length];
+          nxt.focus();
+          setPlaybackSpeed(parseFloat(nxt.getAttribute("data-speed")));
+        });
+      });
+      document.addEventListener("visibilitychange", function () { if (document.hidden) stopPlayback(); });
     })();
 
     /* ---------------- Lecture mode (facilitator / class projection) ----------------
@@ -4270,6 +4515,7 @@ int main() {
       if (focusIt) { var sel = $("lecture-ex-select"); if (sel) sel.focus(); }
     }
     function openLecture(fromEl) {
+      stopPlayback();
       lecture.returnTo = fromEl || $("lecture-open-btn");
       $("tracer-mode").classList.add("lecture-on");
       $("lecture-panel").hidden = false;
@@ -8690,6 +8936,7 @@ int main() {
 
     /* ---------------- Mode toggle ---------------- */
     function setMode(mode) {
+      stopPlayback();
       $("bolt-mode").hidden = mode !== "bolt";
       $("tracer-mode").hidden = mode !== "tracer";
       $("gym-mode").hidden = mode !== "gym";
@@ -9125,7 +9372,7 @@ int main() {
       } catch (e) { tfStorageOk = false; return null; }
     }
     function tfCollect() {
-      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", primerRead: !!primerRead, tracer: [], bolt: null, gym: [], bridge: [], make: [], challenges: null, authoredExercises: [],
+      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", playbackSpeed: playbackSpeed, primerRead: !!primerRead, tracer: [], bolt: null, gym: [], bridge: [], make: [], challenges: null, authoredExercises: [],
         testOut: (typeof testOut !== "undefined" && testOut)
           ? { passed: !!testOut.passed, score: (typeof testOut.score === "number" ? testOut.score : 0), via: (Array.isArray(testOut.via) ? testOut.via.slice() : [false, false, false]) }
           : { passed: false, score: 0, via: [false, false, false] } };
@@ -9326,6 +9573,7 @@ int main() {
       if (d.primerRead) { primerRead = true; primerOpened = true; }
       // Bits view preference (additive field; absent in older saves)
       if (d.bitsFormat === "dec" || d.bitsFormat === "bin" || d.bitsFormat === "hex") bitsFormat = d.bitsFormat;
+      if (d.playbackSpeed === 0.5 || d.playbackSpeed === 1 || d.playbackSpeed === 2) playbackSpeed = d.playbackSpeed;
       // Test-out check result
       if (d.testOut && typeof testOut !== "undefined") {
         testOut.passed = !!d.testOut.passed;
