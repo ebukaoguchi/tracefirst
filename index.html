@@ -367,6 +367,28 @@
       .primer-status.done{color:var(--accent-strong);font-weight:700}
       .meet-link{margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 14px;box-shadow:var(--shadow);font-size:.94rem}
       .text-link{background:none;border:none;padding:0;color:var(--accent-strong);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+
+      /* ---------- Test-out check ---------- */
+      .testout-entry{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px;font-size:.93rem;color:var(--ink-soft)}
+      .testout-entry strong{color:var(--ink)}
+      .testout-entry .testout-entry-status{display:block;margin-top:3px;font-size:.88rem;color:var(--accent-strong);font-weight:600}
+      .testout-panel{margin-top:14px;border:1.5px solid var(--accent);background:var(--panel-2);border-radius:12px;padding:16px 18px}
+      .testout-panel h3{font-family:"Source Serif 4",Georgia,serif;font-size:1.2rem;line-height:1.2}
+      .testout-panel .testout-note{margin-top:6px;font-size:.92rem;color:var(--ink-soft);max-width:640px}
+      .testout-meta{font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);margin-top:14px}
+      .testout-intro-text{margin-top:8px;font-size:.97rem;line-height:1.5}
+      .testout-panel .codebox{margin-top:10px}
+      .testout-result{margin-top:12px;border-radius:10px;padding:13px 15px;font-size:.95rem}
+      .testout-result.pass{background:var(--accent-soft);border:1.5px solid var(--accent);color:var(--accent-strong)}
+      .testout-result.fail{background:var(--rust-soft);border:1.5px solid var(--rust);color:var(--rust)}
+      .testout-result p{margin-top:6px}
+      .testout-result p:first-child{margin-top:0}
+      .testout-missed{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:8px}
+      .testout-missed li{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between;border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:9px 12px;font-size:.93rem}
+      .testout-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;align-items:center}
+      .ex-btn .status.tested{color:var(--accent-strong);font-weight:600}
+      .ex-row .status.tested{color:var(--accent-strong);font-weight:700}
+      .record-list .rstat.tested{color:var(--accent-strong);font-weight:600}
       @media(max-width:700px){.primer-line{grid-template-columns:1fr}.primer-line code{padding-bottom:4px}.primer-line p{padding-top:4px}.route-head{flex-wrap:wrap}.route-state{display:none}}
 
       /* ---------- Mode toggle ---------- */
@@ -946,6 +968,14 @@
             <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
           <p class="route-free"><strong>You do not have to follow this order.</strong> Every mode below stays open, in any order, at any time.</p>
+        </div>
+        <div class="testout-entry">
+          <p><strong>Already know some programming?</strong> <button class="text-link" type="button" id="testout-open" aria-expanded="false" aria-controls="testout-panel">Take the test-out check.</button><span class="testout-entry-status" id="testout-entry-status" role="status"></span></p>
+        </div>
+        <div class="testout-panel" id="testout-panel" hidden>
+          <h3 id="testout-h" tabindex="-1">Test-out check</h3>
+          <p class="testout-note">Seven short questions, answered in order — no stepping, and each answer is final for this sitting. Score 6 or 7 and the opening stretch is marked as tested out: Start Here steps 1 to 3 tick, the primer counts as read, and Tracer Exercises 1 to 5 are marked <strong>Tested out</strong>. Retakes are unlimited, and a tested-out exercise can still be done normally later — your real attempt replaces the mark.</p>
+          <div id="testout-body"></div>
         </div>
       </section>
 
@@ -2828,6 +2858,7 @@ for (int i = 0; i < 3; i++) {
 
     function exStatus(i) {
       var s = state.ex[i];
+      if (!s.locked && typeof isTestedOut === "function" && isTestedOut(i)) return { t: "tested out", cls: "tested" };
       if (!s.locked) return { t: "not started", cls: "" };
       if (!s.modDone) return { t: s.correct ? "predicted ✓" : "predicted ✗", cls: s.correct ? "good" : "bad" };
       return { t: "prediction " + (s.correct ? "✓" : "✗") + " · modify " + (s.modCorrect ? "✓" : "✗"),
@@ -2850,16 +2881,19 @@ for (int i = 0; i < 3; i++) {
         var det = document.createElement("details");
         det.className = "ex-group";
         if (state.current >= g.from && state.current <= g.to) det.open = true;
-        var doneN = 0;
-        for (var k = g.from; k <= g.to; k++) { if (state.ex[k] && state.ex[k].locked) doneN++; }
+        var doneN = 0, toN = 0;
+        for (var k = g.from; k <= g.to; k++) {
+          if (state.ex[k] && state.ex[k].locked) doneN++;
+          else if (typeof isTestedOut === "function" && isTestedOut(k)) toN++;
+        }
         var sum = document.createElement("summary");
-        sum.innerHTML = '<span>' + g.name + '</span><span class="gcount">' + doneN + " / " + (g.to - g.from + 1) + " attempted &#9662;</span>";
+        sum.innerHTML = '<span>' + g.name + '</span><span class="gcount">' + doneN + " / " + (g.to - g.from + 1) + " attempted" + (toN ? " · " + toN + " tested out" : "") + " &#9662;</span>";
         det.appendChild(sum);
         var list = document.createElement("div"); list.className = "ex-group-list";
         for (var i = g.from; i <= g.to; i++) {
           (function (idx) {
             var ex = EXERCISES[idx], st = exStatus(idx);
-            var shortStatus = !state.ex[idx].locked ? "Not started" : st.t;
+            var shortStatus = !state.ex[idx].locked ? (st.cls === "tested" ? "Tested out" : "Not started") : st.t;
             var b = document.createElement("button");
             b.className = "ex-btn ex-row"; b.type = "button";
             b.setAttribute("aria-current", state.current === idx ? "true" : "false");
@@ -2885,11 +2919,16 @@ for (int i = 0; i < 3; i++) {
         '<span class="metric"><strong>' + modRight + " / " + modAtt + '</strong> <span>modify predictions correct</span></span>' +
         '<span class="metric"><strong>' + attempted + " / " + EXERCISES.length + '</strong> <span>exercises attempted</span></span>';
       var recSum = document.getElementById("record-summary-text");
-      if (recSum) recSum.textContent = attempted + " attempted \u00b7 " + (attempted ? Math.round((right / attempted) * 100) + "% first-prediction accuracy" : "no predictions yet");
+      if (recSum) {
+        var toCount = 0;
+        if (typeof isTestedOut === "function") { for (var ti = 0; ti < 5; ti++) { if (isTestedOut(ti)) toCount++; } }
+        recSum.textContent = attempted + " attempted \u00b7 " + (attempted ? Math.round((right / attempted) * 100) + "% first-prediction accuracy" : "no predictions yet") + (toCount ? " \u00b7 " + toCount + " tested out (not counted)" : "");
+      }
       var list = $("record-list"); list.innerHTML = "";
       EXERCISES.forEach(function (ex, i) {
         var s = state.ex[i], li = document.createElement("li"), stat, cls = "";
-        if (!s.locked) stat = "— not attempted";
+        if (!s.locked && typeof isTestedOut === "function" && isTestedOut(i)) { stat = "tested out"; cls = "tested"; }
+        else if (!s.locked) stat = "— not attempted";
         else if (!s.modDone) { stat = s.correct ? "prediction ✓" : "prediction ✗"; cls = s.correct ? "good" : "bad"; }
         else { stat = "prediction " + (s.correct ? "✓" : "✗") + " · modify " + (s.modCorrect ? "✓" : "✗");
                cls = (s.correct && s.modCorrect) ? "good" : "bad"; }
@@ -6463,21 +6502,25 @@ for (int i = 0; i < 3; i++) {
       try { if (typeof bridgeDoneCount === "function") bridgeN = bridgeDoneCount(); } catch (e) {}
       try { if (typeof gym !== "undefined" && gym && gym.rounds) gymN = gym.rounds.filter(function (r) { return r.done; }).length; } catch (e) {}
       try { if (typeof makeDoneCount === "function") makeN = makeDoneCount(); } catch (e) {}
+      var toPassed = (typeof testOut !== "undefined" && testOut && testOut.passed) ? true : false;
+      var toVia = (toPassed && testOut && Array.isArray(testOut.via)) ? testOut.via : [false, false, false];
       return {
         bolt: boltN, tracer: tracerN, bridge: bridgeN, gym: gymN, make: makeN,
+        testOutPassed: toPassed,
+        viaTestOut: { 1: !!toVia[0], 2: !!toVia[1], 3: !!toVia[2] },
         steps: {
-          1: boltN >= 3,
+          1: boltN >= 3 || toPassed,
           2: !!(primerOpened && primerRead),
-          3: tracerN >= 5,
+          3: tracerN >= 5 || toPassed,
           4: bridgeN >= 2,
           5: gymN >= 1,
           6: tracerRest >= 18,
           7: makeN >= 3
         },
         details: {
-          1: boltN + " of 3 worlds done",
-          2: primerRead ? "Primer read" : (primerOpened ? "Primer opened — finish it and press the button at its foot" : "Not opened yet"),
-          3: Math.min(tracerN, 5) + " of 5 exercises recorded",
+          1: toVia[0] ? "Tested out — Bolt worlds not run" : boltN + " of 3 worlds done",
+          2: toVia[1] ? "Primer read — marked by the test-out check" : (primerRead ? "Primer read" : (primerOpened ? "Primer opened — finish it and press the button at its foot" : "Not opened yet")),
+          3: toVia[2] ? "Tested out of Exercises 1 to 5" : Math.min(tracerN, 5) + " of 5 exercises recorded",
           4: Math.min(bridgeN, 2) + " of 2 activities done",
           5: gymN >= 1 ? "Round 1 verified" : "No round verified yet",
           6: Math.min(tracerRest, 18) + " of 18 exercises recorded",
@@ -6491,7 +6534,7 @@ for (int i = 0; i < 3; i++) {
       var p = routeProgress();
       var doneCount = [1,2,3,4,5,6,7].filter(function (n) { return p.steps[n]; }).length;
       var allDone = doneCount === 7;
-      var sig = [p.bolt, p.tracer, p.bridge, p.gym, p.make, primerOpened, primerRead, routeManualExpand, routeCollapsed, allDone].join("|");
+      var sig = [p.bolt, p.tracer, p.bridge, p.gym, p.make, primerOpened, primerRead, routeManualExpand, routeCollapsed, allDone, p.testOutPassed, p.viaTestOut[1], p.viaTestOut[2], p.viaTestOut[3]].join("|");
       if (sig === routeLastSig) return;
       routeLastSig = sig;
       var progressEl = document.getElementById("route-progress");
@@ -6508,7 +6551,7 @@ for (int i = 0; i < 3; i++) {
           btn.setAttribute("aria-label", btn.textContent.replace(/\s+/g, " ").trim() + (p.steps[n] ? " — done" : ""));
         }
         if (numEl) numEl.textContent = p.steps[n] ? "✓" : String(n);
-        if (stateEl) stateEl.textContent = p.steps[n] ? "Done ✓" : "Not yet";
+        if (stateEl) stateEl.textContent = p.steps[n] ? (p.viaTestOut && p.viaTestOut[n] ? "Done ✓ · tested out" : "Done ✓") : "Not yet";
         if (detailEl) detailEl.textContent = p.details[n];
       });
       var body = document.getElementById("route-body");
@@ -6587,6 +6630,210 @@ for (int i = 0; i < 3; i++) {
       // Safety net: completion can change inside Bolt/Make runs that do not
       // all funnel through the patched renderers above.
       setInterval(function () { renderRoute(); }, 900);
+    })();
+
+    /* ---------------- Test-out check ----------------
+       Seven multiple-choice questions, answered in order, one attempt per
+       sitting, retakes unlimited. Passing (6 or 7) ticks Start Here steps
+       1-3 and marks Tracer Exercises 1-5 as tested out. Tested out is a
+       derived state (testOut.passed and the exercise not locked), never a
+       prediction: it is excluded from every attempt and accuracy count,
+       and a later real attempt replaces the mark by locking the exercise.
+       Bolt's world completions are NOT marked — only the route step ticks.
+       The result persists in tracefirst-progress-v1 (see persistence). */
+    var testOut = { passed: false, score: 0, via: [false, false, false] };
+    function isTestedOut(i) {
+      return i >= 0 && i < 5 && !!testOut.passed && !(state.ex[i] && state.ex[i].locked);
+    }
+    var TO_QUESTIONS = [
+      { tag: "Logic (Bolt)",
+        intro: "Bolt is in a hall 5 squares wide and 1 square tall, at square 1 facing East. There is one battery cell on square 5. Bolt runs this program:",
+        code: ["for (int i = 0; i < 4; i++) { move(); }", "pickCell();"],
+        ask: "How many cells is Bolt holding when the program ends?",
+        options: ["0", "1", "4", "Bolt crashes before finishing"], correct: 1, jump: "bolt" },
+      { tag: "Values & assignment",
+        code: ["int score = 25;", "score = score + 5;", "score = score * 2;", "cout << score;"],
+        ask: "What does this program print?",
+        options: ["30", "35", "60", "65"], correct: 2, jump: 0 },
+      { tag: "Integer division",
+        code: ["int a = 17;", "int b = 5;", "cout << a / b << \" \" << a % b;"],
+        ask: "What does this program print?",
+        options: ["3 2", "3.4 2", "4 1", "2 3"], correct: 0, jump: 1 },
+      { tag: "Decisions",
+        code: ["int temp = 45;", "if (temp < 32) { cout << \"freezing\"; }", "else if (temp < 60) { cout << \"cool\"; }", "else { cout << \"warm\"; }"],
+        ask: "What does this program print?",
+        options: ["freezing", "cool", "warm"], correct: 1, jump: 2 },
+      { tag: "Loops (for)",
+        code: ["int total = 0;", "for (int i = 1; i <= 4; i++) { total += i; }", "cout << total;"],
+        ask: "What does this program print?",
+        options: ["4", "9", "10", "20"], correct: 2, jump: 3 },
+      { tag: "Functions",
+        code: ["int triple(int n) { return n * 3; }", "", "// in main:", "cout << triple(4) + triple(2);"],
+        ask: "What does this program print?",
+        options: ["10", "14", "18", "24"], correct: 2, jump: 4 },
+      { tag: "Loops (while)",
+        code: ["int count = 0;", "int n = 20;", "while (n > 1) { n = n / 2; count++; }", "cout << count;"],
+        ask: "What does this program print?",
+        options: ["3", "4", "5", "10"], correct: 1, jump: 5 }
+    ];
+    var toSitting = null; // { idx, answers: [] } while a sitting is in progress
+
+    function renderTestOutEntry() {
+      var el = document.getElementById("testout-entry-status");
+      if (!el) return;
+      el.textContent = testOut.passed
+        ? "Test-out passed (" + testOut.score + " of 7). Exercises 1 to 5 are marked tested out: they do not count as predictions, and you can still do any of them normally."
+        : "";
+    }
+    function toBody() { return document.getElementById("testout-body"); }
+    function renderToStart() {
+      var body = toBody(); if (!body) return;
+      var html = "";
+      if (testOut.passed) {
+        html += '<p class="testout-intro-text">You have already passed the test-out check (' + testOut.score + ' of 7), and Exercises 1 to 5 are marked tested out. You can retake the check if you like: only a new pass changes anything.</p>';
+      } else {
+        html += '<p class="testout-intro-text">Answer all seven questions in order. Each answer is final for this sitting, but you can retake the whole check as often as you like. Nothing changes unless you pass.</p>';
+      }
+      html += '<div class="testout-actions"><button class="btn" type="button" id="to-start-btn">' + (testOut.passed ? "Retake the check" : "Start the check") + '</button></div>';
+      body.innerHTML = html;
+      var btn = document.getElementById("to-start-btn");
+      if (btn) btn.addEventListener("click", function () {
+        toSitting = { idx: 0, answers: [] };
+        renderToQuestion();
+      });
+    }
+    function renderToQuestion() {
+      var body = toBody(); if (!body || !toSitting) return;
+      var q = TO_QUESTIONS[toSitting.idx];
+      var html = '<p class="testout-meta">Question ' + (toSitting.idx + 1) + ' of 7 · ' + esc(q.tag) + '</p>';
+      if (q.intro) html += '<p class="testout-intro-text">' + esc(q.intro) + '</p>';
+      if (q.code) {
+        html += '<div class="codebox"><div class="codehead"><span>program.cpp</span><span>C++</span></div><pre aria-label="Program code">';
+        q.code.forEach(function (line, li) {
+          html += '<div class="cline"><span class="ln">' + (li + 1) + '</span><span>' + (esc(line) || " ") + '</span></div>';
+        });
+        html += '</pre></div>';
+      }
+      html += '<p class="predict-q">' + esc(q.ask) + '</p>';
+      html += '<div class="options" role="group" aria-label="Answer options for question ' + (toSitting.idx + 1) + '">';
+      q.options.forEach(function (opt, oi) {
+        html += '<button class="opt-btn" type="button" data-to-opt="' + oi + '"><span class="key" aria-hidden="true">' + "ABCD".charAt(oi) + '</span><span>' + esc(opt) + '</span></button>';
+      });
+      html += '</div>';
+      body.innerHTML = html;
+      body.querySelectorAll("[data-to-opt]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          if (!toSitting) return;
+          toSitting.answers.push(parseInt(b.getAttribute("data-to-opt"), 10));
+          toSitting.idx++;
+          if (toSitting.idx >= TO_QUESTIONS.length) { finishToSitting(); }
+          else {
+            renderToQuestion();
+            var q2 = TO_QUESTIONS[toSitting.idx];
+            announce("Question " + (toSitting.idx + 1) + " of 7: " + q2.tag + ".");
+          }
+        });
+      });
+      var first = body.querySelector(".opt-btn");
+      if (first) { try { first.focus({ preventScroll: true }); } catch (e) {} }
+    }
+    function applyToPass(score) {
+      var boltDoneN = 0;
+      try { if (typeof bolt !== "undefined" && bolt && bolt.done) boltDoneN = bolt.done.filter(Boolean).length; } catch (e) {}
+      var lockedFirst5 = state.ex.slice(0, 5).filter(function (s) { return s.locked; }).length;
+      var via = [boltDoneN < 3, !primerRead, lockedFirst5 < 5];
+      if (testOut.passed && Array.isArray(testOut.via)) {
+        via = via.map(function (v, k) { return v || !!testOut.via[k]; });
+      }
+      testOut.passed = true;
+      testOut.score = score;
+      testOut.via = via;
+      primerOpened = true;
+      primerRead = true;
+      routeLastSig = "";
+      if (typeof renderAll === "function") renderAll();
+      if (typeof renderRoute === "function") renderRoute();
+      renderTestOutEntry();
+      if (typeof tfSave === "function") tfSave();
+    }
+    function finishToSitting() {
+      var answers = toSitting ? toSitting.answers : [];
+      toSitting = null;
+      var score = 0, missed = [];
+      TO_QUESTIONS.forEach(function (q, qi) {
+        if (answers[qi] === q.correct) score++;
+        else missed.push(qi);
+      });
+      var passed = score >= 6;
+      var wasPassed = testOut.passed;
+      if (passed) applyToPass(score);
+      var body = toBody(); if (!body) return;
+      var html = "";
+      if (passed) {
+        html += '<div class="testout-result pass" role="status"><p><strong>You passed — ' + score + ' of 7.</strong></p>'
+          + '<p>Start Here steps 1 to 3 are ticked as done by test-out, and the Meet the Code primer counts as read. Tracer Exercises 1 to 5 are now marked <strong>Tested out</strong>: they are not predictions, so they are kept out of your record, your journal score, and any class digest.</p>'
+          + '<p>Bolt\'s own world completions were <strong>not</strong> marked — you have not run those worlds; only the route step is ticked.</p>'
+          + '<p>You can still do any tested-out exercise normally. The moment you lock a real prediction on one, the tested-out mark is replaced by your actual attempt.</p></div>';
+      } else {
+        html += '<div class="testout-result fail" role="status"><p><strong>You scored ' + score + ' of 7 — the pass mark is 6.</strong></p>'
+          + '<p>Nothing has changed' + (wasPassed ? ', and your earlier pass still stands' : '') + '. The concepts below are the ones to revisit; each link takes you straight to the exercise that teaches it.</p></div>';
+        html += '<ul class="testout-missed">';
+        missed.forEach(function (qi) {
+          var q = TO_QUESTIONS[qi];
+          var label = q.jump === "bolt" ? "Go to Bolt's World" : "Go to Exercise " + (q.jump + 1);
+          html += '<li><span><strong>Question ' + (qi + 1) + '</strong> · ' + esc(q.tag) + '</span><button class="btn ghost small" type="button" data-to-jump="' + qi + '">' + label + '</button></li>';
+        });
+        html += '</ul>';
+      }
+      html += '<div class="testout-actions"><button class="btn" type="button" id="to-retake-btn">Retake the check</button>'
+        + '<button class="btn ghost" type="button" id="to-close-btn">Close</button></div>';
+      body.innerHTML = html;
+      body.querySelectorAll("[data-to-jump]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          var q = TO_QUESTIONS[parseInt(b.getAttribute("data-to-jump"), 10)];
+          if (!q) return;
+          if (q.jump === "bolt") {
+            if (typeof setMode === "function") setMode("bolt");
+            setTimeout(function () { var el = document.getElementById("bolt-mode"); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 60);
+          } else {
+            state.current = q.jump;
+            if (typeof setMode === "function") setMode("tracer");
+            if (typeof renderAll === "function") renderAll();
+            setTimeout(function () { var el = document.getElementById("tracer-mode"); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 60);
+          }
+        });
+      });
+      var retake = document.getElementById("to-retake-btn");
+      if (retake) retake.addEventListener("click", function () {
+        toSitting = { idx: 0, answers: [] };
+        renderToQuestion();
+        announce("Test-out check restarted. Question 1 of 7: " + TO_QUESTIONS[0].tag + ".");
+      });
+      var close = document.getElementById("to-close-btn");
+      if (close) close.addEventListener("click", function () {
+        var openBtn = document.getElementById("testout-open");
+        if (openBtn) openBtn.click();
+      });
+      announce(passed
+        ? "Test-out check passed. You scored " + score + " of 7. Exercises 1 to 5 are marked tested out."
+        : "Test-out check finished. You scored " + score + " of 7; the pass mark is 6. The concepts you missed are listed with links to their exercises.");
+    }
+    (function wireTestOut() {
+      var openBtn = document.getElementById("testout-open");
+      var panel = document.getElementById("testout-panel");
+      if (!openBtn || !panel) return;
+      openBtn.addEventListener("click", function () {
+        var show = panel.hidden;
+        panel.hidden = !show;
+        openBtn.setAttribute("aria-expanded", show ? "true" : "false");
+        openBtn.textContent = show ? "Hide the test-out check." : "Take the test-out check.";
+        if (show) {
+          if (!toSitting) renderToStart();
+          panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          var h = document.getElementById("testout-h");
+          if (h) { try { h.focus({ preventScroll: true }); } catch (e) {} }
+        }
+      });
     })();
 
     /* ---------------- Mode toggle ---------------- */
@@ -6780,6 +7027,9 @@ for (int i = 0; i < 3; i++) {
       var lines = [];
       lines.push("TraceFirst prediction journal");
       lines.push("Session score: " + right + " of " + EXERCISES.length + " correct (" + attempted.length + " attempted)");
+      if (typeof testOut !== "undefined" && testOut && testOut.passed) {
+        lines.push("NOTE: Tested out of Exercises 1-5 (test-out check, " + testOut.score + " of 7).");
+      }
       lines.push("");
       EXERCISES.forEach(function(ex, i){
         var s = state.ex[i];
@@ -6804,7 +7054,8 @@ for (int i = 0; i < 3; i++) {
     if (exportBtn) exportBtn.addEventListener("click", function(){
       var attempted = state.ex.filter(function(s){ return s.locked; }).length;
       var status = $("journal-status");
-      if (attempted === 0) {
+      var toPassed = (typeof testOut !== "undefined" && testOut && testOut.passed);
+      if (attempted === 0 && !toPassed) {
         if (status) status.textContent = "Nothing to export yet — lock in at least one prediction above, then export your journal.";
         announce("Nothing to export yet. Lock in a prediction first.");
         return;
@@ -6816,7 +7067,9 @@ for (int i = 0; i < 3; i++) {
       a.href = url; a.download = "tracefirst-journal.txt";
       document.body.appendChild(a); a.click();
       setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 400);
-      if (status) status.textContent = "Journal exported — " + attempted + " exercise" + (attempted===1?"":"s") + " included. The file is tracefirst-journal.txt in your downloads.";
+      if (status) status.textContent = attempted === 0
+        ? "Journal exported — it records your test-out pass; no predictions locked in yet. The file is tracefirst-journal.txt in your downloads."
+        : "Journal exported — " + attempted + " exercise" + (attempted===1?"":"s") + " included. The file is tracefirst-journal.txt in your downloads.";
       announce("Prediction journal exported with " + attempted + " exercises.");
     });
 
@@ -7020,7 +7273,10 @@ for (int i = 0; i < 3; i++) {
       } catch (e) { tfStorageOk = false; return null; }
     }
     function tfCollect() {
-      var data = { v: 1, primerRead: !!primerRead, tracer: [], bolt: null, gym: [], bridge: [], make: [], challenges: null };
+      var data = { v: 1, primerRead: !!primerRead, tracer: [], bolt: null, gym: [], bridge: [], make: [], challenges: null,
+        testOut: (typeof testOut !== "undefined" && testOut)
+          ? { passed: !!testOut.passed, score: (typeof testOut.score === "number" ? testOut.score : 0), via: (Array.isArray(testOut.via) ? testOut.via.slice() : [false, false, false]) }
+          : { passed: false, score: 0, via: [false, false, false] } };
       // Tracer: only locked / modify-completed exercises carry a record.
       state.ex.forEach(function (s, i) {
         if (!s.locked && !s.modDone) { data.tracer.push(null); return; }
@@ -7061,6 +7317,7 @@ for (int i = 0; i < 3; i++) {
     function tfHasProgress(d) {
       if (!d) return false;
       if (d.primerRead) return true;
+      if (d.testOut && d.testOut.passed) return true;
       if ((d.tracer || []).some(function (x) { return !!x; })) return true;
       if (d.bolt && ((d.bolt.done || []).some(Boolean) || (d.bolt.challengeDone || []).some(Boolean))) return true;
       if ((d.gym || []).some(function (x) { return !!x; })) return true;
@@ -7188,6 +7445,12 @@ for (int i = 0; i < 3; i++) {
       } catch (e) {}
       // Primer
       if (d.primerRead) { primerRead = true; primerOpened = true; }
+      // Test-out check result
+      if (d.testOut && typeof testOut !== "undefined") {
+        testOut.passed = !!d.testOut.passed;
+        if (typeof d.testOut.score === "number") testOut.score = d.testOut.score;
+        if (Array.isArray(d.testOut.via)) testOut.via = [!!d.testOut.via[0], !!d.testOut.via[1], !!d.testOut.via[2]];
+      }
     }
     var tfLoaded = tfLoad();
     var tfReturning = tfHasProgress(tfLoaded);
@@ -7230,6 +7493,7 @@ for (int i = 0; i < 3; i++) {
 
     renderSkins();
     renderAll();
+    if (typeof renderTestOutEntry === "function") renderTestOutEntry();
     if (typeof renderRoute === "function") { routeLastSig = ""; renderRoute(); }
     </script>
   </body>
