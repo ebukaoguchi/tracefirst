@@ -251,6 +251,10 @@
       .flow-svg path.show { opacity: .95; }
       .cline.skipped-flash { opacity: .35; }
       .parting-note { margin-top: 10px; border: 1.5px solid var(--amber); background: var(--amber-soft); border-radius: 10px; padding: 11px 14px; font-size: .92rem; }
+      /* Narration caption line (playback): one sentence for the current step */
+      .play-caption { margin-top: 10px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 13px; font-size: .95rem; display: flex; gap: 10px; align-items: baseline; }
+      .play-caption[hidden] { display: none; }
+      .play-caption .cap-label { font-family: "IBM Plex Mono", monospace; font-size: .66rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-strong); flex: none; padding-top: 2px; }
       .memory { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; min-height: 86px; }
       .mem-empty { color: var(--ink-soft); font-size: .92rem; border: 1.5px dashed var(--line); border-radius: 10px; padding: 16px; width: 100%; }
       .membox {
@@ -1401,11 +1405,25 @@ for (int i = 0; i < 3; i++) {
                   <button class="btn small ghost" type="button" id="lec-run-all" aria-label="Run the trace to the end">Run to end</button>
                   <button class="btn small ghost" type="button" id="lec-trace-reset" aria-label="Restart the trace from the beginning">Restart</button>
                 </div>
+                <div class="play-controls">
+                  <button class="btn small" type="button" id="lec-play-toggle" aria-pressed="false" aria-label="Play the lecture trace automatically">▶ Play</button>
+                  <span class="bits-label" id="lec-speed-label">Playback speed</span>
+                  <div class="bits-group" role="group" aria-labelledby="lec-speed-label">
+                    <button type="button" class="spd-btn lec-spd-btn" data-speed="0.5" aria-pressed="false">0.5×</button>
+                    <button type="button" class="spd-btn lec-spd-btn" data-speed="1" aria-pressed="true">1×</button>
+                    <button type="button" class="spd-btn lec-spd-btn" data-speed="2" aria-pressed="false">2×</button>
+                  </div>
+                  <button class="btn small ghost" type="button" id="lec-replay-jump" disabled title="No jump yet in this run — a jump is a branch skip, a loop back-edge, or a call or return.">↺ Replay jump</button>
+                  <span class="bits-note">Playback lingers on jumps and printed output, and the narration line names the decision at every jump. If the class majority chose a diagnosed wrong answer, playback pauses at its parting step.</span>
+                </div>
+                <div class="play-caption" id="lec-caption" hidden><span class="cap-label" aria-hidden="true">Narration</span><span id="lec-caption-text"></span></div>
                 <div class="stepmeta" id="lec-stepmeta"></div>
                 <div class="stepbar"><i id="lec-stepbar-fill"></i></div>
-                <div class="codebox">
+                <div class="codebox flowbox">
                   <div class="codehead"><span>program.cpp</span><span>C++</span></div>
                   <pre id="lecture-trace-code" aria-label="Program code, current line highlighted"></pre>
+                  <svg class="flow-svg" id="lec-flow-svg" aria-hidden="true" focusable="false"><path id="lec-flow-arc" d=""></path></svg>
+                  <div class="flow-marker" id="lec-flow-marker" aria-hidden="true"></div>
                 </div>
                 <h4 style="margin-top:16px; font-size:.85rem; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;">Memory</h4>
                 <div class="memory" id="lec-memory"></div>
@@ -1413,6 +1431,7 @@ for (int i = 0; i < 3; i++) {
                 <div class="callstack" id="lec-callstack" hidden></div>
                 <div class="console"><div class="chead">Program output</div><div class="cout" id="lec-cout"></div></div>
                 <div class="stepnote" id="lec-stepnote"></div>
+                <div class="parting-note" id="lec-parting-note" hidden></div>
               </div>
               <div>
                 <div class="lecture-pinned" aria-labelledby="lecture-pinned-h">
@@ -1544,8 +1563,10 @@ for (int i = 0; i < 3; i++) {
                   <button type="button" class="spd-btn speed-btn" data-speed="1" aria-pressed="true">1×</button>
                   <button type="button" class="spd-btn speed-btn" data-speed="2" aria-pressed="false">2×</button>
                 </div>
-                <span class="bits-note">Plays one step at a time. The marker in the code margin slides for sequence, arcs over a skipped branch, and loops back up at a loop's edge. A wrong prediction pauses playback at the parting step.</span>
+                <button class="btn small ghost" type="button" id="replay-jump" disabled title="No jump yet in this run — a jump is a branch skip, a loop back-edge, or a call or return.">↺ Replay jump</button>
+                <span class="bits-note">Plays one step at a time, lingering on jumps and printed output. The marker in the code margin slides for sequence, arcs over a skipped branch, and loops back up at a loop's edge. The narration line below names the decision at every jump. A wrong prediction pauses playback at the parting step.</span>
               </div>
+              <div class="play-caption" id="play-caption" hidden><span class="cap-label" aria-hidden="true">Narration</span><span id="play-caption-text"></span></div>
               <div class="bits-toggle">
                 <span class="bits-label" id="bits-label">Memory values</span>
                 <div class="bits-group" role="group" aria-labelledby="bits-label">
@@ -3980,7 +4001,7 @@ int main() {
       syncBitsToggle();
       $("trace-locked").style.display = s.locked ? "none" : "";
       $("trace-ui").hidden = !s.locked;
-      if (!s.locked) { renderCode(-1); flowUpdate(-1); var cs0 = $("callstack"); if (cs0) { cs0.hidden = true; cs0.innerHTML = ""; } var sh0 = $("stack-h"); if (sh0) sh0.hidden = true; return; }
+      if (!s.locked) { renderCode(-1); flowUpdate(-1); var capL = $("play-caption"); if (capL) capL.hidden = true; var cs0 = $("callstack"); if (cs0) { cs0.hidden = true; cs0.innerHTML = ""; } var sh0 = $("stack-h"); if (sh0) sh0.hidden = true; return; }
       var step = s.step >= 0 ? ex.steps[s.step] : null;
       renderCode(step ? step.line : -1);
       flowUpdate(step ? step.line : -1);
@@ -3992,6 +4013,13 @@ int main() {
       $("step-next").disabled = s.step >= ex.steps.length - 1;
       $("run-all").disabled = s.step >= ex.steps.length - 1;
       syncPlayUI();
+      // Narration caption for the current step: shown during playback and
+      // left in place when playback pauses on this step.
+      var capBox = $("play-caption"), capTxt = $("play-caption-text");
+      if (capBox && capTxt) {
+        if (s.step >= 0) { capTxt.textContent = buildCaption(ex, s.step); capBox.hidden = false; }
+        else { capBox.hidden = true; capTxt.textContent = ""; }
+      }
       var pn0 = $("parting-note");
       if (pn0 && !(partingPauseActive && partingPauseEx === state.current && s.step === partingStepIndex())) pn0.hidden = true;
 
@@ -4256,6 +4284,452 @@ int main() {
       });
     })();
 
+    /* === CAPTION ENGINE START === */
+    /* Narration captions for playback. Pure functions of (exercise, step
+       index): no DOM, so the same builder serves the tracer and Lecture
+       mode. A caption is generated from the transition itself — the line
+       executed, the boxes that changed (old → new), the output produced —
+       and, at a jump, the decision that caused it. Conditions are derived
+       from the controlling line's source text and evaluated against the
+       step's own memory state with a small expression parser (no eval).
+       When a condition cannot be derived reliably, the caption falls back
+       to an accurate generic sentence rather than inventing a value:
+       accuracy beats flourish. */
+    function capParseScalar(raw) {
+      if (raw == null) return null;
+      var t = String(raw).trim();
+      if (t === "" || t === "—") return null;
+      if (/^-?\d+$/.test(t)) return { v: parseInt(t, 10), disp: t };
+      if (/^-?(?:\d+\.\d*|\.\d+)$/.test(t)) return { v: parseFloat(t), disp: t };
+      var cm = t.match(/^'([\s\S])'$/);
+      if (cm) return { v: cm[1].charCodeAt(0), disp: t };
+      if (/^'\\(.)'$/.test(t)) {
+        var escMap = { n: 10, t: 9, "0": 0, "\\": 92, "'": 39 };
+        var ec = t.charAt(2);
+        return { v: (ec in escMap) ? escMap[ec] : ec.charCodeAt(0), disp: t };
+      }
+      var sm = t.match(/^"([\s\S]*)"$/);
+      if (sm) return { v: sm[1], disp: t };
+      if (t === "true") return { v: true, disp: t };
+      if (t === "false") return { v: false, disp: t };
+      return null;
+    }
+    function capVarMap(ex, step) {
+      var map = {};
+      function add(vars) {
+        if (!vars) return;
+        Object.keys(vars).forEach(function (k) {
+          var p = capParseScalar(vars[k][1]);
+          if (p) map[k] = p;
+        });
+      }
+      add(step.vars);
+      if (step.frames && step.frames.length) add(step.frames[step.frames.length - 1].vars);
+      return map;
+    }
+    function capTokens(s) {
+      var toks = [], i = 0;
+      while (i < s.length) {
+        var c = s.charAt(i);
+        if (c === " " || c === "\t") { i++; continue; }
+        var two = s.substr(i, 2);
+        if (two === "<=" || two === ">=" || two === "==" || two === "!=" || two === "&&" || two === "||") { toks.push({ t: "op", v: two }); i += 2; continue; }
+        if ("<>+-*/%!()".indexOf(c) !== -1) { toks.push({ t: "op", v: c }); i++; continue; }
+        if (c === '"') {
+          var j = i + 1, out = "";
+          while (j < s.length && s.charAt(j) !== '"') { if (s.charAt(j) === "\\" && j + 1 < s.length) { out += s.charAt(j + 1); j += 2; } else { out += s.charAt(j); j++; } }
+          if (j >= s.length) return null;
+          toks.push({ t: "str", v: out }); i = j + 1; continue;
+        }
+        if (c === "'") {
+          if (s.charAt(i + 1) === "\\" && i + 3 < s.length && s.charAt(i + 3) === "'") {
+            var em = { n: 10, t: 9, "0": 0, "\\": 92, "'": 39 };
+            var e2 = s.charAt(i + 2);
+            toks.push({ t: "num", v: (e2 in em) ? em[e2] : e2.charCodeAt(0) }); i += 4; continue;
+          }
+          if (i + 2 < s.length && s.charAt(i + 2) === "'") { toks.push({ t: "num", v: s.charCodeAt(i + 1) }); i += 3; continue; }
+          return null;
+        }
+        if (/[0-9]/.test(c)) {
+          var m = s.substr(i).match(/^\d+(?:\.\d+)?/);
+          toks.push({ t: "num", v: parseFloat(m[0]) }); i += m[0].length; continue;
+        }
+        if (/[A-Za-z_]/.test(c)) {
+          var m2 = s.substr(i).match(/^[A-Za-z_]\w*/);
+          toks.push({ t: "id", v: m2[0] }); i += m2[0].length; continue;
+        }
+        return null;
+      }
+      return toks;
+    }
+    /* Evaluate a C++-subset condition against a scalar map. Returns
+       { ok:true, value } or { ok:false } — never guesses: unknown
+       identifiers, member access, subscripts, and calls all fail. */
+    function capEvalCond(cond, map) {
+      var toks = capTokens(cond);
+      if (!toks || !toks.length) return { ok: false };
+      var pos = 0;
+      function peek() { return toks[pos]; }
+      function isOp(v) { var t = toks[pos]; return t && t.t === "op" && t.v === v; }
+      function truthy(v) { return typeof v === "string" ? v.length > 0 : !!v; }
+      function parsePrimary() {
+        var t = toks[pos];
+        if (!t) throw new Error("eof");
+        if (t.t === "num" || t.t === "str") { pos++; return t.v; }
+        if (t.t === "id") {
+          pos++;
+          if (t.v === "true") return true;
+          if (t.v === "false") return false;
+          if (!(t.v in map)) throw new Error("unknown");
+          return map[t.v].v;
+        }
+        if (t.t === "op" && t.v === "(") {
+          pos++;
+          var v = parseOr();
+          if (!isOp(")")) throw new Error("paren");
+          pos++;
+          return v;
+        }
+        throw new Error("tok");
+      }
+      function parseUnary() {
+        if (isOp("!")) { pos++; return !truthy(parseUnary()); }
+        if (isOp("-")) { pos++; var v = parseUnary(); if (typeof v !== "number") throw new Error("neg"); return -v; }
+        if (isOp("+")) { pos++; return parseUnary(); }
+        return parsePrimary();
+      }
+      function arith(op, a, b) {
+        if (typeof a !== "number" || typeof b !== "number") throw new Error("arith");
+        if (op === "+") return a + b;
+        if (op === "-") return a - b;
+        if (op === "*") return a * b;
+        if (op === "/") { if (b === 0) throw new Error("div0"); return (Number.isInteger(a) && Number.isInteger(b)) ? Math.trunc(a / b) : a / b; }
+        if (op === "%") { if (b === 0) throw new Error("mod0"); return a % b; }
+        throw new Error("op");
+      }
+      function parseMul() {
+        var v = parseUnary();
+        while (peek() && peek().t === "op" && (peek().v === "*" || peek().v === "/" || peek().v === "%")) { var op = toks[pos++].v; v = arith(op, v, parseUnary()); }
+        return v;
+      }
+      function parseAdd() {
+        var v = parseMul();
+        while (peek() && peek().t === "op" && (peek().v === "+" || peek().v === "-")) { var op = toks[pos++].v; v = arith(op, v, parseMul()); }
+        return v;
+      }
+      function parseRel() {
+        var v = parseAdd();
+        while (peek() && peek().t === "op" && (peek().v === "<" || peek().v === ">" || peek().v === "<=" || peek().v === ">=")) {
+          var op = toks[pos++].v, w = parseAdd();
+          if (typeof v === "boolean" || typeof w === "boolean") throw new Error("rel");
+          v = op === "<" ? v < w : op === ">" ? v > w : op === "<=" ? v <= w : v >= w;
+        }
+        return v;
+      }
+      function parseEq() {
+        var v = parseRel();
+        while (peek() && peek().t === "op" && (peek().v === "==" || peek().v === "!=")) {
+          var op = toks[pos++].v, w = parseRel();
+          v = op === "==" ? v === w : v !== w;
+        }
+        return v;
+      }
+      function parseAnd() {
+        var v = parseEq();
+        while (isOp("&&")) { pos++; var w = parseEq(); v = truthy(v) && truthy(w); }
+        return v;
+      }
+      function parseOr() {
+        var v = parseAnd();
+        while (isOp("||")) { pos++; var w = parseAnd(); v = truthy(v) || truthy(w); }
+        return v;
+      }
+      try {
+        var result = parseOr();
+        if (pos !== toks.length) return { ok: false };
+        return { ok: true, value: result };
+      } catch (e) { return { ok: false }; }
+    }
+    /* The condition text of an if / else-if / while / for header line. */
+    function capCondOf(lineText) {
+      var t = String(lineText == null ? "" : lineText).trim();
+      var isFor = /^for\s*\(/.test(t);
+      if (!isFor && !/^(?:\}\s*)?(?:else\s+)?(?:if|while)\s*\(/.test(t)) return null;
+      var start = t.indexOf("(");
+      var depth = 0, end = -1, inStr = null;
+      for (var i = start; i < t.length; i++) {
+        var c = t.charAt(i);
+        if (inStr) { if (c === "\\") i++; else if (c === inStr) inStr = null; continue; }
+        if (c === '"' || c === "'") { inStr = c; continue; }
+        if (c === "(") depth++;
+        else if (c === ")") { depth--; if (depth === 0) { end = i; break; } }
+      }
+      if (end < 0) return null;
+      var inner = t.slice(start + 1, end);
+      if (isFor) {
+        var parts = [], d2 = 0, cur = "";
+        for (var j = 0; j < inner.length; j++) {
+          var c2 = inner.charAt(j);
+          if (c2 === "(") d2++;
+          if (c2 === ")") d2--;
+          if (c2 === ";" && d2 === 0) { parts.push(cur); cur = ""; } else cur += c2;
+        }
+        parts.push(cur);
+        if (parts.length !== 3) return null;
+        inner = parts[1];
+      }
+      inner = inner.replace(/\s+/g, " ").trim();
+      return inner || null;
+    }
+    function capFindLoopHeader(ex, lineIdx) {
+      for (var i = lineIdx; i >= 0 && i >= lineIdx - 14; i--) {
+        var t = (ex.code[i] || "").trim();
+        if (/^(?:for|while)\s*\(/.test(t)) return i;
+        if (/^do\b/.test(t)) return i;
+        if (/^(?:int|void|double|bool|char|string|long|float)\s+\w+\s*\(/.test(t)) return -1;
+      }
+      return -1;
+    }
+    /* "i <= 4 is false (i is 5)" — or null when the condition cannot be
+       evaluated reliably from the step's memory state. */
+    function capCondPhrase(cond, map) {
+      var r = capEvalCond(cond, map);
+      if (!r.ok || typeof r.value === "string") return null;
+      var outcome = !!r.value;
+      var ids = [], seen = {};
+      (cond.match(/[A-Za-z_]\w*/g) || []).forEach(function (id) {
+        if (id === "true" || id === "false" || seen[id]) return;
+        seen[id] = true;
+        if (id in map) ids.push(id);
+      });
+      var vals = ids.slice(0, 3).map(function (id) { return id + " is " + map[id].disp; }).join(", ");
+      return { text: cond + " is " + (outcome ? "true" : "false") + (vals ? " (" + vals + ")" : ""), outcome: outcome, ids: ids };
+    }
+    /* The construct a break on this line would leave: "switch" when the
+       nearest enclosing construct upward is a switch, else "loop". */
+    function capEnclosingKind(ex, lineIdx) {
+      for (var i = lineIdx; i >= 0 && i >= lineIdx - 16; i--) {
+        var t = (ex.code[i] || "").trim();
+        if (/\bswitch\s*\(/.test(t)) return "switch";
+        if (/^(?:for|while)\s*\(/.test(t) || /^do\b/.test(t)) return "loop";
+        if (/^(?:int|void|double|bool|char|string|long|float)\s+\w+\s*\(/.test(t)) return "loop";
+      }
+      return "loop";
+    }
+    /* When an exercise tracks no call frames, a call still shows in the
+       text: the previous line names a function the program defines.
+       Returns that function's name, or null. */
+    function capCalledName(ex, prevStep) {
+      if (!prevStep) return null;
+      var txt = ex.code[prevStep.line] || "";
+      var found = null;
+      ex.code.forEach(function (l) {
+        var m = (l || "").match(/^\s*(?:int|void|double|bool|char|string|long|float)\s+(\w+)\s*\(/);
+        if (m && m[1] !== "main" && txt.indexOf(m[1] + "(") !== -1) found = m[1];
+      });
+      return found;
+    }
+    function capPhraseForLine(ex, lineIdx, map) {
+      var cond = capCondOf(ex.code[lineIdx]);
+      if (!cond && lineIdx > 0) cond = capCondOf(ex.code[lineIdx - 1]);
+      return cond ? capCondPhrase(cond, map) : null;
+    }
+    function capDisp(raw) {
+      var t = String(raw == null ? "" : raw).trim();
+      if (t === "—") return "empty";
+      if (t.indexOf("→") === 0) return "pointing to " + t.slice(1).trim();
+      return t;
+    }
+    function capChanges(ex, idx) {
+      var step = ex.steps[idx], prev = idx > 0 ? ex.steps[idx - 1] : null;
+      var out = [];
+      Object.keys(step.vars || {}).forEach(function (k) {
+        var cv = step.vars[k][1];
+        var pv = prev && prev.vars ? prev.vars[k] : null;
+        var cvT = String(cv).trim();
+        if (!prev || !pv) {
+          out.push({ name: k, text: cvT.indexOf("→") === 0
+            ? k + " starts pointing to " + cvT.slice(1).trim()
+            : k + (cvT === "—" ? " starts empty" : " starts at " + capDisp(cv)) });
+        } else if (pv[1] !== cv) {
+          out.push({ name: k, text: cvT.indexOf("→") === 0
+            ? k + " now points to " + cvT.slice(1).trim() + " (was " + capDisp(pv[1]) + ")"
+            : k + " becomes " + capDisp(cv) + " (was " + capDisp(pv[1]) + ")" });
+        }
+      });
+      return out;
+    }
+    function capChangeText(ex, idx, skipNames) {
+      var list = capChanges(ex, idx);
+      if (skipNames && skipNames.length) list = list.filter(function (c) { return skipNames.indexOf(c.name) === -1; });
+      if (!list.length) return "";
+      return list.slice(0, 3).map(function (c) { return c.text; }).join("; ") + ".";
+    }
+    function capOutputText(ex, idx) {
+      var cur = ex.steps[idx].out || "";
+      var prevOut = idx > 0 ? (ex.steps[idx - 1].out || "") : "";
+      if (!cur || cur === prevOut) return "";
+      var add = (prevOut && cur.indexOf(prevOut) === 0) ? cur.slice(prevOut.length) : cur;
+      add = add.trim();
+      return add ? "It prints " + add + "." : "";
+    }
+    function capNoteSentence(step) {
+      if (!step || !step.note) return "";
+      var t = String(step.note).replace(/<[^>]*>/g, "").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, "&").replace(/\s+/g, " ").trim();
+      var m = t.match(/^[^.!?]*[.!?]/);
+      var s = m ? m[0] : t;
+      return s.length > 180 ? "" : s;
+    }
+    /* Transition classification shared by captions, pacing, replay, and
+       the marker: any move to an earlier line is a back-edge; a forward
+       move of more than one line is a skip; frame growth/shrinkage marks
+       a call / return ahead of line arithmetic. */
+    function classifyTransition(ex, prevIdx, idx) {
+      if (!ex || idx <= 0 || prevIdx < 0 || !ex.steps[idx] || !ex.steps[prevIdx]) return "start";
+      var p = ex.steps[prevIdx], c = ex.steps[idx];
+      var pf = p.frames ? p.frames.length : 0, cf = c.frames ? c.frames.length : 0;
+      if (cf > pf) return "call";
+      if (cf < pf) return "return";
+      if (c.line < p.line) return "back";
+      if (c.line > p.line + 1) return "fwd";
+      if (c.line === p.line) return capFindLoopHeader(ex, c.line) >= 0 ? "same-loop" : "seq";
+      return "seq";
+    }
+    function isJumpKind(kind) { return kind === "back" || kind === "fwd" || kind === "call" || kind === "return"; }
+    /* The step a jump into step `idx` came from, or -1. */
+    function jumpIntoStep(ex, idx) {
+      if (!ex || idx <= 0) return -1;
+      return isJumpKind(classifyTransition(ex, idx - 1, idx)) ? idx - 1 : -1;
+    }
+    /* Jump-aware dwell: jumps longest, output next, plain bookkeeping
+       fastest. Base interval comes from the speed setting. */
+    function transitionDwell(ex, prevIdx, idx, speed) {
+      var base = Math.round(1000 / speed);
+      if (!ex || idx <= 0 || prevIdx < 0) return base;
+      var kind = classifyTransition(ex, prevIdx, idx);
+      var w = 0.8;
+      if (isJumpKind(kind)) w = 1.6;
+      else if (kind === "same-loop") w = 1.3;
+      else {
+        var c = ex.steps[idx].out || "", p = ex.steps[prevIdx].out || "";
+        if (c && c !== p) w = 1.3;
+      }
+      return Math.round(base * w);
+    }
+    function buildCaption(ex, idx) {
+      if (!ex || idx < 0 || !ex.steps[idx]) return "";
+      var step = ex.steps[idx], prev = idx > 0 ? ex.steps[idx - 1] : null;
+      var kind = classifyTransition(ex, idx - 1, idx);
+      var lineNo = step.line + 1;
+      var lineTxt = (ex.code[step.line] || "").trim();
+      var prevTxt = prev ? (ex.code[prev.line] || "").trim() : "";
+      var map = capVarMap(ex, step);
+      var ch = capChangeText(ex, idx);
+      var out = capOutputText(ex, idx);
+      function tail(extra) {
+        return [extra || "", ch, out].filter(function (x) { return !!x; }).join(" ");
+      }
+      // break / continue are named on the step that executes them.
+      if (/\bbreak\s*;/.test(lineTxt)) {
+        var phB = capPhraseForLine(ex, step.line, map);
+        if (capEnclosingKind(ex, step.line) === "switch") {
+          return (phB ? phB.text + ", so " : "") + "break fires — it leaves the switch at once, so no further case runs.";
+        }
+        return (phB ? phB.text + ", so " : "") + "break fires — it leaves the whole loop at once, not just the if around it.";
+      }
+      if (/\bcontinue\s*;/.test(lineTxt)) {
+        var phC = capPhraseForLine(ex, step.line, map);
+        return (phC ? phC.text + ", so " : "") + "continue fires — the rest of this pass is skipped and the next pass begins.";
+      }
+      if (kind === "call") {
+        var frames = step.frames || [], topF = frames[frames.length - 1] || { name: "the function", vars: {} };
+        var argParts = Object.keys(topF.vars || {}).map(function (k) {
+          var p = capParseScalar(topF.vars[k][1]);
+          return k + " = " + (p ? p.disp : capDisp(topF.vars[k][1]));
+        });
+        return topF.name + "() is called — a new frame goes on the stack" + (argParts.length ? " with " + argParts.join(", ") : "") + ", and the caller waits where it was.";
+      }
+      if (kind === "return") {
+        var pf2 = prev && prev.frames ? prev.frames : [];
+        var gone = pf2.length ? pf2[pf2.length - 1].name : "the function";
+        return gone + "() returns — its frame leaves the stack and control goes back to the waiting caller at line " + lineNo + "." + (out ? " " + out : "");
+      }
+      if (kind === "back") {
+        // A backward line move with no loop in sight may be a function
+        // call in an exercise that tracks no frames.
+        var called = capCalledName(ex, prev);
+        if (called && capFindLoopHeader(ex, step.line) < 0) {
+          return called + "() is called — control enters the function at line " + lineNo + ", and the caller waits where it was." + (ch ? " " + ch : "");
+        }
+        var cond = capCondOf(lineTxt), header = cond ? step.line : -1;
+        if (!cond) {
+          header = capFindLoopHeader(ex, step.line);
+          if (header >= 0) cond = capCondOf(ex.code[header]);
+        }
+        var doWhileTest = !cond && prev && /\}\s*while\s*\(/.test(prevTxt);
+        if (doWhileTest) cond = capCondOf(prevTxt);
+        if (cond) {
+          var ph = capCondPhrase(cond, map);
+          if (ph && ph.outcome) return tail(ph.text + ", so the loop runs again.");
+          if (ph && !ph.outcome && header === step.line) return tail(ph.text + ", so the loop ends.");
+        }
+        if (header >= 0 || doWhileTest) return tail("The loop condition holds, so control returns to line " + lineNo + ".");
+        return tail("Control returns to line " + lineNo + ".");
+      }
+      if (kind === "same-loop") {
+        var h2 = capFindLoopHeader(ex, step.line);
+        var cond2 = h2 >= 0 ? capCondOf(ex.code[h2]) : null;
+        if (cond2) {
+          var ph2 = capCondPhrase(cond2, map);
+          if (ph2 && ph2.outcome) return tail(ph2.text + ", so the loop runs again.");
+        }
+        return tail("") || capNoteSentence(step) || ("Line " + lineNo + " runs again.");
+      }
+      if (kind === "fwd") {
+        if (/\bbreak\s*;/.test(prevTxt)) {
+          var enc = prev ? capEnclosingKind(ex, prev.line) : "loop";
+          return "break leaves the whole " + enc + " — control jumps to line " + lineNo + ", past the end of the " + enc + "." + (out ? " " + out : "");
+        }
+        if (prev && /\breturn\b/.test(prevTxt) && !/^\s*return\s+0\s*;/.test(prevTxt)) {
+          return "The function returns — control goes back to the caller at line " + lineNo + "." + (ch ? " " + ch : "") + (out ? " " + out : "");
+        }
+        if (prev && /\bcontinue\s*;/.test(prevTxt)) {
+          var phK = capPhraseForLine(ex, prev.line, capVarMap(ex, prev));
+          return (phK ? phK.text + ", so " : "") + "continue skips the rest of that pass, and the next pass reaches line " + lineNo + "." + (ch ? " " + ch : "") + (out ? " " + out : "");
+        }
+        if (prev) {
+          var prevMap = capVarMap(ex, prev);
+          for (var j = prev.line; j >= Math.max(0, prev.line - 5); j--) {
+            // Loop headers are not branch decisions: entering a loop body
+            // or leaving a finished loop is not a skip caused by the loop
+            // test, so never attribute a forward jump to one.
+            if (/^\s*(?:for|while)\s*\(/.test(ex.code[j] || "")) continue;
+            var cj = capCondOf(ex.code[j]);
+            if (!cj) continue;
+            var phj = capCondPhrase(cj, prevMap);
+            if (phj) return phj.text + (phj.outcome ? ", so control skips ahead to line " + lineNo + "." : ", so that branch is skipped and control moves to line " + lineNo + ".") + (out ? " " + out : "");
+            break;
+          }
+        }
+        return tail("Control jumps to line " + lineNo + ".");
+      }
+      // Sequence (or the first step): name the test when this line is one.
+      var condHere = capCondOf(lineTxt);
+      if (condHere) {
+        var phh = capCondPhrase(condHere, map);
+        if (phh) {
+          var chF = capChangeText(ex, idx, phh.ids);
+          return ["The test: " + phh.text + ".", chF, out].filter(function (x) { return !!x; }).join(" ");
+        }
+      }
+      if (/^[{}]\s*$/.test(lineTxt) || lineTxt === "") {
+        return tail("") || capNoteSentence(step);
+      }
+      var base = ch ? "" : "Line " + lineNo + " runs: " + lineTxt.replace(/\s*\{\s*$/, "") + ".";
+      return tail(base) || capNoteSentence(step);
+    }
+    /* === CAPTION ENGINE END === */
+
     /* ---------------- Animated playback & the control-flow marker ----------------
        Playback drives the SAME step functions as the manual buttons
        (traceAdvance / traceRetreat / traceRunAll / traceRestart), so state,
@@ -4273,11 +4747,19 @@ int main() {
        diagnosis's parting step and surfaces that diagnosis in place.
        Playback state is session-only; the chosen speed persists additively
        as `playbackSpeed`. Lecture mode below keeps its own separate
-       stepping implementation and is intentionally not routed through
-       this block. */
+       stepping implementation but ports this block's behaviour —
+       captions, jump-aware pacing, marker arcs, Replay jump — and
+       shares the caption engine and the speed setting. */
     var playback = { timer: null, playing: false, exIdx: -1, partingPaused: false };
     var partingPauseActive = false, partingPauseEx = -1;
     var flowPrevLine = -1, flowPrevEx = -1, flowArcTimer = null;
+    /* While a playback tick advances the trace, the usual describeStep
+       announcement is muted and the tick announces the step's narration
+       caption instead — one announcement per step, never two. */
+    var stepAnnounceMuted = false;
+    /* Set for exactly one render when Replay jump rewinds to the pre-jump
+       step, so the rewind itself draws no arc; the replayed advance does. */
+    var suppressFlowArc = false;
     function reducedMotion() {
       try { return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); } catch (e) { return false; }
     }
@@ -4291,7 +4773,7 @@ int main() {
         s.step++;
         if (s.step === ex.steps.length - 1) { s.traceDone = true; }
         renderAll();
-        announce(describeStep());
+        if (!stepAnnounceMuted) announce(describeStep());
         return true;
       }
       return false;
@@ -4336,8 +4818,11 @@ int main() {
       arc.setAttribute("d", "M 36 " + y1 + " C 15 " + y1 + ", 15 " + y2 + ", 36 " + y2);
       arc.setAttribute("class", (toLine > fromLine ? "fwd" : "back") + " show");
       if (flowArcTimer) clearTimeout(flowArcTimer);
-      var life = playback.playing ? Math.round(speedMs() * 0.7) : 700;
+      // Arcs only ever show jumps, so they live for most of the (longer)
+      // jump dwell rather than the plain-step fraction.
+      var life = playback.playing ? Math.round(speedMs() * 1.1) : 700;
       if (life < 260) life = 260;
+      if (life > 1500) life = 1500;
       flowArcTimer = setTimeout(function () { arc.classList.remove("show"); flowArcTimer = null; }, life);
     }
     /* Called from renderTrace on every render with the now-current line
@@ -4366,8 +4851,12 @@ int main() {
           // one line up, as in Exercises 4 and 6 — and call/return jumps)
           // and for forward jumps of more than one line (a taken branch
           // skipping lines, which also flashes the skipped lines below).
-          // An adjacent forward step is sequence: slide only.
-          if (line < flowPrevLine || line - flowPrevLine > 1) {
+          // An adjacent forward step is sequence: slide only. A Replay
+          // jump rewind suppresses its own arc so only the replayed
+          // transition arcs.
+          var suppressArc = suppressFlowArc;
+          suppressFlowArc = false;
+          if (!suppressArc && (line < flowPrevLine || line - flowPrevLine > 1)) {
             drawFlowArc(flowPrevLine, line);
             if (line > flowPrevLine) {
               var skipped = [];
@@ -4399,7 +4888,39 @@ int main() {
       // At the final step Play disables exactly like Step does, until the
       // student steps back or restarts.
       btn.disabled = !s.locked || (!playback.playing && s.step >= ex.steps.length - 1);
+      var rj = $("replay-jump");
+      if (rj) {
+        var jf = s.locked ? jumpIntoStep(ex, s.step) : -1;
+        rj.disabled = jf < 0 || playback.playing;
+        rj.title = jf < 0
+          ? "No jump yet in this run — a jump is a branch skip, a loop back-edge, or a call or return."
+          : "Replay the jump into this step: step back to step " + (jf + 1) + " and play that one transition again.";
+      }
       syncSpeedUI();
+    }
+    /* Replay jump: step back to the pre-jump step (arc suppressed for
+       the rewind), then play that single transition again — arc, caption,
+       and its jump dwell — and pause on the landing step. */
+    function replayJump() {
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      var from = jumpIntoStep(ex, s.step);
+      if (from < 0 || playback.playing) return;
+      var exIdx = state.current;
+      stopPlayback();
+      suppressFlowArc = true;
+      s.step = from;
+      s.traceDone = false;
+      renderAll();
+      setTimeout(function () {
+        if (state.current !== exIdx || state.ex[state.current].step !== from) return;
+        var ex2 = EXERCISES[exIdx], s2 = state.ex[exIdx];
+        suppressFlowArc = false;
+        stepAnnounceMuted = true;
+        traceAdvance();
+        stepAnnounceMuted = false;
+        announce("Step " + (s2.step + 1) + " of " + ex2.steps.length + ". " + buildCaption(ex2, s2.step));
+        syncPlayUI();
+      }, reducedMotion() ? 60 : 420);
     }
     function setPlaybackSpeed(v) {
       if (v !== 0.5 && v !== 1 && v !== 2) return;
@@ -4409,6 +4930,7 @@ int main() {
         try { tfSave(); } catch (e) {}
       }
       syncSpeedUI();
+      if (typeof syncLecPlayUI === "function") syncLecPlayUI();
     }
     function startPlayback() {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
@@ -4440,7 +4962,13 @@ int main() {
       if (state.current !== playback.exIdx || !tm || tm.hidden || tm.classList.contains("lecture-on") || document.hidden) { stopPlayback(); return; }
       var ex = EXERCISES[state.current], s = state.ex[state.current];
       if (!s.locked) { stopPlayback(); return; }
-      if (!traceAdvance()) { stopPlayback(); return; }
+      var prevStep = s.step;
+      stepAnnounceMuted = true;
+      var advanced = traceAdvance();
+      stepAnnounceMuted = false;
+      if (!advanced) { stopPlayback(); return; }
+      // The caption is this step's single announcement during playback.
+      announce("Step " + (s.step + 1) + " of " + ex.steps.length + ". " + buildCaption(ex, s.step));
       var pi = partingStepIndex();
       if (pi >= 0 && pi < ex.steps.length - 1 && s.step === pi && !playback.partingPaused) {
         // Parting step reached: pause once for this run-through and surface
@@ -4458,13 +4986,17 @@ int main() {
         return;
       }
       if (s.step >= ex.steps.length - 1) { playback.playing = false; syncPlayUI(); return; }
-      playback.timer = setTimeout(playTick, speedMs());
+      // Jump-aware pacing: the NEXT tick waits for the transition just
+      // taken — jumps dwell longest, output next, bookkeeping fastest.
+      playback.timer = setTimeout(playTick, transitionDwell(ex, prevStep, s.step, playbackSpeed));
     }
     (function wirePlayback() {
       var toggle = $("play-toggle");
       if (toggle) toggle.addEventListener("click", function () {
         if (playback.playing) stopPlayback(); else startPlayback();
       });
+      var rjBtn = $("replay-jump");
+      if (rjBtn) rjBtn.addEventListener("click", replayJump);
       var sbtns = Array.prototype.slice.call(document.querySelectorAll(".speed-btn"));
       sbtns.forEach(function (b, i) {
         b.addEventListener("click", function () { setPlaybackSpeed(parseFloat(b.getAttribute("data-speed"))); });
@@ -4508,6 +5040,7 @@ int main() {
       sel.value = String(lecture.exIdx);
     }
     function lectureShowPick(focusIt) {
+      stopLecPlayback();
       lecture.phase = "pick";
       $("lecture-pick").hidden = false;
       $("lecture-project").hidden = true;
@@ -4531,6 +5064,7 @@ int main() {
       var h = $("lecture-h"); if (h) h.focus();
     }
     function exitLecture() {
+      stopLecPlayback();
       $("tracer-mode").classList.remove("lecture-on");
       $("lecture-panel").hidden = true;
       announce("Lecture mode closed. Your own tracer work is unchanged.");
@@ -4625,6 +5159,8 @@ int main() {
     }
     function lectureProject(idx) {
       if (typeof idx !== "number" || !EXERCISES[idx]) return;
+      stopLecPlayback();
+      lecPlayback.partingPaused = false;
       lecture.exIdx = idx;
       var ex = lectureEx();
       lecture.counts = ex.options ? ex.options.map(function () { return 0; }) : [];
@@ -4660,6 +5196,7 @@ int main() {
     function lectureRenderTrace() {
       var ex = lectureEx(), step = lecture.step >= 0 ? ex.steps[lecture.step] : null;
       lectureRenderCodeInto($("lecture-trace-code"), ex, step ? step.line : -1);
+      lecFlowUpdate(step ? step.line : -1);
       $("lec-stepmeta").textContent = lecture.step < 0
         ? "Ready. Press Step to run the first statement."
         : "Step " + (lecture.step + 1) + " of " + ex.steps.length + " · line " + (step.line + 1);
@@ -4667,6 +5204,14 @@ int main() {
       $("lec-step-back").disabled = lecture.step < 0;
       $("lec-step-next").disabled = lecture.step >= ex.steps.length - 1;
       $("lec-run-all").disabled = lecture.step >= ex.steps.length - 1;
+      syncLecPlayUI();
+      var lcap = $("lec-caption"), lcapt = $("lec-caption-text");
+      if (lcap && lcapt) {
+        if (lecture.step >= 0) { lcapt.textContent = buildCaption(ex, lecture.step); lcap.hidden = false; }
+        else { lcap.hidden = true; lcapt.textContent = ""; }
+      }
+      var lpn = $("lec-parting-note");
+      if (lpn && !(lecPartingPauseActive && lecture.step === lecPartingStepIndex())) lpn.hidden = true;
       var mem = $("lec-memory"); mem.innerHTML = "";
       if (!step || (!step.vars && !step.boxes) || (step.vars && Object.keys(step.vars).length === 0 && !step.boxes)) {
         mem.innerHTML = '<div class="mem-empty">' + (lecture.step < 0
@@ -4780,6 +5325,179 @@ int main() {
       if (lecture.step === ex.steps.length - 1 && ex.options) parts.push("Trace complete. The program printed " + ex.options[ex.correct] + ".");
       return parts.join(". ");
     }
+    /* ---------------- Lecture playback (parity with the tracer) ----------------
+       Lecture stepping stays on its own implementation, but playback
+       ports the tracer's behaviour: Play/Pause with the same three
+       speeds (the shared `playbackSpeed` setting), the gutter marker
+       with the same arc classifier (any backward move is a back-edge),
+       narration captions from the shared caption engine, jump-aware
+       pacing, and Replay jump. The parting pause is lecture-specific:
+       there is no locked individual prediction, so if the tallied
+       majority chose an option that carries a diagnosis, playback
+       pauses once at that diagnosis's parting step and shows the
+       diagnosis with the class split pinned beside the trace. A correct
+       majority — or no tallies — plays uninterrupted. Tallies and
+       student records are never touched. */
+    var lecPlayback = { timer: null, playing: false, partingPaused: false };
+    var lecPartingPauseActive = false;
+    var lecFlowPrevLine = -1, lecFlowPrevEx = -1, lecFlowArcTimer = null;
+    var lecSuppressFlowArc = false;
+    function lecPartingStepIndex() {
+      var ex = lectureEx();
+      if (!ex.options || lectureCounted() === 0) return -1;
+      var maj = lectureMajority();
+      if (maj < 0 || maj === ex.correct) return -1;
+      var d = ex.diagnoses ? ex.diagnoses[maj] : null;
+      return d && typeof d.step === "number" ? d.step : -1;
+    }
+    function lecAdvance() {
+      var ex = lectureEx();
+      if (lecture.step < ex.steps.length - 1) { lecture.step++; lectureRenderTrace(); return true; }
+      return false;
+    }
+    function lecClearFlowArc() {
+      if (lecFlowArcTimer) { clearTimeout(lecFlowArcTimer); lecFlowArcTimer = null; }
+      var arc = $("lec-flow-arc"); if (arc) arc.classList.remove("show");
+    }
+    function lecDrawFlowArc(fromLine, toLine) {
+      var svg = $("lec-flow-svg"), arc = $("lec-flow-arc"), pre = $("lecture-trace-code");
+      if (!svg || !arc || !pre || reducedMotion()) return;
+      var box = pre.parentNode;
+      var fromEl = pre.children[fromLine], toEl = pre.children[toLine];
+      if (!box || !fromEl || !toEl) return;
+      var y1 = fromEl.offsetTop + fromEl.offsetHeight / 2;
+      var y2 = toEl.offsetTop + toEl.offsetHeight / 2;
+      svg.setAttribute("viewBox", "0 0 " + box.clientWidth + " " + box.clientHeight);
+      arc.setAttribute("d", "M 36 " + y1 + " C 15 " + y1 + ", 15 " + y2 + ", 36 " + y2);
+      arc.setAttribute("class", (toLine > fromLine ? "fwd" : "back") + " show");
+      if (lecFlowArcTimer) clearTimeout(lecFlowArcTimer);
+      var life = lecPlayback.playing ? Math.round(speedMs() * 1.1) : 700;
+      if (life < 260) life = 260;
+      if (life > 1500) life = 1500;
+      lecFlowArcTimer = setTimeout(function () { arc.classList.remove("show"); lecFlowArcTimer = null; }, life);
+    }
+    function lecFlowUpdate(line) {
+      var marker = $("lec-flow-marker"), pre = $("lecture-trace-code");
+      if (!marker || !pre) return;
+      if (line < 0) { marker.style.opacity = "0"; lecClearFlowArc(); lecFlowPrevLine = -1; lecFlowPrevEx = lecture.exIdx; return; }
+      var el = pre.children[line];
+      if (!el) { marker.style.opacity = "0"; lecFlowPrevLine = -1; lecFlowPrevEx = lecture.exIdx; return; }
+      var y = el.offsetTop + el.offsetHeight / 2 - 6;
+      var sameEx = lecFlowPrevEx === lecture.exIdx;
+      marker.style.opacity = "1";
+      if (!sameEx || lecFlowPrevLine < 0) {
+        marker.style.transition = "none";
+        marker.style.transform = "translateY(" + y + "px)";
+        void marker.offsetWidth;
+        marker.style.transition = "";
+        lecClearFlowArc();
+      } else {
+        marker.style.transitionDuration = (lecPlayback.playing && !reducedMotion()) ? Math.round(speedMs() * 0.75) + "ms" : "";
+        marker.style.transform = "translateY(" + y + "px)";
+        if (line !== lecFlowPrevLine) {
+          var suppressArc = lecSuppressFlowArc;
+          lecSuppressFlowArc = false;
+          if (!suppressArc && (line < lecFlowPrevLine || line - lecFlowPrevLine > 1)) {
+            lecDrawFlowArc(lecFlowPrevLine, line);
+            if (line > lecFlowPrevLine) {
+              var skipped = [];
+              for (var i = lecFlowPrevLine + 1; i < line; i++) {
+                if (pre.children[i]) { pre.children[i].classList.add("skipped-flash"); skipped.push(pre.children[i]); }
+              }
+              if (skipped.length) {
+                var flashMs = lecPlayback.playing ? Math.round(speedMs() * 0.7) : 700;
+                setTimeout(function () { skipped.forEach(function (el2) { el2.classList.remove("skipped-flash"); }); }, flashMs);
+              }
+            }
+          } else lecClearFlowArc();
+        }
+      }
+      lecFlowPrevLine = line; lecFlowPrevEx = lecture.exIdx;
+    }
+    function syncLecPlayUI() {
+      var btn = $("lec-play-toggle"); if (!btn) return;
+      var ex = lectureEx();
+      btn.textContent = lecPlayback.playing ? "❚❚ Pause" : "▶ Play";
+      btn.setAttribute("aria-pressed", lecPlayback.playing ? "true" : "false");
+      btn.setAttribute("aria-label", lecPlayback.playing ? "Pause the lecture playback" : "Play the lecture trace automatically");
+      btn.disabled = lecture.phase !== "trace" || (!lecPlayback.playing && lecture.step >= ex.steps.length - 1);
+      document.querySelectorAll(".lec-spd-btn").forEach(function (b) {
+        b.setAttribute("aria-pressed", parseFloat(b.getAttribute("data-speed")) === playbackSpeed ? "true" : "false");
+      });
+      var rj = $("lec-replay-jump");
+      if (rj) {
+        var jf = lecture.phase === "trace" ? jumpIntoStep(ex, lecture.step) : -1;
+        rj.disabled = jf < 0 || lecPlayback.playing;
+        rj.title = jf < 0
+          ? "No jump yet in this run — a jump is a branch skip, a loop back-edge, or a call or return."
+          : "Replay the jump into this step: step back to step " + (jf + 1) + " and play that one transition again.";
+      }
+    }
+    function startLecPlayback() {
+      var ex = lectureEx();
+      if (lecture.phase !== "trace" || lecture.step >= ex.steps.length - 1) { syncLecPlayUI(); return; }
+      var pi = lecPartingStepIndex();
+      if (pi >= 0 && lecture.step < pi) lecPlayback.partingPaused = false;
+      lecPartingPauseActive = false;
+      var pn = $("lec-parting-note"); if (pn) pn.hidden = true;
+      lecPlayback.playing = true;
+      syncLecPlayUI();
+      if (lecPlayback.timer) clearTimeout(lecPlayback.timer);
+      lecPlayback.timer = setTimeout(lecPlayTick, speedMs());
+    }
+    function stopLecPlayback() {
+      if (lecPlayback.timer) { clearTimeout(lecPlayback.timer); lecPlayback.timer = null; }
+      lecPlayback.playing = false;
+      lecPartingPauseActive = false;
+      var pn = $("lec-parting-note"); if (pn) pn.hidden = true;
+      syncLecPlayUI();
+    }
+    function lecPlayTick() {
+      lecPlayback.timer = null;
+      if (!lecPlayback.playing) return;
+      var tm = $("tracer-mode");
+      if (lecture.phase !== "trace" || !tm || !tm.classList.contains("lecture-on") || document.hidden) { stopLecPlayback(); return; }
+      var ex = lectureEx();
+      var prevStep = lecture.step;
+      if (!lecAdvance()) { stopLecPlayback(); return; }
+      announce("Step " + (lecture.step + 1) + " of " + ex.steps.length + ". " + buildCaption(ex, lecture.step));
+      var pi = lecPartingStepIndex();
+      if (pi >= 0 && pi < ex.steps.length - 1 && lecture.step === pi && !lecPlayback.partingPaused) {
+        lecPlayback.partingPaused = true;
+        lecPlayback.playing = false;
+        lecPartingPauseActive = true;
+        syncLecPlayUI();
+        var maj = lectureMajority(), denom = lectureDenom();
+        var mp = denom > 0 ? Math.round(((lecture.counts[maj] || 0) / denom) * 100) : 0;
+        var d = ex.diagnoses[maj];
+        var pn = $("lec-parting-note");
+        if (pn && d) {
+          pn.innerHTML = "<b>Playback paused at the parting step</b> — step " + (pi + 1) + " of " + ex.steps.length + ", line " + (ex.steps[pi].line + 1) + ". The class majority (" + mp + "%) chose <b>" + esc(ex.options[maj]) + "</b>, and the class split is pinned beside this trace. " + d.text + " Press <b>Play</b> to keep stepping from here.";
+          pn.hidden = false;
+        }
+        return;
+      }
+      if (lecture.step >= ex.steps.length - 1) { lecPlayback.playing = false; syncLecPlayUI(); return; }
+      lecPlayback.timer = setTimeout(lecPlayTick, transitionDwell(ex, prevStep, lecture.step, playbackSpeed));
+    }
+    function lecReplayJump() {
+      var ex = lectureEx();
+      var from = jumpIntoStep(ex, lecture.step);
+      if (from < 0 || lecPlayback.playing) return;
+      var exIdx = lecture.exIdx;
+      stopLecPlayback();
+      lecSuppressFlowArc = true;
+      lecture.step = from;
+      lectureRenderTrace();
+      setTimeout(function () {
+        if (lecture.exIdx !== exIdx || lecture.step !== from || lecture.phase !== "trace") return;
+        lecSuppressFlowArc = false;
+        if (!lecAdvance()) return;
+        announce("Step " + (lecture.step + 1) + " of " + ex.steps.length + ". " + buildCaption(ex, lecture.step));
+        syncLecPlayUI();
+      }, reducedMotion() ? 60 : 420);
+    }
+
     (function wireLecture() {
       buildLectureSelect();
       var openBtn = $("lecture-open-btn");
@@ -4826,6 +5544,9 @@ int main() {
       });
       var startBtn = $("lecture-start-trace");
       if (startBtn) startBtn.addEventListener("click", function () {
+        stopLecPlayback();
+        lecPlayback.partingPaused = false;
+        lecFlowPrevLine = -1;
         lecture.phase = "trace";
         lecture.step = -1;
         $("lecture-tally-stage").hidden = true;
@@ -4836,6 +5557,7 @@ int main() {
       });
       var backBtn = $("lecture-back-tally");
       if (backBtn) backBtn.addEventListener("click", function () {
+        stopLecPlayback();
         lecture.phase = "tally";
         $("lecture-trace-stage").hidden = true;
         $("lecture-tally-stage").hidden = false;
@@ -4843,23 +5565,45 @@ int main() {
         var h = $("lecture-tally-h"); if (h) h.focus();
       });
       $("lec-step-next").addEventListener("click", function () {
+        stopLecPlayback();
         var ex = lectureEx();
         if (lecture.step < ex.steps.length - 1) { lecture.step++; lectureRenderTrace(); announce(lectureDescribeStep()); }
       });
       $("lec-step-back").addEventListener("click", function () {
+        stopLecPlayback();
         if (lecture.step > -1) { lecture.step--; lectureRenderTrace(); announce(lectureDescribeStep()); }
       });
       $("lec-run-all").addEventListener("click", function () {
+        stopLecPlayback();
         var ex = lectureEx();
         lecture.step = ex.steps.length - 1;
         lectureRenderTrace();
         announce(lectureDescribeStep());
       });
       $("lec-trace-reset").addEventListener("click", function () {
+        stopLecPlayback();
         lecture.step = -1;
         lectureRenderTrace();
         announce("Lecture trace restarted. Memory is empty; the class split is unchanged.");
       });
+      var lecToggle = $("lec-play-toggle");
+      if (lecToggle) lecToggle.addEventListener("click", function () {
+        if (lecPlayback.playing) stopLecPlayback(); else startLecPlayback();
+      });
+      var lecSpd = Array.prototype.slice.call(document.querySelectorAll(".lec-spd-btn"));
+      lecSpd.forEach(function (b, i) {
+        b.addEventListener("click", function () { setPlaybackSpeed(parseFloat(b.getAttribute("data-speed"))); });
+        b.addEventListener("keydown", function (ev) {
+          if (ev.key !== "ArrowRight" && ev.key !== "ArrowLeft") return;
+          ev.preventDefault();
+          var nxt = lecSpd[(i + (ev.key === "ArrowRight" ? 1 : lecSpd.length - 1)) % lecSpd.length];
+          nxt.focus();
+          setPlaybackSpeed(parseFloat(nxt.getAttribute("data-speed")));
+        });
+      });
+      var lecRj = $("lec-replay-jump");
+      if (lecRj) lecRj.addEventListener("click", lecReplayJump);
+      document.addEventListener("visibilitychange", function () { if (document.hidden) stopLecPlayback(); });
       var panel = $("lecture-panel");
       if (panel) panel.addEventListener("keydown", function (ev) {
         if (ev.key === "Escape") { ev.preventDefault(); exitLecture(); }
