@@ -299,6 +299,12 @@
       .feedback.show { display: block; }
       .feedback.good { background: var(--accent-soft); color: var(--accent-strong); }
       .feedback.bad { background: var(--rust-soft); color: var(--rust); }
+      .trans-link-row { margin-top: 10px; }
+      .trans-link-btn {
+        background: transparent; border: 1.5px solid var(--accent); color: var(--accent-strong);
+        border-radius: 8px; padding: 7px 12px; font-weight: 700; font-size: .88rem;
+      }
+      .trans-link-btn:hover { background: var(--accent-soft); }
 
       /* Concept record */
       .record-list { list-style: none; padding: 0; display: grid; gap: 9px; margin-top: 12px; }
@@ -4136,7 +4142,7 @@ for (int i = 0; i < 3; i++) {
           '<span class="lbl">Input (shown now that it has run)</span><span class="mono">' + esc(GYM_TESTS[gym.current].unseen.inputLabel) + "</span>" +
           '<span class="lbl">Expected result</span><span class="mono">' + esc(GYM_TESTS[gym.current].unseen.expected.join("\n")) + "</span>" +
           '<span class="lbl">Your program printed</span><span class="mono">' + esc(s.verifyResult.actual && s.verifyResult.actual.trim() !== "" ? s.verifyResult.actual.replace(/\s+$/, "") : "(nothing)") + "</span>" +
-          (s.verifyResult.error ? '<span class="lbl">The machine stopped</span><span class="mono">' + esc(s.verifyResult.error) + "</span>" : "") +
+          (s.verifyResult.error ? '<span class="lbl">The machine stopped</span><span class="mono">' + esc(s.verifyResult.error) + "</span>" + translatorLinkHtml(s.verifyResult.error) : "") +
           '<p style="margin-top:10px;">' + (s.verifyResult.pass
             ? "<strong>Verify passed.</strong> The round is complete — your fix and the reference are below."
             : "<strong>Verify failed.</strong> Your fix handles the test you could see but not this one. You are back at the Fix stage above, with your edits exactly as you left them — change what this test exposes, then check again.") + "</p></div>";
@@ -4155,7 +4161,7 @@ for (int i = 0; i < 3; i++) {
           '<div class="gym-test-box"><span class="lbl">Test input</span><span class="mono">' + esc(tests.visible.inputLabel) + "</span>" +
           '<span class="lbl">Expected result</span><span class="mono">' + esc(tests.visible.expected.join("\n")) + "</span>" +
           '<span class="lbl">Your program printed</span><span class="mono">' + esc(vres.actual && vres.actual.trim() !== "" ? vres.actual.replace(/\s+$/, "") : "(nothing)") + "</span>" +
-          (vres.error ? '<span class="lbl">The machine stopped</span><span class="mono">' + esc(vres.error) + "</span>" : "") + "</div>" +
+          (vres.error ? '<span class="lbl">The machine stopped</span><span class="mono">' + esc(vres.error) + "</span>" + translatorLinkHtml(vres.error) : "") + "</div>" +
           "<p style='margin-top:8px;'>Attempts so far: " + s.fixAttempts + ". Change the editable lines and check again — retries are unlimited.</p>" };
         s.verifyResult = null;
         announce("The visible test failed. Expected versus actual is shown below the fix editor.");
@@ -4257,6 +4263,74 @@ for (int i = 0; i < 3; i++) {
       document.querySelector("#gym-title").scrollIntoView({ behavior: "smooth", block: "start" });
     });
     $("gym-fix-check").addEventListener("click", gymCheckFix);
+
+    /* ================= Error Translator: links from live errors =================
+       Maps an error message from the in-page interpreter (makeRunProgram) to
+       the one catalogue entry that genuinely explains it, or to nothing.
+       Patterns are matched against the interpreter's actual wording, in its
+       own terms — never against the g++ wording in the catalogue. Errors
+       with no genuine counterpart return null and show no link:
+       missing closing bracket, unknown characters, divide/modulo by zero,
+       out-of-range slots, infinite loops, text/number mixing, argument-count
+       mismatches, missing operators, and generic parse failures among them.
+       The interpreter strips # lines and never checks includes, namespaces,
+       or redeclarations, so it emits no missing-#include or redefinition
+       error to wire. */
+    function translatorIdForError(msg) {
+      if (!msg) return null;
+      var m = String(msg);
+      if (/expected a semicolon/.test(m)) return 1;
+      if (/missing its closing quote/.test(m)) return 13;
+      if (/expected a closing brace|was never closed with a '\}'/.test(m)) return 4;
+      if (/expected a closing parenthesis/.test(m)) return 5;
+      if (/There is no main\(\) in this program/.test(m)) return 16;
+      var undecl = m.match(/'([A-Za-z_][A-Za-z0-9_]*)' has never been declared/);
+      if (undecl) {
+        var nm = undecl[1];
+        if (nm === "Cout" || nm === "Cin" || nm === "Endl") return 18;
+        if (nm === "cout" || nm === "cin" || nm === "endl") return 2;
+        return 3;
+      }
+      if (/cannot store text in '[^']+'.*is an int box/.test(m)) return 23;
+      if (/is not an array, so it has no slots to reach/.test(m)) return 24;
+      if (/square brackets reach into arrays/.test(m)) return 24;
+      if (/left side of '[^']+' has to be a variable or an array slot/.test(m)) return 9;
+      if (/a void function hands nothing back/.test(m)) return 25;
+      var fn = m.match(/does not know a function named '([A-Za-z_][A-Za-z0-9_]*)'/);
+      if (fn) {
+        if (fn[1] === "setprecision") return 12;
+        if (fn[1] === "pow" || fn[1] === "sqrt" || fn[1] === "fabs") return 21;
+        return null;
+      }
+      return null;
+    }
+    function translatorLinkHtml(msg) {
+      var id = translatorIdForError(msg);
+      if (!id) return "";
+      return '<div class="trans-link-row"><button type="button" class="trans-link-btn" data-trans-jump="' + id + '">See this error in the Translator</button></div>';
+    }
+    function goToTranslatorEntry(id) {
+      var entry = null;
+      for (var i = 0; i < TRANS.length; i++) if (TRANS[i].id === id) entry = TRANS[i];
+      setMode("translator");
+      $("trans-search").value = "";
+      transOpen = {}; transOpen[id] = true;
+      renderTrans("");
+      announce("Error Translator: opened \u201C" + (entry ? entry.title : "the matching entry") + "\u201D.");
+      setTimeout(function () {
+        var el = $("trans-" + id);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+          var head = el.querySelector(".trans-head");
+          if (head) { try { head.focus({ preventScroll: true }); } catch (e) {} }
+        }
+      }, 450);
+    }
+    document.addEventListener("click", function (ev) {
+      var t = ev.target;
+      var b = t && t.closest ? t.closest("[data-trans-jump]") : null;
+      if (b) goToTranslatorEntry(parseInt(b.getAttribute("data-trans-jump"), 10));
+    });
 
     /* ================= Error Translator ================= */
     var TRANS = [
@@ -6101,7 +6175,7 @@ for (int i = 0; i < 3; i++) {
         html += "</div>";
         if (r && !r.pass) {
           html += '<div class="mtest-detail">';
-          if (r.error) html += '<div><span class="lbl">The machine stopped</span><br><span class="mono">' + esc(r.error) + "</span></div>";
+          if (r.error) html += '<div><span class="lbl">The machine stopped</span><br><span class="mono">' + esc(r.error) + "</span>" + translatorLinkHtml(r.error) + "</div>";
           else {
             html += '<div><span class="lbl">Expected output</span><br><span class="mono">' + esc(t.expected) + "</span></div>";
             html += '<div><span class="lbl">Your program printed</span><br><span class="mono">' + esc(r.actual.trim() === "" ? "(nothing)" : r.actual) + "</span></div>";
@@ -6172,7 +6246,7 @@ for (int i = 0; i < 3; i++) {
         makeMsg("good", res.output ? "Your program ran to the end. Compare its output with the prompt, then try Run tests." : "Your program ran to the end — and printed nothing. If the prompt asks for output, something that should print is not printing.");
         announce("Your program ran to the end.");
       } else {
-        makeMsg("bad", esc(res.error));
+        makeMsg("bad", esc(res.error) + translatorLinkHtml(res.error));
         announce("The program stopped. " + res.error);
       }
     });
