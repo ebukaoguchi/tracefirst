@@ -639,6 +639,9 @@
       .bolt-cell.crate { background: var(--amber-soft); border-color: var(--amber); color: #8a5a10; }
       @media (prefers-color-scheme: dark) { .bolt-cell.crate { color: var(--amber); } }
       .bolt-cell.crate svg { width: 72%; height: auto; display: block; }
+      .bolt-cell.home { background: var(--accent-soft); border: 1.5px dashed var(--accent); }
+      .bolt-cell .home-mark { position: absolute; left: 0; right: 0; bottom: 2px; text-align: center; font-size: .58rem; font-weight: 700; letter-spacing: .08em; color: var(--accent-strong); }
+      .bolt-cell .order-badge { position: absolute; top: 2px; right: 3px; width: 17px; height: 17px; border-radius: 50%; background: var(--accent); color: #fff; font-family: "IBM Plex Mono", monospace; font-size: .66rem; font-weight: 700; display: grid; place-items: center; }
       .bolt-robot { position: absolute; z-index: 3; display: grid; place-items: center; pointer-events: none; transition: left .3s ease, top .3s ease; }
       .bolt-robot svg { width: 88%; height: 88%; transition: transform .3s ease; display: block; }
       .bolt-svg .b-body { fill: var(--panel); stroke: var(--accent); stroke-width: 2.5; }
@@ -1077,7 +1080,7 @@
             <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Order code, then write a line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find and fix faults.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 23</strong><span>The rest of the course.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 30</strong><span>The rest of the course.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write your own programs.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
             <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
@@ -1189,21 +1192,21 @@
           <h2>Meet Bolt — programming before the syntax gets heavy.</h2>
           <p>Bolt is a workshop robot who understands exactly <strong>four commands</strong>: move, turn left, pick up a battery cell, put one down. That is all he will ever know. Everything Bolt does — crossing the Workshop, harvesting a row of cells, feeling his way around crates — is built by combining those four commands with loops, decisions, and functions you define yourself.</p>
           <p>The programs are written in <strong>real C++ shape</strong>: every command ends with a semicolon, blocks wear braces, and helpers are <strong>void</strong> functions. Nothing here is a toy language you will have to unlearn. When you move on to the Prediction Tracer, the syntax will already look familiar; only the ideas will be new.</p>
-          <div class="bolt-order"><strong>Start here.</strong> This mode comes first on purpose: finish these eight worlds and you already think in sequences, loops, decisions, and functions. Then predict and trace real code in the Prediction Tracer, where the same logic wears full C++ syntax.</div>
+          <div class="bolt-order"><strong>Start here.</strong> This mode comes first on purpose: finish these twelve worlds and you already think in sequences, loops, decisions, and functions. Then predict and trace real code in the Prediction Tracer, where the same logic wears full C++ syntax.</div>
         </section>
 
         <section class="toolbar" aria-label="Choose a world">
           <div>
-            <div class="tlabel">Worlds — eight workshops, in order</div>
+            <div class="tlabel">Worlds — twelve workshops, in order</div>
             <div class="exnav" id="boltnav"></div>
           </div>
           <div class="scorebar" id="bolt-scorebar" aria-label="Your Bolt's World progress"></div>
         </section>
 
         <details class="toolbar bolt-chal-details" aria-labelledby="bolt-chal-h">
-          <summary id="bolt-chal-h">Bolt Challenges (optional) <span class="gcount">4 extra worlds &#9662;</span></summary>
+          <summary id="bolt-chal-h">Bolt Challenges (optional) <span class="gcount">6 extra worlds &#9662;</span></summary>
           <div style="margin-top:10px;">
-            <p class="bolt-chal-framing">For students who <strong>finish the eight worlds and want more</strong>. These challenges are entirely opt-in: they gate nothing and unlock nothing, and they use the same Workshop, the same editor, and the same Run, Step, and Reset controls below. Pick one to load it into the board.</p>
+            <p class="bolt-chal-framing">For students who <strong>finish the twelve worlds and want more</strong>. These challenges are entirely opt-in: they gate nothing and unlock nothing, and they use the same Workshop, the same editor, and the same Run, Step, and Reset controls below. Pick one to load it into the board.</p>
             <div class="exnav" id="boltchalnav" style="margin-top:12px;" role="group" aria-label="Choose an optional Bolt challenge"></div>
           </div>
           <div class="scorebar" id="bolt-chal-scorebar" aria-label="Your Bolt Challenges progress" style="margin-top:10px;"></div>
@@ -1329,7 +1332,7 @@ for (int i = 0; i < 3; i++) {
             <select class="lecture-select" id="lecture-ex-select" aria-label="Choose an exercise to project"></select>
             <button class="btn" type="button" id="lecture-project-btn">Project this exercise</button>
           </div>
-          <p class="lecture-pick-note">Any of the 23 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
+          <p class="lecture-pick-note">Any of the 30 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
         </div>
 
         <div id="lecture-project" hidden>
@@ -1569,7 +1572,7 @@ for (int i = 0; i < 3; i++) {
       <div id="gym-mode" role="tabpanel" tabindex="0" hidden>
         <section class="gym-intro">
           <h2>Find the bugs. Classify them. Then prove the fix.</h2>
-          <p>Five short programs, broken on purpose — the first three from a debugging and code-reading lab built for a first-year introductory C++ course serving CS and non-CS majors together, the last two extending the same hunt to loops, arrays, and functions. <strong>Click a line to accuse it of being a bug.</strong> Every accusation that lands must then be classified, because the distinction this gym trains is the one beginners blur:</p>
+          <p>Seven short programs, broken on purpose — the first three from a debugging and code-reading lab built for a first-year introductory C++ course serving CS and non-CS majors together, the rest extending the same hunt to loops, arrays, functions, and strings. <strong>Click a line to accuse it of being a bug.</strong> Every accusation that lands must then be classified, because the distinction this gym trains is the one beginners blur:</p>
           <div class="taxonomy">
             <div class="tax syntax"><b>Syntax error</b>The code breaks a rule of the language. The compiler catches it and the program never runs.</div>
             <div class="tax logic"><b>Logic error</b>The code is legal, compiles clean, and still does the wrong thing. Only the output exposes it.</div>
@@ -1587,7 +1590,7 @@ for (int i = 0; i < 3; i++) {
 
         <section class="toolbar" aria-label="Choose a gym round">
           <div>
-            <div class="tlabel">Rounds — five broken programs, in order</div>
+            <div class="tlabel">Rounds — seven broken programs, in order</div>
             <div class="exnav" id="gymnav"></div>
           </div>
           <div class="scorebar" id="gym-scorebar" aria-label="Your gym scoreboard"></div>
@@ -1695,10 +1698,10 @@ for (int i = 0; i < 3; i++) {
             <label for="trans-search">Search the translator</label>
             <div class="trans-search-row" style="margin-top:8px;">
               <input type="search" id="trans-search" placeholder="Try: semicolon, cout, string, brace, include…" autocomplete="off">
-              <button class="btn ghost small" type="button" id="trans-clear">Show all 26</button>
+              <button class="btn ghost small" type="button" id="trans-clear">Show all 32</button>
             </div>
           </div>
-          <p class="trans-count" id="trans-count" role="status">Showing all 26 errors — ordered by how early beginners usually meet them.</p>
+          <p class="trans-count" id="trans-count" role="status">Showing all 32 errors — ordered by how early beginners usually meet them.</p>
         </div>
 
         <div class="trans-list" id="trans-list" aria-label="Compiler error catalogue"></div>
@@ -1706,7 +1709,7 @@ for (int i = 0; i < 3; i++) {
 
         <div class="trans-method"><strong>The method:</strong> an error message names the line where the compiler gave up, which is not always the line where the mistake is; read the first error first, fix it, compile again.</div>
 
-        <p class="foot"><strong>How to use this translator well:</strong> do not hunt through all 26. Copy two or three distinctive words from the message you actually got into the search box. The raw messages here use the wording of g++, the compiler in most introductory courses; other compilers phrase the same problems slightly differently, but the cause and the fix do not change.</p>
+        <p class="foot"><strong>How to use this translator well:</strong> do not hunt through all 32. Copy two or three distinctive words from the message you actually got into the search box. The raw messages here use the wording of g++, the compiler in most introductory courses; other compilers phrase the same problems slightly differently, but the cause and the fix do not change.</p>
       </div><!-- /translator-mode -->
 
       <div id="challenges-mode" role="tabpanel" tabindex="0" hidden>
@@ -1719,9 +1722,9 @@ for (int i = 0; i < 3; i++) {
           <div class="scorebar" id="ch-scorebar" style="border-top:none;padding-top:0;"></div>
         </section>
         <details class="ch-collapse" open id="ch-tasks-wrap">
-          <summary>Tasks <span class="gcount">6 short exercises &#9662;</span></summary>
+          <summary>Tasks <span class="gcount">9 exercises at this level &#9662;</span></summary>
           <div class="ch-collapse-inner">
-            <p class="ch-section-sub">Six short exercises. Predict an output, complete a missing line, or spot a bug and its fix. Every answer is checked the moment you commit to it.</p>
+            <p class="ch-section-sub">Nine exercises at this level. Predict an output, complete a missing line, spot a bug and its fix, or write a program of your own and mark it against its expected output. Every answer is checked the moment you commit to it.</p>
             <div id="ch-tasks"></div>
           </div>
         </details>
@@ -1854,7 +1857,7 @@ int main() {
         </section>
         <section class="toolbar" aria-label="Choose a Bridge activity">
           <div>
-            <div class="tlabel">Activities — three Parsons, then three faded, in order</div>
+            <div class="tlabel">Activities — Parsons and faded, in order</div>
             <div class="exnav" id="bridgenav"></div>
           </div>
           <div class="scorebar" id="bridge-scorebar" aria-label="Your Bridge progress"></div>
@@ -1880,7 +1883,7 @@ int main() {
         </section>
         <section class="toolbar" aria-label="Choose a Make prompt">
           <div>
-            <div class="tlabel">Prompts — ten programs to write, in order</div>
+            <div class="tlabel">Prompts — fourteen programs to write, in order</div>
             <div class="exnav" id="makenav"></div>
           </div>
           <div class="scorebar" id="make-scorebar" aria-label="Your Make progress"></div>
@@ -1922,7 +1925,7 @@ int main() {
         <div id="instructors-body" hidden>
           <div class="lecture-inst-entry">
             <h4>Lecture mode — run a tracer exercise in front of the class</h4>
-            <p>A single projected screen: pick any of the 23 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
+            <p>A single projected screen: pick any of the 30 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
             <div class="journal-actions"><button class="btn small" type="button" id="lecture-open-btn-2">Open Lecture mode</button></div>
           </div>
           <h4 id="digest-h" style="font-size:1rem;margin-top:16px;">Instructor digest — where the class parted</h4>
@@ -3154,6 +3157,334 @@ int main() {
           correct: 0,
           explain: "Only one cell changes, by +4, and the nested loops still visit every cell: 21 + 4 = <b>25</b>."
         }
+      },
+      {
+        concept: "Loops — do-while",
+        title: "The loop that runs first",
+        goal: "A <b>do-while</b> loop runs its body <b>once before</b> the condition is ever tested. The test guards the <em>repetitions</em>, not the first run.",
+        stories: {
+          health:   "A rehab timer stores a count of <strong>10</strong>. A loop prints the count, adds one, and only then checks whether the count is still below 5. Afterwards the app prints a closing word.",
+          psych:    "A study app stores a count of <strong>10</strong>. A loop prints the count, adds one, and only then checks whether the count is still below 5. Afterwards the app prints a closing word.",
+          business: "A stock counter stores a count of <strong>10</strong>. A loop prints the count, adds one, and only then checks whether the count is still below 5. Afterwards the program prints a closing word.",
+          arts:     "A rehearsal counter stores a count of <strong>10</strong>. A loop prints the count, adds one, and only then checks whether the count is still below 5. Afterwards the app prints a closing word."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int n = 10;",
+          "    do {",
+          "        cout << n << \" \";",
+          "        n++;",
+          "    } while (n < 5);",
+          "    cout << \"done\";",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["10 done", "done", "10 11 12 13 14 done", "10"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "That is the answer a plain <b>while</b> loop would give — and this is not one. The condition in a <b>do-while</b> is checked <em>after</em> the body, not before it. The parting step is the body's first cout: <b>10 prints before any test happens</b>, because the first run is guaranteed. Only repetitions are guarded by the condition." },
+          2: { step: 3, text: "That trace would need the loop to keep passing its test — but look at the numbers. n starts at <b>10</b>, already past 5. After the one guaranteed pass, n is 11 and the test <b>11 &lt; 5 is false</b>, so the loop ends. One print, not five." },
+          3: { step: 4, text: "The loop does print 10 — but the program is not finished. The line after the loop prints <b>done</b>, and it runs whatever the loop did. The loop ending never ends the program." }
+        },
+        steps: [
+          { line: 3, vars: { n: ["int", "10"] }, out: "", note: "The box <b>n</b> starts at <b>10</b> — already larger than 5. Keep that in mind when the loop's test arrives." },
+          { line: 5, vars: { n: ["int", "10"] }, out: "10 ", note: "<b>The parting step.</b> The body's cout runs <b>first</b>, before any condition is tested: <b>10 prints</b>. A do-while body always runs at least once — the test only decides whether it runs <em>again</em>." },
+          { line: 6, vars: { n: ["int", "11"] }, out: "10 ", note: "<b>n++</b> makes n <b>11</b>. The body is finished; only now is the condition looked at." },
+          { line: 7, vars: { n: ["int", "11"] }, out: "10 ", note: "The test, at last: is <b>11 &lt; 5</b>? <b>False</b>. The loop ends after exactly one pass." },
+          { line: 8, vars: { n: ["int", "11"] }, out: "10 done", note: "The closing cout prints <b>done</b> right after the 10 and its space: <b>10 done</b>." },
+          { line: 9, vars: { n: ["int", "11"] }, out: "10 done", note: "The program ends. Final answer: <b>10 done</b> — one pass, guaranteed by the do, not permitted by the while." }
+        ],
+        modify: {
+          prompt: "The starting value changes from 10 to 3. The loop and the closing print are unchanged. What prints now?",
+          code: 'int n = <mark>3</mark>;\ndo {\n    cout << n << " ";\n    n++;\n} while (n < 5);\ncout << "done";',
+          options: ["3 4 done", "3 4 5 done", "done", "4 done"],
+          correct: 0,
+          explain: "n = 3 prints and becomes 4; the test 4 &lt; 5 passes, so 4 prints and n becomes 5; the test 5 &lt; 5 fails. Output: <b>3 4 done</b>."
+        }
+      },
+      {
+        concept: "Loops — break & continue",
+        title: "Two ways out of a loop",
+        goal: "<b>continue</b> skips the rest of this pass and starts the next one; <b>break</b> leaves the whole loop at once. Neither one belongs to the <b>if</b> that contains it — both act on the loop.",
+        stories: {
+          health:   "A totals program adds the numbers <strong>1 to 10</strong>, except that it skips 3 entirely and stops for good when it reaches 6. It prints the total it built.",
+          psych:    "A scoring program adds the numbers <strong>1 to 10</strong>, except that it skips 3 entirely and stops for good when it reaches 6. It prints the total it built.",
+          business: "An accounts program adds the numbers <strong>1 to 10</strong>, except that it skips 3 entirely and stops for good when it reaches 6. It prints the total it built.",
+          arts:     "A playlist program adds the numbers <strong>1 to 10</strong>, except that it skips 3 entirely and stops for good when it reaches 6. It prints the total it built."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int total = 0;",
+          "    for (int i = 1; i <= 10; i++) {",
+          "        if (i == 3) continue;",
+          "        if (i == 6) break;",
+          "        total += i;",
+          "    }",
+          "    cout << total;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["12", "52", "15", "3"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 7, text: "52 is what the total becomes if <b>break only leaves the if</b> — then the loop would run on through 7, 8, 9, 10 and total 1+2+4+5+6+7+8+9+10. But break does not act on the if; it acts on the <b>loop</b>. The parting step is the break line at i = 6: the loop ends there, and i never reaches 7 at all." },
+          2: { step: 4, text: "15 is 1+2+3+4+5 — it counts <b>3</b>. But the pass for i = 3 never reaches the adding line: <b>continue</b> jumps straight to the next pass. The parting step is the continue line: 3 is skipped, not added." },
+          3: { step: 6, text: "3 is the value that gets <em>skipped</em>, not the total. By the time the loop stops, the adding line has run for i = 1, 2, 4, and 5: <b>total is 12</b>." }
+        },
+        steps: [
+          { line: 3, vars: { total: ["int", "0"] }, out: "", note: "The accumulator <b>total</b> starts at <b>0</b>." },
+          { line: 4, vars: { total: ["int", "0"], i: ["int", "1"] }, out: "", note: "The loop starts: <b>i = 1</b>. Neither if fires (1 is not 3, not 6), so the pass reaches the adding line." },
+          { line: 7, vars: { total: ["int", "1"], i: ["int", "1"] }, out: "", note: "<b>total += 1</b>: total is <b>1</b>." },
+          { line: 7, vars: { total: ["int", "3"], i: ["int", "2"] }, out: "", note: "i = 2: no if fires, so <b>total += 2</b> — total is <b>3</b>." },
+          { line: 5, vars: { total: ["int", "3"], i: ["int", "3"] }, out: "", note: "i = 3: <b>continue</b> fires. The rest of this pass — including the adding line — is skipped. <b>3 is never added.</b>" },
+          { line: 7, vars: { total: ["int", "7"], i: ["int", "4"] }, out: "", note: "i = 4: <b>total += 4</b> — total is <b>7</b>." },
+          { line: 7, vars: { total: ["int", "12"], i: ["int", "5"] }, out: "", note: "i = 5: <b>total += 5</b> — total is <b>12</b>." },
+          { line: 6, vars: { total: ["int", "12"], i: ["int", "6"] }, out: "", note: "<b>The parting step.</b> i = 6: <b>break</b> fires — and break leaves the <b>whole loop</b>, not just the if. The passes for 7, 8, 9, and 10 never happen." },
+          { line: 9, vars: { total: ["int", "12"], i: ["int", "6"] }, out: "12", note: "The program prints <b>total</b>: <b>12</b> — 1 + 2 + 4 + 5." },
+          { line: 10, vars: { total: ["int", "12"], i: ["int", "6"] }, out: "12", note: "The program ends. Final answer: <b>12</b>." }
+        ],
+        modify: {
+          prompt: "The break line changes to if (i == 5) break;. The continue is unchanged. What prints now?",
+          code: 'int total = 0;\nfor (int i = 1; i <= 10; i++) {\n    if (i == 3) continue;\n    if (i == <mark>5</mark>) break;\n    total += i;\n}\ncout << total;',
+          options: ["7", "12", "10", "52"],
+          correct: 0,
+          explain: "The adding line now runs only for i = 1, 2, and 4 (3 is skipped by continue, 5 breaks before it can be added): 1 + 2 + 4 = <b>7</b>."
+        }
+      },
+      {
+        concept: "Characters",
+        title: "A letter plus one",
+        goal: "A <b>char</b> is stored as a number — its character code. In an arithmetic expression like <b>c + 1</b>, the value is that <b>int</b> code, and printing the expression prints the number, not a letter.",
+        stories: {
+          health:   "A labelling program stores the letter <strong>A</strong> in a character variable and prints the character plus one. The print is a single expression, and nothing is stored back.",
+          psych:    "A coding program stores the letter <strong>A</strong> in a character variable and prints the character plus one. The print is a single expression, and nothing is stored back.",
+          business: "A grading program stores the letter <strong>A</strong> in a character variable and prints the character plus one. The print is a single expression, and nothing is stored back.",
+          arts:     "A design program stores the letter <strong>A</strong> in a character variable and prints the character plus one. The print is a single expression, and nothing is stored back."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    char c = 'A';",
+          "    cout << c + 1;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["66", "B", "A1", "65"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "Adding 1 to a char only prints the next letter if the result is <b>stored back into a char</b>. Here nothing is stored: <b>c + 1</b> is an <b>int</b> expression — the code for 'A' is 65, so the expression is the number 66, and cout prints the number. The parting step is the cout line itself. (Try the Bits view on this exercise: the char box shows the code.)" },
+          2: { step: 1, text: "cout does not glue a value and a number together as text here: <b>c + 1</b> is one arithmetic expression, evaluated before anything prints. 'A' is code 65, so the expression's value is <b>66</b>, and that number is what prints." },
+          3: { step: 1, text: "65 is the code for 'A' <em>alone</em> — what printing c by itself as a number would give. But the expression adds 1 first: 65 + 1 = <b>66</b>." }
+        },
+        steps: [
+          { line: 3, vars: { c: ["char", "'A'"] }, out: "", note: "The char box <b>c</b> holds the letter <b>'A'</b> — stored, underneath, as the number <b>65</b>, its character code." },
+          { line: 4, vars: { c: ["char", "'A'"] }, out: "66", note: "<b>The parting step.</b> <b>c + 1</b> is arithmetic on the code: 65 + 1 = <b>66</b>. The result is a plain int, so cout prints the number <b>66</b> — not the letter whose code that is." },
+          { line: 5, vars: { c: ["char", "'A'"] }, out: "66", note: "The program ends. Final answer: <b>66</b>. Nothing was ever stored back into c, so no letter is printed." }
+        ],
+        modify: {
+          prompt: "The program changes: the sum is stored back into c before printing — c = c + 1; then cout << c;. What prints now?",
+          code: 'char c = \'A\';\n<mark>c = c + 1;</mark>\ncout << c;',
+          options: ["B", "66", "A", "67"],
+          correct: 0,
+          explain: "The sum (66) is stored back into a <b>char</b> box, so it becomes a character again — the character with code 66, which is <b>B</b>. The type of the box the value lands in decides how it prints."
+        }
+      },
+      {
+        concept: "Strings",
+        title: "Three questions, one string",
+        goal: "<b>length()</b> counts the characters; <b>substr(pos, count)</b> takes a <em>count</em> of characters starting at pos — not an ending position; and <b>find</b> reports the index where a piece starts, counting from 0.",
+        stories: {
+          health:   "A records program stores the word <strong>program</strong> in a string and asks three questions of it in a single print: its length, its first three characters, and where the piece <strong>gram</strong> begins.",
+          psych:    "A survey program stores the word <strong>program</strong> in a string and asks three questions of it in a single print: its length, its first three characters, and where the piece <strong>gram</strong> begins.",
+          business: "A catalogue program stores the word <strong>program</strong> in a string and asks three questions of it in a single print: its length, its first three characters, and where the piece <strong>gram</strong> begins.",
+          arts:     "A media program stores the word <strong>program</strong> in a string and asks three questions of it in a single print: its length, its first three characters, and where the piece <strong>gram</strong> begins."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    string word = \"program\";",
+          "    cout << word.length() << \" \" << word.substr(0, 3) << \" \" << word.find(\"gram\");",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["7 pro 3", "7 prog 3", "7 pro 4", "8 pro 3"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "That reading treats substr's second number as an <b>ending position</b>. It is a <b>count</b>: <b>substr(0, 3)</b> takes <em>3 characters</em> from position 0 — <b>pro</b>. To get prog you would ask for a count of 4. The parting point is the substr evaluation inside the cout line." },
+          2: { step: 1, text: "The piece <b>gram</b> does start at the fourth character — but find reports an <b>index</b>, and indexes count from 0: p(0), r(1), o(2), g(3). The answer is <b>3</b>, not 4." },
+          3: { step: 1, text: "Count the letters in <b>program</b>: p-r-o-g-r-a-m is <b>7</b> characters, so length() is 7, not 8." }
+        },
+        steps: [
+          { line: 5, vars: { word: ["string", "\"program\""] }, out: "", note: "The string box <b>word</b> holds <b>program</b> — seven characters at indexes 0 to 6: p(0) r(1) o(2) g(3) r(4) a(5) m(6)." },
+          { line: 6, vars: { word: ["string", "\"program\""] }, out: "7 pro 3", note: "<b>The parting step.</b> One cout, three answers: <b>length()</b> is <b>7</b>; <b>substr(0, 3)</b> takes a <em>count</em> of 3 characters from index 0 — <b>pro</b>; <b>find(\"gram\")</b> reports the index where gram starts — <b>3</b>. Output: <b>7 pro 3</b>." },
+          { line: 7, vars: { word: ["string", "\"program\""] }, out: "7 pro 3", note: "The program ends. Final answer: <b>7 pro 3</b>." }
+        ],
+        modify: {
+          prompt: "The substring call changes to word.substr(0, 4). Nothing else changes. What prints now?",
+          code: 'string word = "program";\ncout << word.length() << " " << word.substr(0, <mark>4</mark>) << " " << word.find("gram");',
+          options: ["7 prog 3", "7 pro 3", "7 prog 4", "8 prog 3"],
+          correct: 0,
+          explain: "The count grows from 3 to 4, so substr now takes four characters — <b>prog</b>. The length and the find index do not move: <b>7 prog 3</b>."
+        }
+      },
+      {
+        concept: "Decisions — else if",
+        title: "On the boundary",
+        goal: "An <b>else-if</b> chain tests its conditions <b>in order</b> and runs the <b>first</b> one that is true. A strict <b>&gt;</b> does not include the boundary value itself — 60 is not greater than 60.",
+        stories: {
+          health:   "A results program reads a score of exactly <strong>60</strong> and labels it: above 60 is <strong>high</strong>, exactly 60 is <strong>edge</strong>, anything else is <strong>low</strong>. It prints the label.",
+          psych:    "A survey program reads a score of exactly <strong>60</strong> and labels it: above 60 is <strong>high</strong>, exactly 60 is <strong>edge</strong>, anything else is <strong>low</strong>. It prints the label.",
+          business: "A sales program reads a total of exactly <strong>60</strong> and labels it: above 60 is <strong>high</strong>, exactly 60 is <strong>edge</strong>, anything else is <strong>low</strong>. It prints the label.",
+          arts:     "A review program reads a score of exactly <strong>60</strong> and labels it: above 60 is <strong>high</strong>, exactly 60 is <strong>edge</strong>, anything else is <strong>low</strong>. It prints the label."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int score = 60;",
+          "    string result;",
+          "    if (score > 60) result = \"high\";",
+          "    else if (score == 60) result = \"edge\";",
+          "    else result = \"low\";",
+          "    cout << result;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["edge", "high", "low", "60"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "That answer reads <b>&gt;</b> as if it were <b>&gt;=</b> — “or equal to”. It is not: <b>60 &gt; 60 is false</b>. The parting step is the first test: the high branch is skipped, and the chain moves on to test equality." },
+          2: { step: 3, text: "low is the fall-through label, reached only when <em>every</em> test fails. The second test does not fail: <b>score == 60 is true</b>, so the chain stops there and result becomes <b>edge</b>." },
+          3: { step: 4, text: "The program never prints the score itself. Every branch stores a <b>word</b> in result, and the cout prints that word — the equality branch's word: <b>edge</b>." }
+        },
+        steps: [
+          { line: 5, vars: { score: ["int", "60"] }, out: "", note: "The box <b>score</b> holds exactly <b>60</b> — the boundary value itself. Watch which test that satisfies." },
+          { line: 6, vars: { score: ["int", "60"], result: ["string", "—"] }, out: "", note: "A string box <b>result</b> is declared, holding nothing yet. One of the three branches must fill it." },
+          { line: 7, vars: { score: ["int", "60"], result: ["string", "—"] }, out: "", note: "<b>The parting step.</b> First test: is <b>60 &gt; 60</b>? <b>False</b> — greater-than does not include the value itself. The high branch is skipped." },
+          { line: 8, vars: { score: ["int", "60"], result: ["string", "\"edge\""] }, out: "", note: "Second test: is <b>60 == 60</b>? <b>True</b>. The chain stops here: <b>result becomes \"edge\"</b>, and the final else never runs." },
+          { line: 10, vars: { score: ["int", "60"], result: ["string", "\"edge\""] }, out: "edge", note: "The program prints <b>result</b>: <b>edge</b>." },
+          { line: 11, vars: { score: ["int", "60"], result: ["string", "\"edge\""] }, out: "edge", note: "The program ends. Final answer: <b>edge</b> — the boundary belongs to the equality branch, not the greater-than branch." }
+        ],
+        modify: {
+          prompt: "The score changes from 60 to 61. The chain is unchanged. What prints now?",
+          code: 'int score = <mark>61</mark>;\nstring result;\nif (score > 60) result = "high";\nelse if (score == 60) result = "edge";\nelse result = "low";\ncout << result;',
+          options: ["high", "edge", "low", "61"],
+          correct: 0,
+          explain: "61 &gt; 60 is <b>true</b>, so the <em>first</em> branch runs and the chain stops: <b>high</b>. One point across the boundary moves the answer to a different branch."
+        }
+      },
+      {
+        concept: "Functions · scope",
+        title: "Two boxes, one name",
+        goal: "A <b>global</b> variable lives outside every function and is visible to all of them. A <b>local</b> variable with the same name <em>shadows</em> the global — but only inside its own function. Other functions still see the global.",
+        stories: {
+          health:   "A program keeps a shared setting of <strong>8</strong> outside its functions. The main function declares its own setting of <strong>3</strong>, then asks a helper to print the setting, then prints its own. Two prints, one name.",
+          psych:    "A program keeps a shared setting of <strong>8</strong> outside its functions. The main function declares its own setting of <strong>3</strong>, then asks a helper to print the setting, then prints its own. Two prints, one name.",
+          business: "A program keeps a shared setting of <strong>8</strong> outside its functions. The main function declares its own setting of <strong>3</strong>, then asks a helper to print the setting, then prints its own. Two prints, one name.",
+          arts:     "A program keeps a shared setting of <strong>8</strong> outside its functions. The main function declares its own setting of <strong>3</strong>, then asks a helper to print the setting, then prints its own. Two prints, one name."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int value = 8;",
+          "void show() { cout << value << \" \"; }",
+          "int main() {",
+          "    int value = 3;",
+          "    show();",
+          "    cout << value;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["8 3", "3 3", "8 8", "3 8"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 3, text: "That answer assumes a function sees the <b>caller's local variables</b>. It does not: main's local <b>value</b> exists only inside main. <b>show()</b> has no local of that name, so the name there means the <b>global</b> — the parting step is show() reading <b>8</b>. main then prints its own 3." },
+          2: { step: 4, text: "show() does print the global 8 — but back in main, the name value means <b>main's local box</b>, which holds 3 and shadows the global for every line inside main. The second print is <b>3</b>, not 8." },
+          3: { step: 3, text: "The order is swapped. <b>show()</b> is called <em>before</em> main's own cout, so the global's 8 prints first and main's local 3 prints second: <b>8 3</b>." }
+        },
+        steps: [
+          { line: 2, vars: { "value (global)": ["int", "8"] }, frames: [{ name: "main", vars: {} }], out: "", note: "Before main runs, the <b>global</b> box is created: <b>value = 8</b>, outside every function. Every function in the program can see this box — unless it declares its own with the same name." },
+          { line: 5, vars: { "value (global)": ["int", "8"], "value (main)": ["int", "3"] }, frames: [{ name: "main", vars: { "value (local)": ["int", "3"] } }], out: "", note: "main declares its <b>own</b> value: <b>3</b>. There are now <b>two boxes with one name</b>. Inside main, the name means the local one — the global is shadowed, but it still exists, still holding 8." },
+          { line: 6, vars: { "value (global)": ["int", "8"], "value (main)": ["int", "3"] }, frames: [{ name: "main", vars: { "value (local)": ["int", "3"] } }, { name: "show", vars: {} }], out: "", note: "main calls <b>show()</b> and pauses. show has no variables of its own — watch which value box its print can mean." },
+          { line: 3, vars: { "value (global)": ["int", "8"], "value (main)": ["int", "3"] }, frames: [{ name: "main", vars: { "value (local)": ["int", "3"] } }, { name: "show", vars: {} }], out: "8 ", note: "<b>The parting step.</b> Inside show, the name <b>value</b> cannot mean main's local — that box belongs to main alone. It means the <b>global</b>: <b>8 prints</b>." },
+          { line: 7, vars: { "value (global)": ["int", "8"], "value (main)": ["int", "3"] }, frames: [{ name: "main", vars: { "value (local)": ["int", "3"] } }], out: "8 3", note: "show returns. Back in main, the name value means main's local box again: <b>3 prints</b>. Output: <b>8 3</b>." },
+          { line: 8, vars: { "value (global)": ["int", "8"], "value (main)": ["int", "3"] }, frames: [{ name: "main", vars: { "value (local)": ["int", "3"] } }], out: "8 3", note: "The program ends. Final answer: <b>8 3</b> — one name, two boxes, and each function reads the box its own scope gives it." }
+        ],
+        modify: {
+          prompt: "main's local declaration is removed — the line int value = 3; is deleted, so main reads the global too. What prints now?",
+          code: 'int value = 8;\nvoid show() { cout << value << " "; }\nint main() {\n    show();\n    cout << value;\n}',
+          options: ["8 8", "8 3", "3 3", "8"],
+          correct: 0,
+          explain: "With no local to shadow it, the name value means the <b>global</b> in both functions: show prints 8 and main prints 8 — <b>8 8</b>."
+        }
+      },
+      {
+        concept: "Functions · arrays as parameters",
+        title: "The whole array travels",
+        goal: "When an array is passed to a function, the function receives <b>the array itself</b> — it can walk every element through the parameter, guided by the size passed alongside it.",
+        stories: {
+          health:   "A program stores three readings — <strong>4, 8, and 15</strong> — in an array and hands the array and its size to a summing function. The function adds up what it receives, and the program prints the result.",
+          psych:    "A program stores three scores — <strong>4, 8, and 15</strong> — in an array and hands the array and its size to a summing function. The function adds up what it receives, and the program prints the result.",
+          business: "A program stores three daily figures — <strong>4, 8, and 15</strong> — in an array and hands the array and its size to a summing function. The function adds up what it receives, and the program prints the result.",
+          arts:     "A program stores three counts — <strong>4, 8, and 15</strong> — in an array and hands the array and its size to a summing function. The function adds up what it receives, and the program prints the result."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int sumArray(int a[], int n) {",
+          "    int s = 0;",
+          "    for (int i = 0; i < n; i++) s += a[i];",
+          "    return s;",
+          "}",
+          "",
+          "int main() {",
+          "    int nums[] = {4, 8, 15};",
+          "    cout << sumArray(nums, 3);",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["27", "4", "12", "15"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 5, text: "4 is only the <b>first</b> element. An array argument does not pass one element — the function receives the whole array and walks it through the parameter. The parting step is the loop's second pass, where it adds <b>a[1] — 8</b> — an element your prediction never counted." },
+          2: { step: 6, text: "12 is the sum of the <b>first two</b> elements, 4 + 8. But the call passes n = 3 — three elements — so the loop makes a third pass and adds 15 as well: <b>27</b>." },
+          3: { step: 6, text: "15 is only the <b>last</b> element. The loop starts at a[0] and adds every element it passes: 4, then 8, then 15 — the total is <b>27</b>, not any single element." }
+        },
+        steps: [
+          { line: 9, vars: { nums: ["int[3]", "{4, 8, 15}"] }, frames: [{ name: "main", vars: { nums: ["int[3]", "{4, 8, 15}"] } }], out: "", note: "main's array <b>nums</b> holds three elements: <b>4, 8, 15</b>." },
+          { line: 10, vars: { nums: ["int[3]", "{4, 8, 15}"] }, frames: [{ name: "main", vars: { nums: ["int[3]", "{4, 8, 15}"] } }], out: "", note: "The print needs the call's result first: <b>sumArray(nums, 3)</b> — the array and the count 3 travel into the function. main pauses." },
+          { line: 2, vars: { a: ["int[]", "{4, 8, 15}"], n: ["int", "3"] }, frames: [{ name: "main", vars: { nums: ["int[3]", "{4, 8, 15}"] } }, { name: "sumArray", vars: { a: ["int[]", "{4, 8, 15}"], n: ["int", "3"] } }], out: "", note: "Inside sumArray, the parameter <b>a</b> refers to the <b>whole array</b> — all three elements, not just the first — and <b>n</b> is 3." },
+          { line: 3, vars: { a: ["int[]", "{4, 8, 15}"], n: ["int", "3"], s: ["int", "0"] }, frames: [{ name: "main", vars: { nums: ["int[3]", "{4, 8, 15}"] } }, { name: "sumArray", vars: { a: ["int[]", "{4, 8, 15}"], n: ["int", "3"], s: ["int", "0"] } }], out: "", note: "The function's own accumulator <b>s</b> starts at <b>0</b>." },
+          { line: 4, vars: { a: ["int[]", "{4, 8, 15}"], n: ["int", "3"], s: ["int", "4"], i: ["int", "0"] }, frames: [{ name: "main", vars: { nums: ["int[3]", "{4, 8, 15}"] } }, { name: "sumArray", vars: { a: ["int[]", "{4, 8, 15}"], n: ["int", "3"], s: ["int", "4"], i: ["int", "0"] } }], out: "", note: "Pass i = 0: <b>s += a[0]</b> — s is <b>4</b>. So far this matches a first-element-only reading. The loop is not done." },
+          { line: 4, vars: { a: ["int[]", "{4, 8, 15}"], n: ["int", "3"], s: ["int", "12"], i: ["int", "1"] }, frames: [{ name: "main", vars: { nums: ["int[3]", "{4, 8, 15}"] } }, { name: "sumArray", vars: { a: ["int[]", "{4, 8, 15}"], n: ["int", "3"], s: ["int", "12"], i: ["int", "1"] } }], out: "", note: "<b>The parting step.</b> Pass i = 1: the loop adds <b>a[1] — 8</b> — proof the function holds more than the first element. s is <b>12</b>." },
+          { line: 4, vars: { a: ["int[]", "{4, 8, 15}"], n: ["int", "3"], s: ["int", "27"], i: ["int", "2"] }, frames: [{ name: "main", vars: { nums: ["int[3]", "{4, 8, 15}"] } }, { name: "sumArray", vars: { a: ["int[]", "{4, 8, 15}"], n: ["int", "3"], s: ["int", "27"], i: ["int", "2"] } }], out: "", note: "Pass i = 2: <b>s += a[2]</b> — 15 joins the total. s is <b>27</b>, and i reaches n, so the loop ends." },
+          { line: 10, vars: { nums: ["int[3]", "{4, 8, 15}"] }, frames: [{ name: "main", vars: { nums: ["int[3]", "{4, 8, 15}"] } }], out: "27", note: "sumArray <b>returns 27</b>; its frame leaves the stack, and main's print runs with the returned value: <b>27</b>." },
+          { line: 11, vars: { nums: ["int[3]", "{4, 8, 15}"] }, frames: [{ name: "main", vars: { nums: ["int[3]", "{4, 8, 15}"] } }], out: "27", note: "The program ends. Final answer: <b>27</b> — 4 + 8 + 15, every element the array carried in." }
+        ],
+        modify: {
+          prompt: "The call changes to sumArray(nums, 2) — the same array, but the size handed over is 2. What prints now?",
+          code: 'int nums[] = {4, 8, 15};\ncout << sumArray(nums, <mark>2</mark>);',
+          options: ["12", "27", "4", "19"],
+          correct: 0,
+          explain: "The function trusts the size it is handed: with n = 2 the loop adds only a[0] and a[1] — 4 + 8 = <b>12</b>. The third element is in the array but outside the count, so it is never added."
+        }
       }
 
     ];
@@ -3351,31 +3682,31 @@ int main() {
     }
 
     var EX_GROUPS = [
-      { name: "Foundations", from: 0, to: 2 },
-      { name: "Loops & Functions", from: 3, to: 6 },
-      { name: "Arrays & Strings", from: 7, to: 8 },
-      { name: "Pointers", from: 9, to: 12 },
-      { name: "Recursion", from: 13, to: 15 },
-      { name: "Searching & Sorting", from: 16, to: 17 },
-      { name: "Decisions & References", from: 18, to: 19 },
-      { name: "Structured Data & Collections", from: 20, to: 22 }
+      { name: "Foundations", list: [0, 1, 2] },
+      { name: "Loops & Functions", list: [3, 4, 5, 6, 23, 24, 28] },
+      { name: "Arrays & Strings", list: [7, 8, 25, 26, 29] },
+      { name: "Pointers", list: [9, 10, 11, 12] },
+      { name: "Recursion", list: [13, 14, 15] },
+      { name: "Searching & Sorting", list: [16, 17] },
+      { name: "Decisions & References", list: [18, 19, 27] },
+      { name: "Structured Data & Collections", list: [20, 21, 22] }
     ];
     function renderExNav() {
       var box = $("exnav"); box.innerHTML = ""; box.className = "ex-groups";
       EX_GROUPS.forEach(function (g) {
         var det = document.createElement("details");
         det.className = "ex-group";
-        if (state.current >= g.from && state.current <= g.to) det.open = true;
+        if (g.list.indexOf(state.current) !== -1) det.open = true;
         var doneN = 0, toN = 0;
-        for (var k = g.from; k <= g.to; k++) {
+        g.list.forEach(function (k) {
           if (state.ex[k] && state.ex[k].locked) doneN++;
           else if (typeof isTestedOut === "function" && isTestedOut(k)) toN++;
-        }
+        });
         var sum = document.createElement("summary");
-        sum.innerHTML = '<span>' + g.name + '</span><span class="gcount">' + doneN + " / " + (g.to - g.from + 1) + " attempted" + (toN ? " · " + toN + " tested out" : "") + " &#9662;</span>";
+        sum.innerHTML = '<span>' + g.name + '</span><span class="gcount">' + doneN + " / " + g.list.length + " attempted" + (toN ? " · " + toN + " tested out" : "") + " &#9662;</span>";
         det.appendChild(sum);
         var list = document.createElement("div"); list.className = "ex-group-list";
-        for (var i = g.from; i <= g.to; i++) {
+        g.list.forEach(function (i) {
           (function (idx) {
             var ex = EXERCISES[idx], st = exStatus(idx);
             var shortStatus = !state.ex[idx].locked ? (st.cls === "tested" ? "Tested out" : "Not started") : st.t;
@@ -3387,7 +3718,7 @@ int main() {
             b.addEventListener("click", function () { state.current = idx; renderAll(); });
             list.appendChild(b);
           })(i);
-        }
+        });
         det.appendChild(list);
         box.appendChild(det);
       });
@@ -4689,6 +5020,112 @@ int main() {
         fixedLines: [6, 7, 9, 12, 17, 18],
         sampleHead: "Verified sample run — scores {50, 45, 7, 38}",
         sample: "Max is 50"
+      },
+      {
+        title: "The Username Builder",
+        milestone: "Strings & functions · Return types and argument order",
+        story: "This program reads a first name and a last name and builds a username: the first name's initial followed by the last name, printed with its length. Seven bugs stand between it and working order — three the compiler will catch, and four it will wave through.",
+        file: "usernameBuilder.cpp",
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "int makeUsername(string first, string last) {",
+          "    string user = \"\"",
+          "    user += first[1];",
+          "    user += last;",
+          "}",
+          "",
+          "int main() {",
+          "    string first, last;",
+          "    cin >> first, last;",
+          "    string user = makeUsername(last, first);",
+          "    cout << user << \" \" << user.length;",
+          "    return 0;",
+          "}"
+        ],
+        bugs: {
+          5:  { kind: "syntax", text: "The return type is <b>int</b>, but the function builds a <b>string</b> and must hand a string back. The compiler rejects returning a string from an int function — the declaration has to promise the type the function actually returns: <b>string makeUsername(...)</b>." },
+          6:  { kind: "syntax", text: "Missing semicolon after <b>string user = \"\"</b>. The declaration never ends, so the compiler reads the next line as part of it." },
+          7:  { kind: "logic",  text: "Indexing starts at 0, so <b>first[1]</b> is the <em>second</em> letter of the first name, not its initial. The username starts with the wrong letter — for Ada it would start with d. The initial is <b>first[0]</b>." },
+          9:  { kind: "logic",  text: "The function builds its string and then reaches its closing brace <b>without returning it</b>. There is no <b>return user;</b> — the work is done and then thrown away, and main receives nothing usable. (In the Fix stage, this line carries the repair: the corrected line reads <b>return user; }</b> — the return and the closing brace on the one line.)" },
+          13: { kind: "logic",  text: "A comma is not a stream operator: <b>cin >> first, last;</b> reads only into <b>first</b>. The comma expression evaluates and discards <b>last</b>, which stays empty. Every value needs its own >>: <b>cin >> first >> last;</b>" },
+          14: { kind: "logic",  text: "The arguments are swapped: <b>makeUsername(last, first)</b> hands the last name to the <b>first</b> parameter and the first name to <b>last</b>. The username is built from the last name's initial followed by the first name — the mirror image of the intention." },
+          15: { kind: "syntax", text: "<b>length</b> is a function, and functions are called: <b>user.length()</b>. Written without the parentheses, the line names the function instead of running it, and the compiler refuses." }
+        },
+        fixed: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "string makeUsername(string first, string last) {",
+          "    string user = \"\";",
+          "    user += first[0];",
+          "    user += last;",
+          "    return user;",
+          "}",
+          "",
+          "int main() {",
+          "    string first, last;",
+          "    cin >> first >> last;",
+          "    string user = makeUsername(first, last);",
+          "    cout << user << \" \" << user.length();",
+          "    return 0;",
+          "}"
+        ],
+        fixedLines: [5, 6, 7, 9, 14, 15, 16],
+        sampleHead: "Verified sample run — input Ada Lovelace",
+        sample: "ALovelace 9"
+      },
+      {
+        title: "The High Score Table",
+        milestone: "Loops & arrays · Boundaries and accumulators",
+        story: "This program reads five scores into an array and prints their total and the best of them. Only two of its seven bugs are syntax; the other five quietly corrupt the numbers — a loop that runs once too often, a best that starts in the wrong place, a total that overwrites itself.",
+        file: "highScoreTable.cpp",
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int scores[5]",
+          "    for (int i = 0; i <= 5; i++) cin >> scores[i];",
+          "    int total = 0;",
+          "    int best = scores[1];",
+          "    for (int i = 0; i < 4; i++) {",
+          "        total = scores[i];",
+          "        if (scores[i] < best) best = scores[i];",
+          "    }",
+          "    cout << total << \" \" << best;",
+          "    return 0;"
+        ],
+        bugs: {
+          4:  { kind: "syntax", text: "Missing semicolon after the array declaration <b>int scores[5]</b>. Without it, the compiler reads the for header below as part of the declaration." },
+          5:  { kind: "logic",  text: "The bound is <b>i &lt;= 5</b>, so the loop runs <b>six</b> times — and the sixth pass stores a score into <b>scores[5]</b>, a slot that does not exist in a five-slot array. Array loops end at <b>i &lt; 5</b>: the last legal index is 4." },
+          7:  { kind: "logic",  text: "The search for the best starts at <b>scores[1]</b> — the second score. The first score is never taken as the starting best, so if it happens to be the highest, it can never win. A search starts from the first element: <b>scores[0]</b>." },
+          8:  { kind: "logic",  text: "The second loop stops at <b>i &lt; 4</b>, so its last pass is i = 3. The fifth score, at index 4, is never added to the total and never compared against the best. The loop must run while <b>i &lt; 5</b> to cover the whole array." },
+          9:  { kind: "logic",  text: "<b>total = scores[i]</b> <em>overwrites</em> the total on every pass instead of adding to it. When the loop ends, total holds just the last score it touched. Accumulation needs <b>total += scores[i]</b>." },
+          10: { kind: "logic",  text: "The comparison points the wrong way: <b>scores[i] &lt; best</b> replaces best whenever a <em>smaller</em> score appears, so best sinks to the smallest score in the table. Finding the largest takes <b>scores[i] &gt; best</b>." },
+          13: { kind: "syntax", text: "The listing <b>ends without main's closing brace</b>. return 0; is the last statement, but the } that closes main never arrives — the compiler reaches the end of the file still waiting for it. (In the Fix stage, this line's edit must supply it: the corrected line reads <b>return 0; }</b> — and the same one-line repair, <b>return user; }</b>, is how the Username Builder's missing return is restored on its line 9.)" }
+        },
+        fixed: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int scores[5];",
+          "    for (int i = 0; i < 5; i++) cin >> scores[i];",
+          "    int total = 0;",
+          "    int best = scores[0];",
+          "    for (int i = 0; i < 5; i++) {",
+          "        total += scores[i];",
+          "        if (scores[i] > best) best = scores[i];",
+          "    }",
+          "    cout << total << \" \" << best;",
+          "    return 0;",
+          "}"
+        ],
+        fixedLines: [4, 5, 7, 8, 9, 10, 14],
+        sampleHead: "Verified sample run — scores 10 25 7 40 18",
+        sample: "100 40"
       }
     ];
 
@@ -4715,6 +5152,14 @@ int main() {
       {
         visible: { input: "", inputLabel: "the scores {50, 45, 7, 38} written in the program", expected: ["Max is 50"] },
         unseen:  { input: "", inputLabel: "the scores {3, 99, 12, 41} written in the program", expected: ["Max is 99"], swapArray: "{3, 99, 12, 41}" }
+      },
+      {
+        visible: { input: "Ada Lovelace", inputLabel: "Ada Lovelace", expected: ["ALovelace 9"] },
+        unseen:  { input: "Grace Hopper", inputLabel: "Grace Hopper", expected: ["GHopper 7"] }
+      },
+      {
+        visible: { input: "10 25 7 40 18", inputLabel: "10 25 7 40 18", expected: ["100 40"] },
+        unseen:  { input: "3 3 9 1 9", inputLabel: "3 3 9 1 9", expected: ["25 9"] }
       }
     ];
     var GYM_HYPOS = [
@@ -4776,6 +5221,55 @@ int main() {
           "The loop runs one pass too many: on the last pass i equals size, and arr[i] reads one element past the end of the array — a value that was never part of the data.",
           "The loop stops one pass early, so the last element of the array is never compared against the maximum.",
           "The loop never runs at all, because i starts out already equal to size."
+        ] }
+      },
+      {
+        7: { correct: 0, options: [
+          "The username starts with the second letter of the first name instead of its initial.",
+          "The program crashes, because position 1 does not exist.",
+          "The username starts with the last name instead of the first name."
+        ] },
+        9: { correct: 0, options: [
+          "The function finishes without returning its string, so main receives nothing usable.",
+          "The function returns the last name twice.",
+          "The function returns the length instead of the name."
+        ] },
+        13: { correct: 0, options: [
+          "Only the first name is read, and the last name stays empty.",
+          "The two names are read but stored swapped.",
+          "The program reads the names in the wrong order from the keyboard buffer."
+        ] },
+        14: { correct: 0, options: [
+          "The username is built from the last name's initial followed by the first name.",
+          "Nothing changes, because argument order does not matter.",
+          "The program crashes, because the types no longer match."
+        ] }
+      },
+      {
+        5: { correct: 0, options: [
+          "The loop tries to store a sixth score in an array that only has five slots.",
+          "The loop runs exactly five times, so nothing goes wrong here.",
+          "The first score is skipped and never stored."
+        ] },
+        7: { correct: 0, options: [
+          "If the first score is the highest, it is never counted as the best.",
+          "The program crashes, because scores[1] does not exist yet.",
+          "Best starts at zero, so every score beats it."
+        ] },
+        8: { correct: 0, options: [
+          "The last score is left out of both the total and the best.",
+          "The loop runs one time too many.",
+          "Only the even-position scores are counted."
+        ] },
+        9: { correct: 0, options: [
+          "The total ends up equal to just the last score the loop touched.",
+          "Each score gets counted twice.",
+          "The total is always zero."
+        ] },
+        10: { correct: 0, options: [
+          "Best ends up as the smallest score instead of the largest.",
+          "Best never changes from its starting value.",
+          "The program prints the total twice."
         ] }
       }
     ];
@@ -4847,7 +5341,7 @@ int main() {
         box.appendChild(b);
       });
       var hint = document.createElement("span"); hint.className = "chip-hint";
-      hint.textContent = "Rounds 1\u20135 \u00b7 " + GYM_ROUNDS[gym.current].title;
+      hint.textContent = "Rounds 1\u2013" + GYM_ROUNDS.length + " \u00b7 " + GYM_ROUNDS[gym.current].title;
       box.appendChild(hint);
     }
     function renderGymScore() {
@@ -5245,7 +5739,13 @@ int main() {
       { id:23, title:"Assigning a string to an int", raw:"error: cannot convert 'std::string' to 'int' in assignment", meaning:"The value on the right of the = is text, and the box on the left holds whole numbers. The compiler will not silently turn text into a number — if a conversion is wanted, it has to be asked for by name.", cause:"The types on the two sides of an assignment must match, or be converted deliberately. Text that merely looks like a number is still text. Read it as a string, then convert with stoi (or stod for decimals) at the moment you mean it as a number.", before:"string entry = \"42\";\nint count = entry;", after:"string entry = \"42\";\nint count = stoi(entry); // deliberate conversion", keys:"cannot convert string int assignment stoi stod type mismatch conversion text number" },
       { id:24, title:"Indexing something that is not an array", raw:"error: subscripted value is neither array nor pointer", meaning:"You used [ ] on a plain, single value. The subscript operator only works on things that hold a sequence of values: arrays, strings, vectors, and pointers.", cause:"An int, double, or char holds exactly one value — there is no element 0 inside it to reach for. If you meant to work with several values, declare an array. If you meant the variable itself, drop the [0].", before:"int x = 5;\ncout << x[0];", after:"int x[] = {5};\ncout << x[0]; // x is an array now", keys:"subscripted value neither array nor pointer index bracket subscript plain variable x[0]" },
       { id:25, title:"Using the result of a void function", raw:"error: void value not ignored as it ought to be", meaning:"The function is declared void: it does its job and hands nothing back. Your code tried to store or use the nothing it returned, and the compiler is objecting to the attempt.", cause:"A void function is called for what it does — printing a menu, say — not for a value. Call it on its own line. If you genuinely need a value back, the function must be declared with a return type and must return something.", before:"void printMenu() {\n    cout << \"1. Play  2. Quit\";\n}\nint choice = printMenu();", after:"void printMenu() {\n    cout << \"1. Play  2. Quit\";\n}\nprintMenu(); // call it; there is no value to store", keys:"void value not ignored ought return nothing function result store printMenu" },
-      { id:26, title:"Two main functions", raw:"error: redefinition of 'int main()'", meaning:"The compiler found main defined twice in one program. A program has exactly one entry point, and the compiler will not choose between two candidates for the job.", cause:"Usually a pasted copy: a second version of the whole program, or just of main, was left in the file. Delete the duplicate, or merge the two versions into a single main. Other names may repeat across overloads; main may not.", before:"int main() {\n    cout << \"Version one\";\n    return 0;\n}\nint main() {\n    cout << \"Version two\";\n    return 0;\n}", after:"int main() {\n    cout << \"Version two\";\n    return 0;\n}", keys:"redefinition main two duplicate entry point pasted copy redefined" }
+      { id:26, title:"Two main functions", raw:"error: redefinition of 'int main()'", meaning:"The compiler found main defined twice in one program. A program has exactly one entry point, and the compiler will not choose between two candidates for the job.", cause:"Usually a pasted copy: a second version of the whole program, or just of main, was left in the file. Delete the duplicate, or merge the two versions into a single main. Other names may repeat across overloads; main may not.", before:"int main() {\n    cout << \"Version one\";\n    return 0;\n}\nint main() {\n    cout << \"Version two\";\n    return 0;\n}", after:"int main() {\n    cout << \"Version two\";\n    return 0;\n}", keys:"redefinition main two duplicate entry point pasted copy redefined" },
+      { id:27, title:"Missing header for string / vector", raw:"error: 'string' does not name a type\n  — the vector version reads: error: 'vector' does not name a type", meaning:"The compiler has never been introduced to the name string (or vector). Those types do not live in the language itself — they are defined in a header, and the header was never included, so as far as this file is concerned the type does not exist.", cause:"The file uses string or vector without its #include line. iostream brings in cout and cin, but string lives in <string> and vector in <vector>; each family of tools has its own header, and the type only exists once its header is included.", before:"#include <iostream>\nusing namespace std;\nint main() {\n    string name;\n    vector<int> scores;\n}", after:"#include <iostream>\n#include <string>\n#include <vector>\nusing namespace std;\nint main() {\n    string name;\n    vector<int> scores;\n}", keys:"string vector does not name a type header include missing type" },
+      { id:28, title:"Main instead of main — a linker error", raw:"undefined reference to 'main'\ncollect2: error: ld returned 1 exit status", meaning:"This is a link error, not a compile error: every file compiled successfully, but when the linker went to assemble the program it could not find the starting point. The entry function must be spelled exactly main, all lowercase — a function called Main is a different function that nothing ever calls.", cause:"The entry point was written as Main with a capital M (or otherwise misspelled). Compilation seems to succeed because Main is a legal function name; the failure only appears afterwards, at link time, when the system looks for main and finds none.", before:"int Main() {\n    cout << \"Hi\";\n    return 0;\n}", after:"int main() {\n    cout << \"Hi\";\n    return 0;\n}", keys:"Main main undefined reference linker link collect2 ld returned capital entry point" },
+      { id:29, title:"Missing value after <<", raw:"error: expected primary-expression before ';' token", meaning:"The statement ends where a value should be. After << the compiler waits for something to print — a value, a variable, a piece of text — and instead it met the semicolon that ends the statement.", cause:"An operand was left out of the output statement: cout << ; prints nothing because nothing was ever named. The value the line meant to print was deleted or never written.", before:"cout << ;", after:"cout << x;", keys:"expected primary-expression before token missing value operand cout << empty" },
+      { id:30, title:"String literal assigned to a char", raw:"error: invalid conversion from 'const char*' to 'char'", meaning:"Double quotes make a string — a whole sequence of characters — not a single character. A char holds exactly one character, and the compiler will not squeeze a string into a one-character box.", cause:"The value was written with double quotes: char c = \"A\"; makes \"A\" a string (the letter plus an invisible end marker). Single characters take single quotes: 'A'.", before:"char c = \"A\";", after:"char c = 'A';", keys:"invalid conversion const char* char string literal double quotes single character" },
+      { id:31, title:"Smart quotes and stray characters from pasted code", raw:"error: extended character \" is not valid in an identifier\n  — also seen as: error: stray '\\342' in program", meaning:"The code contains a typographic character — usually a curly (“smart”) quote copied from a word processor, a web page, or a PDF. The compiler only accepts plain ASCII characters in code, and it reports the foreign character's byte codes (like \\342) instead of the character itself.", cause:"The program was pasted from somewhere that autocorrects quotes: word processors and many web pages silently replace straight quotes with curly ones. The fix is mechanical: delete each curly quote in the file and retype it on the keyboard as a straight ' or \".", before:"cout << “Hello”;", after:"cout << \"Hello\";", keys:"smart quotes curly stray 342 extended character pasted word processor non-ascii identifier" },
+      { id:32, title:"Missing return in a non-void function — a warning", raw:"warning: no return statement in function returning non-void", meaning:"This one is a warning, not an error: the program may still build and run. But the function promised its caller a value, and it can finish without providing one — so the caller receives whatever garbage happened to be in the machine at that moment, and the results are unpredictable.", cause:"A path through the function reaches its closing brace without meeting a return statement — often a return that only exists inside an if, with nothing after it for the other case. Every path through a non-void function must end with return ...;.", before:"int doubleIt(int x) {\n    if (x > 0) return x * 2;\n}", after:"int doubleIt(int x) {\n    if (x > 0) return x * 2;\n    return 0;\n}", keys:"warning no return statement function returning non-void missing return garbage value path" }
     ];
     var transOpen = {};
     function renderTrans(filter) {
@@ -5306,7 +5806,10 @@ int main() {
           { id: "B3", type: "complete", title: "The larger of two", prompt: "This program should print the larger of x and y (here, 9). Choose the missing line.", code: ["int x = 9;", "int y = 5;", "// _____ missing line _____"], options: ["if (x > y) cout << x;", "if (x < y) cout << x;", "cout << x + y;"], correct: 0, explain: "x (9) is greater than y (5), so the condition x > y is true and the program prints 9." },
           { id: "B4", type: "spot", title: "The error is not where the compiler says", prompt: "One line in this program has a bug. First tap the faulty line, then choose the fix.", code: ["int main() {", "    cout << \"Hello\"", "    cout << \"World\";", "    return 0;", "}"], bugLine: 1, fixOptions: ["Add the semicolon at the end of the cout << \"Hello\" line", "Add a semicolon at the end of the cout << \"World\" line", "Remove the quotes around Hello"], fixCorrect: 0, explain: "The semicolon is missing after cout << \"Hello\", but the compiler reports the error on the following line: an error message names where the compiler gave up, not where the mistake is. That is the Error Translator's first lesson." },
           { id: "B5", type: "predict", title: "Joining strings", prompt: "What does this print?", code: ["string greeting = \"Hi\";", "string name = \"Ada\";", "cout << greeting + \" \" + name;"], options: ["Hi Ada", "HiAda", "greeting name"], correct: 0, explain: "The + operator joins strings end to end, and the \" \" in the middle contributes the space: Hi Ada." },
-          { id: "B6", type: "predict", title: "Counting up with while", prompt: "What does this print?", code: ["int k = 0;", "while (k < 3) {", "    k++;", "}", "cout << k;"], options: ["3", "2", "4"], correct: 0, explain: "k climbs 0, 1, 2, 3 — the increment that takes it to 3 still runs, and only then does the test k < 3 fail. The program prints 3." }
+          { id: "B6", type: "predict", title: "Counting up with while", prompt: "What does this print?", code: ["int k = 0;", "while (k < 3) {", "    k++;", "}", "cout << k;"], options: ["3", "2", "4"], correct: 0, explain: "k climbs 0, 1, 2, 3 — the increment that takes it to 3 still runs, and only then does the test k < 3 fail. The program prints 3." },
+          { id: "B7", type: "write", title: "Multiples of Three", prompt: "Write a program that prints the multiples of 3 from 3 to 30 on one line, separated by spaces. Write it in your own editor, run it there, and compare what it prints with the expected output below.", expected: "3 6 9 12 15 18 21 24 27 30", explain: "Count by threes in a loop — or count 1 to 30 and print only the values divisible by 3 (i % 3 == 0). Either way the line is exactly: 3 6 9 12 15 18 21 24 27 30." },
+          { id: "B8", type: "write", title: "Which Is Larger?", prompt: "Write a program that reads two whole numbers and prints the larger one; if they are equal, it prints the word equal. Write it in your own editor and test it on both checks below.", expected: "input 7 12 \u2192 12 \u00b7 input 9 9 \u2192 equal", explain: "Three cases, three branches: if the first is larger print it, else if the second is larger print it, else the two are equal and the program prints equal. Both checks must pass: 7 and 12 print 12; 9 and 9 print equal." },
+          { id: "B9", type: "write", title: "Countdown", prompt: "Write a program that prints a countdown from 5 to 1 on one line, followed by the word Go. Write it in your own editor, run it, and compare with the expected output below.", expected: "5 4 3 2 1 Go", explain: "A loop that counts down — starting at 5, stepping by -1 while the count is at least 1 — prints 5 4 3 2 1, and one final print adds Go." }
         ],
         projects: [
           { id: "BP1", title: "Validate My Password", brief: "Build a program that reads a password and prints STRONG if it has at least 8 characters, at least one digit, and at least one uppercase letter; otherwise it prints WEAK.",
@@ -5342,7 +5845,10 @@ int main() {
           { id: "I3", type: "complete", title: "Binary search: the next half", prompt: "Binary search on a sorted array. The target was not found at mid, and arr[mid] &lt; target. Choose the missing line.", code: ["int first = 0, last = size - 1;", "while (first <= last) {", "    int mid = (first + last) / 2;", "    if (arr[mid] == target) return mid;", "    else if (arr[mid] < target)", "        // _____ missing line _____", "    else", "        last = mid - 1;", "}"], options: ["first = mid + 1;", "last = mid - 1;", "first = mid;"], correct: 0, explain: "arr[mid] < target means the target is in the upper half. mid itself is eliminated, so the search resumes at mid + 1." },
           { id: "I4", type: "spot", title: "One past the end", prompt: "One line in this program has a bug. First tap the faulty line, then choose the fix.", code: ["int arr[5] = {2, 4, 6, 8, 10};", "int size = 5;", "for (int i = 0; i <= size; i++) {", "    cout << arr[i] << \" \";", "}"], bugLine: 2, fixOptions: ["Change i <= size to i < size", "Change int size = 5 to int size = 6", "Change arr[5] to arr[6]"], fixCorrect: 0, explain: "Valid indexes run from 0 to size - 1. With i <= size the loop also reads arr[size] — one element past the end of the array." },
           { id: "I5", type: "predict", title: "Nested counting", prompt: "What does this print?", code: ["int c = 0;", "for (int i = 0; i < 3; i++)", "    for (int j = 0; j < 2; j++)", "        c++;", "cout << c;"], options: ["6", "5", "9"], correct: 0, explain: "The inner loop runs to completion — 2 increments — for every one of the 3 outer passes: 3 × 2 = 6." },
-          { id: "I6", type: "complete", title: "Selection sort: the swap", prompt: "Selection sort has just found minIndex, the position of the smallest value in the unsorted part. Choose the missing line that puts that value in place.", code: ["for (int start = 0; start < size - 1; start++) {", "    int minIndex = start;", "    for (int i = start + 1; i < size; i++)", "        if (arr[i] < arr[minIndex])", "            minIndex = i;", "    // _____ missing line _____", "}"], options: ["swap(arr[start], arr[minIndex]);", "arr[start] = arr[minIndex];", "minIndex = start;"], correct: 0, explain: "The two values must trade places. A plain assignment would overwrite arr[start] and lose its old value before it could be moved; the swap exchanges them safely." }
+          { id: "I6", type: "complete", title: "Selection sort: the swap", prompt: "Selection sort has just found minIndex, the position of the smallest value in the unsorted part. Choose the missing line that puts that value in place.", code: ["for (int start = 0; start < size - 1; start++) {", "    int minIndex = start;", "    for (int i = start + 1; i < size; i++)", "        if (arr[i] < arr[minIndex])", "            minIndex = i;", "    // _____ missing line _____", "}"], options: ["swap(arr[start], arr[minIndex]);", "arr[start] = arr[minIndex];", "minIndex = start;"], correct: 0, explain: "The two values must trade places. A plain assignment would overwrite arr[start] and lose its old value before it could be moved; the swap exchanges them safely." },
+          { id: "I7", type: "write", title: "Count the Evens", prompt: "Write a program with the array {6, 11, 18, 23, 30, 41} written into it, which prints how many of its values are even. Write it in your own editor, run it, and compare with the expected output below.", expected: "3", explain: "Loop over the array and count the values with value % 2 == 0: 6, 18, and 30 are even — the count is 3." },
+          { id: "I8", type: "write", title: "Backwards Word", prompt: "Write a program with the string \"monitor\" written into it, which prints the word in reverse. Write it in your own editor, run it, and compare with the expected output below.", expected: "rotinom", explain: "Walk the string from its last index down to 0 — for (int i = word.length() - 1; i >= 0; i--) — printing one character at a time: rotinom." },
+          { id: "I9", type: "write", title: "Digit Sum", prompt: "Write a program with the number 4826 written into it, which prints the sum of its digits. Write it in your own editor, run it, and compare with the expected output below.", expected: "20", explain: "Peel the digits off with % 10 and / 10: 6 + 2 + 8 + 4 = 20. The loop runs while the number is above zero, adding each last digit before dividing it away." }
         ],
         projects: [
           { id: "IP1", title: "Character Histogram", brief: "Read a sentence, count how often each letter appears (ignore case and non-letters), and print each letter that appears with its count.",
@@ -5384,7 +5890,10 @@ int main() {
           { id: "E3", type: "complete", title: "Setting a struct member", prompt: "Choose the line that sets this student's GPA to 3.75.", code: ["struct Student {", "    string name;", "    double gpa;", "};", "Student s;", "// _____ missing line _____"], options: ["s.gpa = 3.75;", "s->gpa = 3.75;", "Student.gpa = 3.75;"], correct: 0, explain: "s is an object, not a pointer, so its members are reached with the dot operator: s.gpa." },
           { id: "E4", type: "predict", title: "A substring by index", prompt: "What does this print?", code: ["string s = \"campus.edu\";", "cout << s.substr(7);"], options: ["edu", ".edu", "pus.edu"], correct: 0, explain: "Index 6 is the dot; substr(7) starts at the 'e', so it prints edu." },
           { id: "E5", type: "predict", title: "A dynamic array", prompt: "What does this print?", code: ["int* p = new int[3];", "p[0] = 2;", "p[1] = 4;", "p[2] = 6;", "cout << p[0] + p[1] + p[2];"], options: ["12", "9", "246"], correct: 0, explain: "A pointer to a dynamic array is indexed just like an array: p[0] + p[1] + p[2] = 2 + 4 + 6 = 12." },
-          { id: "E6", type: "spot", title: "The dangling pointer", prompt: "One line in this program has a bug. First tap the faulty line, then choose the fix.", code: ["int* p = new int(5);", "delete p;", "cout << *p;"], bugLine: 2, fixOptions: ["Read the value before deleting: move the cout line above delete p", "Call delete p a second time so the release is complete", "Print p instead of *p after the delete"], fixCorrect: 0, explain: "delete hands the memory back, but p still points at where it was — a dangling pointer. Reading *p afterwards uses memory the program no longer owns. Use the value first, then delete, and never touch the pointer again." }
+          { id: "E6", type: "spot", title: "The dangling pointer", prompt: "One line in this program has a bug. First tap the faulty line, then choose the fix.", code: ["int* p = new int(5);", "delete p;", "cout << *p;"], bugLine: 2, fixOptions: ["Read the value before deleting: move the cout line above delete p", "Call delete p a second time so the release is complete", "Print p instead of *p after the delete"], fixCorrect: 0, explain: "delete hands the memory back, but p still points at where it was — a dangling pointer. Reading *p afterwards uses memory the program no longer owns. Use the value first, then delete, and never touch the pointer again." },
+          { id: "E7", type: "write", title: "Second Best", prompt: "Write a program with the array {14, 29, 7, 29, 18} written into it, which prints the largest value that is strictly smaller than the maximum. Note that the maximum, 29, appears twice — and does not count as its own runner-up. Write it in your own editor, run it, and compare with the expected output below.", expected: "18", explain: "Find the maximum first (29), then find the largest value below it: 18 beats 14 and 7, and the second 29 is excluded because it is not strictly smaller. The answer is 18." },
+          { id: "E8", type: "write", title: "Word Count", prompt: "Write a program with the sentence \"the quick brown fox jumps\" written into it, which prints how many words the sentence contains. Write it in your own editor, run it, and compare with the expected output below.", expected: "5", explain: "Words are separated by spaces: four spaces split the sentence into five words. Count the spaces and add one — or count the positions where a word starts — and the answer is 5." },
+          { id: "E9", type: "write", title: "Fibonacci Start", prompt: "Write a program that prints the first 8 Fibonacci numbers (starting 0, 1) on one line, separated by spaces. Write it in your own editor, run it, and compare with the expected output below.", expected: "0 1 1 2 3 5 8 13", explain: "Keep the last two values, print the current one, then replace the pair with (second, first + second). Eight prints give: 0 1 1 2 3 5 8 13." }
         ],
         projects: [
           { id: "XP1", title: "Magic Squares", brief: "A 3x3 grid is magic if every row, column, and both diagonals sum to the same value. Build a program that reads a grid and prints MAGIC or NOT MAGIC.",
@@ -5491,11 +6000,22 @@ int main() {
         if (!d.tasks[t.id]) d.tasks[t.id] = { sel: -1, done: false, correct: false, lineSel: -1, lineDone: false, fixSel: -1, msg: "" };
         var s = d.tasks[t.id];
         var card = document.createElement("section"); card.className = "card"; card.style.marginTop = "14px";
-        var typeName = t.type === "predict" ? "Predict" : t.type === "complete" ? "Complete the line" : "Spot the bug";
+        var typeName = t.type === "predict" ? "Predict" : t.type === "complete" ? "Complete the line" : t.type === "write" ? "Write it" : "Spot the bug";
         card.innerHTML = '<div class="ch-task-head"><span class="type-tag' + (s.done ? " done" : "") + '">' + t.id + " · " + typeName + (s.done ? " · done" : "") + '</span><h3>' + t.title + "</h3></div>" +
           '<p class="ch-prompt">' + t.prompt + "</p>";
-        card.appendChild(chCodeBox(t.code));
-        if (t.type === "spot") {
+        if (t.code && t.code.length) card.appendChild(chCodeBox(t.code));
+        if (t.type === "write") {
+          var eb = document.createElement("div"); eb.className = "revealed-box";
+          eb.innerHTML = 'Expected output: <span class="exp">' + esc(t.expected) + "</span>";
+          card.appendChild(eb);
+          var wrow = document.createElement("div"); wrow.className = "lockrow";
+          var wb = document.createElement("button"); wb.className = "btn small" + (s.done ? " ghost" : ""); wb.type = "button";
+          wb.textContent = s.done ? "Completed \u2713 \u2014 tap to undo" : "My program prints the expected output \u2014 mark complete";
+          wb.setAttribute("aria-pressed", s.done ? "true" : "false");
+          wb.addEventListener("click", function () { s.done = !s.done; s.correct = s.done; announce(s.done ? "Task " + t.id + " marked complete." : "Task " + t.id + " marked not complete."); renderChallenges(); });
+          wrow.appendChild(wb); card.appendChild(wrow);
+          if (s.done) card.appendChild(chFeedback(true, "<b>Marked complete.</b> " + t.explain));
+        } else if (t.type === "spot") {
           var sl = document.createElement("div"); sl.className = "spot-lines";
           sl.innerHTML = '<div class="tlabel2" style="font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;">Step 1 — tap the faulty line</div>';
           t.code.forEach(function (line, li) {
@@ -5967,10 +6487,41 @@ int main() {
         goalText: "Collect the cell at (6,1) (bag holds 1).",
         hint: "Go up the second column to row 5, east through the gap, down the fourth column, and out along the bottom row.",
         goal: function (st) { return st.bag >= 1; },
-        starter: "// Crates block the direct road.\n// Sensors and if statements let Bolt\n// check what is ahead before he moves.\n\n" }
+        starter: "// Crates block the direct road.\n// Sensors and if statements let Bolt\n// check what is ahead before he moves.\n\n" },
+      { name: "Special Delivery", concept: "Carrying — putCell · Loops — for", w: 6, h: 3,
+        start: { x: 1, y: 1, dir: 0 }, crates: [], cells: { "2,1": 1 }, home: "6,3",
+        story: "A battery cell waits one square ahead of Bolt, and a marked HOME square waits in the far top corner, at (6,3). Picking a cell up is only half the job this time: the cell has to be delivered.",
+        goalText: "Pick up the cell at (2,1), carry it across the workshop, and put it down on the HOME square at (6,3) (the home square holds the cell at the end).",
+        hint: "Pick the cell up first. The long east run is four moves — a for loop's natural work — then turn left and walk two squares north before putCell().",
+        goal: function (st) { return (st.cells["6,3"] || 0) >= 1; },
+        starter: "// A delivery, not a collection.\n// Pick the cell up, carry it to the\n// HOME square at (6,3), and put it down.\n\n" },
+      { name: "Out of Order", concept: "Sequence · Restraint", w: 7, h: 2,
+        start: { x: 1, y: 1, dir: 0 }, crates: [], cells: { "5,1": 1, "2,1": 1 }, order: { "5,1": 1, "2,1": 2 },
+        story: "Two cells sit on the same row, and each carries an order badge: the cell at (5,1) is marked 1 and the cell at (2,1) is marked 2. Bolt will walk straight past the second cell on his way to the first — and must not pick it up early.",
+        goalText: "Collect both cells in badge order: the cell at (5,1) first, then the cell at (2,1). Picking the (2,1) cell first fails the world.",
+        hint: "Walk past (2,1) without picking — passing a cell does nothing until pickCell() runs. Collect (5,1), turn around with two left turns, and collect (2,1) on the way back.",
+        goal: function (st) { return st.bag >= 2 && st.picked && st.picked[0] === "5,1" && st.picked[1] === "2,1"; },
+        orderFail: "The order was wrong: the cell at (2,1) was picked up before the cell at (5,1). The badges fix the order — pass the nearer cell without picking it, collect (5,1) first, then come back for (2,1).",
+        starter: "// Badge 1 is at (5,1); badge 2 is at (2,1).\n// Bolt passes badge 2 first — and must\n// walk past it without picking it up.\n\n" },
+      { name: "The Helper's Route", concept: "Functions · Sensor loops", w: 8, h: 3,
+        start: { x: 1, y: 1, dir: 0 }, crates: [], cells: { "3,3": 1, "6,3": 1 },
+        story: "Two cells wait on the top row, at (3,3) and (6,3). Fetching each one is the same pattern: climb north, pick, come back south, face East again. A pattern that happens twice is a function asking to be written — and a sensor loop, while (!cellsPresent()) { move(); }, can climb until the cell's square is reached.",
+        goalText: "Collect both cells on the top row and finish standing on square (8,1).",
+        hint: "Write a helper — void fetchCell() — that turns north, climbs with while (!cellsPresent()) { move(); }, picks, returns south, and faces East again. Then: move twice, fetch, move three times, fetch, move twice.",
+        goal: function (st) { return st.bag >= 2 && st.x === 8 && st.y === 1; },
+        starter: "// The same fetch, twice.\n// Write it once as a helper function:\n// void fetchCell() { ... }\n// Its climb north can stop on the cell:\n// while (!cellsPresent()) { move(); }\n\n" },
+      { name: "The Vault", concept: "Route finding · Delivery", w: 7, h: 6,
+        start: { x: 1, y: 1, dir: 0 },
+        crates: [[3, 1], [3, 2], [3, 3], [5, 3], [5, 4], [5, 5]],
+        cells: { "2,6": 1, "7,1": 1 }, home: "7,6",
+        story: "The last workshop. Two staggered crate walls guard the top row: a delivery cell waits at (2,6), a HOME square at (7,6), and one more ordinary cell at the bottom of the last column, at (7,1). The only way across is the high road along row 6.",
+        goalText: "Deliver the cell from (2,6) to the HOME square at (7,6), and also collect the cell at (7,1).",
+        hint: "Climb column 1 all the way to row 6, cross the top row (pick the delivery cell up at (2,6) on the way and put it down at (7,6)), then descend column 7 and pick the last cell at the bottom.",
+        goal: function (st) { return (st.cells["7,6"] || 0) >= 1 && st.bag >= 1; },
+        starter: "// The Vault: two walls, one high road.\n// Deliver (2,6) to HOME at (7,6),\n// then come down column 7 for (7,1).\n\n" }
     ];
 
-    /* ----- Bolt Challenges (optional) — opt-in, tracked separately from the eight worlds.
+    /* ----- Bolt Challenges (optional) — opt-in, tracked separately from the graded worlds.
        Coordinates are (column, row): columns west to east, rows south to north.
        Bolt starts at (1,1) facing East in every challenge, as in the graded worlds.
        A challenge is checked only when the program ends. Finishing counts as
@@ -6003,7 +6554,21 @@ int main() {
         goalText: "The direct road is blocked twice. Zigzag around the crates and collect the battery cell at the end of the top row.",
         hint: "When the bottom row is blocked, step up; when the top row is blocked, step back down. The crossings are at column 4 on the way up, column 6 on the way down, and column 8 on the way up again.",
         goal: function (st) { return st.bag >= 1; },
-        starter: "// Optional challenge — The Long Way Home.\n// Blocked below, then blocked above.\n// Zigzag: up, across, down, across, up.\n\n" }
+        starter: "// Optional challenge — The Long Way Home.\n// Blocked below, then blocked above.\n// Zigzag: up, across, down, across, up.\n\n" },
+      { name: "Round Trip", concept: "Sequence · Returning", w: 8, h: 1, par: 18,
+        start: { x: 1, y: 1, dir: 0 }, crates: [], cells: { "8,1": 1 },
+        story: "A one-row hall, eight squares long, with a single battery cell at the far end. Fetching it is only half the trip — Bolt has to come home again.",
+        goalText: "Collect the battery cell at (8,1) and finish back on your starting square, (1,1).",
+        hint: "Seven moves east, pick the cell up, two left turns to face home, seven moves west.",
+        goal: function (st) { return st.bag >= 1 && st.x === 1 && st.y === 1; },
+        starter: "// Optional challenge — Round Trip.\n// Fetch the cell at (8,1), then come\n// all the way back to (1,1).\n\n" },
+      { name: "The High Shelf", concept: "Turning · Columns", w: 5, h: 3, par: 19,
+        start: { x: 1, y: 1, dir: 0 }, crates: [], cells: { "1,3": 1, "5,3": 1 },
+        story: "Two battery cells sit on the top row of a five-by-three workshop: one directly above Bolt's start, one at the far top corner. The shelf is high, and both ends of it hold a prize.",
+        goalText: "Collect both battery cells on the top row and finish standing on (5,1).",
+        hint: "Climb column 1 first and pick, turn to face East (three lefts), cross the top row and pick, then turn south (three lefts again) and walk down column 5.",
+        goal: function (st) { return st.bag >= 2 && st.x === 5 && st.y === 1; },
+        starter: "// Optional challenge — The High Shelf.\n// Both cells are on the top row.\n// Finish down at (5,1).\n\n" }
     ];
 
     var bolt = {
@@ -6033,7 +6598,7 @@ int main() {
     function boltFreshState() {
       var w = boltWorld(), cells = {};
       Object.keys(w.cells).forEach(function (k) { cells[k] = w.cells[k]; });
-      return { x: w.start.x, y: w.start.y, dir: w.start.dir, bag: 0, cells: cells };
+      return { x: w.start.x, y: w.start.y, dir: w.start.dir, bag: 0, cells: cells, picked: [] };
     }
     function boltFrontCell(st) { var d = BOLT_DIRS[st.dir]; return { x: st.x + d.dx, y: st.y + d.dy }; }
     function boltFrontClear(st) {
@@ -6060,7 +6625,9 @@ int main() {
         for (var x = 1; x <= w.w; x++) {
           if (boltIsCrate(w, x, y)) { html += '<div class="bolt-cell crate">' + CRATE_SVG + "</div>"; continue; }
           var n = st.cells[boltKey(x, y)] || 0;
-          html += '<div class="bolt-cell">' + (n > 0 ? '<span class="batt">' + BATT_SVG + (n > 1 ? '<span class="bcount">×' + n + "</span>" : "") + "</span>" : "") + "</div>";
+          var isHome = w.home && w.home === boltKey(x, y);
+          var badge = w.order && w.order[boltKey(x, y)] ? '<span class="order-badge" aria-hidden="true">' + w.order[boltKey(x, y)] + "</span>" : "";
+          html += '<div class="bolt-cell' + (isHome ? " home" : "") + '">' + badge + (n > 0 ? '<span class="batt">' + BATT_SVG + (n > 1 ? '<span class="bcount">×' + n + "</span>" : "") + "</span>" : "") + (isHome ? '<span class="home-mark" aria-hidden="true">HOME</span>' : "") + "</div>";
         }
       }
       board.innerHTML = html;
@@ -6080,7 +6647,7 @@ int main() {
         statusHtml += '<span class="metric"><strong>' + bolt.actions + '</strong> <span>actions used · par ' + w.par + '</span></span>';
       }
       $("bolt-statusbar").innerHTML = statusHtml;
-      board.setAttribute("aria-label", "The Workshop: " + w.w + " columns by " + w.h + " rows. Bolt is at column " + st.x + ", row " + st.y + ", facing " + BOLT_DIRS[st.dir].name + ", carrying " + st.bag + (st.bag === 1 ? " battery cell." : " battery cells."));
+      board.setAttribute("aria-label", "The Workshop: " + w.w + " columns by " + w.h + " rows. Bolt is at column " + st.x + ", row " + st.y + ", facing " + BOLT_DIRS[st.dir].name + ", carrying " + st.bag + (st.bag === 1 ? " battery cell." : " battery cells.") + (w.home ? " The marked HOME square is at " + w.home.replace(",", ", ") + "." : "") + (w.order ? " Cells carry order badges and must be collected in badge order." : ""));
     }
     function updateBoltRobot() {
       if (!boltRobotEl || !bolt.st) return;
@@ -6104,7 +6671,7 @@ int main() {
         box.appendChild(b);
       });
       var hint = document.createElement("span"); hint.className = "chip-hint";
-      hint.textContent = !boltIsChallenge() ? ("World " + (bolt.current + 1) + " \u00b7 " + BOLT_WORLDS[bolt.current].name) : "Choose a graded world 1\u20138";
+      hint.textContent = !boltIsChallenge() ? ("World " + (bolt.current + 1) + " \u00b7 " + BOLT_WORLDS[bolt.current].name) : "Choose a graded world 1\u2013" + BOLT_WORLDS.length;
       box.appendChild(hint);
       var doneCount = bolt.done.filter(Boolean).length;
       $("bolt-scorebar").innerHTML = '<span class="metric"><strong>' + doneCount + " / " + BOLT_WORLDS.length + '</strong> <span>worlds completed</span></span>';
@@ -6385,6 +6952,7 @@ int main() {
           return false;
         }
         st.cells[k]--; st.bag++;
+        if (st.picked) st.picked.push(k);
         return true;
       }
       if (action === "putCell") {
@@ -6422,14 +6990,19 @@ int main() {
             renderBoltNav();
             boltMsg("good", "Challenge complete — " + esc(cw.name) + " is finished in " + bolt.actions + (bolt.actions === 1 ? " action" : " actions") + " (par " + cw.par + ")." +
               (bolt.challengeStar[idx] ? " <span aria-hidden=\"true\">★</span> Efficiency star earned: finished in at most par." : " It counts as completed. Run it again in at most " + cw.par + " actions if you want the efficiency star.") +
-              (bolt.challengeDone.every(Boolean) ? " That is all four optional challenges." : ""));
+              (bolt.challengeDone.every(Boolean) ? " That is all " + BOLT_CHALLENGES.length + " optional challenges." : ""));
             announce("Challenge complete: " + cw.name);
           } else {
             boltMsg("info", "<b>The program ended.</b> The challenge is not complete yet: " + esc(cw.goalText) + " You used " + bolt.actions + (bolt.actions === 1 ? " action" : " actions") + " (par " + cw.par + "). Adjust the program and run it again.");
           }
           return;
         }
-        boltMsg("info", "<b>The program ended.</b> The goal is not met yet: " + esc(boltWorld().goalText) + " Adjust the program and run it again.");
+        var ew = boltWorld();
+        if (ew.orderFail && bolt.st.picked && bolt.st.picked.length && bolt.st.picked[0] !== "5,1") {
+          boltMsg("info", "<b>The program ended.</b> " + esc(ew.orderFail));
+        } else {
+          boltMsg("info", "<b>The program ended.</b> The goal is not met yet: " + esc(ew.goalText) + " Adjust the program and run it again.");
+        }
         return;
       }
       bolt.actions++;
@@ -6445,7 +7018,7 @@ int main() {
         bolt.gen = null; boltStopRun();
         if (!bolt.done[bolt.current]) { bolt.done[bolt.current] = true; renderBoltNav(); }
         boltMsg("good", "World complete — " + esc(boltWorld().name) + " is solved in " + bolt.actions + (bolt.actions === 1 ? " action." : " actions.") +
-          (bolt.done.every(Boolean) ? " That is all eight worlds: Bolt's whole workshop, programmed." : " Pick the next world above whenever you are ready."));
+          (bolt.done.every(Boolean) ? " That is all " + BOLT_WORLDS.length + " worlds: Bolt's whole workshop, programmed." : " Pick the next world above whenever you are ready."));
         announce("World complete: " + boltWorld().name);
         return;
       }
@@ -6530,7 +7103,21 @@ int main() {
       { tag: "Loops & Decisions", title: "Count the evens",
         task: "Read a count n, then n integers, then print how many of them are even.",
         tests: [ { input: "5 1 2 3 4 6", expected: "3" } ],
-        hiddenTests: [ { input: "4 7 9 11 13", expected: "0" } ] }
+        hiddenTests: [ { input: "4 7 9 11 13", expected: "0" } ] },
+      { tag: "Input & Formatting", title: "Temperature Converter",
+        task: "Read a temperature in Celsius and print it in Fahrenheit, with exactly one decimal place. Hold the format with fixed and setprecision(1), and use the formula F = C \u00d7 9/5 + 32.",
+        tests: [ { input: "25", expected: "77.0" } ] },
+      { tag: "Strings", title: "Count the Words",
+        task: "Read a whole line of text (use getline, not >>, so the spaces survive) and print how many words it contains. Words are separated by spaces.",
+        tests: [ { input: "the quick brown fox", expected: "4" } ] },
+      { tag: "Loops & Decisions", title: "Smallest of Five",
+        task: "Read five whole numbers and print the smallest of them.",
+        tests: [ { input: "8 3 9 1 6", expected: "1" } ],
+        hiddenTests: [ { input: "5 5 5 5 5", expected: "5" }, { input: "-2 0 4 -9 7", expected: "-9" } ] },
+      { tag: "Loops", title: "Multiplication Table",
+        task: "Read a whole number N and print its multiplication table for 1 to 10, one row per line, in exactly this format: N x i = P — for example, the first row for N = 3 is \u201c3 x 1 = 3\u201d.",
+        tests: [ { input: "3", expected: "3 x 1 = 3\n3 x 2 = 6\n3 x 3 = 9\n3 x 4 = 12\n3 x 5 = 15\n3 x 6 = 18\n3 x 7 = 21\n3 x 8 = 24\n3 x 9 = 27\n3 x 10 = 30" } ],
+        hiddenTests: [ { input: "5", expected: "5 x 1 = 5\n5 x 2 = 10\n5 x 3 = 15\n5 x 4 = 20\n5 x 5 = 25\n5 x 6 = 30\n5 x 7 = 35\n5 x 8 = 40\n5 x 9 = 45\n5 x 10 = 50" }, { input: "1", expected: "1 x 1 = 1\n1 x 2 = 2\n1 x 3 = 3\n1 x 4 = 4\n1 x 5 = 5\n1 x 6 = 6\n1 x 7 = 7\n1 x 8 = 8\n1 x 9 = 9\n1 x 10 = 10" } ] }
     ];
 
     /* ---------------- Make mode: a small C++ interpreter ----------------
@@ -7494,7 +8081,52 @@ int main() {
       { kind: "faded", tag: "Faded · Arrays", title: "Find the maximum", expected: "19", slots: 1,
         template: "#include <iostream>\nusing namespace std;\nint main() {\n    int nums[3] = {12, 7, 19};\n    int max = nums[0];\n    for (int i = 1; i < 3; i++) {\n        [[0]]\n    }\n    cout << max;\n    return 0;\n}" },
       { kind: "faded", tag: "Faded · Arrays", title: "Average, two lines missing", expected: "85", slots: 2,
-        template: "#include <iostream>\nusing namespace std;\nint main() {\n    int scores[4] = {70, 80, 90, 100};\n    int total = 0;\n    for (int i = 0; i < 4; i++) {\n        [[0]]\n    }\n    [[1]]\n    return 0;\n}" }
+        template: "#include <iostream>\nusing namespace std;\nint main() {\n    int scores[4] = {70, 80, 90, 100};\n    int total = 0;\n    for (int i = 0; i < 4; i++) {\n        [[0]]\n    }\n    [[1]]\n    return 0;\n}" },
+      { kind: "parsons", tag: "Parsons · Loops", title: "Count down with while", expected: "5 4 3 2 1",
+        distractor: "n++;",
+        trayOrder: [3, 7, 1, 8, 5, 0, 6, 2, 4],
+        blocks: [
+          "#include <iostream>\nusing namespace std;",
+          "int main() {",
+          "int n = 5;",
+          "while (n >= 1) {",
+          "cout << n << \" \";",
+          "n--;",
+          "}",
+          "return 0;\n}"
+        ] },
+      { kind: "parsons", tag: "Parsons · Strings", title: "Say it three times", expected: "go go go",
+        distractor: "result = word;",
+        trayOrder: [5, 2, 9, 0, 7, 4, 1, 8, 3, 6],
+        blocks: [
+          "#include <iostream>\n#include <string>\nusing namespace std;",
+          "int main() {",
+          "string word = \"go\";",
+          "string result = \"\";",
+          "for (int i = 0; i < 3; i++) {",
+          "result += word + \" \";",
+          "}",
+          "cout << result;",
+          "return 0;\n}"
+        ] },
+      { kind: "parsons", tag: "Parsons · Arrays", title: "Print the array", expected: "3 6 9",
+        distractor: "for (int i = 0; i <= 3; i++) {",
+        trayOrder: [2, 6, 4, 7, 1, 5, 0, 3],
+        blocks: [
+          "#include <iostream>\nusing namespace std;",
+          "int main() {",
+          "int a[] = {3, 6, 9};",
+          "for (int i = 0; i < 3; i++) {",
+          "cout << a[i] << \" \";",
+          "}",
+          "return 0;\n}"
+        ] },
+      { kind: "faded", tag: "Faded · Loops", title: "Factorial, three lines missing", expected: "120", slots: 3,
+        template: "#include <iostream>\nusing namespace std;\nint main() {\n    [[0]]\n    [[1]]\n        [[2]]\n    }\n    cout << result;\n    return 0;\n}" },
+      { kind: "faded", tag: "Faded · Arrays", title: "Count the evens, two lines missing", expected: "3", slots: 2,
+        template: "#include <iostream>\nusing namespace std;\nint main() {\n    int a[5] = {4, 7, 10, 13, 16};\n    int count = 0;\n    for (int i = 0; i < 5; i++) {\n        [[0]]\n            [[1]]\n    }\n    cout << count;\n    return 0;\n}" },
+      { kind: "faded", tag: "Faded · Strings", title: "Count the vowels, two lines missing", expected: "5", slots: 2,
+        template: "#include <iostream>\n#include <string>\nusing namespace std;\nint main() {\n    string word = \"education\";\n    int count = 0;\n    for (int i = 0; i < word.length(); i++) {\n        [[0]]\n        [[1]]\n            count++;\n    }\n    cout << count;\n    return 0;\n}" }
     ];
     var bridgeState = {
       current: 0, built: false,
@@ -7516,9 +8148,10 @@ int main() {
     function renderBridgeNav() {
       var nav = $("bridgenav");
       nav.innerHTML = ""; nav.className = "chip-row";
+      var pCount = 0, fCount = 0;
       BRIDGE_ACTIVITIES.forEach(function (act, i) {
         var st = bridgeState.items[i];
-        var label = act.kind === "parsons" ? "P" + (i + 1) : "F" + (i - 2);
+        var label = act.kind === "parsons" ? "P" + (++pCount) : "F" + (++fCount);
         var b = document.createElement("button");
         b.type = "button"; b.className = "chip-btn";
         b.setAttribute("aria-current", i === bridgeState.current ? "true" : "false");
@@ -7594,7 +8227,7 @@ int main() {
       } else {
         var label = document.createElement("div");
         label.className = "bridge-zone-label";
-        label.textContent = act.slots === 1 ? "The program, with one line missing — type the missing line" : "The program, with two lines missing — type each missing line";
+        label.textContent = act.slots === 1 ? "The program, with one line missing — type the missing line" : act.slots === 2 ? "The program, with two lines missing — type each missing line" : "The program, with three lines missing — type each missing line";
         body.appendChild(label);
         var codebox = document.createElement("div");
         codebox.className = "codebox";
@@ -7733,7 +8366,7 @@ int main() {
           3: tracerN >= 5 || toPassed,
           4: bridgeN >= 2,
           5: gymN >= 1,
-          6: tracerRest >= 18,
+          6: tracerRest >= 25,
           7: makeN >= 3
         },
         details: {
@@ -7742,7 +8375,7 @@ int main() {
           3: toVia[2] ? "Tested out of Exercises 1 to 5" : Math.min(tracerN, 5) + " of 5 exercises recorded",
           4: Math.min(bridgeN, 2) + " of 2 activities done",
           5: gymN >= 1 ? "Round 1 verified" : "No round verified yet",
-          6: Math.min(tracerRest, 18) + " of 18 exercises recorded",
+          6: Math.min(tracerRest, 25) + " of 25 exercises recorded",
           7: Math.min(makeN, 3) + " of 3 prompts done"
         }
       };
