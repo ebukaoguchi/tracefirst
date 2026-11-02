@@ -222,6 +222,18 @@
 
       /* Trace panel */
       .trace-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+      .bits-toggle { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; margin-top: 10px; border-top: 1px dashed var(--line); padding-top: 10px; }
+      .bits-toggle .bits-label { font-family: "IBM Plex Mono", monospace; font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+      .bits-group { display: inline-flex; flex-wrap: wrap; gap: 4px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 9px; padding: 3px; }
+      .bits-btn { border: 1.5px solid transparent; background: transparent; color: var(--ink-soft); border-radius: 6px; padding: 5px 11px; font-weight: 700; font-size: .85rem; font-family: "IBM Plex Mono", monospace; }
+      .bits-btn:hover { color: var(--ink); }
+      .bits-btn[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent-strong); border-color: var(--accent); }
+      .bits-note { font-size: .8rem; color: var(--ink-soft); flex: 1 1 170px; }
+      .membox .vval.fmt-bin { font-size: 1.02rem; line-height: 1.45; overflow-wrap: anywhere; }
+      .membox .vval.fmt-hex { font-size: 1.28rem; }
+      .membox .vval .bits-width { display: inline-block; font-size: .66rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--amber); background: var(--amber-soft); border-radius: 5px; padding: 1px 6px; margin-left: 7px; vertical-align: middle; white-space: nowrap; font-family: "IBM Plex Sans", sans-serif; }
+      .mem-elem.fmt-bin { font-size: .78rem; line-height: 1.35; overflow-wrap: anywhere; }
+      .mem-elem.fmt-hex { font-size: .92rem; }
       .stepmeta { font-family: "IBM Plex Mono", monospace; font-size: .8rem; color: var(--ink-soft); margin-top: 10px; }
       .stepbar { height: 6px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 99px; overflow: hidden; margin-top: 6px; }
       .stepbar i { display: block; height: 100%; background: var(--accent); width: 0%; transition: width .25s ease; }
@@ -934,6 +946,102 @@
       @media (prefers-reduced-motion: reduce){
         .mobile-drawer,.drawer-backdrop{transition:none}
       }
+
+      /* ---------- Lecture mode (facilitator / class projection) ---------- */
+      .lecture-entry{margin-top:14px;background:var(--panel);border:1.5px solid var(--accent);border-radius:12px;box-shadow:var(--shadow);padding:14px 16px;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+      .lecture-entry h3{font-size:1.02rem}
+      .lecture-entry p{font-size:.92rem;color:var(--ink-soft);margin-top:3px;max-width:640px}
+      .lecture-entry p strong{color:var(--ink)}
+      #tracer-mode.lecture-on > .toolbar,
+      #tracer-mode.lecture-on > .grid,
+      #tracer-mode.lecture-on > .finish,
+      #tracer-mode.lecture-on > section.card,
+      #tracer-mode.lecture-on > .meet-link,
+      #tracer-mode.lecture-on > #lecture-entry{display:none !important}
+      .lecture-panel{margin-top:14px;background:var(--panel);border:1.5px solid var(--accent);border-radius:14px;box-shadow:var(--shadow);padding:20px}
+      .lecture-head{display:flex;gap:14px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+      .lecture-kicker{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-strong)}
+      .lecture-panel h3.lecture-title{font-family:"Source Serif 4",Georgia,serif;font-size:1.6rem;line-height:1.15;margin-top:3px}
+      .lecture-sub{font-size:.95rem;color:var(--ink-soft);margin-top:5px;max-width:680px}
+      .lecture-pick{margin-top:16px;border-top:1px dashed var(--line);padding-top:16px}
+      .lecture-pick label{font-weight:700;font-size:1rem;display:block}
+      .lecture-pick-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;align-items:stretch}
+      .lecture-select{flex:1 1 320px;font:inherit;font-size:1rem;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel-2);color:var(--ink);min-height:48px}
+      .lecture-pick-note{font-size:.9rem;color:var(--ink-soft);margin-top:10px}
+      .lecture-proj-head{margin-top:16px;border-top:1px dashed var(--line);padding-top:16px}
+      .lecture-proj-title{font-family:"Source Serif 4",Georgia,serif;font-size:clamp(1.7rem,4.2vw,2.4rem);line-height:1.12;font-weight:700}
+      .lecture-story{margin-top:10px;font-size:1.08rem;color:var(--ink-soft);max-width:760px}
+      .lecture-story strong{color:var(--ink)}
+      .lecture-goal{margin-top:8px;font-size:1rem}
+      .lecture-goal b{color:var(--accent-strong)}
+      .lecture-columns{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:16px;margin-top:16px;align-items:start}
+      @media(max-width:900px){.lecture-columns{grid-template-columns:1fr}}
+      .lecture-panel .codebox .cline{font-size:1.08rem;line-height:1.75}
+      @media(max-width:520px){.lecture-panel .codebox .cline{font-size:.92rem}}
+      .lecture-q{font-size:clamp(1.25rem,3vw,1.55rem);font-weight:700;line-height:1.3;margin-top:16px}
+      .lecture-options-display{display:grid;gap:8px;margin-top:12px}
+      .lecture-opt-display{display:flex;align-items:center;gap:12px;border:1.5px solid var(--line);background:var(--panel-2);border-radius:10px;padding:12px 14px;font-family:"IBM Plex Mono",monospace;font-size:1.2rem;font-weight:600}
+      .lecture-opt-display .key{font-size:.78rem;width:26px;height:26px;border-radius:7px;flex:none;display:grid;place-items:center;border:1px solid var(--line);background:var(--panel);font-family:"IBM Plex Sans",sans-serif;font-weight:700}
+      .lecture-tally{border:1.5px solid var(--amber);background:var(--panel-2);border-radius:12px;padding:16px}
+      .lecture-tally h4,.lecture-pinned h4{font-size:1.05rem}
+      .lecture-tally .tally-how{font-size:.92rem;color:var(--ink-soft);margin-top:5px}
+      .lecture-total-row{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-top:14px}
+      .lecture-total-row label{font-weight:700;font-size:.95rem}
+      .lecture-total-input{width:110px;font:inherit;font-size:1.05rem;font-family:"IBM Plex Mono",monospace;padding:9px 11px;border:1.5px solid var(--line);border-radius:9px;background:var(--panel);color:var(--ink)}
+      .lecture-counts{display:grid;gap:10px;margin-top:14px}
+      .lec-row{border:1.5px solid var(--line);background:var(--panel);border-radius:10px;padding:11px 12px}
+      .lec-row.is-majority{border-color:var(--amber);background:var(--amber-soft)}
+      .lec-row-top{display:flex;align-items:baseline;gap:10px}
+      .lec-row-top .key{font-size:.72rem;width:22px;height:22px;border-radius:6px;flex:none;display:grid;place-items:center;border:1px solid var(--line);background:var(--panel-2);font-weight:700;align-self:center}
+      .lec-row.is-majority .lec-row-top .key{background:var(--panel)}
+      .lec-opt-text{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:1.08rem;flex:1 1 auto;min-width:0;overflow-wrap:anywhere}
+      .lec-pct{font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:1.05rem;color:var(--accent-strong);flex:none}
+      .lec-majority-badge{display:none;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);flex:none}
+      .lec-row.is-majority .lec-majority-badge{display:inline}
+      .lec-bar-track{height:13px;background:var(--panel-2);border:1px solid var(--line);border-radius:99px;overflow:hidden;margin-top:9px}
+      .lec-row.is-majority .lec-bar-track{background:var(--panel)}
+      .lec-bar-fill{display:block;height:100%;background:var(--accent);width:0%;transition:width .25s ease}
+      .lec-row-controls{display:flex;align-items:center;gap:10px;margin-top:10px}
+      .lec-count-btn{min-width:52px;min-height:44px;border:1.5px solid var(--accent);background:var(--panel);color:var(--accent-strong);border-radius:9px;font-weight:700;font-size:1rem;font-family:"IBM Plex Mono",monospace;padding:8px 12px}
+      .lec-count-btn:hover:not(:disabled){background:var(--accent-soft)}
+      .lec-count-btn:disabled{opacity:.45;cursor:not-allowed;border-color:var(--line);color:var(--ink-soft)}
+      .lec-count-num{font-family:"IBM Plex Mono",monospace;font-size:1.35rem;font-weight:700;min-width:44px;text-align:center}
+      .lec-count-word{font-size:.85rem;color:var(--ink-soft)}
+      .lecture-summary{font-size:.95rem;margin-top:12px;min-height:1.4em}
+      .lecture-warn{font-size:.9rem;color:var(--rust);font-weight:600;margin-top:4px}
+      .lecture-warn:empty{display:none}
+      .lecture-free-note{margin-top:14px;border:1.5px dashed var(--line);border-radius:10px;padding:13px 14px;font-size:.95rem;background:var(--panel)}
+      .lecture-pinned{border:1.5px solid var(--line);background:var(--panel-2);border-radius:12px;padding:16px}
+      .lecture-pinned .lec-row{padding:9px 11px}
+      .lecture-pinned .lec-opt-text{font-size:.98rem}
+      .lecture-pinned .lec-bar-track{height:10px}
+      .lec-row.is-correct{border-color:var(--accent);background:var(--accent-soft)}
+      .lec-row.is-majority-wrong{border-color:var(--rust);background:var(--rust-soft)}
+      .lecture-verdict{margin-top:14px}
+      .lecture-inst-entry{border:1.5px solid var(--accent);background:var(--accent-soft);border-radius:10px;padding:13px 15px;margin-top:16px}
+      .lecture-inst-entry h4{font-size:1rem;color:var(--accent-strong)}
+      .lecture-inst-entry p{font-size:.92rem;margin-top:4px}
+      @media (prefers-reduced-motion: reduce){.lec-bar-fill{transition:none}}
+
+      /* ---------- Student-authored exercises (in Challenges) ---------- */
+      .authored-field{margin-top:14px}
+      .authored-field label{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);display:block;margin-bottom:7px}
+      .authored-input,.authored-textarea{width:100%;box-sizing:border-box;font:inherit;font-size:.97rem;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel-2);color:var(--ink)}
+      .authored-textarea{resize:vertical;line-height:1.5}
+      .authored-code-out{width:100%;box-sizing:border-box;font-family:"IBM Plex Mono",monospace;font-size:.82rem;line-height:1.5;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel-2);color:var(--ink);resize:vertical;word-break:break-all}
+      .authored-list{display:grid;gap:10px;margin-top:12px}
+      .authored-item{border:1px solid var(--line);border-radius:10px;padding:13px 14px;background:var(--panel-2)}
+      .authored-item h4{font-size:1rem;margin:0}
+      .authored-item .a-meta{font-size:.86rem;color:var(--ink-soft);margin-top:4px;overflow-wrap:anywhere}
+      .authored-item .a-meta code{font-family:"IBM Plex Mono",monospace;font-size:.85em;background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 5px}
+      .authored-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px;align-items:center}
+      .play-code-display{margin-top:10px;background:var(--code-bg);border-radius:10px;padding:12px 0;overflow-x:auto}
+      .play-verdict{margin-top:14px;border-radius:10px;padding:13px 15px;font-size:.95rem;display:none}
+      .play-verdict.show{display:block}
+      .play-verdict.good{background:var(--accent-soft);color:var(--accent-strong);border:1.5px solid var(--accent)}
+      .play-verdict.trap{background:var(--amber-soft);border:1.5px solid var(--amber);color:var(--ink)}
+      .play-verdict.other{background:var(--panel-2);border:1.5px solid var(--line);color:var(--ink)}
+      .play-verdict .pv-out{font-family:"IBM Plex Mono",monospace;font-weight:700;white-space:pre-wrap;overflow-wrap:anywhere}
     </style>
   </head>
   <body>
@@ -1197,6 +1305,115 @@ for (int i = 0; i < 3; i++) {
         <div class="scorebar" id="scorebar" aria-label="Your saved record"></div>
       </section>
 
+      <section class="lecture-entry" id="lecture-entry" aria-labelledby="lecture-entry-h">
+        <div>
+          <h3 id="lecture-entry-h">Teaching a class? Lecture mode</h3>
+          <p><strong>Facilitator mode for one projected screen.</strong> Project an exercise, tally the class's predictions here as students call them out, watch the split together, then step through the trace with that split pinned beside it. It runs entirely on this screen and leaves every student's own record untouched.</p>
+        </div>
+        <button class="btn" type="button" id="lecture-open-btn">Open Lecture mode</button>
+      </section>
+
+      <section class="lecture-panel" id="lecture-panel" hidden aria-labelledby="lecture-h">
+        <div class="lecture-head">
+          <div>
+            <span class="lecture-kicker">Facilitator / class mode · one projected screen</span>
+            <h3 class="lecture-title" id="lecture-h" tabindex="-1">Lecture mode</h3>
+            <p class="lecture-sub">You run this screen in front of the class. Students predict aloud, on paper, or with a show of hands — you record the tally here. Nothing in this mode is saved, and it never touches a student's own predictions, accuracy, or journal.</p>
+          </div>
+          <button class="btn ghost" type="button" id="lecture-exit-btn">Exit Lecture mode</button>
+        </div>
+
+        <div class="lecture-pick" id="lecture-pick">
+          <label for="lecture-ex-select">Choose an exercise to project</label>
+          <div class="lecture-pick-row">
+            <select class="lecture-select" id="lecture-ex-select" aria-label="Choose an exercise to project"></select>
+            <button class="btn" type="button" id="lecture-project-btn">Project this exercise</button>
+          </div>
+          <p class="lecture-pick-note">Any of the 23 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
+        </div>
+
+        <div id="lecture-project" hidden>
+          <div class="lecture-proj-head">
+            <span class="concept-tag" id="lecture-concept"></span>
+            <h3 class="lecture-proj-title" id="lecture-proj-title" tabindex="-1"></h3>
+            <p class="lecture-story" id="lecture-story"></p>
+            <p class="lecture-goal" id="lecture-goal"></p>
+          </div>
+
+          <div id="lecture-tally-stage">
+            <div class="lecture-columns">
+              <div>
+                <div class="codebox">
+                  <div class="codehead"><span>program.cpp</span><span>C++</span></div>
+                  <pre id="lecture-code" aria-label="Program code for the class"></pre>
+                </div>
+                <p class="lecture-q" id="lecture-q"></p>
+                <div class="lecture-options-display" id="lecture-options-display" aria-label="Prediction options"></div>
+                <div class="lecture-free-note" id="lecture-free-note" hidden>
+                  <strong>Free prediction.</strong> This exercise has no fixed options. Ask the class to call out a prediction, or write one down, before you step through — the commitment matters more than the format.
+                </div>
+              </div>
+              <div class="lecture-tally" aria-labelledby="lecture-tally-h">
+                <h4 id="lecture-tally-h" tabindex="-1">Record the class's predictions</h4>
+                <p class="tally-how">Ask the question, give the class time to commit, then count hands or call-outs. Tap <strong>+1</strong> for each student on an option; <strong>−1</strong> corrects a miscount. The split below updates live — look at it together <em>before</em> anyone steps through.</p>
+                <div class="lecture-total-row">
+                  <label for="lecture-total">Total students</label>
+                  <input class="lecture-total-input" type="number" id="lecture-total" min="0" max="500" step="1" inputmode="numeric" placeholder="e.g. 24" aria-describedby="lecture-tally-summary">
+                </div>
+                <div class="lecture-counts" id="lecture-counts"></div>
+                <p class="lecture-summary" id="lecture-tally-summary" role="status"></p>
+                <p class="lecture-warn" id="lecture-tally-warn"></p>
+                <div class="lockrow">
+                  <button class="btn" type="button" id="lecture-start-trace">Step through with this split →</button>
+                  <button class="btn ghost" type="button" id="lecture-reset-counts">Reset counts</button>
+                  <button class="btn ghost" type="button" id="lecture-another-1">Another exercise</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="lecture-trace-stage" hidden>
+            <div class="lecture-columns">
+              <div>
+                <h4 id="lecture-trace-h" tabindex="-1" style="font-size:1.1rem;">Step through together</h4>
+                <div class="trace-controls" style="margin-top:10px;">
+                  <button class="btn small ghost" type="button" id="lec-step-back" aria-label="Step back to the previous line">← Back</button>
+                  <button class="btn small" type="button" id="lec-step-next" aria-label="Step forward to the next line">Step →</button>
+                  <button class="btn small ghost" type="button" id="lec-run-all" aria-label="Run the trace to the end">Run to end</button>
+                  <button class="btn small ghost" type="button" id="lec-trace-reset" aria-label="Restart the trace from the beginning">Restart</button>
+                </div>
+                <div class="stepmeta" id="lec-stepmeta"></div>
+                <div class="stepbar"><i id="lec-stepbar-fill"></i></div>
+                <div class="codebox">
+                  <div class="codehead"><span>program.cpp</span><span>C++</span></div>
+                  <pre id="lecture-trace-code" aria-label="Program code, current line highlighted"></pre>
+                </div>
+                <h4 style="margin-top:16px; font-size:.85rem; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;">Memory</h4>
+                <div class="memory" id="lec-memory"></div>
+                <h4 id="lec-stack-h" style="margin-top:16px; font-size:.85rem; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;" hidden>Call stack — newest call on top</h4>
+                <div class="callstack" id="lec-callstack" hidden></div>
+                <div class="console"><div class="chead">Program output</div><div class="cout" id="lec-cout"></div></div>
+                <div class="stepnote" id="lec-stepnote"></div>
+              </div>
+              <div>
+                <div class="lecture-pinned" aria-labelledby="lecture-pinned-h">
+                  <h4 id="lecture-pinned-h">Class split — pinned</h4>
+                  <p style="font-size:.88rem;color:var(--ink-soft);margin-top:4px;">Recorded before stepping. Watch where the largest block's model parts from the machine.</p>
+                  <div class="lecture-counts" id="lecture-pinned-split" style="margin-top:12px;"></div>
+                  <p class="lecture-summary" id="lecture-pinned-summary"></p>
+                </div>
+                <div class="lecture-verdict" id="lecture-verdict" aria-live="polite"></div>
+                <div class="lockrow">
+                  <button class="btn ghost" type="button" id="lecture-back-tally">Adjust the tallies</button>
+                  <button class="btn ghost" type="button" id="lecture-another-2">Another exercise</button>
+                  <button class="btn ghost" type="button" id="lecture-exit-btn-2">Exit Lecture mode</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <div class="grid">
         <div>
           <section class="card" aria-labelledby="ex-title">
@@ -1297,6 +1514,15 @@ for (int i = 0; i < 3; i++) {
                 <button class="btn small" id="step-next" aria-label="Step forward to the next line">Step →</button>
                 <button class="btn small ghost" id="run-all" aria-label="Run tracer to the end">Run to end</button>
                 <button class="btn small ghost" id="trace-reset" aria-label="Restart tracer from the beginning">Restart</button>
+              </div>
+              <div class="bits-toggle">
+                <span class="bits-label" id="bits-label">Memory values</span>
+                <div class="bits-group" role="group" aria-labelledby="bits-label">
+                  <button type="button" class="bits-btn" data-bits="dec" aria-pressed="true">Decimal</button>
+                  <button type="button" class="bits-btn" data-bits="bin" aria-pressed="false">Binary</button>
+                  <button type="button" class="bits-btn" data-bits="hex" aria-pressed="false">Hex</button>
+                </div>
+                <span class="bits-note">Display only: integer boxes are redrawn in the chosen base. Predictions and program output stay decimal.</span>
               </div>
               <div class="stepmeta" id="stepmeta"></div>
               <div class="stepbar"><i id="stepbar-fill"></i></div>
@@ -1519,6 +1745,105 @@ for (int i = 0; i < 3; i++) {
             </section>
           </div>
         </details>
+        <details class="ch-collapse" id="ch-authored-wrap">
+          <summary>Student Labs — author &amp; share <span class="gcount">Your own prediction exercises &#9662;</span></summary>
+          <div class="ch-collapse-inner">
+            <p class="ch-section-sub">Now set the trap yourself. Write a short program, run it to learn what it <em>really</em> prints, then name the wrong answer you expect a classmate to predict — and why it tempts them. Saving gives you a share code to hand over. Anyone pasting that code must predict first, in their own words, before the real output is revealed. There is no step-through for authored exercises: the reveal is the output itself, checked against your trap. Your authored exercises live in their own list below and never touch the tracer record, the accuracy counts, or the instructor digest.</p>
+
+            <section class="card" style="margin-top:12px;" aria-labelledby="authored-h">
+              <span class="concept-tag">Author an exercise · Step 1–4</span>
+              <h2 id="authored-h" style="font-size:1.25rem;">Author an exercise</h2>
+              <p class="story">Use the same C++ subset as Make mode — <strong>int / double / string, cout, cin, if / else, while, for, arrays, and your own functions above main</strong>. Keep it short: the best traps fit on one screen.</p>
+
+              <div class="authored-field">
+                <label for="authored-title">1 · Give it a title</label>
+                <input class="authored-input" type="text" id="authored-title" maxlength="80" placeholder="e.g. The loop that runs one extra time" autocomplete="off">
+              </div>
+
+              <div class="make-label"><label for="authored-editor">2 · Write the program</label></div>
+              <textarea class="make-editor" id="authored-editor" spellcheck="false" aria-label="Your authored exercise program">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    // your trap program here
+    return 0;
+}
+</textarea>
+              <div class="make-input-row">
+                <label for="authored-input">Input (for cin)</label>
+                <input class="make-input" type="text" id="authored-input" autocomplete="off" placeholder="Values the program reads, separated by spaces — leave blank if it reads nothing">
+              </div>
+              <div class="bolt-controls">
+                <button class="btn" type="button" id="authored-run">Run it — show me the true output</button>
+              </div>
+              <div class="make-msg info show" id="authored-run-msg" role="status">Write the program, then run it. You can only save an exercise after a successful run, so the true output is the machine's — not a guess.</div>
+              <div class="console" aria-label="True output of your authored program"><div class="chead">True output</div><div class="cout" id="authored-out"></div></div>
+
+              <div class="authored-field">
+                <label for="authored-trap">3 · The trap — the wrong prediction you expect</label>
+                <input class="authored-input" type="text" id="authored-trap" maxlength="200" placeholder="e.g. 4 — they will stop the loop one pass early" autocomplete="off" aria-describedby="authored-trap-hint">
+                <p id="authored-trap-hint" style="font-size:.86rem;color:var(--ink-soft);margin-top:6px;">Write just the predicted output itself if you can (like <span style="font-family:'IBM Plex Mono',monospace;">4</span>), so a classmate's prediction can match it exactly. Extra words after it are fine — matching uses the full text you write here.</p>
+              </div>
+              <div class="authored-field">
+                <label for="authored-note">Why it tempts — where the wrong model parts from the machine (1–2 sentences)</label>
+                <textarea class="authored-textarea" id="authored-note" rows="3" maxlength="500" placeholder="e.g. It is tempting to think the loop stops as soon as i reaches 4, but the test runs before the body, so one more pass prints first."></textarea>
+              </div>
+
+              <div class="lockrow">
+                <button class="btn" type="button" id="authored-save">4 · Save &amp; get my share code</button>
+                <span class="locknote" id="authored-save-note">Run the program first — Save unlocks after a successful run of the current code.</span>
+              </div>
+              <div class="make-msg" id="authored-save-msg" role="status"></div>
+              <div class="authored-field" id="authored-share-wrap" hidden>
+                <label for="authored-share-code">Your share code — copy it and give it to a classmate</label>
+                <textarea class="authored-code-out" id="authored-share-code" rows="4" readonly aria-label="Share code for your authored exercise"></textarea>
+                <div class="authored-actions">
+                  <button class="btn ghost small" type="button" id="authored-copy">Copy share code</button>
+                  <span class="copy-status" id="authored-copy-status" role="status"></span>
+                </div>
+              </div>
+            </section>
+
+            <section class="card" style="margin-top:14px;" aria-labelledby="authored-list-h">
+              <span class="concept-tag">Saved on this device</span>
+              <h2 id="authored-list-h" style="font-size:1.25rem;">My authored exercises</h2>
+              <p class="story">Exercises you save are kept here, in this browser. Play one yourself, copy its share code again, or delete it. This list is separate from every other record on the page.</p>
+              <div class="authored-list" id="authored-list"></div>
+              <p class="skin-note" id="authored-list-empty">Nothing saved yet. Author one above and it will appear here.</p>
+            </section>
+
+            <section class="card" style="margin-top:14px;" aria-labelledby="play-h">
+              <span class="concept-tag">Play a shared exercise · Predict first</span>
+              <h2 id="play-h" style="font-size:1.25rem;">Play a shared exercise</h2>
+              <p class="story">Paste a classmate's share code below — or press <strong>Play</strong> on one of your own above. The program appears, but its output stays hidden until you write your prediction and lock it in. Your prediction is free text: the author's trap is never shown as a choice.</p>
+              <div class="authored-field">
+                <label for="play-code-input">Share code</label>
+                <textarea class="authored-code-out" id="play-code-input" rows="4" placeholder="Paste a TF1: share code here…" aria-label="Paste a share code"></textarea>
+              </div>
+              <div class="lockrow">
+                <button class="btn" type="button" id="play-load">Load this exercise</button>
+              </div>
+              <div class="make-msg" id="play-load-msg" role="status"></div>
+              <div id="play-area" hidden>
+                <h3 id="play-title" style="margin-top:16px;font-size:1.1rem;"></h3>
+                <p class="skin-note" id="play-input-note"></p>
+                <div class="play-code-display" id="play-code" aria-label="The shared program"></div>
+                <div class="authored-field">
+                  <label for="play-prediction">Your prediction — what will it print?</label>
+                  <textarea class="authored-textarea" id="play-prediction" rows="2" placeholder="Write exactly what you think appears on screen…" aria-describedby="play-lock-note"></textarea>
+                </div>
+                <div class="lockrow">
+                  <button class="btn" type="button" id="play-reveal" disabled>Lock prediction &amp; reveal the output</button>
+                  <span class="locknote" id="play-lock-note">The reveal stays locked until a prediction is written.</span>
+                </div>
+                <div class="play-verdict" id="play-verdict" role="status"></div>
+                <div class="lockrow" id="play-again-row" hidden>
+                  <button class="btn ghost small" type="button" id="play-again">Predict again on this exercise</button>
+                </div>
+              </div>
+            </section>
+          </div>
+        </details>
         <p class="foot"><strong>One honest line:</strong> projects are built in your own editor; TraceFirst supplies the brief, the milestones, and the tests to pass. Your ticks and scores here are saved in this browser, on this device.</p>
       </div><!-- /challenges-mode -->
 
@@ -1595,6 +1920,11 @@ for (int i = 0; i < 3; i++) {
           <button class="btn ghost small" type="button" id="instructors-toggle" aria-expanded="false" aria-controls="instructors-body">Expand</button>
         </div>
         <div id="instructors-body" hidden>
+          <div class="lecture-inst-entry">
+            <h4>Lecture mode — run a tracer exercise in front of the class</h4>
+            <p>A single projected screen: pick any of the 23 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
+            <div class="journal-actions"><button class="btn small" type="button" id="lecture-open-btn-2">Open Lecture mode</button></div>
+          </div>
           <h4 id="digest-h" style="font-size:1rem;margin-top:16px;">Instructor digest — where the class parted</h4>
           <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">Paste one or more exported journals below, or load journal files, then build the digest. It aggregates attempts per exercise, counts wrong predictions, and surfaces the most common wrong prediction and parting line for each exercise. Rows where anyone missed are highlighted.</p>
           <div style="margin-top:14px;display:grid;gap:10px;">
@@ -2842,6 +3172,154 @@ for (int i = 0; i < 3; i++) {
       ex: EXERCISES.map(function () { return freshExState(); })
     };
 
+    /* ---------------- Bits view: display format for memory values ----------------
+       View preference only. It changes how integer-typed memory boxes are
+       DRAWN (decimal / binary / hexadecimal) and how their values are
+       announced; it never touches predictions, diagnoses, records,
+       accuracy counts, journals, or program output, which stay decimal.
+       Persisted additively as `bitsFormat` inside tracefirst-progress-v1
+       (see the persistence block); older saves without the field load as
+       decimal, and the field alone never counts as progress. */
+    var bitsFormat = "dec";
+    function parseIntStrict(raw) {
+      var t = String(raw == null ? "" : raw).trim();
+      return /^-?\d+$/.test(t) ? parseInt(t, 10) : null;
+    }
+    /* Smallest signed width (8 / 16 / 32 bits) whose range holds n. */
+    function intWidth(n) {
+      if (n >= -128 && n <= 127) return 8;
+      if (n >= -32768 && n <= 32767) return 16;
+      return 32;
+    }
+    function intBits(n) {
+      var w = intWidth(n);
+      var u = n < 0 ? Math.pow(2, w) + n : n;
+      var s = u.toString(2);
+      while (s.length < w) s = "0" + s;
+      var parts = [];
+      for (var i = 0; i < s.length; i += 8) parts.push(s.slice(i, i + 8));
+      return { text: parts.join(" "), width: w };
+    }
+    function intHex(n) {
+      var w = intWidth(n);
+      var u = n < 0 ? Math.pow(2, w) + n : n;
+      var s = u.toString(16).toUpperCase();
+      while (s.length < w / 4) s = "0" + s;
+      return { text: "0x" + s, width: w };
+    }
+    function fmtIntVisual(n) {
+      if (bitsFormat === "bin") return intBits(n).text;
+      if (bitsFormat === "hex") return intHex(n).text;
+      return String(n);
+    }
+    function fmtIntSpoken(n) {
+      if (bitsFormat === "bin") { var b = intBits(n); return b.text + " (" + b.width + "-bit" + (n < 0 ? ", two's complement" : "") + ")"; }
+      if (bitsFormat === "hex") { var h = intHex(n); return h.text + (n < 0 ? " (" + h.width + "-bit two's complement)" : ""); }
+      return String(n);
+    }
+    /* A char value arrives as 'A', "A", a bare A, or a numeric code. */
+    function charInfo(raw) {
+      var v = String(raw == null ? "" : raw).trim();
+      var escMap = { "n": 10, "t": 9, "r": 13, "0": 0, "\\": 92, "'": 39, '"': 34 };
+      if (/^-?\d+$/.test(v)) {
+        var code = parseInt(v, 10);
+        return (code >= 0 && code <= 65535) ? { ch: String.fromCharCode(code), label: String.fromCharCode(code), code: code } : null;
+      }
+      var inner = null;
+      if (v.length >= 3 && ((v.charAt(0) === "'" && v.charAt(v.length - 1) === "'") || (v.charAt(0) === '"' && v.charAt(v.length - 1) === '"'))) inner = v.slice(1, -1);
+      else if (v.length === 1) inner = v;
+      if (inner === null) return null;
+      if (inner.length === 1) return { ch: inner, label: inner, code: inner.charCodeAt(0) };
+      if (inner.length === 2 && inner.charAt(0) === "\\" && Object.prototype.hasOwnProperty.call(escMap, inner.charAt(1))) {
+        var c = escMap[inner.charAt(1)];
+        return { ch: String.fromCharCode(c), label: "\\" + inner.charAt(1), code: c };
+      }
+      return null;
+    }
+    function fmtCharText(raw, spoken) {
+      var info = charInfo(raw);
+      if (!info) return null;
+      var head = "'" + info.label + "'";
+      if (bitsFormat === "hex") {
+        var hx = info.code.toString(16).toUpperCase();
+        while (hx.length < 2) hx = "0" + hx;
+        return head + (spoken ? ", code " : " · ") + "0x" + hx;
+      }
+      if (bitsFormat === "bin") {
+        var s = info.code.toString(2);
+        while (s.length < 8) s = "0" + s;
+        var grouped = s.length === 8 ? s.slice(0, 4) + " " + s.slice(4) : s.replace(/\B(?=(\d{8})+(?!\d))/g, " ");
+        return head + (spoken ? ", code " : " · ") + grouped;
+      }
+      return head + (spoken ? ", code " : " · ") + info.code;
+    }
+    function isIntScalarType(t) { return /^(int|long|short|unsigned int|unsigned long|signed int)$/.test(String(t).trim()); }
+    function isIntArrayType(t) { var x = String(t).trim(); return /^int\[\d*\](\[\d*\])?$/.test(x) || x === "vector<int>"; }
+    /* Reformat the integers inside a brace list like {4, 9, 2} or
+       {{2, 4, 6}, {1, 3, 5}}; anything outside the braces (a size note,
+       for instance) is a count, not a stored value, and stays decimal. */
+    function fmtBraceInts(raw) {
+      var a = raw.indexOf("{"), b = raw.lastIndexOf("}");
+      if (a === -1 || b === -1 || b < a) return raw;
+      var inner = raw.slice(a, b + 1).replace(/-?\d+/g, function (m) { return fmtIntVisual(parseInt(m, 10)); });
+      return raw.slice(0, a) + inner + raw.slice(b + 1);
+    }
+    /* Central formatter for one typed value. Returns the text to draw,
+       the text to announce, and a sizing class for the drawn value.
+       Pointers and references (arrow rendering), doubles, strings,
+       bools and structs return their raw value untouched. */
+    function fmtBoxValue(type, rawValue) {
+      var raw = String(rawValue == null ? "" : rawValue);
+      var t = String(type == null ? "" : type);
+      if (t.indexOf("*") !== -1 || t.indexOf("&") !== -1 || raw.indexOf("→") === 0) return { visual: raw, spoken: raw, cls: "" };
+      if (t.trim() === "char") {
+        var cv = fmtCharText(raw, false), cs = fmtCharText(raw, true);
+        if (cv !== null) return { visual: cv, spoken: cs, cls: bitsFormat === "dec" ? "" : "fmt-" + bitsFormat };
+        return { visual: raw, spoken: raw, cls: "" };
+      }
+      if (isIntScalarType(t)) {
+        var n = parseIntStrict(raw);
+        if (n === null) return { visual: raw, spoken: raw, cls: "" };
+        return { visual: fmtIntVisual(n), spoken: fmtIntSpoken(n), cls: bitsFormat === "dec" ? "" : "fmt-" + bitsFormat };
+      }
+      if (isIntArrayType(t) && raw.indexOf("{") !== -1) {
+        var bv = fmtBraceInts(raw);
+        return { visual: bv, spoken: bv, cls: (bitsFormat !== "dec" && bv !== raw) ? "fmt-" + bitsFormat : "" };
+      }
+      return { visual: raw, spoken: raw, cls: "" };
+    }
+    /* One loose element (vector element, grid cell, array member). */
+    function fmtElem(v) {
+      var n = parseIntStrict(v);
+      return n === null ? String(v) : fmtIntVisual(n);
+    }
+    function fmtElemCls(v) {
+      return (bitsFormat !== "dec" && parseIntStrict(v) !== null) ? " fmt-" + bitsFormat : "";
+    }
+    /* Drawn scalar value; binary integers also carry their width label. */
+    function fmtScalarHTML(type, rawValue) {
+      var f = fmtBoxValue(type, rawValue);
+      var n = isIntScalarType(type) ? parseIntStrict(rawValue) : null;
+      if (bitsFormat === "bin" && n !== null) return esc(f.visual) + '<span class="bits-width">' + intWidth(n) + "-bit</span>";
+      return esc(f.visual);
+    }
+    function syncBitsToggle() {
+      var btns = document.querySelectorAll(".bits-btn");
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].setAttribute("aria-pressed", btns[i].getAttribute("data-bits") === bitsFormat ? "true" : "false");
+      }
+    }
+    function setBitsFormat(f) {
+      if (f !== "dec" && f !== "bin" && f !== "hex") return;
+      if (bitsFormat !== f) {
+        bitsFormat = f;
+        renderTrace();
+        announce("Memory values now shown in " + (f === "bin" ? "binary" : f === "hex" ? "hexadecimal" : "decimal") + ". Predictions and program output are unchanged.");
+        try { tfSave(); } catch (e) {}
+      }
+      syncBitsToggle();
+    }
+
     var $ = function (id) { return document.getElementById(id); };
     var live = $("live");
     function announce(msg) { live.textContent = msg; var tl = document.getElementById("tracer-live"); if (tl) { tl.textContent = ""; setTimeout(function(){ tl.textContent = msg; }, 30); } }
@@ -3128,13 +3606,14 @@ for (int i = 0; i < 3; i++) {
     function boxAria(box) {
       var base = box.name + ", type " + box.type;
       if (box.fields) return base + ", " + box.fields.map(function (f) { return f[0] + " is " + f[1]; }).join(", ");
-      if (box.elems) return base + (box.elems.length ? ", elements " + box.elems.join(", ") + ", size " + box.elems.length : ", empty, size 0");
-      if (box.grid) return base + ", rows: " + box.grid.map(function (r) { return r.join(" "); }).join("; ");
-      return base + ", value " + (box.value || "");
+      if (box.elems) return base + (box.elems.length ? ", elements " + box.elems.map(function (v) { return fmtElem(v); }).join(", ") + ", size " + box.elems.length : ", empty, size 0");
+      if (box.grid) return base + ", rows: " + box.grid.map(function (r) { return r.map(function (v) { return fmtElem(v); }).join(" "); }).join("; ");
+      return base + ", value " + fmtBoxValue(box.type, box.value || "").spoken;
     }
 
     function renderTrace() {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
+      syncBitsToggle();
       $("trace-locked").style.display = s.locked ? "none" : "";
       $("trace-ui").hidden = !s.locked;
       if (!s.locked) { renderCode(-1); var cs0 = $("callstack"); if (cs0) { cs0.hidden = true; cs0.innerHTML = ""; } var sh0 = $("stack-h"); if (sh0) sh0.hidden = true; return; }
@@ -3177,18 +3656,21 @@ for (int i = 0; i < 3; i++) {
           } else if (box.elems) {
             html += box.elems.length
               ? '<div class="mem-elems">' + box.elems.map(function (v, ei) {
-                  return '<span class="mem-elem">' + esc(v) + "<small>[" + ei + "]</small></span>";
+                  return '<span class="mem-elem' + fmtElemCls(v) + '">' + esc(fmtElem(v)) + "<small>[" + ei + "]</small></span>";
                 }).join("") + "</div>"
               : '<div class="mem-empty-inline">no elements yet · size 0</div>';
           } else if (box.grid) {
             html += '<div class="mem-grid2">' + box.grid.map(function (row, ri) {
               return '<div class="mem-grid-row">' + row.map(function (v, ci) {
-                return '<span class="mem-elem">' + esc(v) + "<small>[" + ri + "][" + ci + "]</small></span>";
+                return '<span class="mem-elem' + fmtElemCls(v) + '">' + esc(fmtElem(v)) + "<small>[" + ri + "][" + ci + "]</small></span>";
               }).join("") + "</div>";
             }).join("") + "</div>";
-          } else {
-            html += '<div class="vval">' + (isPtr ? '<span class="ptr-arrow" aria-hidden="true"></span>' : "") + esc(vval) + "</div>" +
+          } else if (isPtr) {
+            html += '<div class="vval"><span class="ptr-arrow" aria-hidden="true"></span>' + esc(vval) + "</div>" +
                     (ptrTarget ? '<div style="font-size:.78rem;color:var(--ink-soft);font-family:monospace;">points to ' + esc(ptrTarget) + "</div>" : "");
+          } else {
+            var fv = fmtBoxValue(vtype, vval);
+            html += '<div class="vval' + (fv.cls ? " " + fv.cls : "") + '">' + fmtScalarHTML(vtype, vval) + "</div>";
           }
           d.innerHTML = html;
           mem.appendChild(d);
@@ -3204,10 +3686,10 @@ for (int i = 0; i < 3; i++) {
               var fd = document.createElement("div");
               fd.className = "stack-frame" + (isTop ? " top-frame" : "");
               fd.setAttribute("role", "group");
-              var varParts = Object.keys(frame.vars || {}).map(function (vn) { return vn + " = " + frame.vars[vn][1]; });
+              var varParts = Object.keys(frame.vars || {}).map(function (vn) { return vn + " = " + fmtBoxValue(frame.vars[vn][0], frame.vars[vn][1]).spoken; });
               fd.setAttribute("aria-label", "Call frame " + frame.name + (varParts.length ? ", " + varParts.join(", ") : ", no variables") + (isTop ? " (current call)" : ""));
               fd.setAttribute("tabindex", "0");
-              var varsHtml = varParts.length ? Object.keys(frame.vars).map(function (vn) { return "<b>" + esc(vn) + "</b> = " + esc(frame.vars[vn][1]) + " <span style=\"font-size:.72rem;\">" + esc(frame.vars[vn][0]) + "</span>"; }).join(" &nbsp;·&nbsp; ") : "no variables";
+              var varsHtml = varParts.length ? Object.keys(frame.vars).map(function (vn) { return "<b>" + esc(vn) + "</b> = " + esc(fmtBoxValue(frame.vars[vn][0], frame.vars[vn][1]).visual) + " <span style=\"font-size:.72rem;\">" + esc(frame.vars[vn][0]) + "</span>"; }).join(" &nbsp;·&nbsp; ") : "no variables";
               fd.innerHTML = '<div class="fname"><span>' + esc(frame.name) + '()</span><span class="ftag">' + (isTop ? "current call" : "waiting") + '</span></div><div class="fvars">' + varsHtml + "</div>";
               stackBox.appendChild(fd);
             })(step.frames[fi], fi === step.frames.length - 1);
@@ -3301,14 +3783,15 @@ for (int i = 0; i < 3; i++) {
         if (!prev[name] || prev[name][1] !== step.vars[name][1]) {
           var vv = step.vars[name][1];
           var extra = vv.indexOf("→") === 0 ? " (points to " + vv.slice(1).trim() + ")" : "";
-          parts.push(name + " is now " + vv + extra);
+          var spoken = extra ? vv : fmtBoxValue(step.vars[name][0], vv).spoken;
+          parts.push(name + " is now " + spoken + extra);
         }
       });
       var prevOut = s.step > 0 ? ex.steps[s.step - 1].out : "";
       if (step.out && step.out !== prevOut) parts.push("Output is now: " + step.out);
       if (step.frames && step.frames.length) {
         var frameDesc = step.frames.map(function (fr) {
-          var vp = Object.keys(fr.vars || {}).map(function (vn) { return vn + " = " + fr.vars[vn][1]; });
+          var vp = Object.keys(fr.vars || {}).map(function (vn) { return vn + " = " + fmtBoxValue(fr.vars[vn][0], fr.vars[vn][1]).spoken; });
           return fr.name + (vp.length ? "(" + vp.join(", ") + ")" : "()");
         });
         parts.push("Call stack, bottom to top: " + frameDesc.join(", then ") + ". Stack depth " + step.frames.length + ".");
@@ -3402,6 +3885,409 @@ for (int i = 0; i < 3; i++) {
       var s = state.ex[state.current];
       s.step = -1; s.traceDone = false; renderAll(); announce("Tracer restarted. Memory is empty.");
     });
+
+    // Bits view toggle: three native buttons (Tab reaches each one, the
+    // global focus-visible outline applies); Left/Right arrows also move
+    // within the group, as in a segmented control.
+    (function wireBits() {
+      var btns = Array.prototype.slice.call(document.querySelectorAll(".bits-btn"));
+      btns.forEach(function (b, i) {
+        b.addEventListener("click", function () { setBitsFormat(b.getAttribute("data-bits")); });
+        b.addEventListener("keydown", function (ev) {
+          if (ev.key !== "ArrowRight" && ev.key !== "ArrowLeft") return;
+          ev.preventDefault();
+          var nxt = btns[(i + (ev.key === "ArrowRight" ? 1 : btns.length - 1)) % btns.length];
+          nxt.focus();
+          setBitsFormat(nxt.getAttribute("data-bits"));
+        });
+      });
+    })();
+
+    /* ---------------- Lecture mode (facilitator / class projection) ----------------
+       A single projected screen run by the instructor. Tallies and the
+       lecture trace live in `lecture` only: in-memory, never persisted,
+       and never read from or written to the student's own state.ex
+       records, accuracy counts, route ticks, journal, or the digest. */
+    var lecture = { exIdx: 0, counts: [], total: 0, phase: "pick", step: -1, returnTo: null };
+    try { lecture.exIdx = state.current || 0; } catch (e) {}
+    function lectureEx() { return EXERCISES[lecture.exIdx]; }
+    function lectureCounted() { return lecture.counts.reduce(function (a, b) { return a + b; }, 0); }
+    function lectureDenom() { var c = lectureCounted(); return Math.max(lecture.total || 0, c); }
+    function lectureMajority() {
+      var best = -1, bestN = 0;
+      lecture.counts.forEach(function (n, i) { if (n > bestN) { bestN = n; best = i; } });
+      return best;
+    }
+    function attrEsc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;"); }
+
+    function buildLectureSelect() {
+      var sel = $("lecture-ex-select"); if (!sel) return;
+      sel.innerHTML = "";
+      EXERCISES.forEach(function (ex, i) {
+        var o = document.createElement("option");
+        o.value = String(i);
+        o.textContent = "Exercise " + (i + 1) + " · " + ex.concept + " — " + ex.title;
+        sel.appendChild(o);
+      });
+      sel.value = String(lecture.exIdx);
+    }
+    function lectureShowPick(focusIt) {
+      lecture.phase = "pick";
+      $("lecture-pick").hidden = false;
+      $("lecture-project").hidden = true;
+      buildLectureSelect();
+      if (focusIt) { var sel = $("lecture-ex-select"); if (sel) sel.focus(); }
+    }
+    function openLecture(fromEl) {
+      lecture.returnTo = fromEl || $("lecture-open-btn");
+      $("tracer-mode").classList.add("lecture-on");
+      $("lecture-panel").hidden = false;
+      if (lecture.phase === "tally" || lecture.phase === "trace") {
+        $("lecture-pick").hidden = true;
+        $("lecture-project").hidden = false;
+        $("lecture-tally-stage").hidden = lecture.phase !== "tally";
+        $("lecture-trace-stage").hidden = lecture.phase !== "trace";
+      } else {
+        lectureShowPick(false);
+      }
+      announce("Lecture mode open. Choose an exercise to project.");
+      var h = $("lecture-h"); if (h) h.focus();
+    }
+    function exitLecture() {
+      $("tracer-mode").classList.remove("lecture-on");
+      $("lecture-panel").hidden = true;
+      announce("Lecture mode closed. Your own tracer work is unchanged.");
+      var t = lecture.returnTo || $("lecture-open-btn");
+      if (t && t.offsetParent !== null) t.focus();
+    }
+    function lectureRenderCodeInto(pre, ex, activeLine) {
+      if (!pre) return;
+      pre.innerHTML = "";
+      ex.code.forEach(function (line, i) {
+        var div = document.createElement("div");
+        div.className = "cline" + (i === activeLine ? " active" : "");
+        div.innerHTML = '<span class="ln">' + (i + 1) + "</span><span>" + (esc(line) || " ") + "</span>";
+        pre.appendChild(div);
+      });
+    }
+    function lectureBuildSplitRows() {
+      var ex = lectureEx();
+      var tallyBox = $("lecture-counts"), pinnedBox = $("lecture-pinned-split");
+      tallyBox.innerHTML = ""; pinnedBox.innerHTML = "";
+      $("lecture-free-note").hidden = !!ex.options;
+      if (!ex.options) {
+        pinnedBox.innerHTML = '<div class="lecture-free-note" style="margin-top:0;">Free prediction — no fixed options, so there is no split to pin. The class committed to answers aloud or on paper before stepping.</div>';
+        return;
+      }
+      ex.options.forEach(function (opt, i) {
+        var key = "ABCD"[i] || String(i + 1);
+        var row = document.createElement("div");
+        row.className = "lec-row"; row.setAttribute("data-lec-row", String(i));
+        row.innerHTML =
+          '<div class="lec-row-top"><span class="key" aria-hidden="true">' + key + '</span>' +
+          '<span class="lec-opt-text">' + esc(opt) + '</span>' +
+          '<span class="lec-majority-badge">Class majority</span>' +
+          '<span class="lec-pct">0%</span></div>' +
+          '<div class="lec-bar-track"><i class="lec-bar-fill"></i></div>' +
+          '<div class="lec-row-controls">' +
+            '<button class="lec-count-btn" type="button" data-lec-dec="' + i + '" aria-label="Remove one tally for option ' + key + ': ' + attrEsc(opt) + '">−1</button>' +
+            '<span class="lec-count-num" aria-hidden="true">0</span>' +
+            '<span class="lec-count-word">tallied</span>' +
+            '<button class="lec-count-btn" type="button" data-lec-inc="' + i + '" aria-label="Add one tally for option ' + key + ': ' + attrEsc(opt) + '">+1</button>' +
+          "</div>";
+        tallyBox.appendChild(row);
+        var prow = document.createElement("div");
+        prow.className = "lec-row"; prow.setAttribute("data-lec-row", String(i));
+        prow.innerHTML =
+          '<div class="lec-row-top"><span class="key" aria-hidden="true">' + key + '</span>' +
+          '<span class="lec-opt-text">' + esc(opt) + '</span>' +
+          '<span class="lec-majority-badge">Class majority</span>' +
+          '<span class="lec-pct">0%</span></div>' +
+          '<div class="lec-bar-track"><i class="lec-bar-fill"></i></div>' +
+          '<p style="font-size:.85rem;color:var(--ink-soft);margin-top:6px;"><span class="lec-count-num" style="font-size:1rem;min-width:0;">0</span> tallied</p>';
+        pinnedBox.appendChild(prow);
+      });
+    }
+    function lectureUpdateSplit() {
+      var ex = lectureEx();
+      var counted = lectureCounted(), denom = lectureDenom(), maj = lectureMajority();
+      var finished = lecture.phase === "trace" && ex.steps && lecture.step === ex.steps.length - 1;
+      [$("lecture-counts"), $("lecture-pinned-split")].forEach(function (box) {
+        if (!box) return;
+        Array.prototype.forEach.call(box.children, function (row) {
+          var i = parseInt(row.getAttribute("data-lec-row"), 10);
+          if (isNaN(i) || !ex.options) return;
+          var n = lecture.counts[i] || 0;
+          var pct = denom > 0 ? Math.round((n / denom) * 100) : 0;
+          var pctEl = row.querySelector(".lec-pct"); if (pctEl) pctEl.textContent = pct + "%";
+          var bar = row.querySelector(".lec-bar-fill"); if (bar) bar.style.width = pct + "%";
+          var num = row.querySelector(".lec-count-num"); if (num) num.textContent = String(n);
+          row.classList.toggle("is-majority", counted > 0 && i === maj);
+          row.classList.toggle("is-correct", finished && i === ex.correct);
+          row.classList.toggle("is-majority-wrong", finished && counted > 0 && i === maj && maj !== ex.correct);
+          var dec = row.querySelector("[data-lec-dec]"); if (dec) dec.disabled = n <= 0;
+        });
+      });
+      var summary;
+      if (!ex.options) summary = "Free prediction — no tallies to record for this exercise.";
+      else if (counted === 0) summary = "No tallies yet — the split appears here as you count.";
+      else {
+        summary = "Tallied " + counted + (lecture.total > 0 ? " of " + lecture.total + " students" : " predictions") +
+          (lecture.total > 0 && counted < lecture.total ? " · " + (lecture.total - counted) + " still to be counted." : lecture.total > 0 && counted === lecture.total ? " · the whole class is tallied." : ".");
+        if (maj >= 0) {
+          var mpct = denom > 0 ? Math.round(((lecture.counts[maj] || 0) / denom) * 100) : 0;
+          summary += " Largest block: " + ("ABCD"[maj] || "") + " “" + ex.options[maj] + "” — " + mpct + "% of the class.";
+        }
+      }
+      var ts = $("lecture-tally-summary"); if (ts) ts.textContent = summary;
+      var ps = $("lecture-pinned-summary"); if (ps) ps.textContent = counted > 0 && ex.options ? summary : "";
+      var warn = $("lecture-tally-warn");
+      if (warn) warn.textContent = (lecture.total > 0 && counted > lecture.total)
+        ? "Tallies (" + counted + ") exceed the total entered (" + lecture.total + "). Percentages use the tallied count so the split still adds up — correct the total or a tally if one is wrong."
+        : "";
+    }
+    function lectureProject(idx) {
+      if (typeof idx !== "number" || !EXERCISES[idx]) return;
+      lecture.exIdx = idx;
+      var ex = lectureEx();
+      lecture.counts = ex.options ? ex.options.map(function () { return 0; }) : [];
+      lecture.step = -1;
+      lecture.phase = "tally";
+      $("lecture-concept").textContent = "Exercise " + (idx + 1) + " · " + ex.concept;
+      $("lecture-proj-title").textContent = ex.title;
+      $("lecture-story").innerHTML = ex.stories[state.skin] || "";
+      $("lecture-goal").innerHTML = "<b>The idea:</b> " + ex.goal;
+      $("lecture-q").textContent = ex.question;
+      lectureRenderCodeInto($("lecture-code"), ex, -1);
+      var disp = $("lecture-options-display"); disp.innerHTML = "";
+      if (ex.options) {
+        ex.options.forEach(function (opt, i) {
+          var d = document.createElement("div");
+          d.className = "lecture-opt-display";
+          d.innerHTML = '<span class="key" aria-hidden="true">' + ("ABCD"[i] || String(i + 1)) + "</span><span>" + esc(opt) + "</span>";
+          disp.appendChild(d);
+        });
+      }
+      var totalInput = $("lecture-total");
+      if (totalInput) totalInput.value = lecture.total > 0 ? String(lecture.total) : "";
+      lectureBuildSplitRows();
+      lectureUpdateSplit();
+      $("lecture-verdict").innerHTML = "";
+      $("lecture-pick").hidden = true;
+      $("lecture-project").hidden = false;
+      $("lecture-tally-stage").hidden = false;
+      $("lecture-trace-stage").hidden = true;
+      announce("Projecting Exercise " + (idx + 1) + ": " + ex.concept + ". " + ex.question + " Record the class's predictions before stepping.");
+      var t = $("lecture-proj-title"); if (t) t.focus();
+    }
+    function lectureRenderTrace() {
+      var ex = lectureEx(), step = lecture.step >= 0 ? ex.steps[lecture.step] : null;
+      lectureRenderCodeInto($("lecture-trace-code"), ex, step ? step.line : -1);
+      $("lec-stepmeta").textContent = lecture.step < 0
+        ? "Ready. Press Step to run the first statement."
+        : "Step " + (lecture.step + 1) + " of " + ex.steps.length + " · line " + (step.line + 1);
+      $("lec-stepbar-fill").style.width = (lecture.step < 0 ? 0 : ((lecture.step + 1) / ex.steps.length) * 100) + "%";
+      $("lec-step-back").disabled = lecture.step < 0;
+      $("lec-step-next").disabled = lecture.step >= ex.steps.length - 1;
+      $("lec-run-all").disabled = lecture.step >= ex.steps.length - 1;
+      var mem = $("lec-memory"); mem.innerHTML = "";
+      if (!step || (!step.vars && !step.boxes) || (step.vars && Object.keys(step.vars).length === 0 && !step.boxes)) {
+        mem.innerHTML = '<div class="mem-empty">' + (lecture.step < 0
+          ? "Memory is empty — the program has not started. No boxes exist yet."
+          : "No variable boxes exist at this moment. Boxes appear when declarations run.") + "</div>";
+      } else {
+        var prevStep = lecture.step > 0 ? ex.steps[lecture.step - 1] : null;
+        var prevBoxes = prevStep ? memBoxesOf(prevStep) : [];
+        memBoxesOf(step).forEach(function (box) {
+          var d = document.createElement("div");
+          var prevBox = null;
+          prevBoxes.forEach(function (pb) { if (pb.name === box.name) prevBox = pb; });
+          var changed = !prevBox || JSON.stringify(prevBox) !== JSON.stringify(box);
+          d.className = "membox" + (box.wide ? " wide" : "") + (changed && lecture.step >= 0 ? " changed" : "");
+          var vtype = box.type, vval = box.value || "";
+          var isPtr = vtype.indexOf("*") !== -1 || vval.indexOf("→") === 0;
+          var ptrTarget = vval.indexOf("→") === 0 ? vval.slice(1).trim() : "";
+          d.setAttribute("role", "group");
+          d.setAttribute("aria-label", boxAria(box) + (ptrTarget ? ", points to " + ptrTarget : ""));
+          d.setAttribute("tabindex", "0");
+          var html = '<div class="vname"><span>' + esc(box.name) + '</span><span class="vtype">' + esc(vtype) + "</span></div>";
+          if (box.fields) {
+            html += '<div class="mem-fields">' + box.fields.map(function (f) {
+              return '<div class="mem-field"><span class="flabel">' + esc(f[0]) + '</span><span class="fval">' + esc(f[1]) + "</span></div>";
+            }).join("") + "</div>";
+          } else if (box.elems) {
+            html += box.elems.length
+              ? '<div class="mem-elems">' + box.elems.map(function (v, ei) {
+                  return '<span class="mem-elem' + fmtElemCls(v) + '">' + esc(fmtElem(v)) + "<small>[" + ei + "]</small></span>";
+                }).join("") + "</div>"
+              : '<div class="mem-empty-inline">no elements yet · size 0</div>';
+          } else if (box.grid) {
+            html += '<div class="mem-grid2">' + box.grid.map(function (row, ri) {
+              return '<div class="mem-grid-row">' + row.map(function (v, ci) {
+                return '<span class="mem-elem' + fmtElemCls(v) + '">' + esc(fmtElem(v)) + "<small>[" + ri + "][" + ci + "]</small></span>";
+              }).join("") + "</div>";
+            }).join("") + "</div>";
+          } else if (isPtr) {
+            html += '<div class="vval"><span class="ptr-arrow" aria-hidden="true"></span>' + esc(vval) + "</div>" +
+                    (ptrTarget ? '<div style="font-size:.78rem;color:var(--ink-soft);font-family:monospace;">points to ' + esc(ptrTarget) + "</div>" : "");
+          } else {
+            var fv = fmtBoxValue(vtype, vval);
+            html += '<div class="vval' + (fv.cls ? " " + fv.cls : "") + '">' + fmtScalarHTML(vtype, vval) + "</div>";
+          }
+          d.innerHTML = html;
+          mem.appendChild(d);
+        });
+      }
+      var stackBox = $("lec-callstack"), stackH = $("lec-stack-h");
+      if (stackBox && stackH) {
+        if (step && step.frames && step.frames.length) {
+          stackH.hidden = false; stackBox.hidden = false; stackBox.innerHTML = "";
+          for (var fi = step.frames.length - 1; fi >= 0; fi--) {
+            (function (frame, isTop) {
+              var fd = document.createElement("div");
+              fd.className = "stack-frame" + (isTop ? " top-frame" : "");
+              fd.setAttribute("role", "group");
+              var varParts = Object.keys(frame.vars || {}).map(function (vn) { return vn + " = " + fmtBoxValue(frame.vars[vn][0], frame.vars[vn][1]).spoken; });
+              fd.setAttribute("aria-label", "Call frame " + frame.name + (varParts.length ? ", " + varParts.join(", ") : ", no variables") + (isTop ? " (current call)" : ""));
+              fd.setAttribute("tabindex", "0");
+              var varsHtml = varParts.length ? Object.keys(frame.vars).map(function (vn) { return "<b>" + esc(vn) + "</b> = " + esc(fmtBoxValue(frame.vars[vn][0], frame.vars[vn][1]).visual) + " <span style=\"font-size:.72rem;\">" + esc(frame.vars[vn][0]) + "</span>"; }).join(" &nbsp;·&nbsp; ") : "no variables";
+              fd.innerHTML = '<div class="fname"><span>' + esc(frame.name) + '()</span><span class="ftag">' + (isTop ? "current call" : "waiting") + '</span></div><div class="fvars">' + varsHtml + "</div>";
+              stackBox.appendChild(fd);
+            })(step.frames[fi], fi === step.frames.length - 1);
+          }
+        } else { stackH.hidden = true; stackBox.hidden = true; stackBox.innerHTML = ""; }
+      }
+      $("lec-cout").innerHTML = step && step.out ? esc(step.out) : '<span class="cursor"></span>';
+      $("lec-stepnote").innerHTML = step ? step.note :
+        "Step slowly on the lines that change a box — those are where the class's majority model is most likely to part from the machine.";
+      lectureUpdateSplit();
+      var vbox = $("lecture-verdict");
+      if (lecture.step === ex.steps.length - 1) {
+        var counted = lectureCounted(), maj = lectureMajority(), denom = lectureDenom();
+        if (!ex.options) {
+          vbox.innerHTML = '<div class="lecture-free-note" style="margin-top:0;"><strong>Trace complete.</strong> The program printed: <span style="font-family:\'IBM Plex Mono\',monospace;font-weight:700;">' + esc(step.out || "") + "</span>. Compare it with the predictions the class committed to before stepping.</div>";
+        } else if (counted === 0) {
+          vbox.innerHTML = '<div class="lecture-free-note" style="margin-top:0;"><strong>Trace complete.</strong> No tallies were recorded for this exercise, so there is no class split to compare with the printed answer: <span style="font-family:\'IBM Plex Mono\',monospace;font-weight:700;">' + esc(ex.options[ex.correct]) + "</span>.</div>";
+        } else if (maj === ex.correct) {
+          var mp = denom > 0 ? Math.round(((lecture.counts[maj] || 0) / denom) * 100) : 0;
+          vbox.innerHTML = '<div class="verdict good"><h3>The class majority matched the machine.</h3>' +
+            '<div class="vs"><div><span>Majority predicted (' + mp + '%)</span>' + esc(ex.options[maj]) + '</div><div><span>The program printed</span>' + esc(ex.options[ex.correct]) + "</div></div>" +
+            "<p>The largest block's model held for these values. Ask a student from a smaller block to say where their model parted — that step is the teaching moment.</p></div>";
+        } else {
+          var mp2 = denom > 0 ? Math.round(((lecture.counts[maj] || 0) / denom) * 100) : 0;
+          var dg = ex.diagnoses && ex.diagnoses[maj] ? ex.diagnoses[maj] : null;
+          vbox.innerHTML = '<div class="verdict bad"><h3>The class majority parted from the machine.</h3>' +
+            '<div class="vs"><div><span>Majority predicted (' + mp2 + '%)</span>' + esc(ex.options[maj]) + '</div><div><span>The program printed</span>' + esc(ex.options[ex.correct]) + "</div></div>" +
+            (dg ? "<p>" + dg.text + "</p><p style=\"margin-top:6px;\">The parting step is <b>step " + (dg.step + 1) + "</b>, line " + (ex.steps[dg.step].line + 1) + " — use Back to land on it and ask the majority block what the box held just before.</p>" : "<p>Step back through the trace together and find the first line where the majority's model and the machine disagree.</p>") +
+            "</div>";
+        }
+      } else {
+        vbox.innerHTML = "";
+      }
+    }
+    function lectureDescribeStep() {
+      var ex = lectureEx();
+      if (lecture.step < 0) return "Lecture trace ready. No statement has run yet.";
+      var step = ex.steps[lecture.step];
+      var prev = lecture.step > 0 ? (ex.steps[lecture.step - 1].vars || {}) : {};
+      var parts = ["Step " + (lecture.step + 1) + " of " + ex.steps.length + ". Line " + (step.line + 1) + " executed: " + ex.code[step.line].trim()];
+      Object.keys(step.vars || {}).forEach(function (name) {
+        if (!prev[name] || prev[name][1] !== step.vars[name][1]) {
+          var vv = step.vars[name][1];
+          var spoken = vv.indexOf("→") === 0 ? vv : fmtBoxValue(step.vars[name][0], vv).spoken;
+          parts.push(name + " is now " + spoken);
+        }
+      });
+      var prevOut = lecture.step > 0 ? ex.steps[lecture.step - 1].out : "";
+      if (step.out && step.out !== prevOut) parts.push("Output is now: " + step.out);
+      if (lecture.step === ex.steps.length - 1 && ex.options) parts.push("Trace complete. The program printed " + ex.options[ex.correct] + ".");
+      return parts.join(". ");
+    }
+    (function wireLecture() {
+      buildLectureSelect();
+      var openBtn = $("lecture-open-btn");
+      if (openBtn) openBtn.addEventListener("click", function () { openLecture(openBtn); });
+      var openBtn2 = $("lecture-open-btn-2");
+      if (openBtn2) openBtn2.addEventListener("click", function () {
+        if (typeof setMode === "function") setMode("tracer");
+        openLecture(openBtn2);
+      });
+      ["lecture-exit-btn", "lecture-exit-btn-2"].forEach(function (id) {
+        var b = $(id); if (b) b.addEventListener("click", exitLecture);
+      });
+      var projBtn = $("lecture-project-btn");
+      if (projBtn) projBtn.addEventListener("click", function () {
+        var sel = $("lecture-ex-select");
+        lectureProject(parseInt(sel.value, 10));
+      });
+      var countsBox = $("lecture-counts");
+      if (countsBox) countsBox.addEventListener("click", function (ev) {
+        var t = ev.target;
+        var inc = t.closest ? t.closest("[data-lec-inc]") : null;
+        var dec = t.closest ? t.closest("[data-lec-dec]") : null;
+        var btn = inc || dec; if (!btn) return;
+        var i = parseInt(btn.getAttribute(inc ? "data-lec-inc" : "data-lec-dec"), 10);
+        if (isNaN(i)) return;
+        lecture.counts[i] = Math.max(0, (lecture.counts[i] || 0) + (inc ? 1 : -1));
+        lectureUpdateSplit();
+        announce("Option " + ("ABCD"[i] || "") + " tally: " + lecture.counts[i] + ". " + lectureCounted() + " tallied in total.");
+      });
+      var totalInput = $("lecture-total");
+      if (totalInput) totalInput.addEventListener("input", function () {
+        var n = parseInt(totalInput.value, 10);
+        lecture.total = isNaN(n) || n < 0 ? 0 : Math.min(500, n);
+        lectureUpdateSplit();
+      });
+      var resetBtn = $("lecture-reset-counts");
+      if (resetBtn) resetBtn.addEventListener("click", function () {
+        lecture.counts = lecture.counts.map(function () { return 0; });
+        lectureUpdateSplit();
+        announce("Tallies reset. The split is empty — record the class's predictions again.");
+      });
+      ["lecture-another-1", "lecture-another-2"].forEach(function (id) {
+        var b = $(id); if (b) b.addEventListener("click", function () { lectureShowPick(true); });
+      });
+      var startBtn = $("lecture-start-trace");
+      if (startBtn) startBtn.addEventListener("click", function () {
+        lecture.phase = "trace";
+        lecture.step = -1;
+        $("lecture-tally-stage").hidden = true;
+        $("lecture-trace-stage").hidden = false;
+        lectureRenderTrace();
+        announce("Class split pinned beside the trace. Step through together and watch where the largest block's model parts from the machine.");
+        var h = $("lecture-trace-h"); if (h) h.focus();
+      });
+      var backBtn = $("lecture-back-tally");
+      if (backBtn) backBtn.addEventListener("click", function () {
+        lecture.phase = "tally";
+        $("lecture-trace-stage").hidden = true;
+        $("lecture-tally-stage").hidden = false;
+        lectureUpdateSplit();
+        var h = $("lecture-tally-h"); if (h) h.focus();
+      });
+      $("lec-step-next").addEventListener("click", function () {
+        var ex = lectureEx();
+        if (lecture.step < ex.steps.length - 1) { lecture.step++; lectureRenderTrace(); announce(lectureDescribeStep()); }
+      });
+      $("lec-step-back").addEventListener("click", function () {
+        if (lecture.step > -1) { lecture.step--; lectureRenderTrace(); announce(lectureDescribeStep()); }
+      });
+      $("lec-run-all").addEventListener("click", function () {
+        var ex = lectureEx();
+        lecture.step = ex.steps.length - 1;
+        lectureRenderTrace();
+        announce(lectureDescribeStep());
+      });
+      $("lec-trace-reset").addEventListener("click", function () {
+        lecture.step = -1;
+        lectureRenderTrace();
+        announce("Lecture trace restarted. Memory is empty; the class split is unchanged.");
+      });
+      var panel = $("lecture-panel");
+      if (panel) panel.addEventListener("keydown", function (ev) {
+        if (ev.key === "Escape") { ev.preventDefault(); exitLecture(); }
+      });
+    })();
 
     $("modify-btn").addEventListener("click", function () {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
@@ -4751,6 +5637,264 @@ for (int i = 0; i < 3; i++) {
       renderChallenges();
       announce(CH_LEVELS[ch.level].name + " exam reset. Question 1 is ready.");
     });
+
+    /* ================= Student-authored prediction exercises =================
+       Authoring reuses the Make-mode interpreter (makeRunProgram) — there is
+       no second interpreter. Authored exercises are deliberately walled off:
+       nothing here reads or writes the tracer records, accuracy counts,
+       Start Here ticks, test-out state, or the instructor digest. They
+       persist additively as `authoredExercises` inside the existing
+       tracefirst-progress-v1 store (see persistence below). Playing has NO
+       step-through — authored code has no hand-authored trace, so the
+       reveal is the interpreter's output alone. */
+    var authoredState = {
+      list: [],
+      draftOutput: null,      // true output from the last successful author run
+      draftSnapshot: null,    // code + "\n\u0001" + input at that run
+      play: null,             // exercise currently loaded for play
+      playRevealed: false
+    };
+    function authoredNorm(s) {
+      // Whitespace-insensitive comparison, like Make's test bench.
+      return String(s === null || s === undefined ? "" : s).replace(/\s+/g, " ").trim();
+    }
+    function authoredDisplay(s) {
+      return authoredNorm(s) === "" ? "(nothing printed)" : String(s);
+    }
+    function authoredPredMatches(pred, target) {
+      var p = authoredNorm(pred), t = authoredNorm(target);
+      if (t === "" && (p === "" || p.toLowerCase() === "(nothing printed)" || p.toLowerCase() === "(nothing)")) return true;
+      return p === t;
+    }
+    function authoredEncode(ex) {
+      var payload = { v: 1, title: ex.title, code: ex.code, input: ex.input || "", trap: ex.trap, note: ex.note, trueOutput: ex.trueOutput };
+      return "TF1:" + btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+    }
+    function authoredDecode(text) {
+      var t = String(text || "").trim();
+      if (!t) throw new Error("empty");
+      var obj = null;
+      if (t.charAt(0) === "{") {
+        obj = JSON.parse(t);
+      } else {
+        var b64 = t.indexOf("TF1:") === 0 ? t.slice(4).trim() : t;
+        b64 = b64.replace(/\s+/g, "");
+        obj = JSON.parse(decodeURIComponent(escape(atob(b64))));
+      }
+      if (!obj || typeof obj !== "object") throw new Error("shape");
+      if (typeof obj.code !== "string" || obj.code.trim() === "") throw new Error("code");
+      if (typeof obj.trap !== "string" || obj.trap.trim() === "") throw new Error("trap");
+      if (obj.code.length > 20000 || (typeof obj.note === "string" && obj.note.length > 2000)) throw new Error("size");
+      return {
+        title: typeof obj.title === "string" && obj.title.trim() ? obj.title.trim().slice(0, 80) : "Untitled exercise",
+        code: obj.code,
+        input: typeof obj.input === "string" ? obj.input : "",
+        trap: obj.trap.trim().slice(0, 200),
+        note: typeof obj.note === "string" ? obj.note.trim().slice(0, 500) : "",
+        trueOutput: typeof obj.trueOutput === "string" ? obj.trueOutput : null
+      };
+    }
+    function authoredMsg(id, kind, html) {
+      var m = $(id); if (!m) return;
+      m.className = "make-msg show " + kind;
+      m.innerHTML = html;
+    }
+    function authoredCopyText(txt, statusId) {
+      var status = $(statusId);
+      function done(ok) {
+        if (status) status.textContent = ok ? "Copied — hand it to a classmate." : "Copy failed — select the code and copy it manually.";
+        announce(ok ? "Share code copied." : "Copying the share code failed.");
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(txt).then(function () { done(true); }, function () {
+          try {
+            var ta = document.createElement("textarea"); ta.value = txt; ta.style.position = "fixed"; ta.style.opacity = "0";
+            document.body.appendChild(ta); ta.select(); var ok2 = document.execCommand("copy"); document.body.removeChild(ta); done(!!ok2);
+          } catch (e) { done(false); }
+        });
+      } else {
+        try {
+          var ta2 = document.createElement("textarea"); ta2.value = txt; ta2.style.position = "fixed"; ta2.style.opacity = "0";
+          document.body.appendChild(ta2); ta2.select(); var ok3 = document.execCommand("copy"); document.body.removeChild(ta2); done(!!ok3);
+        } catch (e) { done(false); }
+      }
+    }
+    function renderAuthoredList() {
+      var box = $("authored-list"); if (!box) return;
+      box.innerHTML = "";
+      var empty = $("authored-list-empty");
+      if (empty) empty.style.display = authoredState.list.length ? "none" : "";
+      authoredState.list.forEach(function (ex) {
+        var div = document.createElement("div"); div.className = "authored-item";
+        var h = document.createElement("h4"); h.textContent = ex.title; div.appendChild(h);
+        var meta = document.createElement("p"); meta.className = "a-meta";
+        meta.innerHTML = "True output: <code>" + esc(authoredDisplay(ex.trueOutput)) + "</code> · Trap: <code>" + esc(ex.trap) + "</code>";
+        div.appendChild(meta);
+        var row = document.createElement("div"); row.className = "authored-actions";
+        var playB = document.createElement("button"); playB.type = "button"; playB.className = "btn small"; playB.textContent = "Play";
+        playB.setAttribute("aria-label", "Play your authored exercise: " + ex.title);
+        playB.addEventListener("click", function () { authoredLoadPlay(ex); });
+        var copyB = document.createElement("button"); copyB.type = "button"; copyB.className = "btn ghost small"; copyB.textContent = "Copy share code";
+        copyB.setAttribute("aria-label", "Copy the share code for: " + ex.title);
+        copyB.addEventListener("click", function () { authoredCopyText(authoredEncode(ex), "authored-copy-status"); });
+        var delB = document.createElement("button"); delB.type = "button"; delB.className = "btn ghost small"; delB.textContent = "Delete";
+        delB.setAttribute("aria-label", "Delete your authored exercise: " + ex.title);
+        delB.addEventListener("click", function () {
+          authoredState.list = authoredState.list.filter(function (x) { return x.id !== ex.id; });
+          try { tfSave(); } catch (e) {}
+          renderAuthoredList();
+          announce("Deleted: " + ex.title);
+        });
+        row.appendChild(playB); row.appendChild(copyB); row.appendChild(delB);
+        div.appendChild(row);
+        box.appendChild(div);
+      });
+    }
+    function authoredLoadPlay(ex) {
+      authoredState.play = { title: ex.title, code: ex.code, input: ex.input || "", trap: ex.trap, note: ex.note || "", trueOutput: ex.trueOutput };
+      authoredState.playRevealed = false;
+      var area = $("play-area"); area.hidden = false;
+      $("play-title").textContent = ex.title;
+      $("play-input-note").textContent = authoredState.play.input ? ("This program reads input: " + authoredState.play.input) : "This program reads no input.";
+      var codeBox = $("play-code"); codeBox.innerHTML = "";
+      ex.code.replace(/\r\n/g, "\n").split("\n").forEach(function (line, i) {
+        var d = document.createElement("div"); d.className = "cline";
+        d.innerHTML = '<span class="ln">' + (i + 1) + "</span><span>" + (esc(line) || " ") + "</span>";
+        codeBox.appendChild(d);
+      });
+      var pred = $("play-prediction"); pred.value = ""; pred.disabled = false;
+      var rev = $("play-reveal"); rev.disabled = true;
+      $("play-lock-note").textContent = "The reveal stays locked until a prediction is written.";
+      var v = $("play-verdict"); v.className = "play-verdict"; v.innerHTML = "";
+      $("play-again-row").hidden = true;
+      announce("Exercise loaded: " + ex.title + ". Write your prediction to unlock the reveal.");
+      area.scrollIntoView({ behavior: "smooth", block: "start" });
+      pred.focus({ preventScroll: true });
+    }
+    (function wireAuthored() {
+      var runBtn = $("authored-run"), saveBtn = $("authored-save");
+      if (!runBtn) return;
+      function draftSnapshot() { return $("authored-editor").value + "\n\u0001" + $("authored-input").value; }
+      function invalidateDraft() {
+        if (authoredState.draftSnapshot !== null && authoredState.draftSnapshot !== draftSnapshot()) {
+          authoredState.draftOutput = null; authoredState.draftSnapshot = null;
+          $("authored-out").textContent = "";
+          authoredMsg("authored-run-msg", "info", "The code or input changed since the last run — run it again so the saved true output matches this exact program.");
+        }
+      }
+      $("authored-editor").addEventListener("input", invalidateDraft);
+      $("authored-input").addEventListener("input", invalidateDraft);
+      runBtn.addEventListener("click", function () {
+        var code = $("authored-editor").value;
+        var res = makeRunProgram(code, $("authored-input").value);
+        $("authored-out").textContent = res.output || "";
+        if (res.ok) {
+          authoredState.draftOutput = res.output;
+          authoredState.draftSnapshot = draftSnapshot();
+          authoredMsg("authored-run-msg", "good", "It ran to the end. The true output is: <strong>" + esc(authoredDisplay(res.output)) + "</strong> — now write the trap below, then save.");
+          announce("Your program ran. True output: " + authoredDisplay(res.output));
+        } else {
+          authoredState.draftOutput = null; authoredState.draftSnapshot = null;
+          authoredMsg("authored-run-msg", "bad", esc(res.error) + translatorLinkHtml(res.error));
+          announce("Your program stopped. " + res.error);
+        }
+      });
+      saveBtn.addEventListener("click", function () {
+        if (authoredState.draftOutput === null || authoredState.draftSnapshot !== draftSnapshot()) {
+          authoredMsg("authored-save-msg", "bad", "Run the current program first — an exercise can only be saved with a true output the machine actually produced for this code.");
+          announce("Run the program before saving.");
+          return;
+        }
+        var trap = $("authored-trap").value.trim();
+        var note = $("authored-note").value.trim();
+        if (!trap) {
+          authoredMsg("authored-save-msg", "bad", "Write the trap first: the wrong prediction you expect a classmate to make.");
+          $("authored-trap").focus(); return;
+        }
+        if (!note) {
+          authoredMsg("authored-save-msg", "bad", "Add the one or two sentences on why the trap tempts — that explanation is what your classmate reads after the reveal.");
+          $("authored-note").focus(); return;
+        }
+        var ex = {
+          id: "a" + Date.now().toString(36) + Math.floor(Math.random() * 1e6).toString(36),
+          title: $("authored-title").value.trim() || "Untitled exercise",
+          code: $("authored-editor").value,
+          input: $("authored-input").value,
+          trap: trap, note: note,
+          trueOutput: authoredState.draftOutput
+        };
+        authoredState.list.push(ex);
+        $("authored-save-note").textContent = "Saved. If you change the code or input, run it again before saving a new version.";
+        try { tfSave(); } catch (e) {}
+        renderAuthoredList();
+        var code = authoredEncode(ex);
+        $("authored-share-wrap").hidden = false;
+        $("authored-share-code").value = code;
+        authoredMsg("authored-save-msg", "good", "Saved to <strong>My authored exercises</strong> below. Your share code is ready — copy it and give it to a classmate, or press Play on the saved entry to try it as a player.");
+        announce("Exercise saved: " + ex.title + ". Share code ready.");
+      });
+      $("authored-copy").addEventListener("click", function () {
+        authoredCopyText($("authored-share-code").value, "authored-copy-status");
+      });
+      $("play-load").addEventListener("click", function () {
+        var raw = $("play-code-input").value;
+        if (!raw.trim()) {
+          authoredMsg("play-load-msg", "bad", "Paste a share code first — it starts with TF1: and is one long block of text.");
+          return;
+        }
+        try {
+          var ex = authoredDecode(raw);
+          authoredMsg("play-load-msg", "good", "Share code accepted: <strong>" + esc(ex.title) + "</strong>. The program is below — predict before you reveal.");
+          authoredLoadPlay(ex);
+        } catch (e) {
+          authoredMsg("play-load-msg", "bad", "That share code could not be read. It may be incomplete or corrupted — check that the whole code was copied, from TF1: to the last character, and try again. Nothing was loaded.");
+          announce("That share code could not be read.");
+        }
+      });
+      $("play-prediction").addEventListener("input", function () {
+        if (authoredState.playRevealed) return;
+        var has = this.value.trim().length > 0;
+        $("play-reveal").disabled = !has;
+        $("play-lock-note").textContent = has ? "Prediction written — the reveal is unlocked." : "The reveal stays locked until a prediction is written.";
+      });
+      $("play-reveal").addEventListener("click", function () {
+        var ex = authoredState.play; if (!ex || authoredState.playRevealed) return;
+        var pred = $("play-prediction").value;
+        if (!pred.trim()) return;
+        var res = makeRunProgram(ex.code, ex.input || "");
+        var v = $("play-verdict");
+        authoredState.playRevealed = true;
+        $("play-prediction").disabled = true;
+        $("play-reveal").disabled = true;
+        $("play-lock-note").textContent = "Prediction locked in — this is what the machine did.";
+        $("play-again-row").hidden = false;
+        if (!res.ok) {
+          v.className = "play-verdict show other";
+          v.innerHTML = "<strong>The machine stopped on this program.</strong><br>" + esc(res.error) + translatorLinkHtml(res.error) + "<br>The author may have shared a program that no longer runs as saved — let them know what the message says.";
+          announce("The shared program stopped with an error.");
+          return;
+        }
+        var actual = res.output;
+        var noteHtml = ex.note ? "<br><strong>The author's note:</strong> " + esc(ex.note) : "";
+        if (authoredPredMatches(pred, actual)) {
+          v.className = "play-verdict show good";
+          v.innerHTML = "<strong>You predicted it.</strong> The program prints <span class=\"pv-out\">" + esc(authoredDisplay(actual)) + "</span> — exactly what you wrote. The trap was <span class=\"pv-out\">" + esc(ex.trap) + "</span>, and you did not fall into it." + noteHtml;
+          announce("Correct prediction. The program prints " + authoredDisplay(actual) + ".");
+        } else if (authoredPredMatches(pred, ex.trap)) {
+          v.className = "play-verdict show trap";
+          v.innerHTML = "<strong>That is the trap — exactly the prediction the author was hoping for.</strong> You wrote <span class=\"pv-out\">" + esc(authoredDisplay(pred)) + "</span>, but the program actually prints <span class=\"pv-out\">" + esc(authoredDisplay(actual)) + "</span>." + noteHtml;
+          announce("Your prediction matched the author's trap. The program actually prints " + authoredDisplay(actual) + ".");
+        } else {
+          v.className = "play-verdict show other";
+          v.innerHTML = "<strong>Not what the machine does — and not the author's trap either.</strong> You predicted <span class=\"pv-out\">" + esc(authoredDisplay(pred)) + "</span>; the program prints <span class=\"pv-out\">" + esc(authoredDisplay(actual)) + "</span>. The trap the author set was <span class=\"pv-out\">" + esc(ex.trap) + "</span>." + noteHtml;
+          announce("Prediction revealed. The program prints " + authoredDisplay(actual) + ".");
+        }
+      });
+      $("play-again").addEventListener("click", function () {
+        if (authoredState.play) authoredLoadPlay(authoredState.play);
+      });
+      renderAuthoredList();
+    })();
 
     /* ---------------- Bolt's World ---------------- */
     var BOLT_COMMANDS = { move: true, turnLeft: true, pickCell: true, putCell: true };
@@ -7348,7 +8492,7 @@ for (int i = 0; i < 3; i++) {
       } catch (e) { tfStorageOk = false; return null; }
     }
     function tfCollect() {
-      var data = { v: 1, primerRead: !!primerRead, tracer: [], bolt: null, gym: [], bridge: [], make: [], challenges: null,
+      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", primerRead: !!primerRead, tracer: [], bolt: null, gym: [], bridge: [], make: [], challenges: null, authoredExercises: [],
         testOut: (typeof testOut !== "undefined" && testOut)
           ? { passed: !!testOut.passed, score: (typeof testOut.score === "number" ? testOut.score : 0), via: (Array.isArray(testOut.via) ? testOut.via.slice() : [false, false, false]) }
           : { passed: false, score: 0, via: [false, false, false] } };
@@ -7387,10 +8531,20 @@ for (int i = 0; i < 3; i++) {
         });
       } catch (e) {}
       try { data.challenges = { level: ch.level, data: ch.data }; } catch (e) {}
+      // Student-authored exercises: additive field only — never touches the
+      // tracer / challenges records collected above.
+      try {
+        if (typeof authoredState !== "undefined" && authoredState && Array.isArray(authoredState.list)) {
+          data.authoredExercises = authoredState.list.map(function (ex) {
+            return { id: ex.id, title: ex.title, code: ex.code, input: ex.input || "", trap: ex.trap, note: ex.note, trueOutput: ex.trueOutput };
+          });
+        }
+      } catch (e) {}
       return data;
     }
     function tfHasProgress(d) {
       if (!d) return false;
+      if (Array.isArray(d.authoredExercises) && d.authoredExercises.length) return true;
       if (d.primerRead) return true;
       if (d.testOut && d.testOut.passed) return true;
       if ((d.tracer || []).some(function (x) { return !!x; })) return true;
@@ -7518,8 +8672,27 @@ for (int i = 0; i < 3; i++) {
           if (d.challenges.level && CH_LEVELS[d.challenges.level]) ch.level = d.challenges.level;
         }
       } catch (e) {}
+      // Student-authored exercises (additive field; absent in older saves)
+      try {
+        if (Array.isArray(d.authoredExercises) && typeof authoredState !== "undefined" && authoredState) {
+          authoredState.list = d.authoredExercises.filter(function (ex) {
+            return ex && typeof ex.code === "string" && ex.code.trim() !== "" && typeof ex.trap === "string" && ex.trap.trim() !== "";
+          }).map(function (ex, i) {
+            return {
+              id: typeof ex.id === "string" && ex.id ? ex.id : "a-restored-" + i,
+              title: typeof ex.title === "string" && ex.title.trim() ? ex.title : "Untitled exercise",
+              code: ex.code, input: typeof ex.input === "string" ? ex.input : "",
+              trap: ex.trap, note: typeof ex.note === "string" ? ex.note : "",
+              trueOutput: typeof ex.trueOutput === "string" ? ex.trueOutput : ""
+            };
+          });
+          if (typeof renderAuthoredList === "function") renderAuthoredList();
+        }
+      } catch (e) {}
       // Primer
       if (d.primerRead) { primerRead = true; primerOpened = true; }
+      // Bits view preference (additive field; absent in older saves)
+      if (d.bitsFormat === "dec" || d.bitsFormat === "bin" || d.bitsFormat === "hex") bitsFormat = d.bitsFormat;
       // Test-out check result
       if (d.testOut && typeof testOut !== "undefined") {
         testOut.passed = !!d.testOut.passed;
