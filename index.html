@@ -1214,6 +1214,11 @@
       .ref-panel-head h2{font-family:"Source Serif 4",Georgia,serif;font-size:1.3rem;line-height:1.15;font-weight:700}
       .ref-panel-head p{font-size:.85rem;color:var(--ink-soft);margin-top:2px}
       .ref-panel-actions{display:flex;gap:8px;align-items:center;flex:none}
+      .ref-print-btn{
+        border:1.5px solid var(--accent);background:transparent;color:var(--accent-strong);
+        border-radius:8px;padding:8px 13px;font-weight:700;font-size:.88rem;min-height:42px;white-space:nowrap;
+      }
+      .ref-print-btn:hover{background:var(--accent-soft)}
       .ref-close-btn{
         width:42px;height:42px;flex:none;display:grid;place-items:center;
         border:1.5px solid var(--line);background:var(--panel-2);color:var(--ink);
@@ -1264,7 +1269,7 @@
         padding:9px 11px;font-size:.92rem;font-weight:600;color:var(--ink);line-height:1.35;
       }
       .mode-menu-item:hover,.mode-menu-item:focus-visible{background:var(--accent-soft);color:var(--accent-strong)}
-      #bolt-worlds,#bolt-challenges,#bolt-program,#bolt-commands,#tracer-exercises,#review-panel,#potd-box,#lecture-entry,#refcard,#crosswalk-section,#instructors-section,#gym-rounds,#gym-hunt,#gym-hypo-card,#gym-fix-card,#translator-sample,#translator-search,#trans-list,#bridge-activities,#bridge-card,#make-prompts,#make-editor-card,#trace-panel,#make-ladders,.ch-collapse{scroll-margin-top:92px}
+      #bolt-worlds,#bolt-challenges,#bolt-program,#bolt-commands,#tracer-exercises,#review-panel,#potd-box,#lecture-entry,#crosswalk-section,#instructors-section,#gym-rounds,#gym-hunt,#gym-hypo-card,#gym-fix-card,#translator-sample,#translator-search,#trans-list,#bridge-activities,#bridge-card,#make-prompts,#make-editor-card,#trace-panel,#make-ladders,.ch-collapse{scroll-margin-top:92px}
       .section-highlight{outline:3px solid var(--amber) !important;outline-offset:3px}
       /* Drawer section sub-rows (mobile) */
       .drawer-subs{display:flex;flex-direction:column;background:var(--panel-2);border-bottom:1px solid var(--line);padding:4px 0}
@@ -1410,15 +1415,48 @@
         <div class="ref-panel-head">
           <div>
             <h2 id="ref-panel-title" tabindex="-1">Reference card</h2>
-            <p>Same card as in the Prediction Tracer — open it from anywhere, close it and your work is exactly where you left it.</p>
+            <p>Open it from anywhere, close it and your work is exactly where you left it.</p>
           </div>
           <div class="ref-panel-actions">
-            <button type="button" class="btn ghost small" id="ref-print-btn">Print this card</button>
+            <button type="button" class="ref-print-btn" id="ref-print-btn">Print this card</button>
             <button type="button" class="ref-close-btn" id="ref-close-btn" aria-label="Close reference panel">&times;</button>
           </div>
         </div>
         <div class="ref-panel-body" id="ref-panel-body">
-          <div id="ref-panel-slot"></div>
+          <div id="ref-panel-slot">
+<section class="card" id="refcard" aria-labelledby="refcard-h" style="margin-top:18px;">
+        <h3 id="refcard-h">Reference card — print me</h3>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">The whole course on one page: operators, the integer-division rules, the vector and string methods this platform uses, and the loop patterns that recur everywhere. Formatted to print cleanly — use the Print this card button and only this card prints.</p>
+        <h4 style="margin-top:14px;font-size:.95rem;">Operators</h4>
+        <table class="refcard-table"><tr><th>Operator</th><th>Means</th><th>Watch out</th></tr>
+        <tr><td><code>=</code></td><td>Store the right side in the left box</td><td>It is not a comparison. <code>x = x + 1</code> reads the old x first.</td></tr>
+        <tr><td><code>==</code></td><td>Compare: are they equal?</td><td>The classic mix-up with <code>=</code> inside an <code>if</code>.</td></tr>
+        <tr><td><code>+= -= *= /=</code></td><td>Update a box from its own value</td><td><code>total += v</code> is <code>total = total + v</code>.</td></tr>
+        <tr><td><code>++ --</code></td><td>Add / subtract 1</td><td>As a statement, prefix and postfix behave the same.</td></tr>
+        <tr><td><code>&amp;&amp; || !</code></td><td>And / or / not</td><td><code>&amp;&amp;</code> stops at the first false; <code>||</code> stops at the first true.</td></tr>
+        <tr><td><code>&amp; *</code> (pointers)</td><td><code>&amp;x</code> is x's address; <code>*p</code> is the value p points at</td><td>In a declaration, <code>int* p</code> makes a pointer; in an expression, <code>*p</code> follows it.</td></tr></table>
+        <h4 style="margin-top:14px;font-size:.95rem;">Integer division rules</h4>
+        <table class="refcard-table"><tr><th>Expression</th><th>Result</th><th>Why</th></tr>
+        <tr><td><code>17 / 5</code></td><td><code>3</code></td><td>Both operands are int: the fraction is discarded (truncated, never rounded).</td></tr>
+        <tr><td><code>17 % 5</code></td><td><code>2</code></td><td>The remainder that division threw away.</td></tr>
+        <tr><td><code>17 / 5.0</code></td><td><code>3.4</code></td><td>One double operand makes the whole division double.</td></tr>
+        <tr><td><code>(double)17 / 5</code></td><td><code>3.4</code></td><td>Converting one side before dividing has the same effect.</td></tr></table>
+        <h4 style="margin-top:14px;font-size:.95rem;">Vector &amp; string methods used here</h4>
+        <table class="refcard-table"><tr><th>Method</th><th>Does</th></tr>
+        <tr><td><code>v.push_back(x)</code></td><td>Append x; the vector grows by one.</td></tr>
+        <tr><td><code>v.size()</code> / <code>s.length()</code></td><td>How many elements / characters there are now.</td></tr>
+        <tr><td><code>v[i]</code> / <code>s[i]</code></td><td>The element / character at index i, counting from 0.</td></tr>
+        <tr><td><code>s.substr(pos)</code> / <code>s.substr(pos, len)</code></td><td>The text from pos to the end / for len characters.</td></tr>
+        <tr><td><code>counts[key]</code></td><td>A map's slot for key — created at 0 on first use.</td></tr>
+        <tr><td><code>seen.insert(x)</code> / <code>seen.count(x)</code></td><td>Add x to a set if absent / ask whether x is in the set (1 or 0).</td></tr></table>
+        <h4 style="margin-top:14px;font-size:.95rem;">Loop patterns</h4>
+        <table class="refcard-table"><tr><th>Pattern</th><th>Shape</th></tr>
+        <tr><td>Counted loop</td><td><code>for (int i = 0; i &lt; n; i++) { ... }</code> — runs exactly n times.</td></tr>
+        <tr><td>Accumulate</td><td><code>total = 0;</code> before the loop, <code>total += value;</code> inside it.</td></tr>
+        <tr><td>Read to end of file</td><td><code>while (fin &gt;&gt; value) { ... }</code> — test the read, never <code>eof()</code> alone.</td></tr>
+        <tr><td>Walk a collection</td><td><code>for (int v : values) { ... }</code> — maps give pairs: <code>p.first</code>, <code>p.second</code>.</td></tr></table>
+      </section>
+        </div>
         </div>
       </div>
 
@@ -1924,38 +1962,7 @@ for (int i = 0; i < 3; i++) {
         <div class="cw-list" id="crosswalk-list"></div>
       </section>
 
-      <section class="card" id="refcard" aria-labelledby="refcard-h" style="margin-top:18px;">
-        <h3 id="refcard-h">Reference card — print me</h3>
-        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">The whole course on one page: operators, the integer-division rules, the vector and string methods this platform uses, and the loop patterns that recur everywhere. Formatted to print cleanly — use your browser's print command with this section on screen.</p>
-        <h4 style="margin-top:14px;font-size:.95rem;">Operators</h4>
-        <table class="refcard-table"><tr><th>Operator</th><th>Means</th><th>Watch out</th></tr>
-        <tr><td><code>=</code></td><td>Store the right side in the left box</td><td>It is not a comparison. <code>x = x + 1</code> reads the old x first.</td></tr>
-        <tr><td><code>==</code></td><td>Compare: are they equal?</td><td>The classic mix-up with <code>=</code> inside an <code>if</code>.</td></tr>
-        <tr><td><code>+= -= *= /=</code></td><td>Update a box from its own value</td><td><code>total += v</code> is <code>total = total + v</code>.</td></tr>
-        <tr><td><code>++ --</code></td><td>Add / subtract 1</td><td>As a statement, prefix and postfix behave the same.</td></tr>
-        <tr><td><code>&amp;&amp; || !</code></td><td>And / or / not</td><td><code>&amp;&amp;</code> stops at the first false; <code>||</code> stops at the first true.</td></tr>
-        <tr><td><code>&amp; *</code> (pointers)</td><td><code>&amp;x</code> is x's address; <code>*p</code> is the value p points at</td><td>In a declaration, <code>int* p</code> makes a pointer; in an expression, <code>*p</code> follows it.</td></tr></table>
-        <h4 style="margin-top:14px;font-size:.95rem;">Integer division rules</h4>
-        <table class="refcard-table"><tr><th>Expression</th><th>Result</th><th>Why</th></tr>
-        <tr><td><code>17 / 5</code></td><td><code>3</code></td><td>Both operands are int: the fraction is discarded (truncated, never rounded).</td></tr>
-        <tr><td><code>17 % 5</code></td><td><code>2</code></td><td>The remainder that division threw away.</td></tr>
-        <tr><td><code>17 / 5.0</code></td><td><code>3.4</code></td><td>One double operand makes the whole division double.</td></tr>
-        <tr><td><code>(double)17 / 5</code></td><td><code>3.4</code></td><td>Converting one side before dividing has the same effect.</td></tr></table>
-        <h4 style="margin-top:14px;font-size:.95rem;">Vector &amp; string methods used here</h4>
-        <table class="refcard-table"><tr><th>Method</th><th>Does</th></tr>
-        <tr><td><code>v.push_back(x)</code></td><td>Append x; the vector grows by one.</td></tr>
-        <tr><td><code>v.size()</code> / <code>s.length()</code></td><td>How many elements / characters there are now.</td></tr>
-        <tr><td><code>v[i]</code> / <code>s[i]</code></td><td>The element / character at index i, counting from 0.</td></tr>
-        <tr><td><code>s.substr(pos)</code> / <code>s.substr(pos, len)</code></td><td>The text from pos to the end / for len characters.</td></tr>
-        <tr><td><code>counts[key]</code></td><td>A map's slot for key — created at 0 on first use.</td></tr>
-        <tr><td><code>seen.insert(x)</code> / <code>seen.count(x)</code></td><td>Add x to a set if absent / ask whether x is in the set (1 or 0).</td></tr></table>
-        <h4 style="margin-top:14px;font-size:.95rem;">Loop patterns</h4>
-        <table class="refcard-table"><tr><th>Pattern</th><th>Shape</th></tr>
-        <tr><td>Counted loop</td><td><code>for (int i = 0; i &lt; n; i++) { ... }</code> — runs exactly n times.</td></tr>
-        <tr><td>Accumulate</td><td><code>total = 0;</code> before the loop, <code>total += value;</code> inside it.</td></tr>
-        <tr><td>Read to end of file</td><td><code>while (fin &gt;&gt; value) { ... }</code> — test the read, never <code>eof()</code> alone.</td></tr>
-        <tr><td>Walk a collection</td><td><code>for (int v : values) { ... }</code> — maps give pairs: <code>p.first</code>, <code>p.second</code>.</td></tr></table>
-      </section>
+      
 
       </div><!-- /tracer-mode -->
 
@@ -13340,7 +13347,7 @@ int main() {
         { mode: "tracer", items: [
           { label: "Exercises", target: "tracer-exercises" },
           { label: "Briefings", target: "brief-panel" },
-          { label: "Reference card", target: "refcard" },
+          { label: "Reference card", action: "refpanel" },
           { label: "Review", target: "review-panel" },
           { label: "Problem of the Day", target: "potd-box" },
           { label: "Lecture mode", target: "lecture-entry" },
@@ -13440,8 +13447,17 @@ int main() {
         setTimeout(function () { el.classList.remove("section-highlight"); }, 2000);
         if (typeof announce === "function") announce(MODE_LABELS[entry.mode] + ": " + item.label + ".");
       }
-      function navigate(entry, item) {
+      function navigate(entry, item, triggerEl) {
         closeMenus();
+        if (item.action === "refpanel") {
+          // The reference card lives only in the anywhere panel: open it
+          // in place, without switching mode or scrolling anywhere.
+          // Pass the invoking control (this mode's caret, or the drawer
+          // toggle) so closing returns focus there instead of jumping
+          // to the header button at the top of the page.
+          if (window.__refPanel && typeof window.__refPanel.open === "function") window.__refPanel.open(triggerEl || undefined);
+          return;
+        }
         var needSwitch = currentMode() !== entry.mode;
         if (needSwitch && typeof setMode === "function") setMode(entry.mode);
         // setMode smooth-scrolls to the top; let it settle before landing.
@@ -13478,7 +13494,10 @@ int main() {
           b.className = "mode-menu-item";
           b.setAttribute("role", "menuitem");
           b.textContent = item.label;
-          b.addEventListener("click", function () { navigate(entry, item); });
+          b.addEventListener("click", function () {
+            var g = groups[entry.mode];
+            navigate(entry, item, g ? g.caret : null);
+          });
           menu.appendChild(b);
           itemBtns.push(b);
         });
@@ -13549,9 +13568,13 @@ int main() {
             b.textContent = item.label;
             b.addEventListener("click", function () {
               if (typeof closeDrawer === "function") closeDrawer(false);
-              navigate(entry, item);
-              var t = byId("drawer-toggle");
-              if (t) t.focus();
+              // Panel-opening entries pass the drawer toggle as the
+              // focus-return target and keep the panel's own handling.
+              navigate(entry, item, byId("drawer-toggle"));
+              if (!item.action) {
+                var t = byId("drawer-toggle");
+                if (t) t.focus();
+              }
             });
             subs.appendChild(b);
           });
@@ -13562,12 +13585,12 @@ int main() {
     </script>
     <script>
     /* ---------------- Anywhere reference panel ----------------
-       Single source: the one #refcard node is moved into the panel
-       while open and moved back to its exact place in the Tracer on
-       close. No copy is made, so the two can never drift. Opening
-       and closing touches no mode, no exercise state, and no editor:
-       it only moves that one static node, locks body scroll, and
-       restores scroll + focus on close. */
+       The reference card's only home is this panel: the single
+       #refcard node lives permanently inside the panel slot, hidden
+       with the panel until a Reference trigger opens it. Opening and
+       closing touches no mode, no exercise state, and no editor: it
+       only shows/hides the panel, locks body scroll, and restores
+       scroll + focus on close. */
     (function () {
       "use strict";
       var triggers = Array.prototype.slice.call(document.querySelectorAll(".ref-open-trigger"));
@@ -13580,7 +13603,6 @@ int main() {
       var titleEl = document.getElementById("ref-panel-title");
       if (!triggers.length || !backdrop || !panel || !slot || !card) return;
       var isOpen = false;
-      var placeholder = null;
       var savedScrollY = 0;
       var lastTrigger = triggers[0];
 
@@ -13591,13 +13613,6 @@ int main() {
         if (isOpen) return;
         lastTrigger = trigger || triggers[0];
         savedScrollY = window.scrollY || window.pageYOffset || 0;
-        // Remember the card's exact home, then move the single node.
-        placeholder = document.createElement("div");
-        placeholder.id = "refcard-home-placeholder";
-        placeholder.hidden = true;
-        placeholder.setAttribute("aria-hidden", "true");
-        if (card.parentNode) card.parentNode.insertBefore(placeholder, card);
-        slot.appendChild(card);
         backdrop.hidden = false;
         panel.hidden = false;
         // Reflow so the slide-in transition runs.
@@ -13617,13 +13632,6 @@ int main() {
         panel.classList.remove("open");
         backdrop.hidden = true;
         panel.hidden = true;
-        // Move the single node back home, synchronously, so the
-        // in-Tracer card is fully restored the moment we close.
-        if (placeholder && placeholder.parentNode) {
-          placeholder.parentNode.insertBefore(card, placeholder);
-          placeholder.parentNode.removeChild(placeholder);
-        }
-        placeholder = null;
         setTriggersExpanded(false);
         document.body.classList.remove("ref-open");
         window.scrollTo(0, savedScrollY);
@@ -13638,10 +13646,8 @@ int main() {
         t.addEventListener("click", function () { openPanel(t); });
       });
       if (closeBtn) closeBtn.addEventListener("click", closePanel);
+      if (printBtn) printBtn.addEventListener("click", function () { window.print(); });
       backdrop.addEventListener("click", closePanel);
-      if (printBtn) printBtn.addEventListener("click", function () {
-        try { window.print(); } catch (e) {}
-      });
       document.addEventListener("keydown", function (e) {
         if (isOpen && e.key === "Escape") { e.preventDefault(); closePanel(); }
       });
