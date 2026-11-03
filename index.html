@@ -1179,6 +1179,63 @@
         .bgbar, .mode-toggle, .mobile-nav { display: none !important; }
       }
 
+      /* ---------- Anywhere reference panel (slide-over) ---------- */
+      .ref-open-btn{
+        display:inline-flex;align-items:center;gap:8px;
+        border:1.5px solid var(--accent);background:var(--accent-soft);color:var(--accent-strong);
+        border-radius:8px;padding:7px 13px;font-weight:700;font-size:.88rem;min-height:38px;
+        margin-right:auto;
+      }
+      .ref-open-btn:hover{background:var(--accent);color:#fff}
+      :root[data-bg="black"] .ref-open-btn:hover,:root[data-bg="green"] .ref-open-btn:hover{color:#07130c}
+      .ref-open-btn svg{width:16px;height:16px;flex:none}
+      .ref-open-btn-mobile{margin-right:0;margin-left:auto;flex:none;padding:7px 11px;font-size:.85rem}
+      .ref-backdrop{
+        position:fixed;inset:0;z-index:210;background:rgba(10,18,14,.52);
+        opacity:0;transition:opacity .25s ease;
+      }
+      .ref-backdrop[hidden]{display:none !important}
+      .ref-backdrop.open{opacity:1}
+      .ref-panel{
+        position:fixed;top:0;right:0;bottom:0;z-index:220;
+        width:min(700px,94vw);max-width:94vw;box-sizing:border-box;
+        background:var(--panel);color:var(--ink);
+        border-left:1px solid var(--line);box-shadow:-12px 0 36px rgba(0,0,0,.28);
+        transform:translateX(105%);transition:transform .28s ease;
+        display:flex;flex-direction:column;
+      }
+      .ref-panel[hidden]{display:none !important}
+      .ref-panel.open{transform:translateX(0)}
+      .ref-panel-head{
+        display:flex;align-items:center;justify-content:space-between;gap:12px;
+        padding:14px 16px;border-bottom:1px solid var(--line);
+        background:var(--panel);flex:none;
+      }
+      .ref-panel-head h2{font-family:"Source Serif 4",Georgia,serif;font-size:1.3rem;line-height:1.15;font-weight:700}
+      .ref-panel-head p{font-size:.85rem;color:var(--ink-soft);margin-top:2px}
+      .ref-panel-actions{display:flex;gap:8px;align-items:center;flex:none}
+      .ref-close-btn{
+        width:42px;height:42px;flex:none;display:grid;place-items:center;
+        border:1.5px solid var(--line);background:var(--panel-2);color:var(--ink);
+        border-radius:9px;font-size:1.35rem;line-height:1;
+      }
+      .ref-panel-body{overflow-y:auto;overscroll-behavior:contain;padding:16px;flex:1 1 auto;background:var(--bg)}
+      .ref-panel-body #refcard{margin-top:0 !important;box-shadow:var(--shadow)}
+      body.ref-open{overflow:hidden}
+      @media (max-width:720px){
+        .ref-panel{width:100vw;max-width:100vw;border-left:none}
+        .ref-panel-body{padding:12px}
+        .ref-panel-head{padding:12px 14px}
+      }
+      @media (prefers-reduced-motion: reduce){ .ref-panel,.ref-backdrop{transition:none} }
+      @media print {
+        .ref-backdrop{display:none !important}
+        .ref-panel{position:static !important;transform:none !important;width:auto !important;height:auto !important;max-width:none !important;overflow:visible !important;box-shadow:none !important;border:none !important;background:#fff !important}
+        .ref-panel-head{display:none !important}
+        .ref-panel-body{overflow:visible !important;padding:0 !important;background:#fff !important}
+        .ref-panel-body #refcard{box-shadow:none !important}
+      }
+
       /* ---------- Mode tab dropdowns ---------- */
       .mode-toggle{overflow:visible;flex-wrap:wrap}
       .mode-group{position:relative;display:inline-flex;align-items:stretch;flex:0 0 auto}
@@ -1223,6 +1280,7 @@
   <body>
     <main class="wrap">
       <div class="bgbar">
+        <button type="button" class="ref-open-btn ref-open-trigger" id="ref-open-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="ref-panel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5v13z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg>Reference</button>
         <span class="bgbar-label" id="bgbar-label">Background</span>
         <div class="bits-group" role="group" aria-labelledby="bgbar-label">
           <button type="button" class="bg-btn" data-bg-choice="white" aria-pressed="true"><span class="swatch white" aria-hidden="true"></span>White</button>
@@ -1344,6 +1402,24 @@
           Modes
         </button>
         <span class="mobile-current" id="mobile-current-mode">Prediction Tracer</span>
+        <button type="button" class="ref-open-btn ref-open-btn-mobile ref-open-trigger" id="ref-open-btn-mobile" aria-haspopup="dialog" aria-expanded="false" aria-controls="ref-panel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5v13z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg>Reference</button>
+      </div>
+
+      <div class="ref-backdrop" id="ref-backdrop" hidden></div>
+      <div class="ref-panel" id="ref-panel" role="dialog" aria-modal="true" aria-labelledby="ref-panel-title" hidden>
+        <div class="ref-panel-head">
+          <div>
+            <h2 id="ref-panel-title" tabindex="-1">Reference card</h2>
+            <p>Same card as in the Prediction Tracer — open it from anywhere, close it and your work is exactly where you left it.</p>
+          </div>
+          <div class="ref-panel-actions">
+            <button type="button" class="btn ghost small" id="ref-print-btn">Print this card</button>
+            <button type="button" class="ref-close-btn" id="ref-close-btn" aria-label="Close reference panel">&times;</button>
+          </div>
+        </div>
+        <div class="ref-panel-body" id="ref-panel-body">
+          <div id="ref-panel-slot"></div>
+        </div>
       </div>
 
       <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
@@ -13482,6 +13558,105 @@ int main() {
           row.parentNode.insertBefore(subs, row.nextSibling);
         });
       }
+    })();
+    </script>
+    <script>
+    /* ---------------- Anywhere reference panel ----------------
+       Single source: the one #refcard node is moved into the panel
+       while open and moved back to its exact place in the Tracer on
+       close. No copy is made, so the two can never drift. Opening
+       and closing touches no mode, no exercise state, and no editor:
+       it only moves that one static node, locks body scroll, and
+       restores scroll + focus on close. */
+    (function () {
+      "use strict";
+      var triggers = Array.prototype.slice.call(document.querySelectorAll(".ref-open-trigger"));
+      var backdrop = document.getElementById("ref-backdrop");
+      var panel = document.getElementById("ref-panel");
+      var slot = document.getElementById("ref-panel-slot");
+      var card = document.getElementById("refcard");
+      var closeBtn = document.getElementById("ref-close-btn");
+      var printBtn = document.getElementById("ref-print-btn");
+      var titleEl = document.getElementById("ref-panel-title");
+      if (!triggers.length || !backdrop || !panel || !slot || !card) return;
+      var isOpen = false;
+      var placeholder = null;
+      var savedScrollY = 0;
+      var lastTrigger = triggers[0];
+
+      function setTriggersExpanded(v) {
+        triggers.forEach(function (t) { t.setAttribute("aria-expanded", v ? "true" : "false"); });
+      }
+      function openPanel(trigger) {
+        if (isOpen) return;
+        lastTrigger = trigger || triggers[0];
+        savedScrollY = window.scrollY || window.pageYOffset || 0;
+        // Remember the card's exact home, then move the single node.
+        placeholder = document.createElement("div");
+        placeholder.id = "refcard-home-placeholder";
+        placeholder.hidden = true;
+        placeholder.setAttribute("aria-hidden", "true");
+        if (card.parentNode) card.parentNode.insertBefore(placeholder, card);
+        slot.appendChild(card);
+        backdrop.hidden = false;
+        panel.hidden = false;
+        // Reflow so the slide-in transition runs.
+        void panel.offsetWidth;
+        backdrop.classList.add("open");
+        panel.classList.add("open");
+        isOpen = true;
+        setTriggersExpanded(true);
+        document.body.classList.add("ref-open");
+        if (closeBtn) closeBtn.focus();
+        if (typeof announce === "function") announce("Reference card opened. Press Escape to close.");
+      }
+      function closePanel() {
+        if (!isOpen) return;
+        isOpen = false;
+        backdrop.classList.remove("open");
+        panel.classList.remove("open");
+        backdrop.hidden = true;
+        panel.hidden = true;
+        // Move the single node back home, synchronously, so the
+        // in-Tracer card is fully restored the moment we close.
+        if (placeholder && placeholder.parentNode) {
+          placeholder.parentNode.insertBefore(card, placeholder);
+          placeholder.parentNode.removeChild(placeholder);
+        }
+        placeholder = null;
+        setTriggersExpanded(false);
+        document.body.classList.remove("ref-open");
+        window.scrollTo(0, savedScrollY);
+        var target = lastTrigger || triggers[0];
+        if (target) target.focus();
+        if (typeof announce === "function") announce("Reference card closed.");
+      }
+      // Expose for verification / other triggers without mode side-effects.
+      window.__refPanel = { open: openPanel, close: closePanel, isOpen: function () { return isOpen; } };
+
+      triggers.forEach(function (t) {
+        t.addEventListener("click", function () { openPanel(t); });
+      });
+      if (closeBtn) closeBtn.addEventListener("click", closePanel);
+      backdrop.addEventListener("click", closePanel);
+      if (printBtn) printBtn.addEventListener("click", function () {
+        try { window.print(); } catch (e) {}
+      });
+      document.addEventListener("keydown", function (e) {
+        if (isOpen && e.key === "Escape") { e.preventDefault(); closePanel(); }
+      });
+      // Focus trap: keep Tab cycling inside the open panel.
+      panel.addEventListener("keydown", function (e) {
+        if (e.key !== "Tab" || !isOpen) return;
+        var focusables = Array.prototype.slice.call(
+          panel.querySelectorAll("button, a[href], [tabindex]:not([tabindex='-1'])")
+        ).filter(function (el) { return !el.disabled && el.getClientRects().length > 0; });
+        // The card itself is static text; the head buttons are the cycle.
+        if (!focusables.length) { e.preventDefault(); if (titleEl) titleEl.focus(); return; }
+        var first = focusables[0], last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      });
     })();
     </script>
   </body>
