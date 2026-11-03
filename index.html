@@ -1067,7 +1067,7 @@
       .play-verdict .pv-out{font-family:"IBM Plex Mono",monospace;font-weight:700;white-space:pre-wrap;overflow-wrap:anywhere}
 
       /* ---------- Topic chip, rationale, crosswalk, instructor studio ---------- */
-      .zy-chip { display: inline-block; font-family: "IBM Plex Mono", monospace; font-size: .72rem; font-weight: 600; letter-spacing: .06em; color: var(--amber); background: var(--amber-soft); border-radius: 6px; padding: 3px 8px; margin: 0 0 10px 8px; vertical-align: top; }
+      .topic-chip { display: inline-block; font-family: "IBM Plex Mono", monospace; font-size: .72rem; font-weight: 600; letter-spacing: .06em; color: var(--amber); background: var(--amber-soft); border-radius: 6px; padding: 3px 8px; margin: 0 0 10px 8px; vertical-align: top; }
       .rationale-row { margin-top: 12px; }
       .rationale-row label { display: block; font-size: .88rem; font-weight: 600; margin-bottom: 6px; }
       .rationale-row label span { font-weight: 400; color: var(--ink-soft); }
@@ -1178,6 +1178,46 @@
         #refcard { position: absolute; inset: 0 auto auto 0; width: 100%; box-shadow: none; border: none; }
         .bgbar, .mode-toggle, .mobile-nav { display: none !important; }
       }
+
+      /* ---------- Mode tab dropdowns ---------- */
+      .mode-toggle{overflow:visible;flex-wrap:wrap}
+      .mode-group{position:relative;display:inline-flex;align-items:stretch;flex:0 0 auto}
+      .mode-caret{
+        display:inline-flex;align-items:center;justify-content:center;width:26px;flex:none;
+        background:transparent;border:1.5px solid transparent;border-radius:7px;
+        color:var(--ink-soft);padding:0;cursor:pointer;align-self:center;min-height:30px;
+      }
+      .mode-caret svg{width:13px;height:13px;flex:none;transition:transform .18s ease}
+      .mode-caret:hover{background:var(--panel-2);color:var(--ink)}
+      .mode-caret[aria-expanded="true"]{background:var(--accent-soft);color:var(--accent-strong);border-color:var(--accent)}
+      .mode-caret[aria-expanded="true"] svg{transform:rotate(180deg)}
+      .mode-group:has(> .mode-btn[aria-selected="true"]) > .mode-caret{color:var(--accent-strong)}
+      .mode-menu{
+        position:absolute;top:calc(100% + 6px);left:0;z-index:130;
+        min-width:248px;max-width:min(320px,calc(100vw - 20px));box-sizing:border-box;
+        background:var(--panel);color:var(--ink);
+        border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);
+        padding:6px;display:grid;gap:2px;
+      }
+      .mode-menu[hidden]{display:none}
+      .mode-menu.align-right{left:auto;right:0}
+      .mode-menu-item{
+        display:block;width:100%;box-sizing:border-box;text-align:left;
+        background:transparent;border:none;border-radius:8px;
+        padding:9px 11px;font-size:.92rem;font-weight:600;color:var(--ink);line-height:1.35;
+      }
+      .mode-menu-item:hover,.mode-menu-item:focus-visible{background:var(--accent-soft);color:var(--accent-strong)}
+      #bolt-worlds,#bolt-challenges,#bolt-program,#bolt-commands,#tracer-exercises,#review-panel,#potd-box,#lecture-entry,#refcard,#crosswalk-section,#instructors-section,#gym-rounds,#gym-hunt,#gym-hypo-card,#gym-fix-card,#translator-sample,#translator-search,#trans-list,#bridge-activities,#bridge-card,#make-prompts,#make-editor-card,#trace-panel,#make-ladders,.ch-collapse{scroll-margin-top:92px}
+      .section-highlight{outline:3px solid var(--amber) !important;outline-offset:3px}
+      /* Drawer section sub-rows (mobile) */
+      .drawer-subs{display:flex;flex-direction:column;background:var(--panel-2);border-bottom:1px solid var(--line);padding:4px 0}
+      .drawer-sub-row{
+        display:block;width:100%;box-sizing:border-box;text-align:left;
+        background:transparent;border:none;padding:9px 16px 9px 34px;
+        font-size:.9rem;font-weight:500;color:var(--ink-soft);min-height:38px;
+      }
+      .drawer-sub-row:hover,.drawer-sub-row:focus-visible{color:var(--accent-strong)}
+      @media (prefers-reduced-motion: reduce){ .mode-caret svg{transition:none} }
     </style>
   </head>
   <body>
@@ -1336,7 +1376,7 @@
           <div class="bolt-order"><strong>Start here.</strong> This mode comes first on purpose: finish these twelve worlds and you already think in sequences, loops, decisions, and functions. Then predict and trace real code in the Prediction Tracer, where the same logic wears full C++ syntax.</div>
         </section>
 
-        <section class="toolbar" aria-label="Choose a world">
+        <section class="toolbar" id="bolt-worlds" aria-label="Choose a world">
           <div>
             <div class="tlabel">Worlds — twelve workshops, in order</div>
             <div class="exnav" id="boltnav"></div>
@@ -1344,7 +1384,7 @@
           <div class="scorebar" id="bolt-scorebar" aria-label="Your Bolt's World progress"></div>
         </section>
 
-        <details class="toolbar bolt-chal-details" aria-labelledby="bolt-chal-h">
+        <details class="toolbar bolt-chal-details" id="bolt-challenges" aria-labelledby="bolt-chal-h">
           <summary id="bolt-chal-h">Bolt Challenges (optional) <span class="gcount">6 extra worlds &#9662;</span></summary>
           <div style="margin-top:10px;">
             <p class="bolt-chal-framing">For students who <strong>finish the twelve worlds and want more</strong>. These challenges are entirely opt-in: they gate nothing and unlock nothing, and they use the same Workshop, the same editor, and the same Run, Step, and Reset controls below. Pick one to load it into the board.</p>
@@ -1373,7 +1413,7 @@
           </div>
 
           <div>
-            <section class="card" aria-labelledby="bolt-prog-h">
+            <section class="card" id="bolt-program" aria-labelledby="bolt-prog-h">
               <h3 id="bolt-prog-h">Your program for Bolt</h3>
               <p style="font-size:.9rem; color:var(--ink-soft); margin-top:6px;">Write C++-shaped code: every command ends with a semicolon, and blocks wear braces. Lines starting with <span style="font-family:'IBM Plex Mono',monospace;">//</span> are comments — notes to yourself that Bolt ignores.</p>
               <textarea class="bolt-editor" id="bolt-editor" spellcheck="false" aria-label="Program editor for Bolt"></textarea>
@@ -1388,7 +1428,7 @@
               <div class="bolt-msg info show" id="bolt-msg" role="status">Choose a world, write Bolt's program, then press Run or Step.</div>
             </section>
 
-            <section class="card" aria-labelledby="bolt-cmds-h">
+            <section class="card" id="bolt-commands" aria-labelledby="bolt-cmds-h">
               <h3 id="bolt-cmds-h">Bolt's command card</h3>
               <div class="bolt-cmds">
                 <div>
@@ -1457,7 +1497,7 @@ for (int i = 0; i < 3; i++) {
       </section>
       <p class="meet-link">New to reading code? <button class="text-link" type="button" id="meet-code-link">Meet the Code first.</button> It names every line of a short program before Exercise 1 asks you to predict one.</p>
       <div class="sr-live" aria-live="polite" aria-atomic="true" id="tracer-live"></div>
-      <section class="toolbar" aria-label="Choose your field and exercise">
+      <section class="toolbar" id="tracer-exercises" aria-label="Choose your field and exercise">
         <div>
           <div class="tlabel">Your field — same code, your world</div>
           <div class="skins" id="skins" role="group" aria-label="Field skins"></div>
@@ -1596,7 +1636,7 @@ for (int i = 0; i < 3; i++) {
 
       <section class="card" id="inst-play-panel" hidden aria-labelledby="inst-play-title">
             <span class="concept-tag" id="inst-play-tag"></span>
-            <span class="zy-chip" id="inst-play-skin" hidden></span>
+            <span class="topic-chip" id="inst-play-skin" hidden></span>
             <h2 id="inst-play-title"></h2>
             <p class="story" id="inst-play-context" hidden></p>
             <div class="codebox">
@@ -1632,7 +1672,7 @@ for (int i = 0; i < 3; i++) {
         <div>
           <section class="card" aria-labelledby="ex-title">
             <span class="concept-tag" id="ex-concept"></span>
-            <span class="zy-chip" id="ex-zy"></span>
+            <span class="topic-chip" id="ex-topic"></span>
             <h2 id="ex-title"></h2>
             <p class="story" id="ex-story"></p>
             <p class="goal" id="ex-goal"></p>
@@ -1802,7 +1842,7 @@ for (int i = 0; i < 3; i++) {
         <p class="journal-status" id="journal-status" role="status"></p>
       </section>
 
-      <section class="card crosswalk-card" aria-labelledby="crosswalk-h">
+      <section class="card crosswalk-card" id="crosswalk-section" aria-labelledby="crosswalk-h">
         <h3 id="crosswalk-h">Topic crosswalk</h3>
         <p class="cw-note">Every built-in tracer exercise, matched to the topic it reinforces, in textbook order. Exercises are matched by topic title, not section number: numbering varies by textbook and course setup, topics do not. Open a topic, then pick an exercise to load it in the tracer.</p>
         <div class="cw-list" id="crosswalk-list"></div>
@@ -1862,7 +1902,7 @@ for (int i = 0; i < 3; i++) {
           </div>
         </section>
 
-        <section class="toolbar" aria-label="Choose a gym round">
+        <section class="toolbar" id="gym-rounds" aria-label="Choose a gym round">
           <div>
             <div class="tlabel">Rounds — seven broken programs, in order</div>
             <div class="exnav" id="gymnav"></div>
@@ -1870,7 +1910,7 @@ for (int i = 0; i < 3; i++) {
           <div class="scorebar" id="gym-scorebar" aria-label="Your gym scoreboard"></div>
         </section>
 
-        <section class="card" style="margin-top:18px;" aria-labelledby="gym-title">
+        <section class="card" id="gym-hunt" style="margin-top:18px;" aria-labelledby="gym-title">
           <span class="concept-tag" id="gym-concept"></span>
           <h2 id="gym-title"></h2>
           <p class="story" id="gym-story"></p>
@@ -1951,7 +1991,7 @@ for (int i = 0; i < 3; i++) {
           <p>A compiler message is not a verdict. It is a note from the program that checks your code, written in shorthand. <strong>Pick the error you just hit, or search for a word in it,</strong> and TraceFirst will translate it into plain English: what it means, what in your code causes it, and how to fix it.</p>
         </section>
 
-        <section class="card" style="margin-top:18px;" aria-labelledby="sample-h">
+        <section class="card" id="translator-sample" style="margin-top:18px;" aria-labelledby="sample-h">
           <span class="concept-tag">Start here · From code to error to meaning</span>
           <h2 id="sample-h" style="font-size:1.25rem;">One broken program, three real errors</h2>
           <p class="story">This is the kind of program a first week produces. It will not compile. The compiler stops and reports the three errors below — in this order. <strong>Tap any error to jump to its translation.</strong></p>
@@ -1967,7 +2007,7 @@ for (int i = 0; i < 3; i++) {
           <p style="font-size:.9rem;color:var(--ink-soft);margin-top:12px;">Fix them in order. Fix Error 1, compile again, and the list gets shorter. That loop — read, fix one, recompile — is the whole method.</p>
         </section>
 
-        <div class="trans-searchbar">
+        <div class="trans-searchbar" id="translator-search">
           <div>
             <label for="trans-search">Search the translator</label>
             <div class="trans-search-row" style="margin-top:8px;">
@@ -2148,14 +2188,14 @@ int main() {
           <h2>Bridge: from reading code to writing it.</h2>
           <p>First put a program's lines in order, then write the missing lines yourself.</p>
         </section>
-        <section class="toolbar" aria-label="Choose a Bridge activity">
+        <section class="toolbar" id="bridge-activities" aria-label="Choose a Bridge activity">
           <div>
             <div class="tlabel">Activities — Parsons and faded, in order</div>
             <div class="exnav" id="bridgenav"></div>
           </div>
           <div class="scorebar" id="bridge-scorebar" aria-label="Your Bridge progress"></div>
         </section>
-        <section class="card" style="margin-top:18px;" aria-labelledby="bridge-title">
+        <section class="card" id="bridge-card" style="margin-top:18px;" aria-labelledby="bridge-title">
           <span class="concept-tag" id="bridge-tag"></span>
           <h2 id="bridge-title" style="font-size:1.25rem;"></h2>
           <p class="ch-prompt" id="bridge-task"></p>
@@ -2174,14 +2214,14 @@ int main() {
           <h2>Make: write and run your own C++</h2>
           <p>Prediction taught you to read the machine; <strong>this is where you write for it.</strong> Pick a prompt, write the whole program yourself in the editor, and run it right here. Then put it through the prompt's test bench: the machine runs your program once per test and compares what it prints with what the prompt asks for.</p>
         </section>
-        <section class="toolbar" aria-label="Choose a Make prompt">
+        <section class="toolbar" id="make-prompts" aria-label="Choose a Make prompt">
           <div>
             <div class="tlabel">Prompts — twenty programs to write, in order</div>
             <div class="exnav" id="makenav"></div>
           </div>
           <div class="scorebar" id="make-scorebar" aria-label="Your Make progress"></div>
         </section>
-        <section class="card" style="margin-top:18px;" aria-labelledby="make-title">
+        <section class="card" id="make-editor-card" style="margin-top:18px;" aria-labelledby="make-title">
           <span class="concept-tag" id="make-tag"></span>
           <h2 id="make-title" style="font-size:1.25rem;"></h2>
           <p class="ch-prompt" id="make-task"></p>
@@ -2232,7 +2272,7 @@ int main() {
           <div class="make-msg" id="trace-msg" role="status" style="margin-top:12px;"></div>
         </section>
 
-        <section aria-labelledby="ladders-h" style="margin-top:22px;">
+        <section id="make-ladders" aria-labelledby="ladders-h" style="margin-top:22px;">
           <div class="make-intro" style="margin-top:0;">
             <h2 id="ladders-h" style="font-size:1.45rem;">Micro-problem ladders</h2>
             <p>Volume practice, one small function at a time. Four ladders — Strings, Arrays &amp; Vectors, Loops &amp; Numbers, Logic &amp; Conditionals — six problems each, rising in difficulty. Complete the function in the small editor; the machine judges it instantly against the test table. Progress per ladder is saved in this browser.</p>
@@ -2246,7 +2286,7 @@ int main() {
         <p class="foot"><strong>Keep your work:</strong> your programs are saved in this browser, on this device, so they are here when you return. Copy a finished program into your own files as a backup.</p>
       </div><!-- /make-mode -->
 
-      <section class="card instructors" style="margin-top:26px;" aria-labelledby="instructors-h">
+      <section class="card instructors" id="instructors-section" style="margin-top:26px;" aria-labelledby="instructors-h">
         <div class="instructors-head">
           <div>
             <h3 id="instructors-h">For instructors</h3>
@@ -2380,7 +2420,7 @@ int main() {
     var EXERCISES = [
       {
         concept: "Values & Assignment",
-        zy: "Variables and assignments",
+        topic: "Variables and assignments",
         title: "The points that would not sit still",
         goal: "Assignment replaces a value — and <b>points = points + 5</b> reads the old value before writing the new one.",
         stories: {
@@ -2426,7 +2466,7 @@ int main() {
       },
       {
         concept: "Input, Variables & Integer Division",
-        zy: "Variables and assignments",
+        topic: "Variables and assignments",
         title: "The average that lost its fraction",
         goal: "When both operands are <b>int</b>, C++ division throws the fraction away. It does not round — it truncates.",
         stories: {
@@ -2472,7 +2512,7 @@ int main() {
       },
       {
         concept: "Decisions — if / else",
-        zy: "Branches",
+        topic: "Branches",
         title: "One road is never taken",
         goal: "An <b>if / else</b> runs exactly one branch. The condition is tested once, and the losing branch is skipped entirely — its code does not run at all.",
         stories: {
@@ -2520,7 +2560,7 @@ int main() {
       },
       {
         concept: "Loops — for",
-        zy: "Loops",
+        topic: "Loops",
         title: "Four trips through the loop",
         goal: "A loop body runs once per pass. The counter, the test, and the running total are three separate things — track each one.",
         stories: {
@@ -2571,7 +2611,7 @@ int main() {
       },
       {
         concept: "Functions",
-        zy: "Functions",
+        topic: "Functions",
         title: "A trip inside the function",
         goal: "A function call pauses the caller, runs the function with its own box for the argument, and hands a value back with <b>return</b>.",
         stories: {
@@ -2620,7 +2660,7 @@ int main() {
       },
       {
         concept: "Loops — while",
-        zy: "Loops",
+        topic: "Loops",
         title: "The counter that overshoots",
         goal: "A <b>while</b> loop tests before every pass — and the counter that finally fails the test has already been counted <em>past</em> the last value the loop used.",
         stories: {
@@ -2678,7 +2718,7 @@ int main() {
       },
       {
         concept: "Loops — nested",
-        zy: "Loops",
+        topic: "Loops",
         title: "The loop inside the loop",
         goal: "The inner loop runs to completion for <b>every single step</b> of the outer loop. Two outer passes × three inner passes = six stars.",
         stories: {
@@ -2733,7 +2773,7 @@ int main() {
       },
       {
         concept: "Arrays",
-        zy: "Arrays and vectors",
+        topic: "Arrays and vectors",
         title: "The index is not the value",
         goal: "An index is an address, not a value. <b>data[1]</b> means “the value stored at index 1” — and indexes count from 0, so that is the <em>second</em> element.",
         stories: {
@@ -2784,7 +2824,7 @@ int main() {
       },
       {
         concept: "Strings",
-        zy: "Strings and characters",
+        topic: "Strings and characters",
         title: "One letter longer",
         goal: "On a string, <b>+=</b> appends: it glues new text onto the end of the same box. And <b>length()</b> always reports the length the string has <em>now</em>.",
         stories: {
@@ -2829,7 +2869,7 @@ int main() {
       },
       {
         concept: "Pointers",
-        zy: "Pointers",
+        topic: "Pointers",
         title: "Writing through a pointer",
         goal: "A pointer holds an address. <b>*ptr</b> means \u201Cthe value at that address\u201D — writing through it writes into the original variable itself.",
         stories: {
@@ -2875,7 +2915,7 @@ int main() {
       },
       {
         concept: "Pointers",
-        zy: "Pointers",
+        topic: "Pointers",
         title: "Swapping through pointers",
         goal: "Passing <b>&x</b> and <b>&y</b> hands a function the addresses of the caller's variables — so the function can write back into them.",
         stories: {
@@ -2930,7 +2970,7 @@ int main() {
       },
       {
         concept: "Pointers",
-        zy: "Pointers",
+        topic: "Pointers",
         title: "Pointer arithmetic",
         goal: "<b>p + n</b> points n <em>elements</em> further along an array — not n bytes, and not the nth value from 1. <b>*(p + 2)</b> is the third element.",
         stories: {
@@ -2976,7 +3016,7 @@ int main() {
       },
       {
         concept: "Pointers",
-        zy: "Pointers",
+        topic: "Pointers",
         title: "Memory on request",
         goal: "<b>new int[5]</b> asks for memory at run time and hands back a pointer to it. The pointer is then indexed like an array — and handed back with <b>delete[]</b>.",
         stories: {
@@ -3030,7 +3070,7 @@ int main() {
       },
       {
         concept: "Recursion",
-        zy: "Recursion",
+        topic: "Recursion",
         title: "Factorial",
         goal: "A recursive function calls <b>itself</b> with a smaller argument. Nothing finishes until the <b>base case</b> returns — then each waiting call completes on the way back up, using the value the deeper call handed it.",
         stories: {
@@ -3087,7 +3127,7 @@ int main() {
       },
       {
         concept: "Recursion",
-        zy: "Recursion",
+        topic: "Recursion",
         title: "Countdown",
         goal: "Where a statement sits relative to the recursive call decides <b>when</b> it runs: code <b>before</b> the call runs on the way down; code after it would run on the way back up.",
         stories: {
@@ -3146,7 +3186,7 @@ int main() {
       },
       {
         concept: "Recursion",
-        zy: "Recursion",
+        topic: "Recursion",
         title: "Sum, recursively",
         goal: "A recursive call's result is a <b>whole sub-answer</b>, not just its argument: <b>sumTo(4)</b> returns the sum 1..4, and the outer call adds its own number to that.",
         stories: {
@@ -3209,7 +3249,7 @@ int main() {
       },
       {
         concept: "Searching",
-        zy: "Searching and sorting",
+        topic: "Searching and sorting",
         title: "Binary search",
         goal: "Binary search halves the remaining range with every probe — and the answer it reports is an <b>index</b>, counting from 0, not a position counting from 1.",
         stories: {
@@ -3270,7 +3310,7 @@ int main() {
       },
       {
         concept: "Sorting",
-        zy: "Searching and sorting",
+        topic: "Searching and sorting",
         title: "Bubble sort",
         goal: "One pass of bubble sort only guarantees that the <b>largest</b> value has bubbled to the end. The outer loop runs pass after pass until the whole array is in order.",
         stories: {
@@ -3329,7 +3369,7 @@ int main() {
       },
       {
         concept: "Decisions · switch",
-        zy: "Branches",
+        topic: "Branches",
         title: "The missing break",
         goal: "A <b>switch</b> jumps to the matching case and then keeps running downward — case labels are entry points, not separate blocks. Only a <b>break</b> stops the fall.",
         stories: {
@@ -3380,7 +3420,7 @@ int main() {
       },
       {
         concept: "Functions · reference parameters",
-        zy: "Functions",
+        topic: "Functions",
         title: "One changes, one does not",
         goal: "A parameter declared <b>int&amp;</b> is not a copy — it is <b>another name for the caller's own variable</b>. A plain <b>int</b> parameter is a private copy, and changes to it stay inside the function.",
         stories: {
@@ -3434,7 +3474,7 @@ int main() {
       },
       {
         concept: "Structured data",
-        zy: "Structs",
+        topic: "Structs",
         title: "A record, not variables",
         goal: "A <b>struct</b> bundles named fields into <b>one</b> variable. <b>s.score</b> reaches the score field inside the single box s — the fields live together and travel together.",
         stories: {
@@ -3488,7 +3528,7 @@ int main() {
       },
       {
         concept: "Vectors",
-        zy: "Arrays and vectors",
+        topic: "Arrays and vectors",
         title: "A vector grows",
         goal: "<b>push_back</b> appends one element and grows the vector; <b>size()</b> reports how many elements it holds <em>now</em>; and <b>v[2]</b> is the <em>third</em> element — indexes still count from 0.",
         stories: {
@@ -3537,7 +3577,7 @@ int main() {
       },
       {
         concept: "Arrays · two-dimensional",
-        zy: "Arrays and vectors",
+        topic: "Arrays and vectors",
         title: "Two rows deep",
         goal: "A two-dimensional array is indexed <b>[row][column]</b>, and a nested loop sums <b>every</b> cell: the inner loop runs in full for <em>each</em> row, not just the first.",
         stories: {
@@ -3594,7 +3634,7 @@ int main() {
       },
       {
         concept: "Loops — do-while",
-        zy: "Loops",
+        topic: "Loops",
         title: "The loop that runs first",
         goal: "A <b>do-while</b> loop runs its body <b>once before</b> the condition is ever tested. The test guards the <em>repetitions</em>, not the first run.",
         stories: {
@@ -3642,7 +3682,7 @@ int main() {
       },
       {
         concept: "Loops — break & continue",
-        zy: "Loops",
+        topic: "Loops",
         title: "Two ways out of a loop",
         goal: "<b>continue</b> skips the rest of this pass and starts the next one; <b>break</b> leaves the whole loop at once. Neither one belongs to the <b>if</b> that contains it — both act on the loop.",
         stories: {
@@ -3695,7 +3735,7 @@ int main() {
       },
       {
         concept: "Characters",
-        zy: "Strings and characters",
+        topic: "Strings and characters",
         title: "A letter plus one",
         goal: "A <b>char</b> is stored as a number — its character code. In an arithmetic expression like <b>c + 1</b>, the value is that <b>int</b> code, and printing the expression prints the number, not a letter.",
         stories: {
@@ -3736,7 +3776,7 @@ int main() {
       },
       {
         concept: "Strings",
-        zy: "Strings and characters",
+        topic: "Strings and characters",
         title: "Three questions, one string",
         goal: "<b>length()</b> counts the characters; <b>substr(pos, count)</b> takes a <em>count</em> of characters starting at pos — not an ending position; and <b>find</b> reports the index where a piece starts, counting from 0.",
         stories: {
@@ -3779,7 +3819,7 @@ int main() {
       },
       {
         concept: "Decisions — else if",
-        zy: "Branches",
+        topic: "Branches",
         title: "On the boundary",
         goal: "An <b>else-if</b> chain tests its conditions <b>in order</b> and runs the <b>first</b> one that is true. A strict <b>&gt;</b> does not include the boundary value itself — 60 is not greater than 60.",
         stories: {
@@ -3829,7 +3869,7 @@ int main() {
       },
       {
         concept: "Functions · scope",
-        zy: "Functions",
+        topic: "Functions",
         title: "Two boxes, one name",
         goal: "A <b>global</b> variable lives outside every function and is visible to all of them. A <b>local</b> variable with the same name <em>shadows</em> the global — but only inside its own function. Other functions still see the global.",
         stories: {
@@ -3876,7 +3916,7 @@ int main() {
       },
       {
         concept: "Functions · arrays as parameters",
-        zy: "Functions",
+        topic: "Functions",
         title: "The whole array travels",
         goal: "When an array is passed to a function, the function receives <b>the array itself</b> — it can walk every element through the parameter, guided by the size passed alongside it.",
         stories: {
@@ -3930,7 +3970,7 @@ int main() {
 ,
       {
         concept: "Classes & Objects",
-        zy: "Classes and objects",
+        topic: "Classes and objects",
         title: "Built at birth: the constructor runs",
         goal: "Creating an object runs its <b>constructor</b> at the moment of creation. The constructor's job is to fill the object's members from the values handed over — the object is never left half-made.",
         stories: {
@@ -3985,7 +4025,7 @@ int main() {
       },
       {
         concept: "Classes · Constructors",
-        zy: "Classes and objects",
+        topic: "Classes and objects",
         title: "The constructor that clamps",
         goal: "A constructor can <b>guard</b> the values it is handed: here, any discount above 50 is pulled down to 50 before it is stored. What an object holds afterwards is the <em>guarded</em> value, not the raw one.",
         stories: {
@@ -4043,7 +4083,7 @@ int main() {
       },
       {
         concept: "Classes · Member Functions",
-        zy: "Classes and objects",
+        topic: "Classes and objects",
         title: "Same card, three check-ins",
         goal: "A member function runs <b>on an object</b> and changes <b>that object's</b> state. The state lives in the object between calls — a second call picks up exactly where the first one left off.",
         stories: {
@@ -4102,7 +4142,7 @@ int main() {
       },
       {
         concept: "File Input",
-        zy: "File input and output",
+        topic: "File input and output",
         title: "Reading a file to its end",
         goal: "A loop headed <b>while (fin &gt;&gt; value)</b> reads one value per pass and stops by itself when the file runs out: the extraction in the header <em>is</em> the test. Files on this page are simulated — the file's contents are shown in the story, exactly as the program sees them.",
         stories: {
@@ -4154,7 +4194,7 @@ int main() {
       },
       {
         concept: "File Input · The EOF Trap",
-        zy: "File input and output",
+        topic: "File input and output",
         title: "The loop that reads one time too many",
         goal: "Testing <b>eof()</b> in the header asks the wrong question: eof only reports <em>after</em> a read has already failed. A loop that reads inside its body therefore runs <b>one extra pass</b>, reusing the last value. Files on this page are simulated — the file's contents are shown in the story.",
         stories: {
@@ -4207,7 +4247,7 @@ int main() {
       },
       {
         concept: "Maps · Frequency Counting",
-        zy: "Maps, sets and hashing",
+        topic: "Maps, sets and hashing",
         title: "Counting words with a map",
         goal: "A <b>map</b> stores one value per key. <b>counts[word]++</b> finds that word's slot — creating it at 0 the first time the word appears — and adds one. The map's size counts <em>distinct keys</em>, not sightings.",
         stories: {
@@ -4261,7 +4301,7 @@ int main() {
       },
       {
         concept: "Sets · Deduplication",
-        zy: "Maps, sets and hashing",
+        topic: "Maps, sets and hashing",
         title: "A set keeps each value once",
         goal: "A <b>set</b> stores each value <b>at most once</b>: inserting a value it already holds changes nothing. And a set keeps its values in <b>sorted order</b>, so walking it visits them smallest to largest — not in arrival order.",
         stories: {
@@ -4609,7 +4649,7 @@ int main() {
       $("ex-title").textContent = ex.title;
       $("ex-story").innerHTML = ex.stories[state.skin];
       $("ex-goal").innerHTML = "<b>The idea:</b> " + ex.goal;
-      var zyEl = $("ex-zy"); if (zyEl) zyEl.textContent = ex.zy ? ("Topic: " + ex.zy) : "";
+      var topicEl = $("ex-topic"); if (topicEl) topicEl.textContent = ex.topic ? ("Topic: " + ex.topic) : "";
     }
 
     function renderCode(activeLine, uptoStep) {
@@ -8342,13 +8382,13 @@ int main() {
     /* ================= Topic crosswalk =================
        Topics only — no section numbers anywhere: numbering varies by textbook
        title and course configuration, so exercises are matched by topic. */
-    var ZY_ORDER = ["Variables and assignments", "Branches", "Loops", "Functions", "Arrays and vectors", "Strings and characters", "Structs", "Pointers", "Recursion", "Searching and sorting", "Classes and objects", "File input and output", "Maps, sets and hashing"];
+    var TOPIC_ORDER = ["Variables and assignments", "Branches", "Loops", "Functions", "Arrays and vectors", "Strings and characters", "Structs", "Pointers", "Recursion", "Searching and sorting", "Classes and objects", "File input and output", "Maps, sets and hashing"];
     function renderCrosswalk() {
       var box = $("crosswalk-list"); if (!box) return;
       box.innerHTML = "";
-      ZY_ORDER.forEach(function (topic) {
+      TOPIC_ORDER.forEach(function (topic) {
         var idxs = [];
-        EXERCISES.forEach(function (ex, i) { if (ex.zy === topic) idxs.push(i); });
+        EXERCISES.forEach(function (ex, i) { if (ex.topic === topic) idxs.push(i); });
         if (!idxs.length) return;
         var det = document.createElement("details"); det.className = "cw-topic";
         var sum = document.createElement("summary");
@@ -11531,6 +11571,7 @@ int main() {
       var order = ["bolt","tracer","gym","translator","challenges","bridge","make"];
       var tablist = document.getElementById("mode-tablist");
       if (tablist) tablist.addEventListener("keydown", function(e){
+        if (!(e.target.classList && e.target.classList.contains("mode-btn"))) return;
         var cur = order.indexOf(order.filter(function(m){ return $("mode-"+m).getAttribute("aria-selected")==="true"; })[0]);
         if (cur < 0) cur = 1;
         var nxt = null;
@@ -13199,6 +13240,248 @@ int main() {
     renderAll();
     if (typeof renderTestOutEntry === "function") renderTestOutEntry();
     if (typeof renderRoute === "function") { routeLastSig = ""; renderRoute(); }
+    </script>
+    <script>
+    /* ---------------- Mode tab dropdowns ----------------
+       Each mode tab keeps its own click behaviour (switch mode). A separate
+       caret button beside the label opens a menu of that mode's sections.
+       Choosing an entry switches mode if needed, expands any collapsed
+       container around the target, scrolls to it, and highlights it. */
+    (function () {
+      "use strict";
+      function byId(id) { return document.getElementById(id); }
+      var MODE_LABELS = {
+        bolt: "Bolt's World", tracer: "Prediction Tracer", gym: "Debugging Gym",
+        translator: "Error Translator", challenges: "Challenges", bridge: "Bridge", make: "Make"
+      };
+      var NAV = [
+        { mode: "bolt", items: [
+          { label: "Worlds \u2014 twelve workshops, in order", target: "bolt-worlds" },
+          { label: "Bolt Challenges (optional)", target: "bolt-challenges" },
+          { label: "Your program for Bolt", target: "bolt-program" },
+          { label: "Bolt's command card", target: "bolt-commands" }
+        ] },
+        { mode: "tracer", items: [
+          { label: "Exercises", target: "tracer-exercises" },
+          { label: "Briefings & reference card", target: "refcard" },
+          { label: "Review", target: "review-panel" },
+          { label: "Problem of the Day", target: "potd-box" },
+          { label: "Lecture mode", target: "lecture-entry" },
+          { label: "Topic crosswalk", target: "crosswalk-section" },
+          { label: "For instructors", target: "instructors-section", expand: "instructors" }
+        ] },
+        { mode: "gym", items: [
+          { label: "Rounds \u2014 seven broken programs, in order", target: "gym-rounds" },
+          { label: "The hunt \u2014 find and classify the bugs", target: "gym-hunt" },
+          { label: "What does each logic bug actually do?", target: "gym-hypo-card", fallback: "gym-hunt" },
+          { label: "Fix the program yourself", target: "gym-fix-card", fallback: "gym-hunt" }
+        ] },
+        { mode: "translator", items: [
+          { label: "One broken program, three real errors", target: "translator-sample" },
+          { label: "Search the catalogue", target: "translator-search" },
+          { label: "Error catalogue", target: "trans-list" }
+        ] },
+        { mode: "challenges", items: [
+          { label: "Tasks", target: "ch-tasks-wrap" },
+          { label: "Projects", target: "ch-projects-wrap" },
+          { label: "Culminating projects", target: "ch-culm-wrap" },
+          { label: "Diagnostics", target: "ch-diag-wrap" },
+          { label: "Exam", target: "ch-exam-wrap" },
+          { label: "Student Labs \u2014 author & share", target: "ch-authored-wrap" }
+        ] },
+        { mode: "bridge", items: [
+          { label: "Activities \u2014 Parsons and faded, in order", target: "bridge-activities" },
+          { label: "Parsons problems", target: "bridge-card", bridgeKind: "parsons" },
+          { label: "Faded completion", target: "bridge-card", bridgeKind: "faded" }
+        ] },
+        { mode: "make", items: [
+          { label: "Prompts \u2014 twenty programs to write, in order", target: "make-prompts" },
+          { label: "Editor & test bench", target: "make-editor-card" },
+          { label: "Your program, stepped", target: "trace-panel", fallback: "make-editor-card" },
+          { label: "Micro-problem ladders", target: "make-ladders" }
+        ] }
+      ];
+      var openMode = null;
+      var groups = {}; // mode -> {wrapper, caret, menu, items[]}
+      var hoverOpenTimer = null, hoverCloseTimer = null;
+      var canHover = false;
+      try { canHover = !!(window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches); } catch (e) {}
+      var reducedMotion = false;
+      try { reducedMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); } catch (e) {}
+
+      function currentMode() {
+        var order = ["bolt", "tracer", "gym", "translator", "challenges", "bridge", "make"];
+        for (var i = 0; i < order.length; i++) {
+          var b = byId("mode-" + order[i]);
+          if (b && b.getAttribute("aria-selected") === "true") return order[i];
+        }
+        return "tracer";
+      }
+      function closeMenus() {
+        Object.keys(groups).forEach(function (m) {
+          groups[m].menu.hidden = true;
+          groups[m].caret.setAttribute("aria-expanded", "false");
+        });
+        openMode = null;
+        if (hoverOpenTimer) { clearTimeout(hoverOpenTimer); hoverOpenTimer = null; }
+        if (hoverCloseTimer) { clearTimeout(hoverCloseTimer); hoverCloseTimer = null; }
+      }
+      function openMenu(mode, focusItem) {
+        var g = groups[mode];
+        if (!g) return;
+        var wasOpen = openMode === mode && !g.menu.hidden;
+        closeMenus();
+        if (wasOpen && focusItem === "toggle") return; // caret click toggles shut
+        g.menu.hidden = false;
+        g.caret.setAttribute("aria-expanded", "true");
+        openMode = mode;
+        // Keep the menu inside the viewport on narrow desktop windows.
+        g.menu.classList.remove("align-right");
+        var r = g.menu.getBoundingClientRect();
+        if (r.right > window.innerWidth - 8) g.menu.classList.add("align-right");
+        if (focusItem === "first" && g.items.length) g.items[0].focus();
+        if (focusItem === "last" && g.items.length) g.items[g.items.length - 1].focus();
+      }
+      function land(entry, item) {
+        if (item.bridgeKind && typeof selectBridge === "function" && typeof BRIDGE_ACTIVITIES !== "undefined") {
+          for (var i = 0; i < BRIDGE_ACTIVITIES.length; i++) {
+            if (BRIDGE_ACTIVITIES[i].kind === item.bridgeKind) { selectBridge(i); break; }
+          }
+        }
+        var el = byId(item.target);
+        if (el && item.fallback && (el.hidden || el.closest("[hidden]"))) el = byId(item.fallback) || el;
+        if (!el) return;
+        if (el.tagName === "DETAILS") el.open = true;
+        var p = el.parentElement;
+        while (p) { if (p.tagName === "DETAILS") p.open = true; p = p.parentElement; }
+        if (item.expand === "instructors") {
+          var body = byId("instructors-body"), tog = byId("instructors-toggle");
+          if (body && body.hidden && tog) tog.click();
+        }
+        el.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
+        el.classList.add("section-highlight");
+        setTimeout(function () { el.classList.remove("section-highlight"); }, 2000);
+        if (typeof announce === "function") announce(MODE_LABELS[entry.mode] + ": " + item.label + ".");
+      }
+      function navigate(entry, item) {
+        closeMenus();
+        var needSwitch = currentMode() !== entry.mode;
+        if (needSwitch && typeof setMode === "function") setMode(entry.mode);
+        // setMode smooth-scrolls to the top; let it settle before landing.
+        setTimeout(function () { land(entry, item); }, needSwitch ? 500 : 60);
+      }
+
+      NAV.forEach(function (entry) {
+        var btn = byId("mode-" + entry.mode);
+        if (!btn || !btn.parentNode) return;
+        var wrapper = document.createElement("div");
+        wrapper.className = "mode-group";
+        wrapper.setAttribute("data-mode-group", entry.mode);
+        btn.parentNode.insertBefore(wrapper, btn);
+        wrapper.appendChild(btn);
+        var caret = document.createElement("button");
+        caret.type = "button";
+        caret.className = "mode-caret";
+        caret.id = "caret-" + entry.mode;
+        caret.setAttribute("aria-haspopup", "true");
+        caret.setAttribute("aria-expanded", "false");
+        caret.setAttribute("aria-controls", "menu-" + entry.mode);
+        caret.setAttribute("aria-label", MODE_LABELS[entry.mode] + " sections");
+        caret.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+        var menu = document.createElement("div");
+        menu.className = "mode-menu";
+        menu.id = "menu-" + entry.mode;
+        menu.setAttribute("role", "menu");
+        menu.setAttribute("aria-label", MODE_LABELS[entry.mode] + " sections");
+        menu.hidden = true;
+        var itemBtns = [];
+        entry.items.forEach(function (item) {
+          var b = document.createElement("button");
+          b.type = "button";
+          b.className = "mode-menu-item";
+          b.setAttribute("role", "menuitem");
+          b.textContent = item.label;
+          b.addEventListener("click", function () { navigate(entry, item); });
+          menu.appendChild(b);
+          itemBtns.push(b);
+        });
+        wrapper.appendChild(caret);
+        wrapper.appendChild(menu);
+        groups[entry.mode] = { wrapper: wrapper, caret: caret, menu: menu, items: itemBtns };
+
+        caret.addEventListener("click", function () { openMenu(entry.mode, "toggle"); });
+        caret.addEventListener("keydown", function (e) {
+          if (e.key === "ArrowDown") { e.preventDefault(); openMenu(entry.mode, "first"); }
+          else if (e.key === "ArrowUp") { e.preventDefault(); openMenu(entry.mode, "last"); }
+        });
+        menu.addEventListener("keydown", function (e) {
+          var idx = itemBtns.indexOf(document.activeElement);
+          if (e.key === "ArrowDown") { e.preventDefault(); itemBtns[(idx + 1) % itemBtns.length].focus(); }
+          else if (e.key === "ArrowUp") { e.preventDefault(); itemBtns[(idx - 1 + itemBtns.length) % itemBtns.length].focus(); }
+          else if (e.key === "Home") { e.preventDefault(); itemBtns[0].focus(); }
+          else if (e.key === "End") { e.preventDefault(); itemBtns[itemBtns.length - 1].focus(); }
+        });
+        wrapper.addEventListener("focusout", function () {
+          setTimeout(function () {
+            if (openMode === entry.mode && !wrapper.contains(document.activeElement)) closeMenus();
+          }, 0);
+        });
+        if (canHover) {
+          wrapper.addEventListener("mouseenter", function () {
+            if (hoverCloseTimer) { clearTimeout(hoverCloseTimer); hoverCloseTimer = null; }
+            if (openMode !== entry.mode) {
+              hoverOpenTimer = setTimeout(function () { openMenu(entry.mode, null); }, 140);
+            }
+          });
+          wrapper.addEventListener("mouseleave", function () {
+            if (hoverOpenTimer) { clearTimeout(hoverOpenTimer); hoverOpenTimer = null; }
+            if (openMode === entry.mode && !wrapper.contains(document.activeElement)) {
+              hoverCloseTimer = setTimeout(function () { if (openMode === entry.mode) closeMenus(); }, 260);
+            }
+          });
+        }
+      });
+
+      document.addEventListener("click", function (e) {
+        if (!openMode) return;
+        var g = groups[openMode];
+        if (g && !g.wrapper.contains(e.target)) closeMenus();
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && openMode) {
+          var g = groups[openMode];
+          closeMenus();
+          if (g) g.caret.focus();
+        }
+      });
+      window.addEventListener("resize", function () { if (openMode) closeMenus(); });
+
+      /* Mobile drawer: the same sections, indented under each mode row. */
+      var drawer = byId("mobile-drawer");
+      if (drawer) {
+        NAV.forEach(function (entry) {
+          var row = drawer.querySelector('[data-drawer-mode="' + entry.mode + '"]');
+          if (!row || !row.parentNode) return;
+          var subs = document.createElement("div");
+          subs.className = "drawer-subs";
+          subs.setAttribute("aria-label", MODE_LABELS[entry.mode] + " sections");
+          entry.items.forEach(function (item) {
+            var b = document.createElement("button");
+            b.type = "button";
+            b.className = "drawer-sub-row";
+            b.textContent = item.label;
+            b.addEventListener("click", function () {
+              if (typeof closeDrawer === "function") closeDrawer(false);
+              navigate(entry, item);
+              var t = byId("drawer-toggle");
+              if (t) t.focus();
+            });
+            subs.appendChild(b);
+          });
+          row.parentNode.insertBefore(subs, row.nextSibling);
+        });
+      }
+    })();
     </script>
   </body>
 </html>
