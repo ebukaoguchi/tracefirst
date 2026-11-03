@@ -11,9 +11,9 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet" />
     <style>
       :root {
-        --bg: #edf1ec;
+        --bg: #ffffff;
         --panel: #ffffff;
-        --panel-2: #f4f7f3;
+        --panel-2: #f6f7f6;
         --ink: #1b2521;
         --ink-soft: #46544d;
         --line: #d3ddd4;
@@ -1065,10 +1065,81 @@
       .play-verdict.trap{background:var(--amber-soft);border:1.5px solid var(--amber);color:var(--ink)}
       .play-verdict.other{background:var(--panel-2);border:1.5px solid var(--line);color:var(--ink)}
       .play-verdict .pv-out{font-family:"IBM Plex Mono",monospace;font-weight:700;white-space:pre-wrap;overflow-wrap:anywhere}
+
+      /* ---------- zyBooks chip, rationale, crosswalk, instructor studio ---------- */
+      .zy-chip { display: inline-block; font-family: "IBM Plex Mono", monospace; font-size: .72rem; font-weight: 600; letter-spacing: .06em; color: var(--amber); background: var(--amber-soft); border-radius: 6px; padding: 3px 8px; margin: 0 0 10px 8px; vertical-align: top; }
+      .rationale-row { margin-top: 12px; }
+      .rationale-row label { display: block; font-size: .88rem; font-weight: 600; margin-bottom: 6px; }
+      .rationale-row label span { font-weight: 400; color: var(--ink-soft); }
+      .rationale-input { width: 100%; box-sizing: border-box; font: inherit; font-size: .95rem; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--panel-2); color: var(--ink); }
+      .rationale-input:disabled { opacity: .65; }
+      .rationale-echo { margin-top: 10px; font-size: .95rem; background: var(--panel); border: 1px dashed var(--line); border-radius: 8px; padding: 9px 12px; }
+      .crosswalk-card { margin-top: 18px; }
+      .cw-note { font-size: .92rem; color: var(--ink-soft); margin-top: 8px; max-width: 720px; }
+      .cw-list { display: grid; gap: 10px; margin-top: 14px; }
+      .cw-topic { border: 1px solid var(--line); border-radius: 10px; background: var(--panel-2); overflow: hidden; }
+      .cw-topic > summary { cursor: pointer; padding: 10px 13px; font-weight: 700; font-size: .95rem; display: flex; justify-content: space-between; align-items: center; gap: 10px; list-style: none; }
+      .cw-topic > summary::-webkit-details-marker { display: none; }
+      .cw-topic > summary .gcount { font-family: "IBM Plex Mono", monospace; font-size: .75rem; font-weight: 600; color: var(--ink-soft); white-space: nowrap; }
+      .cw-exlist { display: grid; gap: 4px; padding: 0 8px 8px; }
+      .cw-topic:not([open]) .cw-exlist { display: none; }
+      .studio { margin-top: 18px; border-top: 1px dashed var(--line); padding-top: 16px; }
+      .studio h4 { font-size: 1rem; }
+      .studio-note { font-size: .92rem; color: var(--ink-soft); margin-top: 6px; }
+      .inst-walk-note { margin-top: 10px; font-size: .97rem; background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; min-height: 48px; }
+      .digest-why { margin-top: 18px; border-top: 1px dashed var(--line); padding-top: 14px; }
+      .digest-why h4 { font-size: 1rem; margin-top: 14px; }
+      .digest-why-label { font-size: .93rem; margin-top: 8px; }
+      .digest-why-list { margin: 6px 0 0; padding-left: 20px; font-size: .93rem; display: grid; gap: 4px; }
+
+      /* ---------- Background themes: Black / Green (Default = no data-bg) ---------- */
+      :root[data-bg="white"] {
+        --bg: #ffffff; --panel: #ffffff; --panel-2: #f6f7f6; --ink: #1b2521; --ink-soft: #46544d;
+        --line: #d8dcd8; --accent: #0e6b4f; --accent-strong: #0a513c; --accent-soft: #dcefe6;
+        --amber: #b97a0e; --amber-soft: #fbf0d3; --rust: #b03a26; --rust-soft: #fbe7e1;
+        --code-bg: #13201a; --code-ink: #dce8de; --code-dim: #7e968a; --code-active: #274435;
+        --shadow: 0 1px 2px rgba(20, 40, 30, .06), 0 8px 24px rgba(20, 40, 30, .07); color-scheme: light;
+      }
+      :root[data-bg="black"] {
+        --bg: #000000; --panel: #101010; --panel-2: #1b1b1b; --ink: #f4f4f4; --ink-soft: #c2c2c2;
+        --line: #3d3d3d; --accent: #3ec79e; --accent-strong: #8fe8c6; --accent-soft: #123128;
+        --amber: #eec25e; --amber-soft: #38300f; --rust: #ff9d85; --rust-soft: #3d2015;
+        --code-bg: #060606; --code-ink: #e9e9e9; --code-dim: #a3a3a3; --code-active: #1d3a2c;
+        --shadow: 0 1px 2px rgba(0,0,0,.55), 0 8px 24px rgba(0,0,0,.6); color-scheme: dark;
+      }
+      :root[data-bg="green"] {
+        --bg: #06231a; --panel: #0d3826; --panel-2: #12452f; --ink: #f0f8f3; --ink-soft: #c0dccb;
+        --line: #2e6249; --accent: #43d69b; --accent-strong: #9df0cb; --accent-soft: #0a4d31;
+        --amber: #f2c14e; --amber-soft: #473b10; --rust: #ffa58f; --rust-soft: #472216;
+        --code-bg: #03170f; --code-ink: #def0e4; --code-dim: #8db29c; --code-active: #17543c;
+        --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.45); color-scheme: dark;
+      }
+      /* White-on-accent chips/buttons switch to dark text on the bright accent in dark themes */
+      :root[data-bg="black"] .btn:not(.ghost), :root[data-bg="green"] .btn:not(.ghost),
+      :root[data-bg="black"] .route-step.is-done .route-num, :root[data-bg="green"] .route-step.is-done .route-num,
+      :root[data-bg="black"] .milestone-btn[aria-pressed="true"] .mbox, :root[data-bg="green"] .milestone-btn[aria-pressed="true"] .mbox,
+      :root[data-bg="black"] .bolt-cell .order-badge, :root[data-bg="green"] .bolt-cell .order-badge { color: #07130c; }
+      .bgbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: flex-end; margin-bottom: 16px; }
+      .bgbar .bgbar-label { font-family: "IBM Plex Mono", monospace; font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+      .bg-btn { border: 1.5px solid transparent; background: transparent; color: var(--ink-soft); border-radius: 6px; padding: 5px 11px; font-weight: 700; font-size: .85rem; font-family: "IBM Plex Sans", sans-serif; display: inline-flex; align-items: center; gap: 7px; }
+      .bg-btn:hover { color: var(--ink); }
+      .bg-btn[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent-strong); border-color: var(--accent); }
+      .bg-btn .swatch { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid var(--line); flex: none; }
+      .bg-btn .swatch.white { background: #ffffff; }
+      .bg-btn .swatch.black { background: #000; }
+      .bg-btn .swatch.green { background: #0b5138; }
     </style>
   </head>
   <body>
     <main class="wrap">
+      <div class="bgbar">
+        <span class="bgbar-label" id="bgbar-label">Background</span>
+        <div class="bits-group" role="group" aria-labelledby="bgbar-label">
+          <button type="button" class="bg-btn" data-bg-choice="white" aria-pressed="true"><span class="swatch white" aria-hidden="true"></span>White</button>
+          <button type="button" class="bg-btn" data-bg-choice="black" aria-pressed="false"><span class="swatch black" aria-hidden="true"></span>Black</button>
+          <button type="button" class="bg-btn" data-bg-choice="green" aria-pressed="false"><span class="swatch green" aria-hidden="true"></span>Green</button>
+        </div>
+      </div>
       <section class="intro">
         <h1>Predict before you run.</h1>
         <p class="lede">TraceFirst is a first-year C++ tracer built on one rule: <strong>you never run code you have not first predicted</strong> — commit to an answer, then step through the program and watch where your prediction and the machine part. If you are new to programming entirely, <strong>start with Bolt's World</strong>, the first mode below: it teaches the logic first, and only then does the tracer ask you to predict real code.</p>
@@ -1452,10 +1523,45 @@ for (int i = 0; i < 3; i++) {
         </div>
       </section>
 
-      <div class="grid">
+      <section class="card" id="inst-play-panel" hidden aria-labelledby="inst-play-title">
+            <span class="concept-tag" id="inst-play-tag"></span>
+            <span class="zy-chip" id="inst-play-skin" hidden></span>
+            <h2 id="inst-play-title"></h2>
+            <p class="story" id="inst-play-context" hidden></p>
+            <div class="codebox">
+              <div class="codehead"><span>program.cpp</span><span>C++</span></div>
+              <pre id="inst-play-code" aria-label="Instructor exercise program code"></pre>
+            </div>
+            <h3 style="margin-top:18px;">Stage 1 — Predict</h3>
+            <p class="predict-q" style="margin-top:6px;">What will this program print? Write your prediction in your own words — there are no options to pick from, and the trap is never shown as a choice.</p>
+            <div class="rationale-row">
+              <label for="inst-pred-input">Your prediction</label>
+              <input class="rationale-input" type="text" id="inst-pred-input" autocomplete="off" placeholder="Type exactly what you think the program prints" style="font-family:'IBM Plex Mono',monospace;">
+            </div>
+            <div class="lockrow">
+              <button class="btn" type="button" id="inst-pred-lock" disabled>Lock my prediction</button>
+              <span class="locknote" id="inst-lock-note">The walkthrough stays locked until you commit to a prediction.</span>
+            </div>
+            <div id="inst-walk" hidden>
+              <h3 style="margin-top:18px;">Stage 2 — Walkthrough</h3>
+              <p class="inst-walk-note" id="inst-walk-note"></p>
+              <p class="stepmeta" id="inst-walk-progress"></p>
+              <div class="lockrow">
+                <button class="btn ghost small" type="button" id="inst-walk-back">&larr; Back</button>
+                <button class="btn small" type="button" id="inst-walk-next">Next &rarr;</button>
+              </div>
+            </div>
+            <div id="inst-verdict" style="margin-top:14px;"></div>
+            <div class="lockrow" style="margin-top:16px;">
+              <button class="btn ghost" type="button" id="inst-exit-btn">&larr; Back to the built-in exercises</button>
+            </div>
+          </section>
+
+      <div class="grid" id="tracer-grid">
         <div>
           <section class="card" aria-labelledby="ex-title">
             <span class="concept-tag" id="ex-concept"></span>
+            <span class="zy-chip" id="ex-zy"></span>
             <h2 id="ex-title"></h2>
             <p class="story" id="ex-story"></p>
             <p class="goal" id="ex-goal"></p>
@@ -1476,6 +1582,10 @@ for (int i = 0; i < 3; i++) {
             <p class="predict-q" id="predict-q" style="margin-top:12px;"></p>
             <div id="solo-predict-ui">
             <div class="options" id="predict-options"></div>
+            <div class="rationale-row">
+              <label for="rationale-input">Why I predicted this <span>(one sentence, optional)</span></label>
+              <input class="rationale-input" type="text" id="rationale-input" maxlength="140" placeholder="e.g. because integer division throws the fraction away" autocomplete="off">
+            </div>
             <div class="lockrow">
               <button class="btn" id="lock-btn" disabled>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
@@ -1504,6 +1614,10 @@ for (int i = 0; i < 3; i++) {
                   <div class="lockrow"><button class="btn small" type="button" id="pair-b-lock" disabled>Lock Partner B prediction</button></div>
                   <p class="pair-status" id="pair-b-status" role="status"></p>
                 </div>
+              </div>
+              <div class="rationale-row">
+                <label for="pair-rationale-input">Why we predicted this <span>(the pair's joint reason — one sentence, optional)</span></label>
+                <input class="rationale-input" type="text" id="pair-rationale-input" maxlength="140" placeholder="The reason behind the pair's joint prediction" autocomplete="off">
               </div>
               <div class="pair-agree" id="pair-agree-note" hidden role="status"></div>
               <div class="pair-differ" id="pair-differ" hidden>
@@ -1615,6 +1729,12 @@ for (int i = 0; i < 3; i++) {
           <span style="font-size:.88rem;color:var(--ink-soft);">Downloads <span style="font-family:'IBM Plex Mono',monospace;">tracefirst-journal.txt</span> · nothing leaves this page until you share the file.</span>
         </div>
         <p class="journal-status" id="journal-status" role="status"></p>
+      </section>
+
+      <section class="card crosswalk-card" aria-labelledby="crosswalk-h">
+        <h3 id="crosswalk-h">zyBooks crosswalk</h3>
+        <p class="cw-note">Every built-in tracer exercise, matched to the zyBooks topic it reinforces, in textbook order. Section numbering varies by zyBook title and course configuration, so exercises are matched by topic title, not by section number. Open a topic, then pick an exercise to load it in the tracer.</p>
+        <div class="cw-list" id="crosswalk-list"></div>
       </section>
 
       </div><!-- /tracer-mode -->
@@ -1978,6 +2098,85 @@ int main() {
             <p>A single projected screen: pick any of the 30 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
             <div class="journal-actions"><button class="btn small" type="button" id="lecture-open-btn-2">Open Lecture mode</button></div>
           </div>
+                    <div class="studio" id="inst-studio">
+            <h4>Instructor exercise studio</h4>
+            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 30 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
+            <div class="authored-field">
+              <label for="inst-title">Exercise title</label>
+              <input class="authored-input" type="text" id="inst-title" maxlength="80" placeholder="e.g. The average that is not an average" autocomplete="off">
+            </div>
+            <div class="authored-field">
+              <label for="inst-code">Program code (C++)</label>
+              <textarea class="make-editor" id="inst-code" spellcheck="false" style="min-height:190px;" aria-label="Instructor exercise program code">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int total = 17;
+    int count = 5;
+    cout &lt;&lt; total / count &lt;&lt; endl;
+    return 0;
+}</textarea>
+            </div>
+            <div class="authored-field">
+              <label for="inst-input">Program input (optional, for cin)</label>
+              <input class="make-input" type="text" id="inst-input" autocomplete="off" placeholder="Values the program reads, separated by spaces — leave blank if it reads nothing">
+            </div>
+            <div class="lockrow">
+              <button class="btn" type="button" id="inst-run">Run code</button>
+              <span class="locknote">Run first: the true output comes from the machine, not from you.</span>
+            </div>
+            <div class="make-msg info show" id="inst-run-msg" role="status">Write the program, then run it. Save unlocks only after a successful run of the current code.</div>
+            <div class="console" aria-label="True output of the instructor program"><div class="chead">True output (from the run)</div><div class="cout" id="inst-out"></div></div>
+            <div class="authored-field">
+              <label for="inst-trap">Intended trap prediction</label>
+              <input class="authored-input" type="text" id="inst-trap" maxlength="200" placeholder="e.g. 3.4" autocomplete="off">
+            </div>
+            <div class="authored-field">
+              <label for="inst-diagnosis">Diagnosis / misconception name</label>
+              <input class="authored-input" type="text" id="inst-diagnosis" maxlength="120" placeholder="e.g. Integer division truncates" autocomplete="off">
+            </div>
+            <div class="authored-field">
+              <label for="inst-why">Why it tempts</label>
+              <textarea class="authored-textarea" id="inst-why" rows="3" maxlength="600" placeholder="Why a student would land on the trap answer — shown when a prediction matches the trap."></textarea>
+            </div>
+            <div class="authored-field">
+              <label for="inst-notes">Expected-trace notes (optional — one step note per line, walked through after the prediction locks)</label>
+              <textarea class="authored-textarea" id="inst-notes" rows="4" placeholder="total starts at 17 and count at 5.&#10;Integer division runs next: 17 / 5 keeps only the whole part."></textarea>
+            </div>
+            <div class="authored-field">
+              <label for="inst-skin">Skin framing</label>
+              <select class="authored-input" id="inst-skin">
+                <option value="General">General</option>
+                <option value="Health &amp; Bio">Health &amp; Bio</option>
+                <option value="Psych &amp; Social Science">Psych &amp; Social Science</option>
+                <option value="Business &amp; Econ">Business &amp; Econ</option>
+                <option value="Arts &amp; Media">Arts &amp; Media</option>
+              </select>
+            </div>
+            <div class="authored-field">
+              <label for="inst-context">Context story (optional — one line, shown above the program)</label>
+              <input class="authored-input" type="text" id="inst-context" maxlength="200" placeholder="e.g. A clinic app averages five pain scores." autocomplete="off">
+            </div>
+            <div class="lockrow">
+              <button class="btn" type="button" id="inst-save">Save exercise</button>
+              <span class="locknote" id="inst-save-note">Save unlocks after a successful run of the current code.</span>
+            </div>
+            <div class="make-msg" id="inst-save-msg" role="status"></div>
+            <div class="authored-field" id="inst-share-wrap" hidden>
+              <label for="inst-share-code">Share code (TFI1:)</label>
+              <textarea class="authored-textarea" id="inst-share-code" rows="4" readonly aria-label="Share code for the saved instructor exercise" style="font-family:'IBM Plex Mono',monospace;font-size:.82rem;"></textarea>
+              <div class="lockrow"><button class="btn ghost small" type="button" id="inst-copy">Copy share code</button><span class="copy-status" id="inst-copy-status" role="status"></span></div>
+            </div>
+            <div class="authored-field">
+              <label for="inst-load-code">Load a shared exercise — paste a TFI1: code</label>
+              <textarea class="authored-textarea" id="inst-load-code" rows="3" placeholder="TFI1:…" style="font-family:'IBM Plex Mono',monospace;font-size:.82rem;"></textarea>
+              <div class="lockrow"><button class="btn ghost" type="button" id="inst-load">Load shared exercise</button></div>
+              <div class="make-msg" id="inst-load-msg" role="status"></div>
+            </div>
+            <h4 style="margin-top:18px;">Saved instructor exercises</h4>
+            <div id="inst-list" style="margin-top:10px;display:grid;gap:10px;"></div>
+            <p class="skin-note" id="inst-list-empty">Nothing saved yet. Author one above and it will appear here and in the Tracer's Instructor-authored group.</p>
+          </div>
           <h4 id="digest-h" style="font-size:1rem;margin-top:16px;">Instructor digest — where the class parted</h4>
           <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">Paste one or more exported journals below, or load journal files, then build the digest. It aggregates attempts per exercise, counts wrong predictions, and surfaces the most common wrong prediction and parting line for each exercise. Rows where anyone missed are highlighted.</p>
           <div style="margin-top:14px;display:grid;gap:10px;">
@@ -2019,6 +2218,7 @@ int main() {
     var EXERCISES = [
       {
         concept: "Values & Assignment",
+        zy: "Variables and assignments",
         title: "The points that would not sit still",
         goal: "Assignment replaces a value — and <b>points = points + 5</b> reads the old value before writing the new one.",
         stories: {
@@ -2064,6 +2264,7 @@ int main() {
       },
       {
         concept: "Input, Variables & Integer Division",
+        zy: "Variables and assignments",
         title: "The average that lost its fraction",
         goal: "When both operands are <b>int</b>, C++ division throws the fraction away. It does not round — it truncates.",
         stories: {
@@ -2109,6 +2310,7 @@ int main() {
       },
       {
         concept: "Decisions — if / else",
+        zy: "Branches",
         title: "One road is never taken",
         goal: "An <b>if / else</b> runs exactly one branch. The condition is tested once, and the losing branch is skipped entirely — its code does not run at all.",
         stories: {
@@ -2156,6 +2358,7 @@ int main() {
       },
       {
         concept: "Loops — for",
+        zy: "Loops",
         title: "Four trips through the loop",
         goal: "A loop body runs once per pass. The counter, the test, and the running total are three separate things — track each one.",
         stories: {
@@ -2206,6 +2409,7 @@ int main() {
       },
       {
         concept: "Functions",
+        zy: "Functions",
         title: "A trip inside the function",
         goal: "A function call pauses the caller, runs the function with its own box for the argument, and hands a value back with <b>return</b>.",
         stories: {
@@ -2254,6 +2458,7 @@ int main() {
       },
       {
         concept: "Loops — while",
+        zy: "Loops",
         title: "The counter that overshoots",
         goal: "A <b>while</b> loop tests before every pass — and the counter that finally fails the test has already been counted <em>past</em> the last value the loop used.",
         stories: {
@@ -2311,6 +2516,7 @@ int main() {
       },
       {
         concept: "Loops — nested",
+        zy: "Loops",
         title: "The loop inside the loop",
         goal: "The inner loop runs to completion for <b>every single step</b> of the outer loop. Two outer passes × three inner passes = six stars.",
         stories: {
@@ -2365,6 +2571,7 @@ int main() {
       },
       {
         concept: "Arrays",
+        zy: "Arrays and vectors",
         title: "The index is not the value",
         goal: "An index is an address, not a value. <b>data[1]</b> means “the value stored at index 1” — and indexes count from 0, so that is the <em>second</em> element.",
         stories: {
@@ -2415,6 +2622,7 @@ int main() {
       },
       {
         concept: "Strings",
+        zy: "Strings and characters",
         title: "One letter longer",
         goal: "On a string, <b>+=</b> appends: it glues new text onto the end of the same box. And <b>length()</b> always reports the length the string has <em>now</em>.",
         stories: {
@@ -2459,6 +2667,7 @@ int main() {
       },
       {
         concept: "Pointers",
+        zy: "Pointers",
         title: "Writing through a pointer",
         goal: "A pointer holds an address. <b>*ptr</b> means \u201Cthe value at that address\u201D — writing through it writes into the original variable itself.",
         stories: {
@@ -2504,6 +2713,7 @@ int main() {
       },
       {
         concept: "Pointers",
+        zy: "Pointers",
         title: "Swapping through pointers",
         goal: "Passing <b>&x</b> and <b>&y</b> hands a function the addresses of the caller's variables — so the function can write back into them.",
         stories: {
@@ -2558,6 +2768,7 @@ int main() {
       },
       {
         concept: "Pointers",
+        zy: "Pointers",
         title: "Pointer arithmetic",
         goal: "<b>p + n</b> points n <em>elements</em> further along an array — not n bytes, and not the nth value from 1. <b>*(p + 2)</b> is the third element.",
         stories: {
@@ -2603,6 +2814,7 @@ int main() {
       },
       {
         concept: "Pointers",
+        zy: "Pointers",
         title: "Memory on request",
         goal: "<b>new int[5]</b> asks for memory at run time and hands back a pointer to it. The pointer is then indexed like an array — and handed back with <b>delete[]</b>.",
         stories: {
@@ -2656,6 +2868,7 @@ int main() {
       },
       {
         concept: "Recursion",
+        zy: "Recursion",
         title: "Factorial",
         goal: "A recursive function calls <b>itself</b> with a smaller argument. Nothing finishes until the <b>base case</b> returns — then each waiting call completes on the way back up, using the value the deeper call handed it.",
         stories: {
@@ -2712,6 +2925,7 @@ int main() {
       },
       {
         concept: "Recursion",
+        zy: "Recursion",
         title: "Countdown",
         goal: "Where a statement sits relative to the recursive call decides <b>when</b> it runs: code <b>before</b> the call runs on the way down; code after it would run on the way back up.",
         stories: {
@@ -2770,6 +2984,7 @@ int main() {
       },
       {
         concept: "Recursion",
+        zy: "Recursion",
         title: "Sum, recursively",
         goal: "A recursive call's result is a <b>whole sub-answer</b>, not just its argument: <b>sumTo(4)</b> returns the sum 1..4, and the outer call adds its own number to that.",
         stories: {
@@ -2832,6 +3047,7 @@ int main() {
       },
       {
         concept: "Searching",
+        zy: "Searching and sorting",
         title: "Binary search",
         goal: "Binary search halves the remaining range with every probe — and the answer it reports is an <b>index</b>, counting from 0, not a position counting from 1.",
         stories: {
@@ -2892,6 +3108,7 @@ int main() {
       },
       {
         concept: "Sorting",
+        zy: "Searching and sorting",
         title: "Bubble sort",
         goal: "One pass of bubble sort only guarantees that the <b>largest</b> value has bubbled to the end. The outer loop runs pass after pass until the whole array is in order.",
         stories: {
@@ -2950,6 +3167,7 @@ int main() {
       },
       {
         concept: "Decisions · switch",
+        zy: "Branches",
         title: "The missing break",
         goal: "A <b>switch</b> jumps to the matching case and then keeps running downward — case labels are entry points, not separate blocks. Only a <b>break</b> stops the fall.",
         stories: {
@@ -3000,6 +3218,7 @@ int main() {
       },
       {
         concept: "Functions · reference parameters",
+        zy: "Functions",
         title: "One changes, one does not",
         goal: "A parameter declared <b>int&amp;</b> is not a copy — it is <b>another name for the caller's own variable</b>. A plain <b>int</b> parameter is a private copy, and changes to it stay inside the function.",
         stories: {
@@ -3053,6 +3272,7 @@ int main() {
       },
       {
         concept: "Structured data",
+        zy: "Structs",
         title: "A record, not variables",
         goal: "A <b>struct</b> bundles named fields into <b>one</b> variable. <b>s.score</b> reaches the score field inside the single box s — the fields live together and travel together.",
         stories: {
@@ -3106,6 +3326,7 @@ int main() {
       },
       {
         concept: "Vectors",
+        zy: "Arrays and vectors",
         title: "A vector grows",
         goal: "<b>push_back</b> appends one element and grows the vector; <b>size()</b> reports how many elements it holds <em>now</em>; and <b>v[2]</b> is the <em>third</em> element — indexes still count from 0.",
         stories: {
@@ -3154,6 +3375,7 @@ int main() {
       },
       {
         concept: "Arrays · two-dimensional",
+        zy: "Arrays and vectors",
         title: "Two rows deep",
         goal: "A two-dimensional array is indexed <b>[row][column]</b>, and a nested loop sums <b>every</b> cell: the inner loop runs in full for <em>each</em> row, not just the first.",
         stories: {
@@ -3210,6 +3432,7 @@ int main() {
       },
       {
         concept: "Loops — do-while",
+        zy: "Loops",
         title: "The loop that runs first",
         goal: "A <b>do-while</b> loop runs its body <b>once before</b> the condition is ever tested. The test guards the <em>repetitions</em>, not the first run.",
         stories: {
@@ -3257,6 +3480,7 @@ int main() {
       },
       {
         concept: "Loops — break & continue",
+        zy: "Loops",
         title: "Two ways out of a loop",
         goal: "<b>continue</b> skips the rest of this pass and starts the next one; <b>break</b> leaves the whole loop at once. Neither one belongs to the <b>if</b> that contains it — both act on the loop.",
         stories: {
@@ -3309,6 +3533,7 @@ int main() {
       },
       {
         concept: "Characters",
+        zy: "Strings and characters",
         title: "A letter plus one",
         goal: "A <b>char</b> is stored as a number — its character code. In an arithmetic expression like <b>c + 1</b>, the value is that <b>int</b> code, and printing the expression prints the number, not a letter.",
         stories: {
@@ -3349,6 +3574,7 @@ int main() {
       },
       {
         concept: "Strings",
+        zy: "Strings and characters",
         title: "Three questions, one string",
         goal: "<b>length()</b> counts the characters; <b>substr(pos, count)</b> takes a <em>count</em> of characters starting at pos — not an ending position; and <b>find</b> reports the index where a piece starts, counting from 0.",
         stories: {
@@ -3391,6 +3617,7 @@ int main() {
       },
       {
         concept: "Decisions — else if",
+        zy: "Branches",
         title: "On the boundary",
         goal: "An <b>else-if</b> chain tests its conditions <b>in order</b> and runs the <b>first</b> one that is true. A strict <b>&gt;</b> does not include the boundary value itself — 60 is not greater than 60.",
         stories: {
@@ -3440,6 +3667,7 @@ int main() {
       },
       {
         concept: "Functions · scope",
+        zy: "Functions",
         title: "Two boxes, one name",
         goal: "A <b>global</b> variable lives outside every function and is visible to all of them. A <b>local</b> variable with the same name <em>shadows</em> the global — but only inside its own function. Other functions still see the global.",
         stories: {
@@ -3486,6 +3714,7 @@ int main() {
       },
       {
         concept: "Functions · arrays as parameters",
+        zy: "Functions",
         title: "The whole array travels",
         goal: "When an array is passed to a function, the function receives <b>the array itself</b> — it can walk every element through the parameter, guided by the size passed alongside it.",
         stories: {
@@ -3544,7 +3773,7 @@ int main() {
       return { selected: -1, locked: false, correct: null, step: -1, traceDone: false,
                modSelected: -1, modDone: false, modCorrect: null,
                pair: false, pairASelected: -1, pairALocked: false,
-               pairBSelected: -1, pairBLocked: false, jointSelected: -1, jointLocked: false };
+               pairBSelected: -1, pairBLocked: false, jointSelected: -1, jointLocked: false, rationale: "" };
     }
     var state = {
       skin: "health",
@@ -3769,13 +3998,14 @@ int main() {
             b.setAttribute("aria-current", state.current === idx ? "true" : "false");
             b.setAttribute("aria-label", "Exercise " + (idx + 1) + ": " + ex.concept + " — " + ex.title + " (" + shortStatus + ")");
             b.innerHTML = '<span class="n">' + (idx + 1) + '</span><span class="ex-row-title">' + esc(ex.concept) + '</span><span class="status ' + st.cls + '">' + esc(shortStatus) + "</span>";
-            b.addEventListener("click", function () { stopPlayback(); state.current = idx; renderAll(); });
+            b.addEventListener("click", function () { stopPlayback(); if (typeof exitInstPlay === "function") exitInstPlay(); state.current = idx; renderAll(); });
             list.appendChild(b);
           })(i);
         });
         det.appendChild(list);
         box.appendChild(det);
       });
+      if (typeof renderInstNavGroup === "function") renderInstNavGroup(box);
     }
 
     function renderScore() {
@@ -3825,6 +4055,7 @@ int main() {
       $("ex-title").textContent = ex.title;
       $("ex-story").innerHTML = ex.stories[state.skin];
       $("ex-goal").innerHTML = "<b>The idea:</b> " + ex.goal;
+      var zyEl = $("ex-zy"); if (zyEl) zyEl.textContent = ex.zy ? ("zyBooks topic: " + ex.zy) : "";
     }
 
     function renderCode(activeLine, uptoStep) {
@@ -3896,6 +4127,10 @@ int main() {
         }
         box.appendChild(b);
       });
+      var rIn = $("rationale-input");
+      if (rIn) { if (document.activeElement !== rIn) rIn.value = s.rationale || ""; rIn.disabled = !!s.locked; }
+      var prIn = $("pair-rationale-input");
+      if (prIn) { if (document.activeElement !== prIn) prIn.value = s.rationale || ""; prIn.disabled = !!s.locked; }
       $("lock-btn").disabled = s.locked || s.selected < 0;
       $("lock-btn").style.display = s.locked ? "none" : "";
       $("lock-note").style.display = s.locked ? "none" : "";
@@ -3961,6 +4196,7 @@ int main() {
     }
     function finalizePairPrediction(idx) {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
+      var prInLock = $("pair-rationale-input"); if (prInLock) s.rationale = prInLock.value.trim().slice(0, 140);
       s.selected = idx; s.locked = true; s.pair = true;
       s.correct = idx === ex.correct;
       announce("Pair prediction locked: " + ex.options[idx] + ". The tracer is now open.");
@@ -4104,15 +4340,16 @@ int main() {
       card.hidden = false;
       var v = $("verdict");
       var actual = ex.options[ex.correct], mine = ex.options[s.selected];
+      var ratEcho = s.rationale ? '<p class="rationale-echo">You predicted <b>' + esc(mine) + "</b> because: <i>" + esc(s.rationale) + "</i></p>" : "";
       if (s.correct) {
         v.innerHTML = '<div class="verdict good"><h3>Your model matched the machine.</h3>' +
           '<div class="vs"><div><span>You predicted</span>' + esc(mine) + '</div><div><span>The program printed</span>' + esc(actual) + "</div></div>" +
-          "<p>A correct prediction is evidence your mental model of this concept is sound — for these values. Stage 4 changes a value to check the model, not the memory.</p></div>";
+          "<p>A correct prediction is evidence your mental model of this concept is sound — for these values. Stage 4 changes a value to check the model, not the memory.</p>" + ratEcho + "</div>";
       } else {
         var d = ex.diagnoses[s.selected];
         v.innerHTML = '<div class="verdict bad"><h3>Your model and the machine parted company.</h3>' +
           '<div class="vs"><div><span>You predicted</span>' + esc(mine) + '</div><div><span>The program printed</span>' + esc(actual) + "</div></div>" +
-          "<p>" + d.text + '</p><button class="btn small ghost jump" id="jump-btn" type="button">Jump to the parting step</button></div>';
+          "<p>" + d.text + "</p>" + ratEcho + '<button class="btn small ghost jump" id="jump-btn" type="button">Jump to the parting step</button></div>';
         $("jump-btn").addEventListener("click", function () {
           stopPlayback();
           state.ex[state.current].step = d.step;
@@ -4209,6 +4446,7 @@ int main() {
     $("lock-btn").addEventListener("click", function () {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
       if (s.selected < 0) return;
+      var rInLock = $("rationale-input"); if (rInLock) s.rationale = rInLock.value.trim().slice(0, 140);
       s.locked = true;
       s.correct = s.selected === ex.correct;
       announce("Prediction locked: " + ex.options[s.selected] + ". The tracer is now open.");
@@ -7503,6 +7741,403 @@ int main() {
       renderAuthoredList();
     })();
 
+    /* ================= Background theme (Default / Black / Green) =================
+       A view preference only, like Bits view: persisted additively as
+       `bgTheme` inside tracefirst-progress-v1, never progress, and Default
+       (no data-bg attribute) is the first-visit state. The themes only
+       re-point the CSS custom properties, so every mode restyles at once. */
+    var bgTheme = "white";
+    function applyBgTheme(t) {
+      bgTheme = (t === "black" || t === "green") ? t : "white";
+      document.documentElement.setAttribute("data-bg", bgTheme);
+      var btns = document.querySelectorAll(".bg-btn");
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].setAttribute("aria-pressed", btns[i].getAttribute("data-bg-choice") === bgTheme ? "true" : "false");
+      }
+    }
+    function setBgTheme(t) {
+      if (t === bgTheme) { applyBgTheme(t); return; }
+      applyBgTheme(t);
+      announce("Background set to " + (bgTheme === "white" ? "White" : bgTheme === "black" ? "Black" : "Green") + ". Nothing else about your work has changed.");
+      try { tfSave(); } catch (e) {}
+    }
+    (function wireBgTheme() {
+      var btns = document.querySelectorAll(".bg-btn");
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () { setBgTheme(this.getAttribute("data-bg-choice")); });
+      }
+      applyBgTheme("white");
+    })();
+
+    /* ================= "Why I predicted this" rationale wiring =================
+       The rationale lives on the attempt record (s.rationale): typed text is
+       mirrored into state as it is typed, captured definitively at lock time
+       (solo lock button / pair joint finalise), restored by renderPredict,
+       and cleared whenever the attempt is reset (fresh state has ""). */
+    (function wireRationale() {
+      var rIn = $("rationale-input");
+      if (rIn) rIn.addEventListener("input", function () {
+        var s = state.ex[state.current]; if (s && !s.locked) s.rationale = rIn.value.slice(0, 140);
+      });
+      var prIn = $("pair-rationale-input");
+      if (prIn) prIn.addEventListener("input", function () {
+        var s = state.ex[state.current]; if (s && !s.locked) s.rationale = prIn.value.slice(0, 140);
+      });
+    })();
+
+    /* ================= zyBooks crosswalk =================
+       Topics only — no section numbers anywhere: numbering varies by zyBook
+       title and course configuration, so exercises are matched by topic. */
+    var ZY_ORDER = ["Variables and assignments", "Branches", "Loops", "Functions", "Arrays and vectors", "Strings and characters", "Structs", "Pointers", "Recursion", "Searching and sorting"];
+    function renderCrosswalk() {
+      var box = $("crosswalk-list"); if (!box) return;
+      box.innerHTML = "";
+      ZY_ORDER.forEach(function (topic) {
+        var idxs = [];
+        EXERCISES.forEach(function (ex, i) { if (ex.zy === topic) idxs.push(i); });
+        if (!idxs.length) return;
+        var det = document.createElement("details"); det.className = "cw-topic";
+        var sum = document.createElement("summary");
+        sum.innerHTML = "<span>" + esc(topic) + '</span><span class="gcount">' + idxs.length + " exercise" + (idxs.length === 1 ? "" : "s") + " &#9662;</span>";
+        det.appendChild(sum);
+        var list = document.createElement("div"); list.className = "cw-exlist";
+        idxs.forEach(function (i) {
+          var b = document.createElement("button");
+          b.className = "ex-btn ex-row"; b.type = "button";
+          b.setAttribute("aria-label", "Open Exercise " + (i + 1) + ": " + EXERCISES[i].title);
+          b.innerHTML = '<span class="n">' + (i + 1) + '</span><span class="ex-row-title">' + esc(EXERCISES[i].title) + " · " + esc(EXERCISES[i].concept) + "</span>";
+          b.addEventListener("click", function () {
+            if (typeof stopPlayback === "function") stopPlayback();
+            if (typeof exitInstPlay === "function") exitInstPlay();
+            state.current = i; renderAll();
+            var h = $("ex-title"); if (h) h.scrollIntoView({ behavior: "smooth", block: "start" });
+            announce("Exercise " + (i + 1) + " opened from the zyBooks crosswalk.");
+          });
+          list.appendChild(b);
+        });
+        det.appendChild(list);
+        box.appendChild(det);
+      });
+    }
+    renderCrosswalk();
+
+    /* ================= Instructor exercise studio (TFI1:) =================
+       Authoring reuses the Make interpreter (makeRunProgram): the true
+       output is taken from a real run, never typed. Instructor exercises
+       persist additively as `instructorExercises` in the same store and are
+       walled off from the built-in records: nothing here reads or writes
+       state.ex, accuracy counts, the Start Here route, test-out state, or
+       the digest. Play state (instState / instStatus) is session-only. */
+    var instructorExercises = [];
+    var instState = { draftOutput: null, draftSnapshot: null, playIdx: -1, playStep: -1, playLocked: false, playPrediction: "", playRevealed: false };
+    var instStatus = {};
+    function instNorm(s) { return String(s === null || s === undefined ? "" : s).replace(/\s+/g, " ").trim(); }
+    function instDisplay(s) { return instNorm(s) === "" ? "(nothing printed)" : String(s); }
+    function instMatches(pred, target) {
+      var p = instNorm(pred), t = instNorm(target);
+      if (t === "") return p === "" || p.toLowerCase() === "(nothing printed)" || p.toLowerCase() === "(nothing)";
+      return p === t;
+    }
+    function instEncode(ex) {
+      var payload = { v: 1, title: ex.title, code: ex.code, input: ex.input || "", trap: ex.trap, why: ex.why || "", diagnosis: ex.diagnosis || "", notes: ex.notes || [], skin: ex.skin || "General", context: ex.context || "", trueOutput: ex.trueOutput };
+      return "TFI1:" + btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+    }
+    function instDecode(text) {
+      var t = String(text || "").trim();
+      if (t.indexOf("TFI1:") !== 0) throw new Error("prefix");
+      var b64 = t.slice(5).replace(/\s+/g, "");
+      if (!b64) throw new Error("empty");
+      var obj = JSON.parse(decodeURIComponent(escape(atob(b64))));
+      if (!obj || typeof obj !== "object") throw new Error("shape");
+      if (typeof obj.code !== "string" || obj.code.trim() === "") throw new Error("code");
+      if (typeof obj.trap !== "string" || obj.trap.trim() === "") throw new Error("trap");
+      if (obj.code.length > 20000) throw new Error("size");
+      return {
+        title: typeof obj.title === "string" && obj.title.trim() ? obj.title.trim().slice(0, 80) : "Untitled exercise",
+        code: obj.code,
+        input: typeof obj.input === "string" ? obj.input : "",
+        trap: obj.trap.trim().slice(0, 200),
+        why: typeof obj.why === "string" ? obj.why : "",
+        diagnosis: typeof obj.diagnosis === "string" ? obj.diagnosis : "",
+        notes: Array.isArray(obj.notes) ? obj.notes.filter(function (n) { return typeof n === "string" && n.trim() !== ""; }) : [],
+        skin: typeof obj.skin === "string" ? obj.skin : "General",
+        context: typeof obj.context === "string" ? obj.context : "",
+        trueOutput: typeof obj.trueOutput === "string" ? obj.trueOutput : ""
+      };
+    }
+    function instMsg(id, kind, html) {
+      var m = $(id); if (!m) return;
+      m.className = "make-msg show " + kind;
+      m.innerHTML = html;
+    }
+    function renderInstNavGroup(box) {
+      if (!instructorExercises.length) return;
+      var det = document.createElement("details"); det.className = "ex-group";
+      if (instState.playIdx >= 0) det.open = true;
+      var attempted = instructorExercises.filter(function (ex) { return !!instStatus[ex.id]; }).length;
+      var sum = document.createElement("summary");
+      sum.innerHTML = "<span>Instructor-authored</span><span class=\"gcount\">" + attempted + " / " + instructorExercises.length + " attempted &#9662;</span>";
+      det.appendChild(sum);
+      var list = document.createElement("div"); list.className = "ex-group-list";
+      instructorExercises.forEach(function (ex, idx) {
+        var b = document.createElement("button");
+        b.className = "ex-btn ex-row"; b.type = "button";
+        b.setAttribute("aria-current", instState.playIdx === idx ? "true" : "false");
+        var st = instStatus[ex.id];
+        var stTxt = st === "correct" ? "predicted ✓" : st === "trap" ? "hit the trap" : st === "other" ? "attempted" : "Not started";
+        var stCls = st === "correct" ? "good" : st ? "bad" : "";
+        b.setAttribute("aria-label", "Instructor exercise I" + (idx + 1) + ": " + ex.title + " (" + stTxt + ")");
+        b.innerHTML = '<span class="n">I' + (idx + 1) + '</span><span class="ex-row-title">' + esc(ex.title) + '</span><span class="status ' + stCls + '">' + esc(stTxt) + "</span>";
+        b.addEventListener("click", function () { playInstructorExercise(idx); });
+        list.appendChild(b);
+      });
+      det.appendChild(list);
+      box.appendChild(det);
+    }
+    function renderInstStudioList() {
+      var box = $("inst-list"); if (!box) return;
+      box.innerHTML = "";
+      var empty = $("inst-list-empty");
+      if (empty) empty.style.display = instructorExercises.length ? "none" : "";
+      instructorExercises.forEach(function (ex, idx) {
+        var div = document.createElement("div"); div.className = "authored-item";
+        var h = document.createElement("h4"); h.textContent = "I" + (idx + 1) + " · " + ex.title; div.appendChild(h);
+        var meta = document.createElement("p"); meta.className = "a-meta";
+        meta.innerHTML = "True output: <code>" + esc(instDisplay(ex.trueOutput)) + "</code> · Trap: <code>" + esc(ex.trap) + "</code>" + (ex.diagnosis ? " · Diagnosis: <code>" + esc(ex.diagnosis) + "</code>" : "");
+        div.appendChild(meta);
+        var row = document.createElement("div"); row.className = "authored-actions";
+        var playB = document.createElement("button"); playB.type = "button"; playB.className = "btn small"; playB.textContent = "Play";
+        playB.setAttribute("aria-label", "Play instructor exercise: " + ex.title);
+        playB.addEventListener("click", function () { playInstructorExercise(idx); });
+        var copyB = document.createElement("button"); copyB.type = "button"; copyB.className = "btn ghost small"; copyB.textContent = "Copy share code";
+        copyB.setAttribute("aria-label", "Copy the TFI1 share code for: " + ex.title);
+        copyB.addEventListener("click", function () { authoredCopyText(instEncode(ex), "inst-copy-status"); });
+        var delB = document.createElement("button"); delB.type = "button"; delB.className = "btn ghost small"; delB.textContent = "Delete";
+        delB.setAttribute("aria-label", "Delete instructor exercise: " + ex.title);
+        delB.addEventListener("click", function () {
+          var wasPlaying = instState.playIdx === idx;
+          instructorExercises.splice(idx, 1);
+          delete instStatus[ex.id];
+          if (wasPlaying) exitInstPlay();
+          try { tfSave(); } catch (e) {}
+          renderInstStudioList(); renderExNav();
+          announce("Deleted instructor exercise: " + ex.title);
+        });
+        row.appendChild(playB); row.appendChild(copyB); row.appendChild(delB);
+        div.appendChild(row);
+        box.appendChild(div);
+      });
+    }
+    function playInstructorExercise(idx) {
+      var ex = instructorExercises[idx];
+      if (!ex) return;
+      var tm = $("tracer-mode");
+      if (tm && tm.hidden) { var mb = $("mode-tracer"); if (mb) mb.click(); }
+      if (typeof stopPlayback === "function") stopPlayback();
+      instState.playIdx = idx; instState.playStep = -1; instState.playLocked = false; instState.playPrediction = ""; instState.playRevealed = false;
+      var panel = $("inst-play-panel"); if (panel) panel.hidden = false;
+      var grid = $("tracer-grid"); if (grid) grid.style.display = "none";
+      renderInstPlay();
+      renderExNav();
+      if (panel) panel.scrollIntoView({ behavior: "smooth", block: "start" });
+      announce("Instructor exercise I" + (idx + 1) + " loaded: " + ex.title + ". Write your prediction to unlock the walkthrough.");
+    }
+    function exitInstPlay() {
+      if (instState.playIdx < 0) return;
+      instState.playIdx = -1; instState.playLocked = false; instState.playRevealed = false; instState.playPrediction = "";
+      var panel = $("inst-play-panel"); if (panel) panel.hidden = true;
+      var grid = $("tracer-grid"); if (grid) grid.style.display = "";
+    }
+    function renderInstPlay() {
+      var idx = instState.playIdx, ex = instructorExercises[idx];
+      if (!ex) return;
+      $("inst-play-tag").textContent = "Instructor-authored · I" + (idx + 1);
+      var skinEl = $("inst-play-skin");
+      if (ex.skin && ex.skin !== "General") { skinEl.hidden = false; skinEl.textContent = ex.skin; } else skinEl.hidden = true;
+      $("inst-play-title").textContent = ex.title;
+      var ctx = $("inst-play-context");
+      if (ex.context) { ctx.hidden = false; ctx.textContent = ex.context; } else ctx.hidden = true;
+      var codeBox = $("inst-play-code"); codeBox.innerHTML = "";
+      ex.code.replace(/\r\n/g, "\n").split("\n").forEach(function (line, i) {
+        var d = document.createElement("div"); d.className = "cline";
+        d.innerHTML = '<span class="ln">' + (i + 1) + "</span><span>" + (esc(line) || " ") + "</span>";
+        codeBox.appendChild(d);
+      });
+      var pred = $("inst-pred-input");
+      pred.value = instState.playPrediction || "";
+      pred.disabled = !!instState.playLocked;
+      var lockBtn = $("inst-pred-lock");
+      lockBtn.disabled = !!instState.playLocked || !(instState.playPrediction || "").trim();
+      lockBtn.style.display = instState.playLocked ? "none" : "";
+      $("inst-lock-note").textContent = instState.playLocked
+        ? "Prediction locked in: \u201C" + instState.playPrediction + "\u201D"
+        : "The walkthrough stays locked until you commit to a prediction.";
+      renderInstWalk();
+    }
+    function instVerdictHtml(ex) {
+      var pred = instState.playPrediction;
+      var res = makeRunProgram(ex.code, ex.input || "");
+      var actual = res.ok ? res.output : ex.trueOutput;
+      var vs = '<div class="vs"><div><span>You predicted</span>' + esc(instDisplay(pred)) + '</div><div><span>The program printed</span>' + esc(instDisplay(actual)) + "</div></div>";
+      if (instMatches(pred, actual)) {
+        instStatus[ex.id] = "correct";
+        return '<div class="verdict good"><h3>Your prediction matched the machine.</h3>' + vs + "<p>The trap was <b>" + esc(ex.trap) + "</b>, and you did not fall into it.</p></div>";
+      }
+      if (instMatches(pred, ex.trap)) {
+        instStatus[ex.id] = "trap";
+        return '<div class="verdict bad"><h3>That is the trap — exactly the prediction your instructor set.</h3>' + vs +
+          (ex.diagnosis ? "<p><b>Diagnosis: " + esc(ex.diagnosis) + "</b></p>" : "") +
+          (ex.why ? "<p>" + esc(ex.why) + "</p>" : "") + "</div>";
+      }
+      instStatus[ex.id] = "other";
+      return '<div class="verdict bad"><h3>Not what the machine does — and not the trap either.</h3>' + vs +
+        (ex.why ? "<p><b>Instructor's note:</b> " + esc(ex.why) + "</p>" : "") +
+        "<p>The trap the instructor set was <b>" + esc(ex.trap) + "</b>.</p></div>";
+    }
+    function renderInstWalk() {
+      var ex = instructorExercises[instState.playIdx];
+      var walk = $("inst-walk"), verdict = $("inst-verdict");
+      if (!ex || !instState.playLocked) { walk.hidden = true; verdict.innerHTML = ""; return; }
+      var notes = ex.notes || [];
+      if (!notes.length) {
+        walk.hidden = true;
+      } else {
+        walk.hidden = false;
+        var step = Math.max(0, instState.playStep);
+        $("inst-walk-note").textContent = notes[step];
+        $("inst-walk-progress").textContent = "Step " + (step + 1) + " of " + notes.length + (instState.playRevealed ? " · true output revealed below" : "");
+        $("inst-walk-back").disabled = step <= 0;
+        var next = $("inst-walk-next");
+        if (instState.playRevealed) { next.disabled = step >= notes.length - 1; next.textContent = "Next \u2192"; }
+        else if (step >= notes.length - 1) { next.disabled = false; next.textContent = "Reveal the true output"; }
+        else { next.disabled = false; next.textContent = "Next \u2192"; }
+      }
+      verdict.innerHTML = instState.playRevealed ? instVerdictHtml(ex) : "";
+    }
+    (function wireInstStudio() {
+      var runBtn = $("inst-run"), saveBtn = $("inst-save");
+      if (!runBtn || !saveBtn) return;
+      function draftSnapshot() { return $("inst-code").value + "\n\u0001" + $("inst-input").value; }
+      function invalidateDraft() {
+        if (instState.draftSnapshot !== null && instState.draftSnapshot !== draftSnapshot()) {
+          instState.draftOutput = null; instState.draftSnapshot = null;
+          $("inst-out").textContent = "";
+          instMsg("inst-run-msg", "info", "The code or input changed since the last run — run it again so the saved true output matches this exact program.");
+        }
+      }
+      $("inst-code").addEventListener("input", invalidateDraft);
+      $("inst-input").addEventListener("input", invalidateDraft);
+      runBtn.addEventListener("click", function () {
+        var res = makeRunProgram($("inst-code").value, $("inst-input").value);
+        $("inst-out").textContent = res.output || "";
+        if (res.ok) {
+          instState.draftOutput = res.output;
+          instState.draftSnapshot = draftSnapshot();
+          instMsg("inst-run-msg", "good", "It ran to the end. The true output is: <strong>" + esc(instDisplay(res.output)) + "</strong> — now set the trap, diagnosis, and walkthrough, then save.");
+          announce("Instructor program ran. True output: " + instDisplay(res.output));
+        } else {
+          instState.draftOutput = null; instState.draftSnapshot = null;
+          instMsg("inst-run-msg", "bad", esc(res.error) + (typeof translatorLinkHtml === "function" ? translatorLinkHtml(res.error) : ""));
+          announce("The instructor program stopped. " + res.error);
+        }
+      });
+      saveBtn.addEventListener("click", function () {
+        if (instState.draftOutput === null || instState.draftSnapshot !== draftSnapshot()) {
+          instMsg("inst-save-msg", "bad", "Run the current program first — an exercise can only be saved with a true output the machine actually produced for this code.");
+          announce("Run the program before saving.");
+          return;
+        }
+        var trap = $("inst-trap").value.trim();
+        if (!trap) {
+          instMsg("inst-save-msg", "bad", "Write the intended trap first: the wrong prediction you expect a student to make.");
+          $("inst-trap").focus(); return;
+        }
+        var notes = $("inst-notes").value.split(/\r?\n/).map(function (l) { return l.trim(); }).filter(function (l) { return l !== ""; });
+        var ex = {
+          id: "i" + Date.now().toString(36) + Math.floor(Math.random() * 1e6).toString(36),
+          title: $("inst-title").value.trim() || "Untitled exercise",
+          code: $("inst-code").value,
+          input: $("inst-input").value,
+          trap: trap,
+          why: $("inst-why").value.trim(),
+          diagnosis: $("inst-diagnosis").value.trim(),
+          notes: notes,
+          skin: $("inst-skin").value,
+          context: $("inst-context").value.trim(),
+          trueOutput: instState.draftOutput
+        };
+        instructorExercises.push(ex);
+        try { tfSave(); } catch (e) {}
+        renderInstStudioList(); renderExNav();
+        $("inst-share-wrap").hidden = false;
+        $("inst-share-code").value = instEncode(ex);
+        $("inst-save-note").textContent = "Saved as I" + instructorExercises.length + ". If you change the code or input, run it again before saving a new version.";
+        instMsg("inst-save-msg", "good", "Saved. It now appears in the Tracer's <strong>Instructor-authored</strong> group as <strong>I" + instructorExercises.length + "</strong>, and your TFI1: share code is ready below.");
+        announce("Instructor exercise saved: " + ex.title);
+      });
+      $("inst-copy").addEventListener("click", function () { authoredCopyText($("inst-share-code").value, "inst-copy-status"); });
+      $("inst-load").addEventListener("click", function () {
+        var raw = $("inst-load-code").value;
+        if (!raw.trim()) {
+          instMsg("inst-load-msg", "bad", "Paste a TFI1: share code first — it is one long block of text starting with TFI1:.");
+          return;
+        }
+        try {
+          var loaded = instDecode(raw);
+          loaded.id = "i" + Date.now().toString(36) + Math.floor(Math.random() * 1e6).toString(36);
+          // The true output is re-derived from the machine, never trusted from the code payload.
+          var res = makeRunProgram(loaded.code, loaded.input || "");
+          if (!res.ok) {
+            instMsg("inst-load-msg", "bad", "That share code was read, but its program does not run in this interpreter: " + esc(res.error) + " Nothing was loaded.");
+            announce("The shared program does not run. Nothing was loaded.");
+            return;
+          }
+          loaded.trueOutput = res.output;
+          instructorExercises.push(loaded);
+          try { tfSave(); } catch (e) {}
+          renderInstStudioList(); renderExNav();
+          instMsg("inst-load-msg", "good", "Loaded <strong>" + esc(loaded.title) + "</strong> as I" + instructorExercises.length + " in the Tracer's Instructor-authored group. Its true output was re-checked by running the program here.");
+          announce("Shared instructor exercise loaded: " + loaded.title);
+        } catch (e) {
+          instMsg("inst-load-msg", "bad", "That share code could not be read. Check that the whole code was copied, from TFI1: to the last character, and try again. Nothing was loaded.");
+          announce("That share code could not be read.");
+        }
+      });
+      // Play wiring
+      $("inst-pred-input").addEventListener("input", function () {
+        if (instState.playLocked) return;
+        instState.playPrediction = this.value;
+        $("inst-pred-lock").disabled = !this.value.trim();
+      });
+      $("inst-pred-lock").addEventListener("click", function () {
+        if (!instState.playPrediction.trim() || instState.playLocked) return;
+        instState.playLocked = true;
+        var ex = instructorExercises[instState.playIdx];
+        var notes = ex ? (ex.notes || []) : [];
+        if (!notes.length) { instState.playRevealed = true; instState.playStep = -1; }
+        else instState.playStep = 0;
+        renderInstPlay(); renderExNav();
+        announce("Prediction locked: " + instState.playPrediction + (notes.length ? ". Walk through the instructor's notes." : ". The true output is revealed."));
+      });
+      $("inst-walk-next").addEventListener("click", function () {
+        var ex = instructorExercises[instState.playIdx]; if (!ex) return;
+        var notes = ex.notes || [];
+        if (!instState.playRevealed && instState.playStep >= notes.length - 1) {
+          instState.playRevealed = true;
+          renderInstWalk(); renderExNav();
+          announce("True output revealed.");
+        } else if (instState.playStep < notes.length - 1) {
+          instState.playStep++;
+          renderInstWalk();
+        }
+      });
+      $("inst-walk-back").addEventListener("click", function () {
+        if (instState.playStep > 0) { instState.playStep--; renderInstWalk(); }
+      });
+      $("inst-exit-btn").addEventListener("click", function () { exitInstPlay(); renderAll(); });
+      renderInstStudioList();
+    })();
+
     /* ---------------- Bolt's World ---------------- */
     var BOLT_COMMANDS = { move: true, turnLeft: true, pickCell: true, putCell: true };
     var BOLT_SENSORS = { frontIsClear: true, cellsPresent: true };
@@ -9977,6 +10612,7 @@ int main() {
         lines.push("Exercise: " + (i + 1) + " - " + ex.title + (s.pair ? " (pair)" : ""));
         lines.push("Concept: " + ex.concept);
         lines.push("Prediction: " + ex.options[s.selected]);
+        if (s.rationale) lines.push("Why: " + s.rationale);
         lines.push("Correct output: " + ex.options[ex.correct]);
         lines.push("Verdict: " + (s.correct ? "correct" : "parted"));
         if (!s.correct) {
@@ -10060,7 +10696,7 @@ int main() {
       function flush(){ /* entries counted on verdict/prediction capture below */ }
       var linesAll = raw.split(/\r?\n/);
       var cur = null;
-      function ensure(n){ if (!agg[n]) agg[n] = { attempts:0, wrong:0, wrongPred:{}, parting:{} }; return agg[n]; }
+      function ensure(n){ if (!agg[n]) agg[n] = { attempts:0, wrong:0, wrongPred:{}, parting:{}, whyByPred:{} }; return agg[n]; }
       linesAll.forEach(function(line){
         var L = line.trim();
         if (!L) return;
@@ -10068,6 +10704,7 @@ int main() {
         if (em) { var cleanTitle = (em[2]||"").replace(/\s*\(pair\)\s*$/i, "").trim(); cur = { num: parseInt(em[1],10), title: cleanTitle, prediction:null, correct:null, verdict:null, parting:null }; entries++; ensure(cur.num); if (cur.title && !agg[cur.num].title) agg[cur.num].title = cur.title; return; }
         if (!cur) return;
         var pm = L.match(/^Prediction\s*:\s*(.+)$/i); if (pm) { cur.prediction = pm[1].trim().replace(/\s*\(pair\)\s*$/i, "").trim(); return; }
+        var wm = L.match(/^Why\s*:\s*(.+)$/i); if (wm) { cur.why = wm[1].trim(); return; }
         var cm = L.match(/^(?:Correct output|Correct)\s*:\s*(.+)$/i); if (cm) { cur.correct = cm[1].trim(); return; }
         var vm = L.match(/^Verdict\s*:\s*(.+)$/i);
         if (vm) {
@@ -10077,6 +10714,7 @@ int main() {
           if (isWrong) {
             a.wrong++;
             if (cur.prediction) a.wrongPred[cur.prediction] = (a.wrongPred[cur.prediction]||0)+1;
+            if (cur.why && cur.prediction) { if (!a.whyByPred[cur.prediction]) a.whyByPred[cur.prediction] = []; a.whyByPred[cur.prediction].push(cur.why); }
             // parting may appear on following lines; store ref to cur for later capture
             cur._agg = a; cur._wrong = true;
           }
@@ -10115,6 +10753,24 @@ int main() {
       } else {
         html += '<p class="digest-summary"><strong>No misses in these journals.</strong> Every parsed prediction was correct.</p>';
       }
+      // ---- Student rationales from wrong attempts, grouped by misconception ----
+      var whyBlocks = "";
+      nums.forEach(function (n) {
+        var a2 = parsed.agg[n];
+        if (!a2.whyByPred) return;
+        var preds = Object.keys(a2.whyByPred);
+        if (!preds.length) return;
+        var exW = EXERCISES[n - 1] || null;
+        var t2 = a2.title || (exW ? exW.title : "");
+        whyBlocks += "<h4>Exercise " + n + (t2 ? " — " + esc(t2) : "") + "</h4>";
+        preds.forEach(function (p) {
+          var diagTxt = "";
+          if (exW) { var oi = exW.options.indexOf(p); if (oi >= 0 && exW.diagnoses && exW.diagnoses[oi]) diagTxt = exW.diagnoses[oi].text.replace(/<[^>]+>/g, ""); }
+          whyBlocks += '<p class="digest-why-label">Student reasoning for the misconception behind predicting <strong>' + esc(p) + "</strong>" + (diagTxt ? " — " + esc(diagTxt) : "") + "</p>";
+          whyBlocks += '<ul class="digest-why-list">' + a2.whyByPred[p].slice(0, 3).map(function (w) { return "<li>&ldquo;" + esc(w) + "&rdquo;</li>"; }).join("") + "</ul>";
+        });
+      });
+      if (whyBlocks) html += '<div class="digest-why"><h4>Why students predicted this — rationales from wrong attempts</h4>' + whyBlocks + "</div>";
       // ---- Discussion cards ----
       var wrongNums = nums.filter(function(n){ return parsed.agg[n].wrong > 0; }).sort(function(a,b){
         var d = parsed.agg[b].wrong - parsed.agg[a].wrong;
@@ -10213,7 +10869,7 @@ int main() {
       } catch (e) { tfStorageOk = false; return null; }
     }
     function tfCollect() {
-      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", playbackSpeed: playbackSpeed, primerRead: !!primerRead, tracer: [], bolt: null, gym: [], bridge: [], make: [], challenges: null, authoredExercises: [],
+      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", playbackSpeed: playbackSpeed, bgTheme: bgTheme, primerRead: !!primerRead, tracer: [], bolt: null, gym: [], bridge: [], make: [], challenges: null, authoredExercises: [], instructorExercises: [],
         testOut: (typeof testOut !== "undefined" && testOut)
           ? { passed: !!testOut.passed, score: (typeof testOut.score === "number" ? testOut.score : 0), via: (Array.isArray(testOut.via) ? testOut.via.slice() : [false, false, false]) }
           : { passed: false, score: 0, via: [false, false, false] } };
@@ -10226,7 +10882,7 @@ int main() {
           modDone: !!s.modDone, modCorrect: s.modCorrect, pair: !!s.pair,
           pairASelected: s.pairASelected, pairALocked: !!s.pairALocked,
           pairBSelected: s.pairBSelected, pairBLocked: !!s.pairBLocked,
-          jointSelected: s.jointSelected, jointLocked: !!s.jointLocked
+          jointSelected: s.jointSelected, jointLocked: !!s.jointLocked, rationale: s.rationale || ""
         });
       });
       try {
@@ -10261,11 +10917,19 @@ int main() {
           });
         }
       } catch (e) {}
+      try {
+        if (typeof instructorExercises !== "undefined" && Array.isArray(instructorExercises)) {
+          data.instructorExercises = instructorExercises.map(function (ex) {
+            return { id: ex.id, title: ex.title, code: ex.code, input: ex.input || "", trap: ex.trap, why: ex.why || "", diagnosis: ex.diagnosis || "", notes: ex.notes || [], skin: ex.skin || "General", context: ex.context || "", trueOutput: ex.trueOutput };
+          });
+        }
+      } catch (e) {}
       return data;
     }
     function tfHasProgress(d) {
       if (!d) return false;
       if (Array.isArray(d.authoredExercises) && d.authoredExercises.length) return true;
+      if (Array.isArray(d.instructorExercises) && d.instructorExercises.length) return true;
       if (d.primerRead) return true;
       if (d.testOut && d.testOut.passed) return true;
       if ((d.tracer || []).some(function (x) { return !!x; })) return true;
@@ -10331,6 +10995,7 @@ int main() {
           if (typeof sv.pairBSelected === "number") s.pairBSelected = sv.pairBSelected;
           s.pairBLocked = !!sv.pairBLocked;
           if (typeof sv.jointSelected === "number") s.jointSelected = sv.jointSelected;
+          if (typeof sv.rationale === "string") s.rationale = sv.rationale.slice(0, 140);
           s.jointLocked = !!sv.jointLocked;
           if (s.locked || s.modDone) state.ex[i] = s;
         });
@@ -10410,6 +11075,29 @@ int main() {
           if (typeof renderAuthoredList === "function") renderAuthoredList();
         }
       } catch (e) {}
+      // Instructor-authored exercises (additive field; absent in older saves)
+      try {
+        if (Array.isArray(d.instructorExercises) && typeof instructorExercises !== "undefined") {
+          instructorExercises = d.instructorExercises.filter(function (ex) {
+            return ex && typeof ex.code === "string" && ex.code.trim() !== "" && typeof ex.trap === "string" && ex.trap.trim() !== "";
+          }).map(function (ex, i) {
+            return {
+              id: typeof ex.id === "string" && ex.id ? ex.id : "i-restored-" + i,
+              title: typeof ex.title === "string" && ex.title.trim() ? ex.title : "Untitled exercise",
+              code: ex.code, input: typeof ex.input === "string" ? ex.input : "",
+              trap: ex.trap, why: typeof ex.why === "string" ? ex.why : "",
+              diagnosis: typeof ex.diagnosis === "string" ? ex.diagnosis : "",
+              notes: Array.isArray(ex.notes) ? ex.notes.filter(function (n) { return typeof n === "string"; }) : [],
+              skin: typeof ex.skin === "string" ? ex.skin : "General",
+              context: typeof ex.context === "string" ? ex.context : "",
+              trueOutput: typeof ex.trueOutput === "string" ? ex.trueOutput : ""
+            };
+          });
+          if (typeof renderInstStudioList === "function") renderInstStudioList();
+        }
+      } catch (e) {}
+      // Background theme (additive view preference; absent in older saves)
+      if (d.bgTheme === "black" || d.bgTheme === "green" || d.bgTheme === "white" || d.bgTheme === "default") applyBgTheme(d.bgTheme === "default" ? "white" : d.bgTheme);
       // Primer
       if (d.primerRead) { primerRead = true; primerOpened = true; }
       // Bits view preference (additive field; absent in older saves)
