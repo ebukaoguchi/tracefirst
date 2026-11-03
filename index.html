@@ -4516,6 +4516,63 @@ int main() {
       }
       return "loop";
     }
+    /* The line index of the closing brace that ends the block opened on
+       or after line `fromIdx` (brace counting over the source text), or
+       -1 when no block opens there. Used to tell whether a step landed
+       inside or outside a loop / switch body. */
+    function capBraceEnd(ex, fromIdx) {
+      var depth = 0, opened = false;
+      for (var i = fromIdx; i < ex.code.length; i++) {
+        var t = ex.code[i] || "";
+        for (var j = 0; j < t.length; j++) {
+          var c = t.charAt(j);
+          if (c === "{") { depth++; opened = true; }
+          else if (c === "}") { depth--; if (opened && depth === 0) return i; }
+        }
+        if (opened && i > fromIdx + 16) break;
+      }
+      return -1;
+    }
+    /* The header line of the loop or switch enclosing lineIdx, or -1. */
+    function capEnclosingHeader(ex, lineIdx) {
+      for (var i = lineIdx; i >= 0 && i >= lineIdx - 16; i--) {
+        var t = (ex.code[i] || "").trim();
+        if (/\bswitch\s*\(/.test(t) || /^(?:for|while)\s*\(/.test(t) || /^do\b/.test(t)) return i;
+        if (/^(?:int|void|double|bool|char|string|long|float)\s+\w+\s*\(/.test(t)) return -1;
+      }
+      return -1;
+    }
+    /* Did a break / continue sitting on step idx's line actually fire?
+       A standalone break or continue always fires when its line runs.
+       One guarded by an if on the same line — `if (c) break;` or
+       `if (c) { x = 1; break; }` — fires only when the guard held:
+       evaluate the guard when it is derivable; when it is not (array
+       subscripts defeat the evaluator), a break is known by where the
+       NEXT step lands — outside the enclosing loop or switch — and a
+       continue keeps the historical assumption, since no trace in the
+       set lands on an unevaluable continue guard that did not fire. */
+    function capGuardFires(ex, idx, keyword) {
+      var step = ex.steps[idx];
+      if (!step) return false;
+      var lineTxt = (ex.code[step.line] || "");
+      var kwAt = lineTxt.search(new RegExp("\\b" + keyword + "\\s*;"));
+      if (kwAt < 0) return false;
+      var before = lineTxt.slice(0, kwAt);
+      if (!/\bif\s*\(/.test(before)) return true;
+      var cond = capCondOf(lineTxt);
+      if (cond) {
+        var ph = capCondPhrase(cond, capVarMap(ex, step));
+        if (ph) return ph.outcome;
+      }
+      if (keyword !== "break") return true;
+      var next = ex.steps[idx + 1];
+      if (!next) return true;
+      var header = capEnclosingHeader(ex, step.line);
+      if (header < 0) return true;
+      var end = capBraceEnd(ex, header);
+      if (end < 0) return true;
+      return next.line < header || next.line > end;
+    }
     /* When an exercise tracks no call frames, a call still shows in the
        text: the previous line names a function the program defines.
        Returns that function's name, or null. */
@@ -4629,17 +4686,23 @@ int main() {
       function tail(extra) {
         return [extra || "", ch, out].filter(function (x) { return !!x; }).join(" ");
       }
-      // break / continue are named on the step that executes them.
-      if (/\bbreak\s*;/.test(lineTxt)) {
+      // break / continue are named on the step that executes them — but
+      // only when they actually fired. A step can land on a line that
+      // merely CONTAINS a guarded break (`if (c) { x = 1; break; }`)
+      // while the guard was false; naming a break there would teach
+      // the opposite of what the machine did.
+      if (/\bbreak\s*;/.test(lineTxt) && capGuardFires(ex, idx, "break")) {
         var phB = capPhraseForLine(ex, step.line, map);
+        var chB = capChangeText(ex, idx, phB ? phB.ids : []);
         if (capEnclosingKind(ex, step.line) === "switch") {
-          return (phB ? phB.text + ", so " : "") + "break fires — it leaves the switch at once, so no further case runs.";
+          return (phB ? phB.text + ", so " : "") + "break fires — it leaves the switch at once, so no further case runs." + (chB ? " " + chB : "");
         }
-        return (phB ? phB.text + ", so " : "") + "break fires — it leaves the whole loop at once, not just the if around it.";
+        return (phB ? phB.text + ", so " : "") + "break fires — it leaves the whole loop at once, not just the if around it." + (chB ? " " + chB : "");
       }
-      if (/\bcontinue\s*;/.test(lineTxt)) {
+      if (/\bcontinue\s*;/.test(lineTxt) && capGuardFires(ex, idx, "continue")) {
         var phC = capPhraseForLine(ex, step.line, map);
-        return (phC ? phC.text + ", so " : "") + "continue fires — the rest of this pass is skipped and the next pass begins.";
+        var chC = capChangeText(ex, idx, phC ? phC.ids : []);
+        return (phC ? phC.text + ", so " : "") + "continue fires — the rest of this pass is skipped and the next pass begins." + (chC ? " " + chC : "");
       }
       if (kind === "call") {
         var frames = step.frames || [], topF = frames[frames.length - 1] || { name: "the function", vars: {} };
@@ -4661,9 +4724,27 @@ int main() {
         if (called && capFindLoopHeader(ex, step.line) < 0) {
           return called + "() is called — control enters the function at line " + lineNo + ", and the caller waits where it was." + (ch ? " " + ch : "");
         }
-        var cond = capCondOf(lineTxt), header = cond ? step.line : -1;
+        // Attribute the back-edge to the loop whose test actually ran.
+        // When the landing line is itself a loop header (or a do-while
+        // test), its own condition is the test. Otherwise the nearest
+        // loop header above governs — never an `if` condition that
+        // happens to sit on the landing line — and when the previous
+        // step lies beyond that loop's closing brace, the jump crossed
+        // out of the inner loop entirely, so the next enclosing loop
+        // is the one that turned (nested loops: an outer pass starting
+        // over must not be narrated as the inner loop "running again"
+        // on its freshly reset counter).
+        var lineIsLoopTest = /^(?:\}\s*)?(?:for|while)\s*\(/.test(lineTxt) || /\}\s*while\s*\(/.test(lineTxt);
+        var cond = lineIsLoopTest ? capCondOf(lineTxt) : null, header = cond ? step.line : -1;
         if (!cond) {
           header = capFindLoopHeader(ex, step.line);
+          if (header >= 0 && prev) {
+            var innerEnd = capBraceEnd(ex, header);
+            if (innerEnd >= 0 && prev.line > innerEnd) {
+              var outerHeader = capFindLoopHeader(ex, header - 1);
+              if (outerHeader >= 0) header = outerHeader;
+            }
+          }
           if (header >= 0) cond = capCondOf(ex.code[header]);
         }
         var doWhileTest = !cond && prev && /\}\s*while\s*\(/.test(prevTxt);
@@ -4686,16 +4767,27 @@ int main() {
         return tail("") || capNoteSentence(step) || ("Line " + lineNo + " runs again.");
       }
       if (kind === "fwd") {
-        if (/\bbreak\s*;/.test(prevTxt)) {
-          var enc = prev ? capEnclosingKind(ex, prev.line) : "loop";
+        // A forward jump is credited to a break only when the break on
+        // the previous line actually fired — a guarded break whose
+        // guard was false leaves the next branch line to speak for
+        // itself (binary search's else step was once narrated as a
+        // break leaving the loop, mid-loop).
+        if (prev && /\bbreak\s*;/.test(prevTxt) && capGuardFires(ex, idx - 1, "break")) {
+          var enc = capEnclosingKind(ex, prev.line);
           return "break leaves the whole " + enc + " — control jumps to line " + lineNo + ", past the end of the " + enc + "." + (out ? " " + out : "");
         }
         if (prev && /\breturn\b/.test(prevTxt) && !/^\s*return\s+0\s*;/.test(prevTxt)) {
           return "The function returns — control goes back to the caller at line " + lineNo + "." + (ch ? " " + ch : "") + (out ? " " + out : "");
         }
-        if (prev && /\bcontinue\s*;/.test(prevTxt)) {
+        if (prev && /\bcontinue\s*;/.test(prevTxt) && capGuardFires(ex, idx - 1, "continue")) {
           var phK = capPhraseForLine(ex, prev.line, capVarMap(ex, prev));
-          return (phK ? phK.text + ", so " : "") + "continue skips the rest of that pass, and the next pass reaches line " + lineNo + "." + (ch ? " " + ch : "") + (out ? " " + out : "");
+          // The guard's outcome is stated, but not its parenthetical
+          // values: those were read at the previous step, and the loop
+          // increment has already moved the counter by the time this
+          // step lands — restating "(i is 3)" beside a box showing 4
+          // would contradict the screen.
+          var phKText = phK ? phK.text.replace(/\s*\([^)]*\)\s*$/, "") : null;
+          return (phKText ? phKText + ", so " : "") + "continue skips the rest of that pass, and the next pass reaches line " + lineNo + "." + (ch ? " " + ch : "") + (out ? " " + out : "");
         }
         if (prev) {
           var prevMap = capVarMap(ex, prev);
@@ -4944,7 +5036,10 @@ int main() {
       playback.exIdx = state.current;
       syncPlayUI();
       if (playback.timer) clearTimeout(playback.timer);
-      playback.timer = setTimeout(playTick, speedMs());
+      // The first interval is dwell-weighted like every later one: it is
+      // the pause before the upcoming transition (s.step → s.step + 1),
+      // so a run that starts on the eve of a jump lingers from the start.
+      playback.timer = setTimeout(playTick, transitionDwell(ex, s.step, s.step + 1, playbackSpeed));
     }
     function stopPlayback() {
       if (playback.timer) { clearTimeout(playback.timer); playback.timer = null; }
@@ -5443,7 +5538,9 @@ int main() {
       lecPlayback.playing = true;
       syncLecPlayUI();
       if (lecPlayback.timer) clearTimeout(lecPlayback.timer);
-      lecPlayback.timer = setTimeout(lecPlayTick, speedMs());
+      // Same first-tick repair as the tracer: dwell-weight the interval
+      // before the upcoming transition, not the flat speed.
+      lecPlayback.timer = setTimeout(lecPlayTick, transitionDwell(ex, lecture.step, lecture.step + 1, playbackSpeed));
     }
     function stopLecPlayback() {
       if (lecPlayback.timer) { clearTimeout(lecPlayback.timer); lecPlayback.timer = null; }
