@@ -555,6 +555,23 @@
       .trans-method strong { color: var(--accent-strong); }
       .trans-empty { background: var(--panel); border: 1.5px dashed var(--line); border-radius: 12px; padding: 20px; text-align: center; color: var(--ink-soft); display: none; }
       .trans-empty.show { display: block; }
+      /* ---------- Error Translator: fix-it round ---------- */
+      .fixit { margin-top: 16px; border-top: 1px dashed var(--line); padding-top: 14px; }
+      .fixit h4 { font-size: .78rem; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-soft); margin: 0 0 6px; font-family: "IBM Plex Mono", monospace; }
+      .fixit p { font-size: .93rem; }
+      .fixit-editor { width: 100%; box-sizing: border-box; background: var(--code-bg); color: var(--code-ink); border: 1px solid rgba(0,0,0,.25); border-radius: 10px; padding: 12px 13px; font-family: "IBM Plex Mono", monospace; font-size: .9rem; line-height: 1.6; min-height: 170px; resize: vertical; margin-top: 10px; }
+      .fixit-editor:focus { outline: 3px solid var(--amber); outline-offset: 1px; }
+      .fixit-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; align-items: center; }
+      .fixit-msg { margin-top: 10px; border-radius: 10px; padding: 11px 13px; font-size: .93rem; display: none; }
+      .fixit-msg.show { display: block; }
+      .fixit-msg.good { background: var(--accent-soft); color: var(--accent-strong); border: 1.5px solid var(--accent); font-weight: 600; }
+      .fixit-msg.bad { background: var(--rust-soft); color: var(--rust); border: 1.5px solid var(--rust); }
+      .fixit-msg .mono { font-family: "IBM Plex Mono", monospace; font-weight: 600; word-break: break-word; white-space: pre-wrap; display: block; margin-top: 4px; }
+      .fixit-msg .out { font-family: "IBM Plex Mono", monospace; white-space: pre-wrap; word-break: break-word; display: block; margin-top: 4px; }
+      .fixit-hints { margin-top: 10px; display: grid; gap: 8px; }
+      .fixit-hint { border: 1px solid var(--amber); background: var(--amber-soft); border-radius: 10px; padding: 10px 12px; font-size: .92rem; }
+      .fixit-hint b { color: var(--amber); }
+      .fixit-hint .mono { font-family: "IBM Plex Mono", monospace; font-weight: 600; word-break: break-word; }
       /* ---------- Challenges ---------- */
       .ch-intro { max-width: 760px; margin-top: 22px; }
       .ch-intro h2 { font-family: "Source Serif 4", Georgia, serif; font-size: 1.6rem; line-height: 1.15; }
@@ -1129,6 +1146,29 @@
       .bg-btn .swatch.black { background: #000; }
       .bg-btn .swatch.green { background: #0b5138; }
 
+      /* ---------- Reading comfort: reduced motion + larger text ----------
+         Two more view preferences beside Background, persisted additively
+         as `reduceMotionPref` / `largeTextPref` inside
+         tracefirst-progress-v1 (see the persistence block). Both default
+         off. Reduced motion here is an explicit in-page switch that sits
+         ON TOP OF the OS prefers-reduced-motion handling: either one
+         stills the tracer. Larger text scales the root font size, so the
+         rem-based code and body text grow together in every theme. */
+      .comfort-btn .cdot { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--line); flex: none; background: transparent; }
+      .comfort-btn[aria-pressed="true"] .cdot { background: var(--accent); border-color: var(--accent); }
+      :root[data-motion="reduced"] .flow-marker { transition: none !important; }
+      :root[data-motion="reduced"] .flow-svg path { transition: none !important; }
+      :root[data-motion="reduced"] .membox.changed { animation: none; }
+      :root[data-motion="reduced"] .console .cursor { animation: none; }
+      :root[data-motion="reduced"] .stepbar i { transition: none; }
+      :root[data-motion="reduced"] .lec-bar-fill { transition: none; }
+      :root[data-motion="reduced"] .bolt-robot, :root[data-motion="reduced"] .bolt-robot svg { transition: none; }
+      :root[data-motion="reduced"] .ref-panel, :root[data-motion="reduced"] .ref-backdrop { transition: none; }
+      :root[data-motion="reduced"] .mobile-drawer, :root[data-motion="reduced"] .drawer-backdrop { transition: none; }
+      :root[data-motion="reduced"] .mode-caret svg { transition: none; }
+      :root[data-textsize="large"] { font-size: 18.5px; }
+      :root[data-textsize="large"] body { font-size: 18.5px; }
+
       /* ---------- Gap builds: briefings, review, ladders, trace view, diagnostics, culminating ---------- */
       .brief-panel{margin-top:14px;border:1.5px solid var(--accent)}
       .brief-body{font-size:.95rem;margin-top:8px}
@@ -1178,6 +1218,50 @@
         #refcard { position: absolute; inset: 0 auto auto 0; width: 100%; box-shadow: none; border: none; }
         .bgbar, .mode-toggle, .mobile-nav { display: none !important; }
       }
+
+      /* ---------- Printable prediction worksheet ----------
+         Screen: the container is never shown. Print: the same isolation
+         approach as the reference card above — everything hidden except
+         the worksheet — engaged only while body carries .ws-printing, so
+         a reference-card print is untouched. Page 1 is the student's
+         blank worksheet; the answer key starts on page 2. Colours are
+         forced to plain black on white: a worksheet is photocopied. */
+      #worksheet-print { display: none; }
+      @media print {
+        body.ws-printing #refcard, body.ws-printing #refcard * { visibility: hidden; }
+        body.ws-printing #worksheet-print { display: block; position: absolute; inset: 0 auto auto 0; width: 100%; visibility: visible; }
+        body.ws-printing #worksheet-print * { visibility: visible; }
+      }
+      .ws-page { color: #000; background: #fff; font-size: 11.5pt; line-height: 1.45; }
+      .ws-page h2 { font-family: "Source Serif 4", Georgia, serif; font-size: 17pt; line-height: 1.15; }
+      .ws-page h3 { font-size: 11pt; letter-spacing: .06em; text-transform: uppercase; font-family: "IBM Plex Mono", monospace; margin-top: 14px; }
+      .ws-kicker { font-family: "IBM Plex Mono", monospace; font-size: 8.5pt; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
+      .ws-meta { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 8px; font-size: 10.5pt; }
+      .ws-meta .ws-field { flex: 1 1 150px; border-bottom: 1.5px solid #000; min-height: 20px; padding-bottom: 2px; }
+      .ws-meta .ws-field span { font-family: "IBM Plex Mono", monospace; font-size: 8pt; letter-spacing: .07em; text-transform: uppercase; display: block; }
+      .ws-story { margin-top: 8px; }
+      .ws-goal { margin-top: 6px; font-size: 10.5pt; }
+      .ws-code { border: 1.5px solid #000; border-radius: 6px; padding: 8px 0; margin-top: 8px; font-family: "IBM Plex Mono", monospace; font-size: 10pt; line-height: 1.5; }
+      .ws-code .wl { display: flex; white-space: pre; }
+      .ws-code .wln { width: 30px; flex: none; text-align: right; padding-right: 10px; color: #444; user-select: none; }
+      .ws-opts { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
+      .ws-opts li { display: flex; gap: 9px; align-items: center; font-family: "IBM Plex Mono", monospace; font-size: 11pt; }
+      .ws-check { width: 15px; height: 15px; border: 1.8px solid #000; border-radius: 3px; flex: none; display: inline-grid; place-items: center; font-weight: 700; font-size: 11pt; line-height: 1; }
+      .ws-opts li.correct .ws-check { background: #000; color: #fff; }
+      .ws-write { border-bottom: 1.5px solid #000; min-height: 24px; margin-top: 8px; }
+      .ws-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 10pt; }
+      .ws-table th, .ws-table td { border: 1.2px solid #000; padding: 4px 7px; text-align: left; vertical-align: top; }
+      .ws-table th { font-family: "IBM Plex Mono", monospace; font-size: 8pt; letter-spacing: .05em; text-transform: uppercase; }
+      .ws-table td.ws-blank { height: 21px; }
+      .ws-table .mono { font-family: "IBM Plex Mono", monospace; }
+      .ws-mem { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+      .ws-membox { border: 1.8px solid #000; border-radius: 6px; min-width: 104px; padding: 5px 9px 7px; }
+      .ws-membox .mn { font-family: "IBM Plex Mono", monospace; font-weight: 700; font-size: 10.5pt; }
+      .ws-membox .mt { font-family: "IBM Plex Mono", monospace; font-size: 8pt; color: #444; margin-left: 5px; }
+      .ws-membox .mv { font-family: "IBM Plex Mono", monospace; font-size: 12pt; min-height: 22px; margin-top: 2px; }
+      .ws-outbox { border: 1.8px solid #000; border-radius: 6px; min-height: 34px; padding: 6px 9px; margin-top: 8px; font-family: "IBM Plex Mono", monospace; font-size: 11pt; white-space: pre-wrap; }
+      .ws-key { page-break-before: always; break-before: page; }
+      .ws-note { font-size: 10pt; margin-top: 6px; }
 
       /* ---------- Anywhere reference panel (slide-over) ---------- */
       .ref-open-btn{
@@ -1291,6 +1375,11 @@
           <button type="button" class="bg-btn" data-bg-choice="white" aria-pressed="true"><span class="swatch white" aria-hidden="true"></span>White</button>
           <button type="button" class="bg-btn" data-bg-choice="black" aria-pressed="false"><span class="swatch black" aria-hidden="true"></span>Black</button>
           <button type="button" class="bg-btn" data-bg-choice="green" aria-pressed="false"><span class="swatch green" aria-hidden="true"></span>Green</button>
+        </div>
+        <span class="bgbar-label" id="comfort-label">Reading comfort</span>
+        <div class="bits-group" role="group" aria-labelledby="comfort-label">
+          <button type="button" class="bg-btn comfort-btn" id="motion-toggle" aria-pressed="false"><span class="cdot" aria-hidden="true"></span>Reduce motion</button>
+          <button type="button" class="bg-btn comfort-btn" id="textsize-toggle" aria-pressed="false"><span class="cdot" aria-hidden="true"></span>Larger text</button>
         </div>
       </div>
       <section class="intro">
@@ -1790,6 +1879,10 @@ for (int i = 0; i < 3; i++) {
             <h2 id="ex-title"></h2>
             <p class="story" id="ex-story"></p>
             <p class="goal" id="ex-goal"></p>
+            <div class="lockrow" style="margin-top:12px;">
+              <button class="btn ghost small" type="button" id="worksheet-btn">Print worksheet</button>
+              <span style="font-size:.85rem;color:var(--ink-soft);">This exercise on paper: code, blank prediction and memory boxes — answer key on page two.</span>
+            </div>
             <div class="codebox flowbox">
               <div class="codehead"><span>program.cpp</span><span>C++</span></div>
               <pre id="code" aria-label="Program code"></pre>
@@ -2485,6 +2578,7 @@ int main() {
       <p class="foot" style="margin-top:8px;">TraceFirst is designed and built by <a href="https://ebukaoguchi.github.io/">Ebuka Philip Oguchi</a>.</p>
 
       <div class="sr-live" aria-live="polite" id="live"></div>
+      <div id="worksheet-print" aria-hidden="true"></div>
     </main>
     <script>
     "use strict";
@@ -5768,6 +5862,10 @@ int main() {
        step, so the rewind itself draws no arc; the replayed advance does. */
     var suppressFlowArc = false;
     function reducedMotion() {
+      // The in-page Reduce motion switch (reduceMotionPref, declared with
+      // the other view preferences below) OR the OS preference stills the
+      // tracer: either one means no animated arrows, arcs, or marker travel.
+      if (typeof reduceMotionPref !== "undefined" && reduceMotionPref) return true;
       try { return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); } catch (e) { return false; }
     }
     function speedMs() { return Math.round(1000 / playbackSpeed); }
@@ -7749,6 +7847,171 @@ int main() {
       { id:31, title:"Smart quotes and stray characters from pasted code", raw:"error: extended character \" is not valid in an identifier\n  — also seen as: error: stray '\\342' in program", meaning:"The code contains a typographic character — usually a curly (“smart”) quote copied from a word processor, a web page, or a PDF. The compiler only accepts plain ASCII characters in code, and it reports the foreign character's byte codes (like \\342) instead of the character itself.", cause:"The program was pasted from somewhere that autocorrects quotes: word processors and many web pages silently replace straight quotes with curly ones. The fix is mechanical: delete each curly quote in the file and retype it on the keyboard as a straight ' or \".", before:"cout << “Hello”;", after:"cout << \"Hello\";", keys:"smart quotes curly stray 342 extended character pasted word processor non-ascii identifier" },
       { id:32, title:"Missing return in a non-void function — a warning", raw:"warning: no return statement in function returning non-void", meaning:"This one is a warning, not an error: the program may still build and run. But the function promised its caller a value, and it can finish without providing one — so the caller receives whatever garbage happened to be in the machine at that moment, and the results are unpredictable.", cause:"A path through the function reaches its closing brace without meeting a return statement — often a return that only exists inside an if, with nothing after it for the other case. Every path through a non-void function must end with return ...;.", before:"int doubleIt(int x) {\n    if (x > 0) return x * 2;\n}", after:"int doubleIt(int x) {\n    if (x > 0) return x * 2;\n    return 0;\n}", keys:"warning no return statement function returning non-void missing return garbage value path" }
     ];
+    /* ================= Error Translator: fix-it rounds =================
+       For the entries whose broken program is a concrete program this
+       page's own machine (makeRunProgram, the Make interpreter) can run,
+       the explanation is followed by a fix-it round: the broken program
+       in an editable area, a Run it button, and a two-step hint ladder
+       that narrows only when asked — first which line, then what to
+       change. Success is the machine's verdict: the program runs clean.
+       Entries whose fault this machine cannot reproduce (a missing
+       #include or using line, a misspelled header, a redeclaration, a
+       keyword name, setprecision/pow header faults — the machine knows
+       cout, string and setprecision natively, strips # lines, and never
+       checks declarations twice) stay explanation-only, as do the
+       warning-only entry and the entry whose catalogue fix (stoi) names
+       a function this machine does not have. Round state is session-only:
+       attempts and hints are practice, not a record, and nothing here is
+       persisted. */
+    var FIXIT = {
+      1: { code: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int score = 85\n    cout << score << endl;\n    return 0;\n}",
+           hints: ["Look at <b>line 5</b> — the declaration of score. The machine's complaint names a later line, because it only notices the gap when the next statement begins.",
+                   "End line 5 with a semicolon: <span class=\"mono\">int score = 85;</span> — every statement ends with one."] },
+      3: { code: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int score = 85;\n    cout << scroe << endl;\n    return 0;\n}",
+           hints: ["Look at <b>line 6</b> — the name inside the cout chain is not quite the name declared on line 5.",
+                   "Change <span class=\"mono\">scroe</span> to <span class=\"mono\">score</span> on line 6, so it matches the declaration character for character."] },
+      4: { code: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int x = 5;\n    if (x > 0) {\n        cout << x << endl;\n    }",
+           hints: ["Count the braces: <b>main</b> opens on line 4 and the <b>if</b> opens on line 6, but only one closing brace appears, on line 8.",
+                   "Add one more closing brace after line 8 — a <span class=\"mono\">}</span> on its own line, to close main."] },
+      5: { code: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int score = 80;\n    if (score >= 70 {\n        cout << \"Pass\" << endl;\n    }\n    return 0;\n}",
+           hints: ["Look at <b>line 6</b> — the if condition. Count its opening and closing parentheses.",
+                   "Close the condition before the brace: <span class=\"mono\">if (score >= 70) {</span>"] },
+      6: { code: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int score = 42;\n    string name = \"Ada\";\n    cout >> score;\n    cin << name;\n    return 0;\n}",
+           hints: ["Look at <b>lines 7 and 8</b> — both stream statements. On each one, compare the direction of the arrows with the direction the data is meant to travel.",
+                   "Flip both: output is <span class=\"mono\">cout &lt;&lt; score;</span> and input is <span class=\"mono\">cin &gt;&gt; name;</span>. The arrows follow the data. Fix one, run again, and the machine will show you the other."] },
+      8: { code: "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << Hello << endl;\n    return 0;\n}",
+           hints: ["Look at <b>line 5</b> — the word Hello is being read as a variable name, and no variable with that name exists.",
+                   "Wrap the text in double quotes: <span class=\"mono\">cout &lt;&lt; \"Hello\" &lt;&lt; endl;</span>"] },
+      9: { code: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int x;\n    5 = x;\n    cout << x << endl;\n    return 0;\n}",
+           hints: ["Look at <b>line 6</b> — the assignment. In C++, = stores the right side into the left side, so the box belongs on the left.",
+                   "Swap the two sides: <span class=\"mono\">x = 5;</span>"] },
+      11: { code: "#include <iostream>\nusing namespace std;\n\nint main() {\n    total = 0;\n    cout << total << endl;\n    return 0;\n}",
+            hints: ["Look at <b>line 5</b> — total is used before any line creates it. The first mention of a variable has to be its birth, and a birth names a type.",
+                    "Give the declaration its type: <span class=\"mono\">int total = 0;</span>"] },
+      13: { code: "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"Your score is << endl;\n    return 0;\n}",
+            hints: ["Look at <b>line 5</b> — the text opens with a quote and never closes, so everything after it, semicolon included, is swallowed as text.",
+                    "Close the text before the next &lt;&lt;: <span class=\"mono\">cout &lt;&lt; \"Your score is \" &lt;&lt; endl;</span>"] },
+      16: { code: "int add(int a, int b) {\n    return a + b;\n}",
+            hints: ["There is no faulty line inside the helper to point at — the missing piece is a whole second function, the one every program starts in.",
+                    "Add the entry point below the helper: <span class=\"mono\">int main() { cout &lt;&lt; add(2, 3); return 0; }</span> — add prints nothing itself, so main prints the sum."] },
+      18: { code: "#include <iostream>\nusing namespace std;\n\nint main() {\n    Cout << \"Hi\" << Endl;\n    return 0;\n}",
+            hints: ["Look at <b>line 5</b> — two names on it carry capital letters, and C++ reads capitals as different names entirely.",
+                    "Lowercase both: <span class=\"mono\">cout &lt;&lt; \"Hi\" &lt;&lt; endl;</span>"] },
+      22: { code: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int x = 3;\n    cout << 2 x;\n    return 0;\n}",
+            hints: ["Look at <b>line 6</b> — two values sit side by side with nothing between them, and C++ never implies an operation the way algebra does.",
+                    "Write the multiplication out: <span class=\"mono\">cout &lt;&lt; 2 * x;</span>"] },
+      24: { code: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int x = 5;\n    cout << x[0] << endl;\n    return 0;\n}",
+            hints: ["Look at <b>lines 5 and 6 together</b> — x holds a single value, but line 6 reaches into it with [0] as if it held a sequence of values.",
+                    "Either make x an array — <span class=\"mono\">int x[] = {5};</span> — or print the variable itself: <span class=\"mono\">cout &lt;&lt; x &lt;&lt; endl;</span>"] },
+      25: { code: "#include <iostream>\nusing namespace std;\n\nvoid printMenu() {\n    cout << \"1. Play  2. Quit\" << endl;\n}\n\nint main() {\n    int choice = printMenu();\n    return 0;\n}",
+            hints: ["Look at <b>line 9</b> — and at printMenu's declaration on line 4. It is void: it does its job and hands nothing back, so there is no value to store in choice.",
+                    "Call it on its own line and drop the storage: <span class=\"mono\">printMenu();</span>"] },
+      28: { code: "#include <iostream>\nusing namespace std;\n\nint Main() {\n    cout << \"Hi\" << endl;\n    return 0;\n}",
+            hints: ["Look at <b>line 4</b> — the entry function's name. The system looks for one exact spelling, all lowercase; a capital makes it a different function that nothing calls.",
+                    "Rename <span class=\"mono\">Main</span> to <span class=\"mono\">main</span> on line 4."] },
+      29: { code: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int x = 7;\n    cout << ;\n    return 0;\n}",
+            hints: ["Look at <b>line 6</b> — after &lt;&lt; the statement simply ends. Nothing was ever named for printing.",
+                    "Name the value: <span class=\"mono\">cout &lt;&lt; x;</span>"] },
+      31: { code: "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \u201cHello\u201d << endl;\n    return 0;\n}",
+            hints: ["Look at <b>line 5</b> — the quotes around Hello are typographic (curly) quotes, pasted from a word processor or a web page. The machine only accepts straight quotes.",
+                    "Delete both curly quotes on line 5 and retype them on the keyboard as straight double quotes: <span class=\"mono\">cout &lt;&lt; \"Hello\" &lt;&lt; endl;</span>"] }
+    };
+    var fixitState = {};
+    function fixitOf(id) {
+      if (!fixitState[id]) fixitState[id] = { code: FIXIT[id].code, hints: 0, done: false, attempts: 0, lastOut: null };
+      return fixitState[id];
+    }
+    function fixitSuccessHtml(st) {
+      return "Fixed — it builds and runs clean" + (st.attempts > 1 ? " (run number " + st.attempts + ")" : "") + ". The program printed:" +
+        '<span class="out">' + esc(st.lastOut === "" || st.lastOut === null ? "(nothing — no output)" : st.lastOut) + "</span>" +
+        "Compare your repair with the After code above.";
+    }
+    function fixitHtml(e) {
+      var cfg = FIXIT[e.id];
+      if (!cfg) return "";
+      var st = fixitOf(e.id);
+      var hintBtnLabel = st.hints === 0 ? "Hint — which line?" : st.hints === 1 ? "One more hint — what to change" : "No more hints";
+      return '<div class="fixit"><h4>Fix-it round — repair this error yourself</h4>' +
+        '<p>The program below has this entry\'s fault in it. Edit it in place, then run it. It is fixed when the machine runs it clean — read what the machine says after each run and fix one thing at a time. Hints narrow only if you ask: the first points at the line, the second says what to change.</p>' +
+        '<label for="fixit-code-' + e.id + '" style="font-weight:700;font-size:.9rem;display:block;margin-top:8px;">The broken program — yours to edit</label>' +
+        '<textarea class="fixit-editor" id="fixit-code-' + e.id + '" data-fixit-editor="' + e.id + '" spellcheck="false" aria-describedby="fixit-msg-' + e.id + '">' + esc(st.code) + '</textarea>' +
+        '<div class="fixit-row">' +
+          '<button type="button" class="btn small" data-fixit-run="' + e.id + '">Run it</button>' +
+          '<button type="button" class="btn ghost small" data-fixit-hint="' + e.id + '"' + (st.hints >= cfg.hints.length ? " disabled" : "") + '>' + hintBtnLabel + '</button>' +
+          '<button type="button" class="btn ghost small" data-fixit-reset="' + e.id + '">Restore the broken program</button>' +
+          (st.done ? '<span style="font-weight:700;color:var(--accent-strong);">Fixed ✓</span>' : "") +
+        '</div>' +
+        '<div class="fixit-hints" id="fixit-hints-' + e.id + '">' +
+          cfg.hints.slice(0, st.hints).map(function (h, i) { return '<div class="fixit-hint"><b>Hint ' + (i + 1) + '.</b> ' + h + '</div>'; }).join("") +
+        '</div>' +
+        '<div class="fixit-msg' + (st.done ? " show good" : "") + '" id="fixit-msg-' + e.id + '" role="status">' + (st.done ? fixitSuccessHtml(st) : "") + '</div>' +
+      '</div>';
+    }
+    function fixitRun(id) {
+      var cfg = FIXIT[id]; if (!cfg) return;
+      var ed = $("fixit-code-" + id); if (!ed) return;
+      var st = fixitOf(id);
+      st.code = ed.value;
+      st.attempts++;
+      var res = makeRunProgram(ed.value, "");
+      var msg = $("fixit-msg-" + id);
+      if (res.ok) {
+        st.done = true;
+        st.lastOut = res.output;
+        announce("Fix-it round complete: the program now runs clean.");
+        // Re-render so the round shows its Fixed state (button row badge,
+        // success panel); the typed code survives via fixitState.
+        renderTrans($("trans-search").value);
+        var el2 = $("trans-" + id);
+        if (el2) el2.scrollIntoView({ block: "nearest" });
+      } else {
+        st.done = false;
+        if (msg) {
+          msg.className = "fixit-msg show bad";
+          msg.innerHTML = "Not yet — the machine stopped:" + '<span class="mono">' + esc(res.error) + "</span>" +
+            "Fix one thing, then run it again." + (st.hints < cfg.hints.length ? " Or ask for a hint." : "");
+        }
+        announce("Not yet. The machine says: " + res.error);
+      }
+    }
+    function fixitHint(id) {
+      var cfg = FIXIT[id]; if (!cfg) return;
+      var st = fixitOf(id);
+      var ed = $("fixit-code-" + id); if (ed) st.code = ed.value;
+      if (st.hints >= cfg.hints.length) return;
+      st.hints++;
+      renderTrans($("trans-search").value);
+      var el = $("trans-" + id);
+      if (el) {
+        var ed2 = el.querySelector(".fixit-editor"); if (ed2) ed2.focus();
+        var hints = el.querySelectorAll(".fixit-hint");
+        if (hints.length) announce("Hint " + st.hints + " of " + cfg.hints.length + " shown for this fix-it round.");
+      }
+    }
+    function fixitReset(id) {
+      var cfg = FIXIT[id]; if (!cfg) return;
+      fixitState[id] = { code: cfg.code, hints: 0, done: false, attempts: 0, lastOut: null };
+      renderTrans($("trans-search").value);
+      announce("Fix-it round restored to the broken program.");
+      var el = $("trans-" + id);
+      if (el) { var ed = el.querySelector(".fixit-editor"); if (ed) ed.focus(); }
+    }
+    document.addEventListener("click", function (ev) {
+      var t = ev.target;
+      var c = t && t.closest ? t.closest("[data-fixit-run],[data-fixit-hint],[data-fixit-reset]") : null;
+      if (!c) return;
+      if (c.hasAttribute("data-fixit-run")) fixitRun(parseInt(c.getAttribute("data-fixit-run"), 10));
+      else if (c.hasAttribute("data-fixit-hint")) fixitHint(parseInt(c.getAttribute("data-fixit-hint"), 10));
+      else if (c.hasAttribute("data-fixit-reset")) fixitReset(parseInt(c.getAttribute("data-fixit-reset"), 10));
+    });
+    document.addEventListener("input", function (ev) {
+      var t = ev.target;
+      if (t && t.getAttribute && t.hasAttribute("data-fixit-editor")) {
+        var id = parseInt(t.getAttribute("data-fixit-editor"), 10);
+        if (FIXIT[id]) fixitOf(id).code = t.value;
+      }
+    });
+
     var transOpen = {};
     function renderTrans(filter) {
       var q = (filter || "").trim().toLowerCase();
@@ -7778,7 +8041,8 @@ int main() {
         var body = document.createElement("div"); body.className = "trans-body";
         body.innerHTML = '<div class="trans-raw"><span class="rlabel">As g++ prints it</span>' + esc(e.raw) + '</div>' +
           '<div class="trans-grid"><div><h4>In plain English</h4><p>' + e.meaning + '</p></div><div><h4>What in your code causes it</h4><p>' + e.cause + '</p></div></div>' +
-          '<div class="trans-fix"><h4>The fix — before → after</h4><div class="fix-compare"><div class="fix-box before"><span class="flabel">Before — broken</span>' + esc(e.before) + '</div><div class="fix-box after"><span class="flabel">After — fixed</span>' + esc(e.after) + "</div></div></div>";
+          '<div class="trans-fix"><h4>The fix — before → after</h4><div class="fix-compare"><div class="fix-box before"><span class="flabel">Before — broken</span>' + esc(e.before) + '</div><div class="fix-box after"><span class="flabel">After — fixed</span>' + esc(e.after) + "</div></div></div>" +
+          fixitHtml(e);
         item.appendChild(body);
         list.appendChild(item);
       });
@@ -8444,6 +8708,162 @@ int main() {
         btns[i].addEventListener("click", function () { setBgTheme(this.getAttribute("data-bg-choice")); });
       }
       applyBgTheme("white");
+    })();
+
+    /* ================= Reading comfort: Reduce motion / Larger text =================
+       Two view preferences beside Background, handled exactly like it:
+       persisted additively inside tracefirst-progress-v1, never progress,
+       both default off. Reduce motion sets data-motion="reduced" on the
+       root (CSS stills transitions/animations in every theme) and makes
+       reducedMotion() — the one function the tracer, lecture playback,
+       and Replay jump already consult — return true, so steps advance
+       with no animated arrows or jump arcs. Larger text sets
+       data-textsize="large", scaling the root font size so code and body
+       text grow across the whole platform. */
+    var reduceMotionPref = false;
+    var largeTextPref = false;
+    function applyComfort() {
+      if (reduceMotionPref) document.documentElement.setAttribute("data-motion", "reduced");
+      else document.documentElement.removeAttribute("data-motion");
+      if (largeTextPref) document.documentElement.setAttribute("data-textsize", "large");
+      else document.documentElement.removeAttribute("data-textsize");
+      var mt = $("motion-toggle"); if (mt) mt.setAttribute("aria-pressed", reduceMotionPref ? "true" : "false");
+      var tt = $("textsize-toggle"); if (tt) tt.setAttribute("aria-pressed", largeTextPref ? "true" : "false");
+    }
+    function setReduceMotionPref(on) {
+      if (reduceMotionPref === !!on) { applyComfort(); return; }
+      reduceMotionPref = !!on;
+      applyComfort();
+      // A marker or arc caught mid-flight should stop travelling now.
+      if (reduceMotionPref && typeof clearFlowArc === "function") clearFlowArc();
+      announce(reduceMotionPref
+        ? "Reduced motion on. Steps now advance without animated arrows or jump arcs. Nothing else about your work has changed."
+        : "Reduced motion off. Animated arrows and jump arcs are back — unless your system setting asks for reduced motion, which TraceFirst still honours.");
+      try { tfSave(); } catch (e) {}
+    }
+    function setLargeTextPref(on) {
+      if (largeTextPref === !!on) { applyComfort(); return; }
+      largeTextPref = !!on;
+      applyComfort();
+      announce(largeTextPref
+        ? "Larger text on. Code and page text are bigger everywhere. Nothing else about your work has changed."
+        : "Larger text off. Text is back to the standard size. Nothing else about your work has changed.");
+      try { tfSave(); } catch (e) {}
+    }
+    (function wireComfort() {
+      var mt = $("motion-toggle");
+      if (mt) mt.addEventListener("click", function () { setReduceMotionPref(!reduceMotionPref); });
+      var tt = $("textsize-toggle");
+      if (tt) tt.addEventListener("click", function () { setLargeTextPref(!largeTextPref); });
+      applyComfort();
+    })();
+
+    /* ================= Printable prediction worksheet =================
+       The current tracer exercise as a paper worksheet: page 1 carries
+       the code, the prediction question with blank boxes to tick and
+       write on, a blank step table, blank final-memory boxes, and a
+       blank output box; page 2 is the instructor answer key with the
+       exercise's own verified trace (its steps' lines, memory values,
+       output, and notes — the same data the tracer steps through).
+       Printing uses the reference card's isolation approach: print CSS
+       hides everything except #worksheet-print, and only while the body
+       carries .ws-printing, so the card's own print is untouched. The
+       sheet names no institution and no course. */
+    function wsPlain(html) {
+      var d = document.createElement("div");
+      d.innerHTML = html || "";
+      return d.textContent || "";
+    }
+    function wsVarsOf(ex) {
+      var order = [], types = {}, finals = {};
+      ex.steps.forEach(function (st) {
+        Object.keys(st.vars || {}).forEach(function (nm) {
+          if (!(nm in types)) { order.push(nm); types[nm] = st.vars[nm][0]; }
+          finals[nm] = st.vars[nm][1];
+        });
+      });
+      return { order: order, types: types, finals: finals };
+    }
+    function wsVarsText(st) {
+      var names = Object.keys(st.vars || {});
+      if (!names.length) return "—";
+      return names.map(function (nm) { return nm + " = " + st.vars[nm][1]; }).join(";  ");
+    }
+    function buildWorksheet() {
+      var ex = EXERCISES[state.current], n = state.current + 1;
+      var info = wsVarsOf(ex);
+      var finalOut = ex.steps.length ? (ex.steps[ex.steps.length - 1].out || "") : "";
+      var codeHtml = ex.code.map(function (ln, i) {
+        return '<div class="wl"><span class="wln">' + (i + 1) + '</span><span>' + esc(ln) + "</span></div>";
+      }).join("");
+      var optsBlank = ex.options.map(function (o) {
+        return '<li><span class="ws-check" aria-hidden="true"></span><span>' + esc(o) + "</span></li>";
+      }).join("");
+      var optsKey = ex.options.map(function (o, i) {
+        return '<li' + (i === ex.correct ? ' class="correct"' : "") + '><span class="ws-check" aria-hidden="true">' + (i === ex.correct ? "✓" : "") + '</span><span>' + esc(o) + (i === ex.correct ? " — the correct prediction" : "") + "</span></li>";
+      }).join("");
+      var blankRows = ex.steps.map(function (_, i) {
+        return "<tr><td>" + (i + 1) + '</td><td class="ws-blank"></td><td class="ws-blank"></td><td class="ws-blank"></td></tr>';
+      }).join("");
+      var keyRows = ex.steps.map(function (st, i) {
+        return "<tr><td>" + (i + 1) + "</td><td>" + (st.line + 1) + '</td><td class="mono">' + esc(wsVarsText(st)) + '</td><td class="mono">' + esc(st.out ? st.out : "—") + "</td><td>" + esc(wsPlain(st.note)) + "</td></tr>";
+      }).join("");
+      var memBlank = info.order.map(function (nm) {
+        return '<div class="ws-membox"><span class="mn">' + esc(nm) + '</span><span class="mt">' + esc(info.types[nm]) + '</span><div class="mv"></div></div>';
+      }).join("");
+      var memKey = info.order.map(function (nm) {
+        return '<div class="ws-membox"><span class="mn">' + esc(nm) + '</span><span class="mt">' + esc(info.types[nm]) + '</span><div class="mv">' + esc(info.finals[nm]) + "</div></div>";
+      }).join("");
+      var head = '<div class="ws-kicker">TraceFirst · Prediction worksheet</div>' +
+        "<h2>Exercise " + n + " — " + esc(ex.title) + "</h2>" +
+        '<p class="ws-note">' + esc(ex.concept) + " · Field: " + esc(SKINS[state.skin].name) + "</p>";
+      var page1 = '<div class="ws-page">' + head +
+        '<div class="ws-meta"><div class="ws-field"><span>Name</span></div><div class="ws-field"><span>Date</span></div></div>' +
+        '<p class="ws-story">' + esc(wsPlain(ex.stories[state.skin])) + "</p>" +
+        '<p class="ws-goal"><strong>The idea:</strong> ' + esc(wsPlain(ex.goal)) + "</p>" +
+        "<h3>The program</h3>" +
+        '<div class="ws-code">' + codeHtml + "</div>" +
+        "<h3>1 · Predict — before you trace anything</h3>" +
+        '<p class="ws-note"><strong>' + esc(ex.question) + "</strong> Tick one box. A prediction you commit to on paper is the point: the trace below is read against it.</p>" +
+        '<ul class="ws-opts">' + optsBlank + "</ul>" +
+        '<p class="ws-note" style="margin-top:10px;">Why I predicted this:</p><div class="ws-write"></div><div class="ws-write"></div>' +
+        "<h3>2 · Trace it on paper — one row per step</h3>" +
+        '<table class="ws-table"><thead><tr><th style="width:8%;">Step</th><th style="width:10%;">Line</th><th>Memory after this step (each box: name = value)</th><th style="width:24%;">Output so far</th></tr></thead><tbody>' + blankRows + "</tbody></table>" +
+        "<h3>3 · When the program ends</h3>" +
+        '<p class="ws-note">Final memory — fill in each box:</p>' +
+        '<div class="ws-mem">' + memBlank + "</div>" +
+        '<p class="ws-note" style="margin-top:10px;">Program output:</p>' +
+        '<div class="ws-outbox"></div>' +
+        '<p class="ws-note" style="margin-top:10px;">Bring this sheet back to the tracer, run the same exercise, and compare step by step: where your trace and the machine part is where the learning is.</p>' +
+      "</div>";
+      var page2 = '<div class="ws-page ws-key">' +
+        '<div class="ws-kicker">Answer key — for the instructor · TraceFirst</div>' +
+        "<h2>Exercise " + n + " — " + esc(ex.title) + "</h2>" +
+        '<p class="ws-note">' + esc(ex.concept) + " · Field: " + esc(SKINS[state.skin].name) + "</p>" +
+        "<h3>The prediction</h3>" +
+        '<p class="ws-note"><strong>' + esc(ex.question) + '</strong></p>' +
+        '<ul class="ws-opts">' + optsKey + "</ul>" +
+        "<h3>The verified trace</h3>" +
+        '<table class="ws-table"><thead><tr><th style="width:7%;">Step</th><th style="width:8%;">Line</th><th style="width:27%;">Memory after this step</th><th style="width:16%;">Output so far</th><th>What happens</th></tr></thead><tbody>' + keyRows + "</tbody></table>" +
+        "<h3>Final memory</h3>" +
+        '<div class="ws-mem">' + memKey + "</div>" +
+        '<p class="ws-note" style="margin-top:10px;">Final program output:</p>' +
+        '<div class="ws-outbox">' + esc(finalOut === "" ? "(the program prints nothing)" : finalOut) + "</div>" +
+      "</div>";
+      return page1 + page2;
+    }
+    function printWorksheet() {
+      var box = $("worksheet-print");
+      if (!box) return;
+      box.innerHTML = buildWorksheet();
+      document.body.classList.add("ws-printing");
+      announce("Printing the worksheet for Exercise " + (state.current + 1) + ": page one is the blank worksheet, page two is the answer key.");
+      window.print();
+    }
+    window.addEventListener("afterprint", function () { document.body.classList.remove("ws-printing"); });
+    (function wireWorksheet() {
+      var btn = $("worksheet-btn");
+      if (btn) btn.addEventListener("click", printWorksheet);
     })();
 
     /* ================= "Why I predicted this" rationale wiring =================
@@ -13020,7 +13440,7 @@ int main() {
       } catch (e) { tfStorageOk = false; return null; }
     }
     function tfCollect() {
-      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", playbackSpeed: playbackSpeed, bgTheme: bgTheme, primerRead: !!primerRead, tracer: [], bolt: null, gym: [], bridge: [], make: [], challenges: null, authoredExercises: [], instructorExercises: [],
+      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", playbackSpeed: playbackSpeed, bgTheme: bgTheme, reduceMotionPref: !!reduceMotionPref, largeTextPref: !!largeTextPref, primerRead: !!primerRead, tracer: [], bolt: null, gym: [], bridge: [], make: [], challenges: null, authoredExercises: [], instructorExercises: [],
         testOut: (typeof testOut !== "undefined" && testOut)
           ? { passed: !!testOut.passed, score: (typeof testOut.score === "number" ? testOut.score : 0), via: (Array.isArray(testOut.via) ? testOut.via.slice() : [false, false, false]) }
           : { passed: false, score: 0, via: [false, false, false] } };
@@ -13256,6 +13676,10 @@ int main() {
       } catch (e) {}
       // Background theme (additive view preference; absent in older saves)
       if (d.bgTheme === "black" || d.bgTheme === "green" || d.bgTheme === "white" || d.bgTheme === "default") applyBgTheme(d.bgTheme === "default" ? "white" : d.bgTheme);
+      // Reading comfort (additive view preferences; absent in older saves = off)
+      if (typeof d.reduceMotionPref === "boolean") reduceMotionPref = d.reduceMotionPref;
+      if (typeof d.largeTextPref === "boolean") largeTextPref = d.largeTextPref;
+      if (typeof applyComfort === "function") applyComfort();
       // Primer
       if (d.primerRead) { primerRead = true; primerOpened = true; }
       // Bits view preference (additive field; absent in older saves)
