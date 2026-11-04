@@ -33,8 +33,6 @@ TraceFirst is under active development toward a full platform:
 - A graphical interface and a downloadable app, alongside the web version.
 - Growth along the pathway its author teaches: the introductory C++ sequence first, then the introduction to systems and computer organization, so a student can follow one continuous route from her first program to the operating system.
 
-Design references, for ambition rather than imitation: Alice (Carnegie Mellon) for meeting novices inside a designed environment, GeeksforGeeks for the union of explanation and practice, and Stanford's Code in Place for teaching programming at community scale.
-
 ## License
 
 MIT — see [LICENSE](LICENSE). Copyright (c) 2026 Ebuka Philip Oguchi.
