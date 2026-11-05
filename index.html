@@ -1364,28 +1364,102 @@
       }
       .drawer-sub-row:hover,.drawer-sub-row:focus-visible{color:var(--accent-strong)}
       @media (prefers-reduced-motion: reduce){ .mode-caret svg{transition:none} }
+
+      /* ---------- Declutter pass: one Display menu, two button styles, one spacing scale ----------
+         Reorganization only: no control, exercise, or content item is removed.
+         Primary = .btn (solid accent, the one main action in each local context).
+         Quiet = .btn.ghost and every other button: transparent, single hairline border. */
+      .wrap { padding-top: 20px; }
+      .bgbar { justify-content: flex-start; gap: 8px; margin-bottom: 14px; }
+      .bgbar .ref-open-btn { margin-right: 0; }
+      .hdr-btn {
+        display: inline-flex; align-items: center; gap: 7px; min-height: 38px;
+        border: 1.5px solid var(--line); background: var(--panel); color: var(--ink);
+        border-radius: 8px; padding: 7px 13px; font-weight: 700; font-size: .88rem;
+        text-decoration: none; cursor: pointer; font-family: inherit;
+      }
+      .hdr-btn:hover { border-color: var(--accent); color: var(--accent-strong); }
+      .bgbar-note { font-size: .8rem; color: var(--ink-soft); flex: 1 1 220px; }
+      .display-wrap { position: relative; }
+      .display-popover {
+        position: absolute; top: calc(100% + 8px); left: 0; z-index: 120;
+        background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+        box-shadow: var(--shadow); padding: 14px; display: grid; gap: 8px; min-width: 264px;
+      }
+      .display-popover[hidden] { display: none; }
+      .display-popover .bgbar-label { font-family: "IBM Plex Mono", monospace; font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+      .display-note { font-size: .8rem; color: var(--ink-soft); }
+      @media (max-width: 700px) {
+        .bgbar { flex-wrap: wrap; overflow-x: visible; }
+        .bgbar-note { display: none; }
+        .hdr-btn { padding: 7px 10px; font-size: .84rem; white-space: nowrap; }
+        .bgbar .ref-open-btn { padding: 7px 10px; font-size: .84rem; white-space: nowrap; }
+        .display-popover { position: fixed; left: 12px; right: 12px; top: auto; min-width: 0; }
+      }
+      /* Two button styles, applied everywhere */
+      .btn.ghost { border: 1px solid var(--line); color: var(--ink); }
+      .btn.ghost:hover:not(:disabled) { border-color: var(--accent); color: var(--accent-strong); background: var(--accent-soft); }
+      /* One spacing scale */
+      .card { padding: 18px; }
+      .card + .card { margin-top: 14px; }
+      .toolbar { padding: 14px; gap: 12px; margin-top: 20px; }
+      .grid { gap: 14px; margin-top: 14px; }
+      /* Compact pickers: Bolt worlds and Gym rounds as tidy grids */
+      #boltnav, #gymnav { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 6px; }
+      #boltnav .ex-btn, #gymnav .ex-btn { padding: 6px 10px; font-size: .86rem; border-width: 1px; border-radius: 8px; }
+      #boltnav .chip-btn, #gymnav .chip-btn { padding: 6px 10px; font-size: .84rem; }
+      /* Share & print: one quiet row at the foot of the exercise card */
+      .share-print-row { border-top: 1px dashed var(--line); padding-top: 10px; margin-top: 0; }
+      .share-print-wrap { margin-top: 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 12px 18px; }
+      .share-print-label { font-family: "IBM Plex Mono", monospace; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+      /* Session & instructor tools: one collapsed area in the Tracer */
+      .session-tools { margin-top: 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+      .session-tools > summary { cursor: pointer; padding: 13px 16px; font-weight: 700; font-size: .98rem; display: flex; justify-content: space-between; align-items: center; gap: 10px; list-style: none; }
+      .session-tools > summary::-webkit-details-marker { display: none; }
+      .session-tools > summary:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; }
+      .session-tools .gcount { font-family: "IBM Plex Mono", monospace; font-size: .75rem; font-weight: 600; color: var(--ink-soft); white-space: nowrap; }
+      .session-tools-inner { padding: 0 14px 14px; display: grid; gap: 12px; }
+      .session-tools-inner > section { margin-top: 0 !important; }
+      .session-tools-inner .lecture-entry { margin-top: 0; }
+      #tracer-mode.lecture-on .session-tools { display: none !important; }
+      /* Bolt command card as one collapsible reference block */
+      .bolt-cmd-details > summary.bolt-cmd-summary { cursor: pointer; font-weight: 700; font-size: 1rem; display: flex; justify-content: space-between; align-items: center; gap: 10px; list-style: none; }
+      .bolt-cmd-details > summary::-webkit-details-marker { display: none; }
+      .bolt-cmd-details > summary:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; }
+      .bolt-cmd-details .gcount { font-family: "IBM Plex Mono", monospace; font-size: .75rem; font-weight: 600; color: var(--ink-soft); white-space: nowrap; }
+      /* Translator: compact accordion rows */
+      .trans-list { gap: 6px; margin-top: 10px; }
+      .trans-head { padding: 11px 13px; }
+      .trans-body { padding: 13px; }
+      /* Challenges: compact task stack */
+      #ch-tasks { display: grid; gap: 12px; }
+      #ch-tasks .card { margin-top: 0; }
     </style>
   </head>
   <body>
     <main class="wrap">
       <div class="bgbar">
+        <a class="hdr-btn" href="#start-here">Start Here</a>
         <button type="button" class="ref-open-btn ref-open-trigger" id="ref-open-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="ref-panel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5v13z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg>Reference</button>
-        <span class="bgbar-label" id="bgbar-label">Background</span>
-        <div class="bits-group" role="group" aria-labelledby="bgbar-label">
-          <button type="button" class="bg-btn" data-bg-choice="white" aria-pressed="true"><span class="swatch white" aria-hidden="true"></span>White</button>
-          <button type="button" class="bg-btn" data-bg-choice="black" aria-pressed="false"><span class="swatch black" aria-hidden="true"></span>Black</button>
-          <button type="button" class="bg-btn" data-bg-choice="green" aria-pressed="false"><span class="swatch green" aria-hidden="true"></span>Green</button>
+        <div class="display-wrap">
+          <button type="button" class="hdr-btn" id="display-toggle" aria-expanded="false" aria-haspopup="true" aria-controls="display-popover">Display <span aria-hidden="true">&#9662;</span></button>
+          <div class="display-popover" id="display-popover" role="group" aria-label="Display settings" hidden>
+            <span class="bgbar-label" id="bgbar-label">Background</span>
+            <div class="bits-group" role="group" aria-labelledby="bgbar-label">
+              <button type="button" class="bg-btn" data-bg-choice="white" aria-pressed="true"><span class="swatch white" aria-hidden="true"></span>White</button>
+              <button type="button" class="bg-btn" data-bg-choice="black" aria-pressed="false"><span class="swatch black" aria-hidden="true"></span>Black</button>
+              <button type="button" class="bg-btn" data-bg-choice="green" aria-pressed="false"><span class="swatch green" aria-hidden="true"></span>Green</button>
+            </div>
+            <span class="bgbar-label" id="comfort-label">Reading comfort</span>
+            <div class="bits-group" role="group" aria-labelledby="comfort-label">
+              <button type="button" class="bg-btn comfort-btn" id="motion-toggle" aria-pressed="false"><span class="cdot" aria-hidden="true"></span>Reduce motion</button>
+              <button type="button" class="bg-btn comfort-btn" id="textsize-toggle" aria-pressed="false"><span class="cdot" aria-hidden="true"></span>Larger text</button>
+            </div>
+            <p class="display-note">Display choices are saved in this browser, on this device.</p>
+          </div>
         </div>
-        <span class="bgbar-label" id="comfort-label">Reading comfort</span>
-        <div class="bits-group" role="group" aria-labelledby="comfort-label">
-          <button type="button" class="bg-btn comfort-btn" id="motion-toggle" aria-pressed="false"><span class="cdot" aria-hidden="true"></span>Reduce motion</button>
-          <button type="button" class="bg-btn comfort-btn" id="textsize-toggle" aria-pressed="false"><span class="cdot" aria-hidden="true"></span>Larger text</button>
-        </div>
-        <span class="bgbar-label" id="offline-label">Offline</span>
-        <div class="bits-group" role="group" aria-labelledby="offline-label">
-          <button type="button" class="bg-btn" id="offline-download-btn" title="Downloads one self-contained HTML file with the whole platform. Progress in the downloaded copy is stored separately, in that browser.">Download offline copy</button>
-        </div>
-        <span style="font-size:.8rem;color:var(--ink-soft);">One file, works with no internet. Progress in the downloaded copy is stored separately in that browser.</span>
+        <button type="button" class="hdr-btn" id="offline-download-btn" title="Downloads one self-contained HTML file with the whole platform. Progress in the downloaded copy is stored separately, in that browser.">Download offline copy</button>
+        <span class="bgbar-note">One file, works with no internet. Progress in the downloaded copy is stored separately in that browser.</span>
       </div>
       <section class="intro">
         <h1>Predict before you run.</h1>
@@ -1636,8 +1710,8 @@
               <div class="bolt-msg info show" id="bolt-msg" role="status">Choose a world, write Bolt's program, then press Run or Step.</div>
             </section>
 
-            <section class="card" id="bolt-commands" aria-labelledby="bolt-cmds-h">
-              <h3 id="bolt-cmds-h">Bolt's command card</h3>
+            <details class="card bolt-cmd-details" id="bolt-commands" aria-labelledby="bolt-cmds-h"><summary class="bolt-cmd-summary"><span id="bolt-cmds-h">Bolt's command card</span><span class="gcount">Commands &middot; sensors &middot; patterns &#9662;</span></summary>
+              
               <div class="bolt-cmds">
                 <div>
                   <h4>Commands — every one ends with ;</h4>
@@ -1674,7 +1748,7 @@ for (int i = 0; i < 3; i++) {
                   <p style="margin-top:8px;">Decide with <code>if (cellsPresent()) { ... } else { ... }</code>. Define a helper once with <code>void name() { ... }</code>, then call it anywhere with <code>name();</code>.</p>
                 </div>
               </div>
-            </section>
+            </details>
           </div>
         </div>
 
@@ -1692,17 +1766,7 @@ for (int i = 0; i < 3; i++) {
         <div class="brief-checks" id="brief-checks"></div>
         <p class="journal-status" id="brief-status" role="status"></p>
       </section>
-      <section class="card" id="review-panel" aria-labelledby="review-h" style="margin-top:14px;">
-        <span class="concept-tag">Review · spaced practice</span>
-        <h3 id="review-h" style="font-size:1.15rem;">Review: bring old ideas back before they fade</h3>
-        <p style="font-size:.93rem;color:var(--ink-soft);margin-top:6px;">A mixed review set is assembled from exercises that are <strong>due</strong>: ones you got wrong before, ones you have not attempted recently, and ones never attempted. Answering here updates the same mastery record as the tracer itself. This all happens in this page, on this device — there are no accounts and no notifications.</p>
-        <div class="potd-box" id="potd-box" aria-labelledby="potd-h">
-          <h4 id="potd-h" style="font-size:1rem;">Problem of the Day</h4>
-          <div id="potd-body"></div>
-        </div>
-        <div class="lockrow"><button class="btn ghost" type="button" id="review-build">Build my review set</button><span class="locknote" id="review-note">Up to five due exercises, as fresh prediction attempts.</span></div>
-        <div id="review-list"></div>
-      </section>
+      
       <p class="meet-link">New to reading code? <button class="text-link" type="button" id="meet-code-link">Meet the Code first.</button> It names every line of a short program before Exercise 1 asks you to predict one.</p>
       <div class="sr-live" aria-live="polite" aria-atomic="true" id="tracer-live"></div>
       <section class="toolbar" id="tracer-exercises" aria-label="Choose your field and exercise">
@@ -1718,13 +1782,7 @@ for (int i = 0; i < 3; i++) {
         <div class="scorebar" id="scorebar" aria-label="Your saved record"></div>
       </section>
 
-      <section class="lecture-entry" id="lecture-entry" aria-labelledby="lecture-entry-h">
-        <div>
-          <h3 id="lecture-entry-h">Teaching a class? Lecture mode</h3>
-          <p><strong>Facilitator mode for one projected screen.</strong> Project an exercise, tally the class's predictions here as students call them out, watch the split together, then step through the trace with that split pinned beside it. It runs entirely on this screen and leaves every student's own record untouched.</p>
-        </div>
-        <button class="btn" type="button" id="lecture-open-btn">Open Lecture mode</button>
-      </section>
+      
 
       <section class="lecture-panel" id="lecture-panel" hidden aria-labelledby="lecture-h">
         <div class="lecture-head">
@@ -1884,18 +1942,14 @@ for (int i = 0; i < 3; i++) {
             <h2 id="ex-title"></h2>
             <p class="story" id="ex-story"></p>
             <p class="goal" id="ex-goal"></p>
-            <div class="lockrow" style="margin-top:12px;">
-              <button class="btn ghost small" type="button" id="worksheet-btn">Print worksheet</button>
-              <button class="btn ghost small" type="button" id="share-link-btn">Copy prediction link</button>
-              <span class="copy-status" id="share-link-status" role="status"></span>
-              <span style="font-size:.85rem;color:var(--ink-soft);">This exercise on paper: code, blank prediction and memory boxes — answer key on page two. The prediction link opens this exercise, ready to predict — it carries no answer and no progress.</span>
-            </div>
+            
             <div class="codebox flowbox">
               <div class="codehead"><span>program.cpp</span><span>C++</span></div>
               <pre id="code" aria-label="Program code"></pre>
               <svg class="flow-svg" id="flow-svg" aria-hidden="true" focusable="false"><path id="flow-arc" d=""></path></svg>
               <div class="flow-marker" id="flow-marker" aria-hidden="true"></div>
             </div>
+              
           </section>
 
           <section class="card" aria-labelledby="predict-h">
@@ -1978,6 +2032,12 @@ for (int i = 0; i < 3; i++) {
             </div>
             <div class="feedback" id="modify-feedback" role="status"></div>
           </section>
+          <div class="share-print-wrap"><div class="lockrow share-print-row"><span class="share-print-label">Share &amp; print</span>
+              <button class="btn ghost small" type="button" id="worksheet-btn">Print worksheet</button>
+              <button class="btn ghost small" type="button" id="share-link-btn">Copy prediction link</button>
+              <span class="copy-status" id="share-link-status" role="status"></span>
+              <span style="font-size:.85rem;color:var(--ink-soft);">This exercise on paper: code, blank prediction and memory boxes — answer key on page two. The prediction link opens this exercise, ready to predict — it carries no answer and no progress.</span>
+            </div></div>
         </div>
 
         <div>
@@ -2045,8 +2105,28 @@ for (int i = 0; i < 3; i++) {
           <button class="btn ghost" id="review-btn">Review an exercise</button>
         </div>
       </section>
-
-      <section class="card" style="margin-top:18px;" aria-labelledby="journal-h">
+      <details class="session-tools" id="session-tools">
+        <summary><span class="session-tools-title">Session &amp; instructor tools</span><span class="gcount">Review &middot; Problem of the Day &middot; Lecture mode &middot; Journal &middot; Crosswalk &#9662;</span></summary>
+        <div class="session-tools-inner">
+<section class="card" id="review-panel" aria-labelledby="review-h" style="margin-top:14px;">
+        <span class="concept-tag">Review · spaced practice</span>
+        <h3 id="review-h" style="font-size:1.15rem;">Review: bring old ideas back before they fade</h3>
+        <p style="font-size:.93rem;color:var(--ink-soft);margin-top:6px;">A mixed review set is assembled from exercises that are <strong>due</strong>: ones you got wrong before, ones you have not attempted recently, and ones never attempted. Answering here updates the same mastery record as the tracer itself. This all happens in this page, on this device — there are no accounts and no notifications.</p>
+        <div class="potd-box" id="potd-box" aria-labelledby="potd-h">
+          <h4 id="potd-h" style="font-size:1rem;">Problem of the Day</h4>
+          <div id="potd-body"></div>
+        </div>
+        <div class="lockrow"><button class="btn ghost" type="button" id="review-build">Build my review set</button><span class="locknote" id="review-note">Up to five due exercises, as fresh prediction attempts.</span></div>
+        <div id="review-list"></div>
+      </section>
+<section class="lecture-entry" id="lecture-entry" aria-labelledby="lecture-entry-h">
+        <div>
+          <h3 id="lecture-entry-h">Teaching a class? Lecture mode</h3>
+          <p><strong>Facilitator mode for one projected screen.</strong> Project an exercise, tally the class's predictions here as students call them out, watch the split together, then step through the trace with that split pinned beside it. It runs entirely on this screen and leaves every student's own record untouched.</p>
+        </div>
+        <button class="btn" type="button" id="lecture-open-btn">Open Lecture mode</button>
+      </section>
+<section class="card" style="margin-top:18px;" aria-labelledby="journal-h">
         <h3 id="journal-h">Your prediction journal</h3>
         <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">Download a plain-text record of every prediction you have locked in: what you predicted, what the program printed, and — when you parted — the line where your model and the machine diverged. You can submit this file to your instructor.</p>
         <div class="journal-actions">
@@ -2055,12 +2135,18 @@ for (int i = 0; i < 3; i++) {
         </div>
         <p class="journal-status" id="journal-status" role="status"></p>
       </section>
-
-      <section class="card crosswalk-card" id="crosswalk-section" aria-labelledby="crosswalk-h">
+<section class="card crosswalk-card" id="crosswalk-section" aria-labelledby="crosswalk-h">
         <h3 id="crosswalk-h">Topic crosswalk</h3>
         <p class="cw-note">Every built-in tracer exercise, matched to the topic it reinforces, in textbook order. Exercises are matched by topic title, not section number: numbering varies by textbook and course setup, topics do not. Open a topic, then pick an exercise to load it in the tracer.</p>
         <div class="cw-list" id="crosswalk-list"></div>
       </section>
+        </div>
+      </details>
+
+
+      
+
+      
 
       
 
@@ -2455,7 +2541,7 @@ int main() {
           <div class="make-msg" id="trace-msg" role="status" style="margin-top:12px;"></div>
         </section>
 
-        <section id="make-ladders" aria-labelledby="ladders-h" style="margin-top:22px;">
+        <details class="ch-collapse ladders-details" id="make-ladders" style="margin-top:22px;"><summary>Micro-problem ladders <span class="gcount">4 ladders &middot; 24 problems &#9662;</span></summary><div class="ch-collapse-inner">
           <div class="make-intro" style="margin-top:0;">
             <h2 id="ladders-h" style="font-size:1.45rem;">Micro-problem ladders</h2>
             <p>Volume practice, one small function at a time. Four ladders — Strings, Arrays &amp; Vectors, Loops &amp; Numbers, Logic &amp; Conditionals — six problems each, rising in difficulty. Complete the function in the small editor; the machine judges it instantly against the test table. Progress per ladder is saved in this browser.</p>
@@ -2465,7 +2551,7 @@ int main() {
             <span class="locknote" id="ladder-summary" role="status"></span>
           </div>
           <div id="ladders"></div>
-        </section>
+        </div></details>
         <p class="foot"><strong>Keep your work:</strong> your programs are saved in this browser, on this device, so they are here when you return. Copy a finished program into your own files as a backup.</p>
       </div><!-- /make-mode -->
 
@@ -9126,7 +9212,7 @@ int main() {
     function applyBgTheme(t) {
       bgTheme = (t === "black" || t === "green") ? t : "white";
       document.documentElement.setAttribute("data-bg", bgTheme);
-      var btns = document.querySelectorAll(".bg-btn");
+      var btns = document.querySelectorAll(".bg-btn[data-bg-choice]");
       for (var i = 0; i < btns.length; i++) {
         btns[i].setAttribute("aria-pressed", btns[i].getAttribute("data-bg-choice") === bgTheme ? "true" : "false");
       }
@@ -9138,7 +9224,7 @@ int main() {
       try { tfSave(); } catch (e) {}
     }
     (function wireBgTheme() {
-      var btns = document.querySelectorAll(".bg-btn");
+      var btns = document.querySelectorAll(".bg-btn[data-bg-choice]");
       for (var i = 0; i < btns.length; i++) {
         btns[i].addEventListener("click", function () { setBgTheme(this.getAttribute("data-bg-choice")); });
       }
@@ -14678,6 +14764,36 @@ int main() {
         var first = focusables[0], last = focusables[focusables.length - 1];
         if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
         else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      });
+    })();
+    </script>
+    <script>
+    /* Declutter pass: Display menu (Background / Reduce motion / Larger text in one popover).
+       The controls inside keep their original ids, classes, and handlers; this script only
+       opens and closes the popover around them. */
+    (function () {
+      var toggle = document.getElementById("display-toggle");
+      var pop = document.getElementById("display-popover");
+      if (!toggle || !pop) return;
+      function setOpen(open) {
+        pop.hidden = !open;
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        if (open) {
+          var first = pop.querySelector("button");
+          if (first) { try { first.focus(); } catch (e) {} }
+        }
+      }
+      toggle.addEventListener("click", function (ev) {
+        ev.stopPropagation();
+        setOpen(pop.hidden);
+      });
+      pop.addEventListener("click", function (ev) { ev.stopPropagation(); });
+      document.addEventListener("click", function () { if (!pop.hidden) setOpen(false); });
+      document.addEventListener("keydown", function (ev) {
+        if (ev.key === "Escape" && !pop.hidden) {
+          setOpen(false);
+          try { toggle.focus(); } catch (e) {}
+        }
       });
     })();
     </script>
