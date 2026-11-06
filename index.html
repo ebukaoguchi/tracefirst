@@ -318,6 +318,21 @@
       .verdict .vs div span { display: block; font-family: "IBM Plex Sans", sans-serif; font-size: .72rem; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-soft); font-weight: 600; }
       .verdict p { margin-top: 10px; font-size: .95rem; }
       .verdict .jump { margin-top: 12px; }
+      /* Roadmap additions: confidence note, follow-up, suggested next, what-if */
+      .verdict .confident-note { font-size: .9rem; color: var(--ink-soft); }
+      .followup { margin-top: 14px; border-top: 1px dashed var(--line); padding-top: 12px; }
+      .followup h4 { font-size: .95rem; }
+      .followup .fu-code { font-family: "IBM Plex Mono", monospace; font-size: .88rem; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin-top: 8px; white-space: pre-wrap; }
+      .followup .opt-btn span:last-child { white-space: pre-wrap; }
+      .followup .fu-result { margin-top: 10px; font-size: .93rem; font-weight: 600; }
+      .followup .fu-result.good { color: var(--accent-strong); }
+      .followup .fu-result.bad { color: var(--rust); }
+      .suggest-next { margin-top: 12px; font-size: .93rem; }
+      .whatif-badge { margin-top: 10px; border: 1.5px solid var(--amber); background: var(--amber-soft); border-radius: 10px; padding: 9px 12px; font-size: .9rem; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+      .whatif-badge[hidden] { display: none; }
+      .membox .wi-edit { margin-top: 6px; background: none; border: none; padding: 0; font-size: .75rem; font-weight: 700; color: var(--accent-strong); text-decoration: underline; text-underline-offset: 2px; }
+      .membox .wi-input { width: 100%; box-sizing: border-box; font-family: "IBM Plex Mono", monospace; font-size: 1rem; padding: 6px 8px; border: 1.5px solid var(--amber); border-radius: 7px; background: var(--panel); color: var(--ink); margin-top: 4px; }
+      .membox .wi-row { display: flex; gap: 6px; margin-top: 6px; }
 
       /* Modify */
       .modify-code {
@@ -2100,6 +2115,14 @@ for (int i = 0; i < 3; i++) {
                 </div>
               </div>
             </div>
+            <div class="bits-toggle" id="confidence-row" style="border-top:none; margin-top:2px; padding-top:0;">
+              <span class="bits-label" id="confidence-label">How sure are you?</span>
+              <div class="bits-group" role="group" aria-labelledby="confidence-label">
+                <button type="button" class="bits-btn" id="conf-sure" aria-pressed="false">Sure</button>
+                <button type="button" class="bits-btn" id="conf-unsure" aria-pressed="false">Not sure</button>
+              </div>
+              <span class="bits-note">Optional — one tap, and locking works without it.</span>
+            </div>
             <div class="locked-banner" id="locked-banner" role="status"></div>
           </section>
 
@@ -2180,6 +2203,7 @@ for (int i = 0; i < 3; i++) {
               </div>
               <div class="stepmeta" id="stepmeta"></div>
               <div class="stepbar"><i id="stepbar-fill"></i></div>
+              <div class="whatif-badge" id="whatif-badge" hidden><span id="whatif-badge-text"></span><button class="btn ghost small" type="button" id="whatif-restart">Restart clean</button></div>
               <div class="stack-layout" id="stack-layout">
                 <div class="stack-col" id="memory-col">
                   <h3 id="memory-h" style="margin-top:18px; font-size:.85rem; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;">Memory</h3>
@@ -5610,7 +5634,8 @@ int main() {
       return { selected: -1, locked: false, correct: null, step: -1, traceDone: false,
                modSelected: -1, modDone: false, modCorrect: null,
                pair: false, pairASelected: -1, pairALocked: false,
-               pairBSelected: -1, pairBLocked: false, jointSelected: -1, jointLocked: false, rationale: "", muddy: 0 };
+               pairBSelected: -1, pairBLocked: false, jointSelected: -1, jointLocked: false, rationale: "", muddy: 0,
+               confidence: "", followSel: -1, followLocked: false, followCorrect: null };
     }
     var state = {
       skin: "health",
@@ -6050,7 +6075,26 @@ int main() {
         banner.classList.add("show");
         banner.textContent = "Prediction locked in: “" + ex.options[s.selected] + "”" + (s.pair ? " (pair)" : "") + ". The tracer is open — step through and hold the machine to your answer.";
       } else banner.classList.remove("show");
+      // Confidence marking: one optional tap before locking; never blocks.
+      var cSure = $("conf-sure"), cUnsure = $("conf-unsure"), cRow = $("confidence-row");
+      if (cSure && cUnsure) {
+        cSure.setAttribute("aria-pressed", s.confidence === "sure" ? "true" : "false");
+        cUnsure.setAttribute("aria-pressed", s.confidence === "unsure" ? "true" : "false");
+        cSure.disabled = !!s.locked; cUnsure.disabled = !!s.locked;
+        if (cRow) cRow.style.display = s.locked && !s.confidence ? "none" : "";
+      }
     }
+    (function wireConfidence() {
+      var cSure = $("conf-sure"), cUnsure = $("conf-unsure");
+      function pick(v) {
+        var s = state.ex[state.current];
+        if (!s || s.locked) return;
+        s.confidence = (s.confidence === v) ? "" : v;
+        renderPredict();
+      }
+      if (cSure) cSure.addEventListener("click", function () { pick("sure"); });
+      if (cUnsure) cUnsure.addEventListener("click", function () { pick("unsure"); });
+    })();
     function finalizePairPrediction(idx) {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
       var prInLock = $("pair-rationale-input"); if (prInLock) s.rationale = prInLock.value.trim().slice(0, 140);
@@ -6339,6 +6383,15 @@ int main() {
         html += '<div class="vval' + (fv.cls ? " " + fv.cls : "") + '">' + fmtScalarHTML(vtype, vval) + "</div>";
       }
       d.innerHTML = html;
+      if (wiPaint && !box.fields && !box.elems && !box.grid && /^(int|long|short|unsigned int|unsigned long|double|float|char|string|bool)$/.test(String(box.type).trim()) && String(box.value || "").indexOf("→") === -1) {
+        var wiBtn = document.createElement("button");
+        wiBtn.type = "button"; wiBtn.className = "wi-edit"; wiBtn.textContent = "edit";
+        wiBtn.setAttribute("data-wi-name", box.name);
+        wiBtn.setAttribute("data-wi-type", box.type);
+        wiBtn.setAttribute("data-wi-value", box.value || "");
+        wiBtn.setAttribute("aria-label", "What-if: change the value of " + box.name);
+        d.appendChild(wiBtn);
+      }
       return d;
     }
     function varsToBoxes(vars) {
@@ -6401,6 +6454,175 @@ int main() {
       }
     }
 
+    /* ---------------- What-if stepping (exploration only) ----------------
+       While a trace is in progress (at least one step taken, not yet
+       complete), a scalar memory box offers a small "edit" control.
+       Editing inserts one assignment (`name = value;`) into the program
+       right after the current line and re-runs the whole program through
+       the platform interpreter (makeRunProgram, trace mode): the steps
+       after the edit point are the interpreter's own continuation with
+       the edited value, so branches and loops respond for real. The
+       exercise's authored steps are kept aside (ex.__wiOrig) and the
+       combined array is swapped in only for this session run. What-if
+       NEVER touches the recorded prediction: s.correct, the journal
+       (which reads the authored steps via partingInfo), and completion
+       (traceDone is not set while a what-if run is active) all stand as
+       recorded. "Restart clean" restores the authored run.
+       Coverage: exercises whose program the interpreter runs cleanly
+       with no input and no file streams (checked once, cached on the
+       exercise), and scalar int / double / char / string / bool boxes.
+       File I/O, cin, and aggregate boxes (structs, arrays, vectors,
+       maps, sets) get no affordance. */
+    var wiState = null;
+    var wiPaint = false;
+    function wiActiveHere() { return !!(wiState && wiState.exIdx === state.current); }
+    function wiExEligible(ex) {
+      if (typeof ex.__wiOk === "boolean") return ex.__wiOk;
+      var ok = false;
+      try {
+        var src = ex.code.join("\n");
+        if (!/cin|ifstream|ofstream/.test(src) && typeof makeRunProgram === "function") {
+          var r = makeRunProgram(src, "", {});
+          ok = !!(r && r.ok);
+        }
+      } catch (e) { ok = false; }
+      ex.__wiOk = ok;
+      return ok;
+    }
+    function wiRestoreSteps() {
+      if (!wiState) return;
+      var ex = EXERCISES[wiState.exIdx];
+      if (ex && ex.__wiOrig) { ex.steps = ex.__wiOrig; delete ex.__wiOrig; }
+      wiState = null;
+    }
+    function wiClearSilent() { wiRestoreSteps(); }
+    function wiRestartClean() {
+      if (!wiState) return;
+      var s = state.ex[state.current];
+      wiRestoreSteps();
+      if (s) { s.step = -1; s.traceDone = false; }
+      renderAll();
+      announce("What-if cleared. The tracer is back to the clean, recorded run — restart it with Step.");
+    }
+    function wiParseValue(type, raw) {
+      var t = String(raw == null ? "" : raw).trim();
+      if (/^(int|long|short|unsigned int|unsigned long)$/.test(type)) {
+        if (!/^-?\d+$/.test(t)) return null;
+        return { code: t, disp: t };
+      }
+      if (type === "double" || type === "float") {
+        if (!/^-?\d+(\.\d+)?$/.test(t)) return null;
+        return { code: t.indexOf(".") === -1 ? t + ".0" : t, disp: t };
+      }
+      if (type === "bool") {
+        if (!/^(true|false|1|0)$/i.test(t)) return null;
+        var b = (t === "1" || /^true$/i.test(t)) ? "true" : "false";
+        return { code: b, disp: b };
+      }
+      if (type === "char") {
+        if (t.length === 3 && t.charAt(0) === "'" && t.charAt(2) === "'") t = t.charAt(1);
+        if (t.length !== 1) return null;
+        return { code: "'" + t + "'", disp: "'" + t + "'" };
+      }
+      if (type === "string") {
+        if (/[\n\r"]/.test(t)) return null;
+        return { code: '"' + t + '"', disp: t };
+      }
+      return null;
+    }
+    function wiOpenEditor(btn) {
+      var boxEl = btn.closest ? btn.closest(".membox") : null;
+      if (!boxEl) return;
+      var name = btn.getAttribute("data-wi-name"), type = btn.getAttribute("data-wi-type"), val = btn.getAttribute("data-wi-value");
+      stopPlayback();
+      boxEl.innerHTML = '<div class="vname"><span>' + esc(name) + '</span><span class="vtype">' + esc(type) + "</span></div>" +
+        '<input class="wi-input" type="text" value="' + attrEsc(val) + '" aria-label="New value for ' + esc(name) + '">' +
+        '<div class="wi-row"><button class="btn small" type="button" data-wi-set>Set value</button><button class="btn ghost small" type="button" data-wi-cancel>Cancel</button></div>' +
+        '<p style="font-size:.78rem;color:var(--ink-soft);margin-top:5px;">Exploratory — your recorded prediction is not touched.</p>';
+      var input = boxEl.querySelector(".wi-input");
+      if (input) { input.focus(); input.select(); }
+      var cancel = boxEl.querySelector("[data-wi-cancel]");
+      if (cancel) cancel.addEventListener("click", function () { renderAll(); });
+      var set = boxEl.querySelector("[data-wi-set]");
+      if (set) set.addEventListener("click", function () { wiApply(name, type, input.value); });
+      if (input) input.addEventListener("keydown", function (ev) {
+        if (ev.key === "Enter") wiApply(name, type, input.value);
+        else if (ev.key === "Escape") renderAll();
+      });
+    }
+    function wiApply(name, type, raw) {
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      var parsed = wiParseValue(type, raw);
+      if (!parsed) { announce("That value does not fit a " + type + " box. Nothing was changed."); return; }
+      stopPlayback();
+      var origSteps = ex.steps, curStep = s.step;
+      if (curStep < 0 || curStep >= origSteps.length) return;
+      var line0 = origSteps[curStep].line;
+      var insertPos = line0 + 1;
+      var newCode = ex.code.slice();
+      newCode.splice(insertPos, 0, "    " + name + " = " + parsed.code + ";");
+      var res = null;
+      try { res = makeRunProgram(newCode.join("\n"), "", { trace: true, files: {} }); } catch (e) { res = null; }
+      if (!res || !res.ok || !res.steps || !res.steps.length) {
+        announce("What-if is not available for this program here" + (res && res.error ? ": " + res.error : ".") + " The clean run is unchanged.");
+        renderAll();
+        return;
+      }
+      var insLine1 = insertPos + 1;
+      var occ = 0, i;
+      for (i = 0; i <= curStep; i++) if (origSteps[i].line === line0) occ++;
+      var found = -1, seen = 0;
+      res.steps.forEach(function (snap, idx) { if (snap.line === insLine1) { seen++; if (seen === occ) found = idx; } });
+      if (found < 0) res.steps.forEach(function (snap, idx) { if (snap.line === insLine1) found = idx; });
+      if (found < 0) { announce("What-if could not line up with this point in the program. The clean run is unchanged."); renderAll(); return; }
+      function cloneStep(st) {
+        var c = { line: st.line, vars: {}, out: st.out, note: st.note };
+        Object.keys(st.vars || {}).forEach(function (k) { c.vars[k] = st.vars[k].slice(); });
+        if (st.boxes) c.boxes = JSON.parse(JSON.stringify(st.boxes));
+        if (st.frames) c.frames = JSON.parse(JSON.stringify(st.frames));
+        return c;
+      }
+      var prefix = origSteps.slice(0, curStep + 1).map(cloneStep);
+      var lastP = prefix[prefix.length - 1];
+      if (lastP.vars && lastP.vars[name]) lastP.vars[name] = [type, parsed.disp];
+      (lastP.frames || []).forEach(function (fr) { if (fr.vars && fr.vars[name]) fr.vars[name] = [type, parsed.disp]; });
+      function snapVars(snap) {
+        var v = {};
+        (snap.order || []).forEach(function (nm) {
+          var sv = snap.vars[nm];
+          if (!sv || /ifstream|ofstream/.test(sv.type)) return;
+          v[nm] = [sv.type, sv.display];
+        });
+        return v;
+      }
+      var cont = [];
+      for (var j = found + 1; j < res.steps.length; j++) {
+        var snap = res.steps[j];
+        if (snap.line === insLine1) continue;
+        var nxt = res.steps[j + 1];
+        var adjLine = (snap.line > insLine1 ? snap.line - 1 : snap.line) - 1;
+        if (adjLine < 0 || adjLine >= ex.code.length) continue;
+        cont.push({ line: adjLine, vars: nxt ? snapVars(nxt) : snapVars(snap), out: nxt ? nxt.out : (res.output || ""),
+          note: "<b>What-if run.</b> Execution continues with <b>" + esc(name) + "</b> set to " + esc(parsed.disp) + " — exploratory steps, not the recorded run." });
+      }
+      ex.__wiOrig = origSteps;
+      ex.steps = prefix.concat(cont);
+      wiState = { exIdx: state.current, name: name, disp: parsed.disp };
+      renderAll();
+      announce("What-if: " + name + " set to " + parsed.disp + ". The rest of this run is exploratory — your recorded prediction stands. Restart clean to return to the recorded run.");
+    }
+    (function wireWhatIf() {
+      ["memory", "callstack"].forEach(function (id) {
+        var el = $(id);
+        if (el) el.addEventListener("click", function (ev) {
+          var b = ev.target && ev.target.closest ? ev.target.closest(".wi-edit") : null;
+          if (b) wiOpenEditor(b);
+        });
+      });
+      var rb = $("whatif-restart");
+      if (rb) rb.addEventListener("click", function () { stopPlayback(); wiRestartClean(); });
+    })();
+
     function renderTrace() {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
       syncBitsToggle();
@@ -6428,9 +6650,16 @@ int main() {
       var pn0 = $("parting-note");
       if (pn0 && !(partingPauseActive && partingPauseEx === state.current && s.step === partingStepIndex())) pn0.hidden = true;
 
+      wiPaint = s.locked && s.step >= 0 && !s.traceDone && s.step < ex.steps.length - 1 && !wiState && wiExEligible(ex);
       paintMemoryStack({ memEl: $("memory"), memHeadEl: $("memory-h"), layoutEl: $("stack-layout"), stackColEl: $("stack-col"), stackEl: $("callstack"), ex: ex, stepIdx: s.step,
         notStartedMsg: "Memory is empty — the program has not started. No boxes exist yet.",
         emptyMsg: "No variable boxes exist at this moment. Watch this space: boxes appear when declarations run." });
+      wiPaint = false;
+      var wbEl = $("whatif-badge");
+      if (wbEl) {
+        if (wiActiveHere()) { wbEl.hidden = false; $("whatif-badge-text").textContent = "What-if: " + wiState.name + " set to " + wiState.disp + " — the rest of this run is exploratory."; }
+        else wbEl.hidden = true;
+      }
       $("cout").innerHTML = step && step.out ? esc(step.out) : '<span class="cursor"></span>';
       $("stepnote").innerHTML = step ? step.note :
         "The highlighted line is always the statement the machine is <b>about to finish</b>. Step slowly on the lines that change a box — those are where mental models break.";
@@ -6517,6 +6746,230 @@ int main() {
       });
     })();
 
+    /* ---------------- Discriminating follow-ups + suggested next ----------------
+       One compact follow-up per diagnosis event, inside the existing
+       verdict card. Each follow-up is a tiny program built so the
+       diagnosed wrong model and the correct model predict DIFFERENT
+       outputs. Follow-ups are keyed to misconception families derived
+       from the exercise's concept (the diagnosis data's own categories);
+       the correct output is verified at render time by running the
+       program through the platform interpreter (makeRunProgram) and
+       falls back to the hand-verified value below where the subset
+       cannot run it (switch / static / file programs). Outcomes persist
+       additively as followSel / followLocked / followCorrect. */
+    var FOLLOWUPS = [
+      { key: "intdiv", label: "integer division discards the fraction", match: /Integer Division/,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int total = 22;", "    int n = 4;", "    cout << total / n << endl;", "    return 0;", "}"],
+        correct: "5", wrongs: [{ re: /round/i, out: "6" }], wrong: "5.5" },
+      { key: "assign", label: "each assignment works on the current value", match: /Values & Assignment/,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int score = 6;", "    score = score + 4;", "    score = score * 3;", "    cout << score << endl;", "    return 0;", "}"],
+        correct: "30", wrongs: [{ re: /starting|doubled the/i, out: "18" }, { re: /changed nothing|no part/i, out: "6" }], wrong: "10" },
+      { key: "branch", label: "an if / else runs exactly one branch", match: /if \/ else|else if/,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int level = 30;", "    if (level >= 50) {", "        cout << \"Pass\" << endl;", "    } else {", "        cout << \"Retry\" << endl;", "    }", "    return 0;", "}"],
+        correct: "Retry", wrongs: [{ re: /both|fork|exactly one|not a list/i, out: "Pass\nRetry" }], wrong: "Pass" },
+      { key: "switchf", label: "a case without break falls through", match: /switch|enum/i, hand: true,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int k = 2;", "    switch (k) {", "        case 1: cout << \"one \"; break;", "        case 2: cout << \"two \";", "        case 3: cout << \"three\"; break;", "        default: cout << \"other\";", "    }", "    return 0;", "}"],
+        correct: "two three", wrong: "two" },
+      { key: "loopaccum", label: "the loop boundary counts and the accumulator collects", match: /Loops — for|how many times/,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int total = 0;", "    for (int i = 1; i <= 5; i++) {", "        total = total + i;", "    }", "    cout << total << endl;", "    return 0;", "}"],
+        correct: "15", wrongs: [{ re: /trips|passes|number of times|count/i, out: "5" }], wrong: "10" },
+      { key: "whilef", label: "the while test is checked before every pass", match: /Loops — while/,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int n = 0;", "    while (n < 4) {", "        n = n + 2;", "    }", "    cout << n << endl;", "    return 0;", "}"],
+        correct: "4", wrong: "6" },
+      { key: "nested", label: "the inner loop runs in full on every outer pass", match: /Loops — nested/,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int count = 0;", "    for (int i = 1; i <= 2; i++) {", "        for (int j = 1; j <= 3; j++) {", "            count++;", "        }", "    }", "    cout << count << endl;", "    return 0;", "}"],
+        correct: "6", wrong: "5" },
+      { key: "dowhile", label: "a do-while body runs once before its first test", match: /do-while/, hand: true,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int n = 10;", "    do {", "        n = n + 1;", "    } while (n < 5);", "    cout << n << endl;", "    return 0;", "}"],
+        correct: "11", wrong: "10" },
+      { key: "breakcont", label: "continue skips one pass; it does not end the loop", match: /break & continue/, hand: true,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int total = 0;", "    for (int i = 1; i <= 5; i++) {", "        if (i == 3) continue;", "        total = total + i;", "    }", "    cout << total << endl;", "    return 0;", "}"],
+        correct: "12", wrong: "3" },
+      { key: "funcf", label: "a returned value flows into the caller's expression", match: /^Functions$|Functions · scope/,
+        code: ["#include <iostream>", "using namespace std;", "", "int triple(int n) {", "    return n * 3;", "}", "", "int main() {", "    int r = triple(4) + 2;", "    cout << r << endl;", "    return 0;", "}"],
+        correct: "14", wrong: "12" },
+      { key: "reff", label: "a reference parameter is the caller's own box", match: /reference parameters/, hand: true,
+        code: ["#include <iostream>", "using namespace std;", "", "void bump(int& n) {", "    n = n + 10;", "}", "", "int main() {", "    int x = 5;", "    bump(x);", "    cout << x << endl;", "    return 0;", "}"],
+        correct: "15", wrong: "5" },
+      { key: "byvalf", label: "a by-value parameter is a private copy", match: /value vs reference/,
+        code: ["#include <iostream>", "using namespace std;", "", "void bump(int n) {", "    n = n + 10;", "}", "", "int main() {", "    int x = 5;", "    bump(x);", "    cout << x << endl;", "    return 0;", "}"],
+        correct: "5", wrong: "15" },
+      { key: "arrayparam", label: "an array parameter reaches the caller's array", match: /arrays as parameters|arrays modified in place/,
+        code: ["#include <iostream>", "using namespace std;", "", "void addOne(int a[], int n) {", "    for (int i = 0; i < n; i++) a[i]++;", "}", "", "int main() {", "    int v[2] = {1, 2};", "    addOne(v, 2);", "    cout << v[0] << endl;", "    return 0;", "}"],
+        correct: "2", wrong: "1" },
+      { key: "arrayidx", label: "indexes count from 0", match: /^Arrays$/,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int a[3] = {7, 8, 9};", "    cout << a[1] << endl;", "    return 0;", "}"],
+        correct: "8", wrong: "7" },
+      { key: "array2d", label: "two-dimensional indexes are [row][column]", match: /two-dimensional/, hand: true,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int g[2][2] = {{1, 2}, {3, 4}};", "    cout << g[1][0] << endl;", "    return 0;", "}"],
+        correct: "3", wrong: "2" },
+      { key: "vectorf", label: "push_back appends and size() counts what is held now", match: /Vectors/,
+        code: ["#include <iostream>", "#include <vector>", "using namespace std;", "", "int main() {", "    vector<int> v;", "    v.push_back(5);", "    v.push_back(6);", "    cout << v.size() << \" \" << v[0] << endl;", "    return 0;", "}"],
+        correct: "2 5", wrong: "2 6" },
+      { key: "stringf", label: "index 0 is the first character", match: /^Strings$/,
+        code: ["#include <iostream>", "#include <string>", "using namespace std;", "", "int main() {", "    string w = \"plant\";", "    cout << w.length() << \" \" << w[1] << endl;", "    return 0;", "}"],
+        correct: "5 l", wrong: "5 p" },
+      { key: "wordcount", label: "words are counted by the gaps between them, plus one", match: /counting words/, hand: true,
+        code: ["#include <iostream>", "#include <string>", "using namespace std;", "", "int main() {", "    string s = \"one two three\";", "    int spaces = 0;", "    for (int i = 0; i < (int)s.length(); i++) {", "        if (s[i] == ' ') spaces++;", "    }", "    cout << spaces + 1 << endl;", "    return 0;", "}"],
+        correct: "3", wrong: "2" },
+      { key: "freqf", label: "the counting loop visits every character, last one included", match: /frequency counting/, hand: true,
+        code: ["#include <iostream>", "#include <string>", "using namespace std;", "", "int main() {", "    string w = \"banana\";", "    int c = 0;", "    for (int i = 0; i < (int)w.length(); i++) {", "        if (w[i] == 'a') c++;", "    }", "    cout << c << endl;", "    return 0;", "}"],
+        correct: "3", wrong: "2" },
+      { key: "charf", label: "a char is a character, and + 1 moves to the next one", match: /Characters/, hand: true,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    char c = 'B';", "    c = c + 1;", "    cout << c << endl;", "    return 0;", "}"],
+        correct: "C", wrong: "67" },
+      { key: "pointerf", label: "writing through a pointer writes into the original box", match: /Pointers/, hand: true,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int x = 20;", "    int* p = &x;", "    *p = 35;", "    cout << x << endl;", "    return 0;", "}"],
+        correct: "35", wrong: "20" },
+      { key: "binsearch", label: "the midpoint is (first + last) / 2, in integer division", match: /binary search|^Searching$/,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int first = 0, last = 9;", "    int mid = (first + last) / 2;", "    cout << mid << endl;", "    return 0;", "}"],
+        correct: "4", wrong: "5" },
+      { key: "recursionf", label: "each recursive call waits, and the answers assemble on the way back", match: /^Recursion$/,
+        code: ["#include <iostream>", "using namespace std;", "", "int sumTo(int n) {", "    if (n <= 0) return 0;", "    return n + sumTo(n - 1);", "}", "", "int main() {", "    cout << sumTo(4) << endl;", "    return 0;", "}"],
+        correct: "10", wrong: "4" },
+      { key: "sortf", label: "one pass puts one value in its final place — it does not finish the sort", match: /Sorting/,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int a[3] = {4, 2, 3};", "    int m = 0;", "    if (a[1] < a[m]) m = 1;", "    if (a[2] < a[m]) m = 2;", "    int t = a[0]; a[0] = a[m]; a[m] = t;", "    cout << a[0] << \" \" << a[1] << \" \" << a[2] << endl;", "    return 0;", "}"],
+        correct: "2 4 3", wrong: "2 3 4" },
+      { key: "structf", label: "the dot reaches a field inside the one object", match: /Structured data/, hand: true,
+        code: ["#include <iostream>", "using namespace std;", "", "struct Pt { int x; int y; };", "", "int main() {", "    Pt p;", "    p.x = 3;", "    p.y = 4;", "    cout << p.x + p.y << endl;", "    return 0;", "}"],
+        correct: "7", wrong: "3" },
+      { key: "ctorf", label: "the constructor runs at creation and can guard its values", match: /Constructors/,
+        code: ["#include <iostream>", "using namespace std;", "", "class Slot {", "public:", "    int h;", "    Slot(int v) { h = v; if (h < 0) h = 0; }", "};", "", "int main() {", "    Slot s(-4);", "    cout << s.h << endl;", "    return 0;", "}"],
+        correct: "0", wrong: "-4" },
+      { key: "classf", label: "an object's state lives in the object between calls", match: /Classes & Objects|Member Functions/,
+        code: ["#include <iostream>", "using namespace std;", "", "class Counter {", "public:", "    int n;", "    Counter() { n = 0; }", "    void tick() { n++; }", "};", "", "int main() {", "    Counter c;", "    c.tick();", "    c.tick();", "    cout << c.n << endl;", "    return 0;", "}"],
+        correct: "2", wrong: "1" },
+      { key: "filef", label: "the read in the loop header is the test", match: /^File Input$/,
+        code: ["#include <iostream>", "#include <fstream>", "using namespace std;", "", "int main() {", "    ifstream fin(\"steps.txt\");", "    int value, total = 0;", "    while (fin >> value) {", "        total += value;", "    }", "    cout << total << endl;", "    return 0;", "}"],
+        files: { "steps.txt": "10 20 30" }, correct: "60", wrong: "10" },
+      { key: "eoff", label: "eof() only reports after a read has already failed", match: /EOF Trap/, hand: true,
+        code: ["#include <iostream>", "#include <fstream>", "using namespace std;", "", "int main() {", "    ifstream fin(\"data.txt\");", "    int value = 0, total = 0;", "    while (!fin.eof()) {", "        fin >> value;", "        total += value;", "    }", "    cout << total << endl;", "    return 0;", "}"],
+        files: { "data.txt": "4 8 " }, correct: "20", wrong: "12" },
+      { key: "mapf", label: "a map's size counts distinct keys, not sightings", match: /Maps/,
+        code: ["#include <iostream>", "#include <map>", "#include <string>", "using namespace std;", "", "int main() {", "    map<string, int> counts;", "    counts[\"fig\"]++;", "    counts[\"fig\"]++;", "    cout << counts[\"fig\"] << \" \" << counts.size() << endl;", "    return 0;", "}"],
+        correct: "2 1", wrong: "2 2" },
+      { key: "setf", label: "a set holds each value at most once", match: /Sets/,
+        code: ["#include <iostream>", "#include <set>", "using namespace std;", "", "int main() {", "    set<int> s;", "    s.insert(7);", "    s.insert(7);", "    s.insert(3);", "    cout << s.size() << endl;", "    return 0;", "}"],
+        correct: "2", wrong: "3" },
+      { key: "globalf", label: "a function sees the global, never another function's local", match: /global vs local/, hand: true,
+        code: ["#include <iostream>", "using namespace std;", "", "int level = 5;", "", "void show() {", "    cout << level << endl;", "}", "", "int main() {", "    int level = 9;", "    show();", "    return 0;", "}"],
+        correct: "5", wrong: "9" },
+      { key: "staticf", label: "a static local is initialised once and remembers", match: /static lifetime/, hand: true,
+        code: ["#include <iostream>", "using namespace std;", "", "int next() {", "    static int c = 100;", "    c++;", "    return c;", "}", "", "int main() {", "    cout << next() << \" \" << next() << endl;", "    return 0;", "}"],
+        correct: "101 102", wrong: "101 101" },
+      { key: "blockf", label: "an inner box shadows the outer one only inside its braces", match: /block scope/,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int x = 3;", "    {", "        int x = 8;", "    }", "    cout << x << endl;", "    return 0;", "}"],
+        correct: "3", wrong: "8" },
+      { key: "bitsf", label: "bitwise AND keeps a 1 only where both patterns have one", match: /Bits · AND/, hand: true,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    cout << (10 & 12) << endl;", "    return 0;", "}"],
+        correct: "8", wrong: "22" },
+      { key: "shiftf", label: "a shift slides every bit — it does not add or subtract", match: /Bits · shifts/, hand: true,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int a = 6;", "    cout << (a << 1) << \" \" << (a >> 1) << endl;", "    return 0;", "}"],
+        correct: "12 3", wrong: "7 5" },
+      { key: "stackf", label: "a stack serves the most recently pushed value", match: /Data structures · stack/,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int st[3];", "    int top = 0;", "    st[top] = 4; top++;", "    st[top] = 9; top++;", "    top--;", "    cout << st[top] << endl;", "    return 0;", "}"],
+        correct: "9", wrong: "4" },
+      { key: "queuef", label: "a queue serves the longest-waiting value", match: /Data structures · queue/,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int q[3];", "    q[0] = 4; q[1] = 9; q[2] = 7;", "    int head = 0;", "    cout << q[head] << endl;", "    return 0;", "}"],
+        correct: "4", wrong: "7" }
+    ];
+    function followFor(ex, diagText) {
+      var fam = null;
+      for (var i = 0; i < FOLLOWUPS.length; i++) { if (FOLLOWUPS[i].match.test(ex.concept)) { fam = FOLLOWUPS[i]; break; } }
+      if (!fam) {
+        var byTopic = { "Loops": "loopaccum", "Branches": "branch", "Functions": "funcf", "Arrays and vectors": "arrayidx", "Strings and characters": "stringf", "Pointers": "pointerf", "Recursion": "recursionf", "Scope": "globalf", "Searching and sorting": "sortf" };
+        var k = byTopic[ex.topic];
+        if (k) for (var j = 0; j < FOLLOWUPS.length; j++) if (FOLLOWUPS[j].key === k) fam = FOLLOWUPS[j];
+      }
+      if (!fam) return null;
+      var wrongOut = fam.wrong;
+      (fam.wrongs || []).forEach(function (w) { if (w.re.test(diagText || "")) wrongOut = w.out; });
+      var correctOut = fam.correct;
+      if (!fam.hand && typeof makeRunProgram === "function") {
+        if (typeof fam._verified === "undefined") {
+          try {
+            var res = makeRunProgram(fam.code.join("\n"), "", fam.files ? { files: fam.files } : {});
+            fam._verified = (res && res.ok) ? String(res.output).replace(/\s+$/, "") : null;
+          } catch (e) { fam._verified = null; }
+        }
+        if (fam._verified !== null && fam._verified !== undefined) correctOut = fam._verified;
+      }
+      if (correctOut === wrongOut) return null;
+      return { fam: fam, correctOut: correctOut, wrongOut: wrongOut };
+    }
+    function followCandidates(ex, s, fu) {
+      var flip = ((state.current * 31 + s.selected * 7) % 2) === 1;
+      return flip ? [fu.wrongOut, fu.correctOut] : [fu.correctOut, fu.wrongOut];
+    }
+    function renderFollowUp() {
+      var box = $("followup-box"); if (!box) return;
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      var d = ex.diagnoses ? ex.diagnoses[s.selected] : null;
+      if (!d || s.correct) { box.innerHTML = ""; return; }
+      var fu = followFor(ex, d.text.replace(/<[^>]+>/g, ""));
+      if (!fu) { box.innerHTML = ""; return; }
+      var cands = followCandidates(ex, s, fu);
+      var html = '<div class="followup"><h4>Check the repair</h4>' +
+        '<p style="font-size:.92rem;margin-top:4px;">A new, tiny program on the same idea. Predict what it prints — your earlier way of thinking and the machine each give one of these two answers.</p>' +
+        '<div class="fu-code">' + esc(fu.fam.code.join("\n")) + "</div>";
+      if (s.followLocked) {
+        html += '<p class="fu-result ' + (s.followCorrect ? "good" : "bad") + '">' +
+          (s.followCorrect
+            ? "Repair held — your follow-up prediction matched the machine (" + esc(fu.correctOut) + ")."
+            : "The same idea is still active — " + esc(fu.fam.label) + ". Your follow-up prediction was “" + esc(cands[s.followSel]) + "”; the machine prints “" + esc(fu.correctOut) + "”.") +
+          "</p>";
+      } else {
+        html += '<div class="options" role="group" aria-label="Follow-up prediction options">' + cands.map(function (c, i) {
+          return '<button class="opt-btn" type="button" data-fu="' + i + '" aria-pressed="' + (s.followSel === i ? "true" : "false") + '"><span class="key">' + "AB"[i] + "</span><span>" + esc(c) + "</span></button>";
+        }).join("") + "</div>" +
+        '<div class="lockrow"><button class="btn small" type="button" id="follow-lock" ' + (s.followSel < 0 ? "disabled" : "") + ">Lock my follow-up prediction</button></div>";
+      }
+      html += "</div>";
+      box.innerHTML = html;
+      if (!s.followLocked) {
+        box.querySelectorAll("[data-fu]").forEach(function (b) {
+          b.addEventListener("click", function () { s.followSel = parseInt(b.getAttribute("data-fu"), 10); renderFollowUp(); });
+        });
+        var lk = $("follow-lock");
+        if (lk) lk.addEventListener("click", function () {
+          if (s.followSel < 0) return;
+          s.followLocked = true;
+          s.followCorrect = cands[s.followSel] === fu.correctOut;
+          announce(s.followCorrect ? "Follow-up: repair held." : "Follow-up: the same misconception is still active — " + fu.fam.label + ".");
+          renderAll();
+          if (typeof tfSave === "function") tfSave();
+        });
+      }
+    }
+    /* Diagnosis-keyed next exercise: lowest-numbered not-yet-completed
+       exercise sharing the topic (crosswalk data), else the briefing
+       group, else the concept. Deterministic; current excluded. */
+    function suggestedNextIdx() {
+      var cur = state.current, ex = EXERCISES[cur];
+      function incomplete(i) { return i !== cur && !state.ex[i].locked && !(typeof isTestedOut === "function" && isTestedOut(i)); }
+      var i;
+      for (i = 0; i < EXERCISES.length; i++) if (incomplete(i) && EXERCISES[i].topic === ex.topic) return i;
+      var gname = (typeof briefGroupOf === "function") ? briefGroupOf(cur) : null;
+      if (gname) for (i = 0; i < EXERCISES.length; i++) if (incomplete(i) && briefGroupOf(i) === gname) return i;
+      for (i = 0; i < EXERCISES.length; i++) if (incomplete(i) && EXERCISES[i].concept === ex.concept) return i;
+      return -1;
+    }
+    function renderSuggestNext() {
+      var el = $("suggest-next"); if (!el) return;
+      var n = suggestedNextIdx();
+      if (n < 0) { el.innerHTML = ""; return; }
+      el.innerHTML = 'Suggested next: <button class="text-link" type="button" id="suggest-btn">Exercise ' + (n + 1) + " — " + esc(EXERCISES[n].title) + "</button>";
+      var b = $("suggest-btn");
+      if (b) b.addEventListener("click", function () {
+        if (typeof wiClearSilent === "function") wiClearSilent();
+        stopPlayback();
+        if (typeof exitInstPlay === "function") exitInstPlay();
+        state.current = n; renderAll();
+        var h = $("ex-title"); if (h) h.scrollIntoView({ behavior: "smooth", block: "start" });
+        announce("Exercise " + (n + 1) + " opened — suggested from your last diagnosis.");
+      });
+    }
+
     function renderInvestigate() {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
       var card = $("investigate-card");
@@ -6531,9 +6984,11 @@ int main() {
           "<p>A correct prediction is evidence your mental model of this concept is sound — for these values. Stage 4 changes a value to check the model, not the memory.</p>" + ratEcho + "</div>";
       } else {
         var d = ex.diagnoses[s.selected];
+        var confNote = s.confidence === "sure" ? '<p class="confident-note">You marked this prediction “Sure” — a confident miss, and the kind worth a second look: the model felt solid and still parted from the machine.</p>' : "";
         v.innerHTML = '<div class="verdict bad"><h3>Your model and the machine parted company.</h3>' +
           '<div class="vs"><div><span>You predicted</span>' + esc(mine) + '</div><div><span>The program printed</span>' + esc(actual) + "</div></div>" +
-          "<p>" + d.text + "</p>" + ratEcho + '<button class="btn small ghost jump" id="jump-btn" type="button">Jump to the parting step</button></div>';
+          "<p>" + d.text + "</p>" + confNote + ratEcho + '<button class="btn small ghost jump" id="jump-btn" type="button">Jump to the parting step</button>' +
+          '<div id="followup-box"></div><p class="suggest-next" id="suggest-next"></p></div>';
         $("jump-btn").addEventListener("click", function () {
           stopPlayback();
           state.ex[state.current].step = d.step;
@@ -6541,6 +6996,8 @@ int main() {
           renderAll();
           document.querySelector("#trace-h").scrollIntoView({ behavior: "smooth", block: "start" });
         });
+        renderFollowUp();
+        renderSuggestNext();
       }
       renderMuddy();
     }
@@ -6585,6 +7042,7 @@ int main() {
     }
 
     function renderAll() {
+      if (typeof wiState !== "undefined" && wiState && wiState.exIdx !== state.current) wiRestoreSteps();
       if (typeof tfLastTracer !== "undefined") {
         var cs = state.ex[state.current];
         if (cs && (cs.locked || cs.traceDone || cs.modDone)) tfLastTracer = state.current;
@@ -6620,7 +7078,7 @@ int main() {
         });
         parts.push("Call stack, bottom to top: " + frameDesc.join(", then ") + ". Stack depth " + effD.frames.length + ".");
       }
-      if (s.step === ex.steps.length - 1) {
+      if (s.step === ex.steps.length - 1 && !wiActiveHere()) {
         if (s.correct) parts.push("Trace complete. Verdict: your prediction was correct — you predicted " + ex.options[s.selected] + " and the program printed " + ex.options[ex.correct] + ".");
         else {
           var d = ex.diagnoses[s.selected];
@@ -7300,7 +7758,7 @@ int main() {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
       if (s.step < ex.steps.length - 1) {
         s.step++;
-        if (s.step === ex.steps.length - 1) { s.traceDone = true; }
+        if (s.step === ex.steps.length - 1 && !wiActiveHere()) { s.traceDone = true; }
         renderAll();
         if (!stepAnnounceMuted) announce(describeStep());
         return true;
@@ -7313,11 +7771,12 @@ int main() {
     }
     function traceRunAll() {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
-      s.step = ex.steps.length - 1; s.traceDone = true;
+      s.step = ex.steps.length - 1; if (!wiActiveHere()) s.traceDone = true;
       renderAll();
       announce(describeStep());
     }
     function traceRestart() {
+      if (wiActiveHere()) { wiRestartClean(); return; }
       var s = state.ex[state.current];
       s.step = -1; s.traceDone = false; renderAll(); announce("Tracer restarted. Memory is empty.");
     }
@@ -7501,7 +7960,7 @@ int main() {
       if (!advanced) { stopPlayback(); return; }
       // The caption is this step's single announcement during playback.
       announce("Step " + (s.step + 1) + " of " + ex.steps.length + ". " + buildCaption(ex, s.step));
-      var pi = partingStepIndex();
+      var pi = wiActiveHere() ? -1 : partingStepIndex();
       if (pi >= 0 && pi < ex.steps.length - 1 && s.step === pi && !playback.partingPaused) {
         // Parting step reached: pause once for this run-through and surface
         // the same diagnosis text the Investigate stage shows. Play resumes.
@@ -14318,7 +14777,7 @@ int main() {
       if (s.correct || s.selected < 0) return null;
       var d = ex.diagnoses[s.selected];
       if (!d) return null;
-      var st = ex.steps[d.step];
+      var st = (ex.__wiOrig || ex.steps)[d.step];
       if (!st) return null;
       return { step: d.step, line: st.line + 1, text: ex.code[st.line].trim() };
     }
@@ -14338,9 +14797,15 @@ int main() {
         lines.push("Exercise: " + (i + 1) + " - " + ex.title + (s.pair ? " (pair)" : ""));
         lines.push("Concept: " + ex.concept);
         lines.push("Prediction: " + ex.options[s.selected]);
+        if (s.confidence === "sure") lines.push("Confidence: Sure");
+        else if (s.confidence === "unsure") lines.push("Confidence: Not sure");
         if (s.rationale) lines.push("Why: " + s.rationale);
         lines.push("Correct output: " + ex.options[ex.correct]);
         lines.push("Verdict: " + (s.correct ? "correct" : "parted"));
+        if (s.followLocked) {
+          var fuJ = (!s.correct && ex.diagnoses && ex.diagnoses[s.selected]) ? followFor(ex, ex.diagnoses[s.selected].text.replace(/<[^>]+>/g, "")) : null;
+          lines.push("Follow-up: " + (s.followCorrect ? "Repair held" : "Still active" + (fuJ ? " — " + fuJ.fam.label : "")));
+        }
         if (s.muddy > 0 && ex.code[s.muddy - 1]) lines.push("Muddiest line: Line " + s.muddy + ": " + ex.code[s.muddy - 1].trim());
         if (!s.correct) {
           var pi = partingInfo(ex, s);
@@ -14423,7 +14888,7 @@ int main() {
       function flush(){ /* entries counted on verdict/prediction capture below */ }
       var linesAll = raw.split(/\r?\n/);
       var cur = null;
-      function ensure(n){ if (!agg[n]) agg[n] = { attempts:0, wrong:0, wrongPred:{}, parting:{}, whyByPred:{}, muddy:{}, muddyTotal:0 }; return agg[n]; }
+      function ensure(n){ if (!agg[n]) agg[n] = { attempts:0, wrong:0, wrongPred:{}, parting:{}, whyByPred:{}, muddy:{}, muddyTotal:0, cw:0, uw:0 }; return agg[n]; }
       linesAll.forEach(function(line){
         var L = line.trim();
         if (!L) return;
@@ -14431,6 +14896,7 @@ int main() {
         if (em) { var cleanTitle = (em[2]||"").replace(/\s*\(pair\)\s*$/i, "").trim(); cur = { num: parseInt(em[1],10), title: cleanTitle, prediction:null, correct:null, verdict:null, parting:null }; entries++; ensure(cur.num); if (cur.title && !agg[cur.num].title) agg[cur.num].title = cur.title; return; }
         if (!cur) return;
         var pm = L.match(/^Prediction\s*:\s*(.+)$/i); if (pm) { cur.prediction = pm[1].trim().replace(/\s*\(pair\)\s*$/i, "").trim(); return; }
+        var cfm = L.match(/^Confidence\s*:\s*(.+)$/i); if (cfm) { cur.confidence = /^not sure/i.test(cfm[1].trim()) ? "unsure" : (/^sure/i.test(cfm[1].trim()) ? "sure" : ""); return; }
         var wm = L.match(/^Why\s*:\s*(.+)$/i); if (wm) { cur.why = wm[1].trim(); return; }
         var cm = L.match(/^(?:Correct output|Correct)\s*:\s*(.+)$/i); if (cm) { cur.correct = cm[1].trim(); return; }
         var vm = L.match(/^Verdict\s*:\s*(.+)$/i);
@@ -14440,6 +14906,8 @@ int main() {
           var isWrong = /parted|wrong|incorrect/i.test(cur.verdict) || (cur.prediction !== null && cur.correct !== null && cur.prediction !== cur.correct);
           if (isWrong) {
             a.wrong++;
+            if (cur.confidence === "sure") a.cw++;
+            else if (cur.confidence === "unsure") a.uw++;
             if (cur.prediction) a.wrongPred[cur.prediction] = (a.wrongPred[cur.prediction]||0)+1;
             if (cur.why && cur.prediction) { if (!a.whyByPred[cur.prediction]) a.whyByPred[cur.prediction] = []; a.whyByPred[cur.prediction].push(cur.why); }
             // parting may appear on following lines; store ref to cur for later capture
@@ -14466,15 +14934,27 @@ int main() {
       var nums = Object.keys(parsed.agg).map(function(k){return parseInt(k,10);}).filter(function(n){ return parsed.agg[n].attempts > 0; }).sort(function(a,b){return a-b;});
       if (!nums.length) { countEl.textContent = "Read " + parsed.journalCount + " journal(s), but found no parseable exercise entries. Check that the text includes lines like \u201CExercise: 1 - ...\u201D, \u201CPrediction:\u201D and \u201CVerdict:\u201D."; resultBox.innerHTML = ""; return; }
       countEl.textContent = "Read " + parsed.journalCount + " journal" + (parsed.journalCount===1?"":"s") + " — " + parsed.entries + " exercise entries found, " + nums.reduce(function(s,n){return s+parsed.agg[n].attempts;},0) + " with a verdict.";
-      var html = '<div class="digest-table-wrap"><table class="digest-table"><caption class="sr-live">Instructor misconception digest by exercise</caption><thead><tr><th scope="col">Exercise</th><th scope="col">Attempts</th><th scope="col">Wrong</th><th scope="col">Most common wrong prediction</th><th scope="col">Most common parting line</th></tr></thead><tbody>';
+      var html = '<div class="digest-table-wrap"><table class="digest-table"><caption class="sr-live">Instructor misconception digest by exercise</caption><thead><tr><th scope="col">Exercise</th><th scope="col">Attempts</th><th scope="col">Wrong</th><th scope="col">Confidently wrong (sure / not sure)</th><th scope="col">Most common wrong prediction</th><th scope="col">Most common parting line</th></tr></thead><tbody>';
       var mostMissed = null;
       nums.forEach(function(n){
         var a = parsed.agg[n];
         if (!mostMissed || a.wrong > parsed.agg[mostMissed].wrong) mostMissed = n;
         var title = a.title || (EXERCISES[n-1] ? EXERCISES[n-1].title : "");
-        html += '<tr' + (a.wrong > 0 ? ' class="hot"' : '') + '><td><strong>' + n + (title ? " — " + esc(title) : "") + '</strong></td><td>' + a.attempts + '</td><td>' + a.wrong + '</td><td>' + (a.wrong ? esc(mostCommon(a.wrongPred) || "—") : "—") + '</td><td>' + (a.wrong ? esc(mostCommon(a.parting) || "—") : "—") + '</td></tr>';
+        html += '<tr' + (a.wrong > 0 ? ' class="hot"' : '') + '><td><strong>' + n + (title ? " — " + esc(title) : "") + '</strong></td><td>' + a.attempts + '</td><td>' + a.wrong + '</td><td>' + (a.wrong ? (a.cw + " / " + a.uw) : "—") + '</td><td>' + (a.wrong ? esc(mostCommon(a.wrongPred) || "—") : "—") + '</td><td>' + (a.wrong ? esc(mostCommon(a.parting) || "—") : "—") + '</td></tr>';
       });
       html += "</tbody></table></div>";
+      var cwNums = nums.filter(function(n){ return parsed.agg[n].cw > 0; }).sort(function(a,b){ return parsed.agg[b].cw - parsed.agg[a].cw || a - b; });
+      var cwTotal = cwNums.reduce(function(sum,n){ return sum + parsed.agg[n].cw; }, 0);
+      if (cwTotal > 0) {
+        html += '<p class="digest-summary"><strong>Confidently wrong:</strong> ' + cwTotal + " prediction" + (cwTotal===1?" was":"s were") + ' marked “Sure” and still wrong, clustering on: ' + cwNums.map(function(n){
+          var a3 = parsed.agg[n];
+          var t4 = a3.title || (EXERCISES[n-1] ? EXERCISES[n-1].title : "");
+          var cp = mostCommon(a3.wrongPred);
+          return "Exercise " + n + (t4 ? " — " + esc(t4) : "") + " (" + a3.cw + (cp ? ", behind predicting “" + esc(cp) + "”" : "") + ")";
+        }).join("; ") + ".</p>";
+      } else {
+        html += '<p class="digest-summary"><strong>Confidently wrong:</strong> none in these journals — no wrong prediction was marked “Sure”.</p>';
+      }
       if (mostMissed !== null && parsed.agg[mostMissed].wrong > 0) {
         var mm = parsed.agg[mostMissed];
         var mmTitle = mm.title || (EXERCISES[mostMissed-1] ? EXERCISES[mostMissed-1].title : "");
@@ -15624,7 +16104,11 @@ int main() {
           pairASelected: s.pairASelected, pairALocked: !!s.pairALocked,
           pairBSelected: s.pairBSelected, pairBLocked: !!s.pairBLocked,
           jointSelected: s.jointSelected, jointLocked: !!s.jointLocked, rationale: s.rationale || "",
-          muddy: (typeof s.muddy === "number" && s.muddy > 0 && EXERCISES[i] && s.muddy <= EXERCISES[i].code.length) ? s.muddy : 0
+          muddy: (typeof s.muddy === "number" && s.muddy > 0 && EXERCISES[i] && s.muddy <= EXERCISES[i].code.length) ? s.muddy : 0,
+          confidence: (s.confidence === "sure" || s.confidence === "unsure") ? s.confidence : "",
+          followSel: (typeof s.followSel === "number" ? s.followSel : -1),
+          followLocked: !!s.followLocked,
+          followCorrect: (s.followCorrect === true || s.followCorrect === false) ? s.followCorrect : null
         });
       });
       try {
@@ -15746,6 +16230,10 @@ int main() {
           if (typeof sv.jointSelected === "number") s.jointSelected = sv.jointSelected;
           if (typeof sv.rationale === "string") s.rationale = sv.rationale.slice(0, 140);
           if (typeof sv.muddy === "number" && sv.muddy > 0 && sv.muddy <= EXERCISES[i].code.length) s.muddy = sv.muddy;
+          if (sv.confidence === "sure" || sv.confidence === "unsure") s.confidence = sv.confidence;
+          if (typeof sv.followSel === "number") s.followSel = sv.followSel;
+          s.followLocked = !!sv.followLocked;
+          s.followCorrect = (sv.followCorrect === true || sv.followCorrect === false) ? sv.followCorrect : null;
           s.jointLocked = !!sv.jointLocked;
           if (s.locked || s.modDone) state.ex[i] = s;
         });
