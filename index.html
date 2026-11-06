@@ -1465,6 +1465,33 @@
       .clear-confirm { border: 1.5px solid var(--rust); background: var(--rust-soft); border-radius: 10px; padding: 11px 13px; font-size: .9rem; }
       .clear-confirm[hidden] { display: none; }
       .clear-confirm .lockrow { margin-top: 9px; }
+      /* ---------- Declutter pass 2: quiet first screen ----------
+         Onboarding and reference material start folded away so the exercise
+         itself leads the page. Nothing is removed: Start Here, the test-out
+         check, and each briefing expand in place from their own headers. */
+      .intro h1 { font-size: clamp(1.75rem, 4vw, 2.35rem); }
+      .intro .lede { font-size: 1rem; margin-top: 10px; }
+      .route-panel { box-shadow: none; padding: 12px 16px; margin-top: 14px; }
+      .route-head h2 { font-size: 1.25rem; }
+      .route-sub { font-size: .88rem; margin-top: 3px; }
+      .route-step { padding: 7px 10px; }
+      .route-text span { font-size: .84rem; }
+      .route-text .route-detail:empty { display: none; }
+      .toolbar, .session-tools, .share-print-wrap { box-shadow: none; }
+      .meet-link { background: transparent; border: none; box-shadow: none; padding: 2px 2px; margin-top: 10px; font-size: .9rem; }
+      .skin-btn { padding: 6px 11px; font-size: .88rem; }
+      .skin-note { font-size: .8rem; margin-top: 6px; }
+      .brief-panel { border-width: 1px; }
+      .brief-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+      .brief-head .journal-status { margin-top: 4px; }
+      #brief-body-wrap[hidden] { display: none; }
+      .brief-checks { gap: 8px; }
+      .brief-check { padding: 9px 11px; }
+      .brief-check .opt-btn { min-height: 40px; padding: 7px 10px; font-size: .92rem; }
+      @media (min-width: 860px) {
+        .ex-groups { grid-template-columns: 1fr 1fr; align-items: start; }
+        .ex-group[open] { grid-column: 1 / -1; }
+      }
     </style>
   </head>
   <body>
@@ -1501,7 +1528,6 @@
           </div>
         </div>
         <button type="button" class="hdr-btn" id="offline-download-btn" title="Downloads one self-contained HTML file with the whole platform. Progress in the downloaded copy is stored separately, in that browser.">Download offline copy</button>
-        <span class="bgbar-note">One file, works with no internet. Progress in the downloaded copy is stored separately in that browser.</span>
       </div>
       <section class="resume-strip" id="resume-strip" hidden aria-label="Welcome back">
         <p class="resume-text" id="resume-text" role="status"></p>
@@ -1521,8 +1547,9 @@
             <h2 id="route-h">New here? Start here.</h2>
             <p class="route-sub" id="route-progress">A first route through TraceFirst, in order. Ticks appear as you finish each step. Your progress is saved in this browser, on this device — there is no account and nothing is sent anywhere.</p>
           </div>
-          <button class="btn ghost small" type="button" id="route-toggle" aria-expanded="true" aria-controls="route-body">Collapse</button>
+          <button class="btn ghost small" type="button" id="route-toggle" aria-expanded="false" aria-controls="route-body">Expand</button>
         </div>
+        <div id="route-body" hidden>
         <div class="reset-row">
           <button class="btn ghost small" type="button" id="reset-progress-btn">Reset all progress</button>
         </div>
@@ -1533,7 +1560,6 @@
             <button class="btn ghost small" type="button" id="reset-cancel-btn">Cancel</button>
           </div>
         </div>
-        <div id="route-body">
           <ol class="route-steps">
             <li><button class="route-step" type="button" data-route="bolt" data-step="1"><span class="route-num" aria-hidden="true">1</span><span class="route-text"><strong>Bolt's World, Worlds 1 to 3</strong><span>Logic before syntax.</span><span class="route-detail" data-detail="1"></span></span><span class="route-state" data-state="1">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="primer" data-step="2"><span class="route-num" aria-hidden="true">2</span><span class="route-text"><strong>Meet the Code</strong><span>A first program, line by line.</span><span class="route-detail" data-detail="2"></span></span><span class="route-state" data-state="2">Not yet</span></button></li>
@@ -1545,7 +1571,6 @@
             <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
           <p class="route-free"><strong>You do not have to follow this order.</strong> Every mode below stays open, in any order, at any time.</p>
-        </div>
         <div class="testout-entry">
           <p><strong>Already know some programming?</strong> <button class="text-link" type="button" id="testout-open" aria-expanded="false" aria-controls="testout-panel">Take the test-out check.</button><span class="testout-entry-status" id="testout-entry-status" role="status"></span></p>
         </div>
@@ -1553,6 +1578,7 @@
           <h3 id="testout-h" tabindex="-1">Test-out check</h3>
           <p class="testout-note">Seven short questions, answered in order — no stepping, and each answer is final for this sitting. Score 6 or 7 and the opening stretch is marked as tested out: Start Here steps 1 to 3 tick, the primer counts as read, and Tracer Exercises 1 to 5 are marked <strong>Tested out</strong>. Retakes are unlimited, and a tested-out exercise can still be done normally later — your real attempt replaces the mark.</p>
           <div id="testout-body"></div>
+        </div>
         </div>
       </section>
 
@@ -1805,14 +1831,21 @@ for (int i = 0; i < 3; i++) {
 
       <div id="tracer-mode" role="tabpanel" tabindex="0">
       <section class="card brief-panel" id="brief-panel" aria-labelledby="brief-h" hidden>
-        <span class="concept-tag" id="brief-tag">Briefing</span>
-        <h3 id="brief-h" style="font-size:1.15rem;">Briefing</h3>
-        <div class="brief-body" id="brief-body"></div>
-        <div class="codebox brief-example"><div class="codehead"><span>worked example</span><span>C++</span></div><pre id="brief-example"></pre></div>
-        <p style="font-size:.92rem;margin-top:8px;" id="brief-example-note"></p>
-        <h4 style="margin-top:14px;font-size:.95rem;">Concept checks — answer all of them to complete this briefing</h4>
-        <div class="brief-checks" id="brief-checks"></div>
-        <p class="journal-status" id="brief-status" role="status"></p>
+        <div class="brief-head">
+          <div>
+            <span class="concept-tag" id="brief-tag">Briefing</span>
+            <h3 id="brief-h" style="font-size:1.15rem;">Briefing</h3>
+            <p class="journal-status" id="brief-status" role="status"></p>
+          </div>
+          <button class="btn ghost small" type="button" id="brief-toggle" aria-expanded="false" aria-controls="brief-body-wrap">Expand briefing</button>
+        </div>
+        <div id="brief-body-wrap" hidden>
+          <div class="brief-body" id="brief-body"></div>
+          <div class="codebox brief-example"><div class="codehead"><span>worked example</span><span>C++</span></div><pre id="brief-example"></pre></div>
+          <p style="font-size:.92rem;margin-top:8px;" id="brief-example-note"></p>
+          <h4 style="margin-top:14px;font-size:.95rem;">Concept checks — answer all of them to complete this briefing</h4>
+          <div class="brief-checks" id="brief-checks"></div>
+        </div>
       </section>
       
       <p class="meet-link">New to reading code? <button class="text-link" type="button" id="meet-code-link">Meet the Code first.</button> It names every line of a short program before Exercise 1 asks you to predict one.</p>
@@ -13757,7 +13790,7 @@ int main() {
     var primerOpened = false;
     var primerRead = false;
     var routeManualExpand = false;
-    var routeCollapsed = false;
+    var routeCollapsed = true;
     var routeLastSig = "";
     function routeProgress() {
       var boltN = 0, tracerN = 0, bridgeN = 0, gymN = 0, makeN = 0;
@@ -16419,6 +16452,23 @@ int main() {
         }
       });
     })();
+    </script>
+    <script>
+      /* Declutter pass 2: briefing collapse toggle. The briefing's text,
+         worked example, and concept checks live in #brief-body-wrap and
+         start folded; the header keeps the title and check progress
+         visible, and one click expands it in place. */
+      (function () {
+        var toggle = document.getElementById("brief-toggle");
+        var wrap = document.getElementById("brief-body-wrap");
+        if (!toggle || !wrap) return;
+        toggle.addEventListener("click", function () {
+          var open = wrap.hidden;
+          wrap.hidden = !open;
+          toggle.setAttribute("aria-expanded", open ? "true" : "false");
+          toggle.textContent = open ? "Collapse briefing" : "Expand briefing";
+        });
+      })();
     </script>
   </body>
 </html>
