@@ -1464,6 +1464,23 @@
       .stack-frame .frame-boxes .membox { min-width: 84px; padding: 7px 10px; }
       .stack-frame .frame-boxes .membox .vval { font-size: 1.18rem; }
       .stack-frame .frame-boxes .membox.wide { flex: 1 1 180px; }
+      /* ---------- Heap view (pointers exercises) ---------- */
+      .heap-region { margin-top: 14px; border: 1.5px dashed var(--accent); border-radius: 10px; padding: 11px 13px; background: var(--panel-2); }
+      .heap-region[hidden] { display: none; }
+      .heap-region h4 { font-family: "IBM Plex Mono", monospace; font-size: .78rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--accent-strong); }
+      .heap-region .heap-note { font-size: .88rem; color: var(--ink-soft); margin-top: 5px; }
+      .heap-boxes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 9px; }
+      .heap-box { border: 1.5px solid var(--accent); border-radius: 10px; background: var(--panel); padding: 9px 12px; min-width: 108px; }
+      .heap-box .vname { font-family: "IBM Plex Mono", monospace; font-weight: 600; font-size: .92rem; display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+      .heap-box .vtype { font-size: .68rem; color: var(--ink-soft); font-weight: 500; letter-spacing: .05em; text-transform: uppercase; }
+      .heap-box.freed { opacity: .55; border-style: dashed; border-color: var(--line); }
+      .heap-box.orphaned { border-color: var(--amber); }
+      .heap-tag { display: inline-block; margin-top: 6px; font-size: .72rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; border-radius: 5px; padding: 1px 7px; }
+      .heap-tag.freed { color: var(--rust); background: var(--rust-soft); }
+      .heap-tag.orphan { color: var(--amber); background: var(--amber-soft); }
+      .ptr-chip { display: inline-block; margin-top: 6px; font-family: "IBM Plex Mono", monospace; font-size: .78rem; font-weight: 600; border: 1.5px solid var(--accent); color: var(--accent-strong); background: var(--accent-soft); border-radius: 999px; padding: 2px 9px; }
+      .ptr-chip.dangling { border-color: var(--rust); color: var(--rust); background: var(--rust-soft); }
+      .heap-box .heap-disp { font-family: "IBM Plex Mono", monospace; font-size: 1.2rem; font-weight: 600; }
       /* ---------- Muddiest line ---------- */
       .muddy-area { margin-top: 14px; border-top: 1px dashed var(--line); padding-top: 12px; }
       .muddy-area h4 { font-size: .95rem; }
@@ -1581,7 +1598,7 @@
             <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Order code, then write a line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find and fix faults.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 53</strong><span>The rest of the course.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 60</strong><span>The rest of the course.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write your own programs.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
             <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
@@ -1896,7 +1913,7 @@ for (int i = 0; i < 3; i++) {
             <select class="lecture-select" id="lecture-ex-select" aria-label="Choose an exercise to project"></select>
             <button class="btn" type="button" id="lecture-project-btn">Project this exercise</button>
           </div>
-          <p class="lecture-pick-note">Any of the 53 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
+          <p class="lecture-pick-note">Any of the 60 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
         </div>
 
         <div id="lecture-project" hidden>
@@ -1973,6 +1990,7 @@ for (int i = 0; i < 3; i++) {
                   <div class="stack-col" id="lec-memory-col">
                     <h4 id="lec-memory-h" style="margin-top:16px; font-size:.85rem; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;">Memory</h4>
                     <div class="memory" id="lec-memory"></div>
+                    <div class="heap-region" id="lec-heap-region" hidden></div>
                   </div>
                   <div class="stack-col" id="lec-stack-col" hidden>
                     <h4 id="lec-stack-h" style="margin-top:16px; font-size:.85rem; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;">Call stack — newest call on top</h4>
@@ -2208,6 +2226,7 @@ for (int i = 0; i < 3; i++) {
                 <div class="stack-col" id="memory-col">
                   <h3 id="memory-h" style="margin-top:18px; font-size:.85rem; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;">Memory</h3>
                   <div class="memory" id="memory"></div>
+                  <div class="heap-region" id="heap-region" hidden></div>
                 </div>
                 <div class="stack-col" id="stack-col" hidden>
                   <h3 id="stack-h" style="margin-top:18px; font-size:.85rem; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;">Call stack — newest call on top</h3>
@@ -2239,7 +2258,7 @@ for (int i = 0; i < 3; i++) {
         </div>
       </section>
       <details class="session-tools" id="session-tools">
-        <summary><span class="session-tools-title">Session &amp; instructor tools</span><span class="gcount">Review &middot; Problem of the Day &middot; Lecture mode &middot; Journal &middot; Crosswalk &#9662;</span></summary>
+        <summary><span class="session-tools-title">Session &amp; instructor tools</span><span class="gcount">Review &middot; Problem of the Day &middot; Lecture mode &middot; Journal &middot; Assignments &middot; Crosswalk &#9662;</span></summary>
         <div class="session-tools-inner">
 <section class="card" id="review-panel" aria-labelledby="review-h" style="margin-top:14px;">
         <span class="concept-tag">Review · spaced practice</span>
@@ -2267,6 +2286,46 @@ for (int i = 0; i < 3; i++) {
           <span style="font-size:.88rem;color:var(--ink-soft);">Downloads <span style="font-family:'IBM Plex Mono',monospace;">tracefirst-journal.txt</span> · nothing leaves this page until you share the file.</span>
         </div>
         <p class="journal-status" id="journal-status" role="status"></p>
+      </section>
+<section class="card" id="assign-section" style="margin-top:18px;" aria-labelledby="assign-h">
+        <h3 id="assign-h">Assignments</h3>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">An instructor picks tracer exercises, adds a title and a due date, and gets a share code (and link) to post in the LMS or email. A student opening the link sees the set, their own completion ticks, and can jump to each exercise. Everything here works <strong>from this browser's saved record</strong>, the way the prediction journal does — nothing syncs anywhere, and there are no accounts.</p>
+        <h4 style="margin-top:16px;font-size:.95rem;">Create an assignment</h4>
+        <div style="display:grid;gap:10px;margin-top:8px;">
+          <label style="font-weight:600;font-size:.92rem;">Title<br><input type="text" id="assign-title" placeholder="e.g. Week 6 — Sorting set" style="width:100%;box-sizing:border-box;font:inherit;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel-2);color:var(--ink);margin-top:4px;"></label>
+          <label style="font-weight:600;font-size:.92rem;">Due date<br><input type="date" id="assign-due" style="font:inherit;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel-2);color:var(--ink);margin-top:4px;"></label>
+        </div>
+        <p style="font-weight:600;font-size:.92rem;margin-top:12px;">Exercises in this assignment</p>
+        <div id="assign-exlist" style="display:grid;gap:4px;margin-top:6px;max-height:260px;overflow-y:auto;border:1px solid var(--line);border-radius:10px;padding:10px 12px;"></div>
+        <div class="journal-actions">
+          <button class="btn" type="button" id="assign-create-btn">Create assignment &amp; make its code</button>
+          <span class="journal-status" id="assign-create-status" role="status"></span>
+        </div>
+        <div id="assign-created" hidden style="margin-top:12px;">
+          <label style="font-weight:600;font-size:.92rem;" for="assign-code-out">Share code — post this, or send the link</label>
+          <textarea class="digest-textarea" id="assign-code-out" rows="3" readonly style="margin-top:6px;"></textarea>
+          <div class="journal-actions">
+            <button class="btn ghost small" type="button" id="assign-copy-code-btn">Copy code</button>
+            <button class="btn ghost small" type="button" id="assign-copy-link-btn">Copy assignment link</button>
+            <span class="journal-status" id="assign-copy-status" role="status"></span>
+          </div>
+        </div>
+        <h4 style="margin-top:18px;font-size:.95rem;">Assignments saved in this browser</h4>
+        <div id="assign-saved-list" style="margin-top:8px;"></div>
+        <h4 style="margin-top:18px;font-size:.95rem;">Open an assignment</h4>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:4px;">Paste an assignment code (TFA1:…) below — or simply open the assignment link, which fills this in for you.</p>
+        <textarea class="digest-textarea" id="assign-open-code" rows="2" placeholder="TFA1:…" aria-label="Assignment code to open" style="margin-top:8px;"></textarea>
+        <div class="journal-actions">
+          <button class="btn" type="button" id="assign-open-btn">Open assignment</button>
+          <span class="journal-status" id="assign-open-status" role="status"></span>
+        </div>
+        <h4 style="margin-top:18px;font-size:.95rem;">Export assignment CSV</h4>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:4px;">Downloads a CSV for the assignment open below — or, if none is open, the most recent assignment saved in this browser. One row per exercise: exercise number, title, status (not attempted / attempted / correct), attempts, confidence, and completion date, all from this browser's saved prediction record.</p>
+        <div class="journal-actions">
+          <button class="btn ghost small" type="button" id="assign-csv-btn">Export assignment CSV</button>
+          <span class="journal-status" id="assign-csv-note" role="status"></span>
+        </div>
+        <div id="assign-view" hidden style="margin-top:14px;border:1.5px solid var(--accent);border-radius:12px;padding:16px;" aria-live="polite"></div>
       </section>
 <section class="card crosswalk-card" id="crosswalk-section" aria-labelledby="crosswalk-h">
         <h3 id="crosswalk-h">Topic crosswalk</h3>
@@ -2699,12 +2758,12 @@ int main() {
         <div id="instructors-body" hidden>
           <div class="lecture-inst-entry">
             <h4>Lecture mode — run a tracer exercise in front of the class</h4>
-            <p>A single projected screen: pick any of the 53 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
+            <p>A single projected screen: pick any of the 60 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
             <div class="journal-actions"><button class="btn small" type="button" id="lecture-open-btn-2">Open Lecture mode</button></div>
           </div>
                     <div class="studio" id="inst-studio">
             <h4>Instructor exercise studio</h4>
-            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 53 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
+            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 60 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
             <div class="authored-field">
               <label for="inst-title">Exercise title</label>
               <input class="authored-input" type="text" id="inst-title" maxlength="80" placeholder="e.g. The average that is not an average" autocomplete="off">
@@ -5625,8 +5684,456 @@ int main() {
           correct: 0,
           explain: "The loop now runs only for i = 0 and 1, so just the first two elements gain 10: vals becomes {11, 12, 3}. The print asks for vals[0] and vals[2] — the changed first element and the untouched last one: <b>11 3</b>. The count parameter is the loop's leash."
         }
+      },
+      {
+        concept: "Sorting & cost · bubble sort",
+        topic: "Searching and sorting",
+        title: "Bubble sort, counted",
+        goal: "A <b>comparison counter</b> makes cost visible: <b>comparisons++</b> runs at every test of two neighbours, whether or not anything swaps. For 4 elements the passes test 3 + 2 + 1 pairs.",
+        stories: {
+          health:   "Four <strong>recovery times</strong> — 5, 2, 4, 1 days — are stored in an array. A bubble sort puts them in order, and a counter records how many comparisons the sorting cost. The program prints the sorted array and the count.",
+          psych:    "Four <strong>response scores</strong> — 5, 2, 4, 1 — are stored in an array. A bubble sort puts them in order, and a counter records how many comparisons the sorting cost. The program prints the sorted array and the count.",
+          business: "Four <strong>daily totals</strong> — 5, 2, 4, 1 — are stored in an array. A bubble sort puts them in order, and a counter records how many comparisons the sorting cost. The program prints the sorted array and the count.",
+          arts:     "Four <strong>running times</strong> — 5, 2, 4, 1 minutes — are stored in an array. A bubble sort puts them in order, and a counter records how many comparisons the sorting cost. The program prints the sorted array and the count."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int a[4] = {5, 2, 4, 1};",
+          "    int comparisons = 0;",
+          "    for (int i = 0; i < 3; i++) {",
+          "        for (int j = 0; j < 3 - i; j++) {",
+          "            comparisons++;",
+          "            if (a[j] > a[j + 1]) {",
+          "                int t = a[j]; a[j] = a[j + 1]; a[j + 1] = t;",
+          "            }",
+          "        }",
+          "    }",
+          "    for (int i = 0; i < 4; i++) { cout << a[i] << \" \"; }",
+          "    cout << \"| \" << comparisons;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print — the sorted array, then the final comparison count?",
+        options: ["1 2 4 5 | 6", "1 2 4 5 | 5", "2 4 1 5 | 6", "1 2 4 5 | 3"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 8, text: "<b>Named misconception: counting swaps instead of comparisons.</b> 5 is the number of <em>swaps</em> this data needs. The counter does not live on the swap line — it sits <em>before</em> the if, so it rises at every test, swap or no swap. The parting step is pass 2's first test (2 &gt; 4 is false, nothing swaps) where the counter still climbs to 4, past the swap count. Tests: 6. Swaps: 5. They are different counts." },
+          2: { step: 9, text: "That is the array after <b>one pass</b> — the same trap as Exercise 18, now with a counter attached. The parting step is in pass 2, where 4 and 1 are still out of order and swap. One pass only guarantees the largest value (5) has bubbled to the end; passes 2 and 3 do real work, and the counter keeps charging for them." },
+          3: { step: 8, text: "3 is the comparison count of the <b>first pass only</b>. The inner loop runs again on every outer pass — 3 tests, then 2, then 1 — and <b>comparisons++</b> runs on every one of them. The parting step is the first test of pass 2, where the counter rises to 4. A sort's cost is the sum over all its passes, not its longest pass." }
+        },
+        steps: [
+          { line: 4, vars: { a: ["int[4]", "{5, 2, 4, 1}"] }, out: "", note: "The array <b>a</b> starts as <b>5, 2, 4, 1</b>. This time, watch two things at once: the array, and the price being charged for sorting it." },
+          { line: 5, vars: { a: ["int[4]", "{5, 2, 4, 1}"], comparisons: ["int", "0"] }, out: "", note: "The <b>comparisons</b> counter starts at <b>0</b>. It is an ordinary variable — it only changes where the code changes it." },
+          { line: 8, vars: { a: ["int[4]", "{5, 2, 4, 1}"], comparisons: ["int", "1"], i: ["int", "0"], j: ["int", "0"] }, out: "", note: "Pass 1, first pair: the counter rises to <b>1</b> <em>before</em> the test is even read. Then: is 5 &gt; 2? Yes." },
+          { line: 10, vars: { a: ["int[4]", "{2, 5, 4, 1}"], comparisons: ["int", "1"], i: ["int", "0"], j: ["int", "0"] }, out: "", note: "The swap runs: <b>{2, 5, 4, 1}</b>. One comparison, one swap — so far the two counts agree. They are about to part." },
+          { line: 8, vars: { a: ["int[4]", "{2, 5, 4, 1}"], comparisons: ["int", "2"], i: ["int", "0"], j: ["int", "1"] }, out: "", note: "Second pair: counter to <b>2</b>. Is 5 &gt; 4? Yes — swap next." },
+          { line: 10, vars: { a: ["int[4]", "{2, 4, 5, 1}"], comparisons: ["int", "2"], i: ["int", "0"], j: ["int", "1"] }, out: "", note: "Swapped: <b>{2, 4, 5, 1}</b>. The 5 is bubbling right." },
+          { line: 8, vars: { a: ["int[4]", "{2, 4, 5, 1}"], comparisons: ["int", "3"], i: ["int", "0"], j: ["int", "2"] }, out: "", note: "Third pair: counter to <b>3</b>. Is 5 &gt; 1? Yes." },
+          { line: 10, vars: { a: ["int[4]", "{2, 4, 1, 5}"], comparisons: ["int", "3"], i: ["int", "0"], j: ["int", "2"] }, out: "", note: "Swapped: <b>{2, 4, 1, 5}</b>. Pass 1 ends — the largest value, 5, is home. But 4 and 1 are still out of order: the array is <em>not</em> sorted yet." },
+          { line: 8, vars: { a: ["int[4]", "{2, 4, 1, 5}"], comparisons: ["int", "4"], i: ["int", "1"], j: ["int", "0"] }, out: "", note: "<b>The parting step for the swap-counters.</b> Pass 2 tests 2 &gt; 4: <b>false</b> — nothing swaps. But <b>comparisons++</b> already ran: the counter is <b>4</b>, while the swap count is still 3. From here on, the two counts never agree again." },
+          { line: 10, vars: { a: ["int[4]", "{2, 1, 4, 5}"], comparisons: ["int", "5"], i: ["int", "1"], j: ["int", "1"] }, out: "", note: "Pass 2's second test (counter 5) finds 4 &gt; 1 and swaps: <b>{2, 1, 4, 5}</b>. A second pass was not a formality — and a prediction that stopped after pass 1 parts from the machine here." },
+          { line: 8, vars: { a: ["int[4]", "{2, 1, 4, 5}"], comparisons: ["int", "6"], i: ["int", "2"], j: ["int", "0"] }, out: "", note: "Pass 3 makes the last test: counter to <b>6</b>. 3 + 2 + 1 = 6 tests in total. Is 2 &gt; 1? Yes — one swap remains." },
+          { line: 10, vars: { a: ["int[4]", "{1, 2, 4, 5}"], comparisons: ["int", "6"], i: ["int", "2"], j: ["int", "0"] }, out: "", note: "The final swap: <b>{1, 2, 4, 5}</b>. The loops end. Total price: <b>6 comparisons</b>, 5 swaps." },
+          { line: 14, vars: { a: ["int[4]", "{1, 2, 4, 5}"], comparisons: ["int", "6"], i: ["int", "4"] }, out: "1 2 4 5 ", note: "The print loop walks the sorted array: <b>1 2 4 5</b>." },
+          { line: 15, vars: { a: ["int[4]", "{1, 2, 4, 5}"], comparisons: ["int", "6"], i: ["int", "4"] }, out: "1 2 4 5 | 6", note: "Then the counter prints: <b>| 6</b>. Output: <b>1 2 4 5 | 6</b>." },
+          { line: 16, vars: { a: ["int[4]", "{1, 2, 4, 5}"], comparisons: ["int", "6"], i: ["int", "4"] }, out: "1 2 4 5 | 6", note: "The program ends. Final answer: <b>1 2 4 5 | 6</b> — sorted, at a cost of 6 comparisons. Keep this number: the next exercise sorts the same data a different way." }
+        ],
+        modify: {
+          prompt: "The array changes to {3, 1, 4, 2}. The loops and the counter are untouched. What prints now?",
+          code: 'int a[4] = {<mark>3, 1, 4, 2</mark>};\nint comparisons = 0;\nfor (int i = 0; i < 3; i++) {\n    for (int j = 0; j < 3 - i; j++) {\n        comparisons++;\n        if (a[j] > a[j + 1]) { swap }\n    }\n}',
+          options: ["1 2 3 4 | 6", "1 2 3 4 | 4", "1 3 2 4 | 6", "1 2 3 4 | 3"],
+          correct: 0,
+          explain: "The comparison count does not depend on the data at all: the loops always test 3 + 2 + 1 = <b>6</b> pairs. Only the swaps change with the data. Sorted output <b>1 2 3 4</b>, count still <b>6</b> — verified by running the changed program."
+        }
+      },
+      {
+        concept: "Sorting & cost · selection sort",
+        topic: "Searching and sorting",
+        title: "Same data, fewer swaps",
+        goal: "Selection sort pays the <b>same comparison count</b> as bubble sort on the same data — but it swaps <b>at most once per pass</b>, because each pass first <em>finds</em> the minimum and only then moves it.",
+        stories: {
+          health:   "The same four <strong>recovery times</strong> — 5, 2, 4, 1 days — are sorted again, this time by selection sort. Two counters run: comparisons and swaps. The program prints the sorted array and both counts.",
+          psych:    "The same four <strong>response scores</strong> — 5, 2, 4, 1 — are sorted again, this time by selection sort. Two counters run: comparisons and swaps. The program prints the sorted array and both counts.",
+          business: "The same four <strong>daily totals</strong> — 5, 2, 4, 1 — are sorted again, this time by selection sort. Two counters run: comparisons and swaps. The program prints the sorted array and both counts.",
+          arts:     "The same four <strong>running times</strong> — 5, 2, 4, 1 minutes — are sorted again, this time by selection sort. Two counters run: comparisons and swaps. The program prints the sorted array and both counts."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int a[4] = {5, 2, 4, 1};",
+          "    int comparisons = 0;",
+          "    int swaps = 0;",
+          "    for (int i = 0; i < 3; i++) {",
+          "        int m = i;",
+          "        for (int j = i + 1; j < 4; j++) {",
+          "            comparisons++;",
+          "            if (a[j] < a[m]) { m = j; }",
+          "        }",
+          "        if (m != i) {",
+          "            int t = a[i]; a[i] = a[m]; a[m] = t;",
+          "            swaps++;",
+          "        }",
+          "    }",
+          "    for (int i = 0; i < 4; i++) { cout << a[i] << \" \"; }",
+          "    cout << \"| \" << comparisons << \" | \" << swaps;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print — the sorted array, the comparison count, then the swap count?",
+        options: ["1 2 4 5 | 6 | 1", "1 2 4 5 | 5 | 1", "1 2 4 5 | 6 | 3", "5 2 4 1 | 6 | 1"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 9, text: "You stopped the count one pass early. The passes test 3, then 2, then <b>1</b> pair — and that last single test (i = 2, j = 3) still runs <b>comparisons++</b>. The parting step is that final test: the counter reaches <b>6</b>, exactly the same total bubble sort paid on this data. Selection sort does not get its comparisons cheaper; it gets its <em>swaps</em> cheaper." },
+          2: { step: 8, text: "<b>Named misconception: counting swaps instead of passes that move nothing.</b> You gave selection sort a swap on every pass, the way bubble sort behaves. But a pass swaps only when the minimum it found is not already in place (<b>m != i</b>). The parting step is pass 2 (i = 1): the minimum of {2, 4, 5} is already at the front, m == i, and <b>swaps stays 1</b>. Pass 3 is the same. One swap, total." },
+          3: { step: 6, text: "That is the array exactly as it started — as if finding the minimum changed nothing. But finding is only half of a pass: the <b>swap line</b> then writes the minimum into place. The parting step is the first swap, which puts 1 at the front: from that moment the array is <b>{1, 2, 4, 5}</b> — already fully sorted, though the program keeps testing to prove it." }
+        },
+        steps: [
+          { line: 4, vars: { a: ["int[4]", "{5, 2, 4, 1}"] }, out: "", note: "The same data as the last exercise: <b>5, 2, 4, 1</b>. Same input, same size — an honest comparison of two sorts." },
+          { line: 6, vars: { a: ["int[4]", "{5, 2, 4, 1}"], comparisons: ["int", "0"], swaps: ["int", "0"] }, out: "", note: "Two counters this time: <b>comparisons</b> and <b>swaps</b>, both at 0. Watch which lines raise which." },
+          { line: 10, vars: { a: ["int[4]", "{5, 2, 4, 1}"], comparisons: ["int", "1"], swaps: ["int", "0"], i: ["int", "0"], m: ["int", "0"], j: ["int", "1"] }, out: "", note: "Pass 1 hunts the minimum. First test (counter 1): is a[1] = 2 &lt; a[0] = 5? Yes — so <b>m</b>, the index of the smallest so far, becomes 1. Nothing has moved; only an index was noted." },
+          { line: 11, vars: { a: ["int[4]", "{5, 2, 4, 1}"], comparisons: ["int", "1"], swaps: ["int", "0"], i: ["int", "0"], m: ["int", "1"], j: ["int", "1"] }, out: "", note: "<b>m = 1</b>. The array is untouched — selection sort remembers where the minimum is instead of dragging it along." },
+          { line: 10, vars: { a: ["int[4]", "{5, 2, 4, 1}"], comparisons: ["int", "3"], swaps: ["int", "0"], i: ["int", "0"], m: ["int", "1"], j: ["int", "3"] }, out: "", note: "The hunt continues: j = 2 tests 4 &lt; 2 (false, counter 2), then j = 3 tests 1 &lt; 2 (counter <b>3</b>) — true, so m is about to become 3." },
+          { line: 11, vars: { a: ["int[4]", "{5, 2, 4, 1}"], comparisons: ["int", "3"], swaps: ["int", "0"], i: ["int", "0"], m: ["int", "3"], j: ["int", "3"] }, out: "", note: "<b>m = 3</b>: the minimum of the whole array is the 1, at index 3. The pass found it with 3 comparisons and no swaps." },
+          { line: 14, vars: { a: ["int[4]", "{1, 2, 4, 5}"], comparisons: ["int", "3"], swaps: ["int", "0"], i: ["int", "0"], m: ["int", "3"] }, out: "", note: "<b>The parting step for the untouched-array prediction.</b> m != i, so the swap runs: a[0] and a[3] trade places — <b>{1, 2, 4, 5}</b>. The array happens to be fully sorted already, after a single swap." },
+          { line: 15, vars: { a: ["int[4]", "{1, 2, 4, 5}"], comparisons: ["int", "3"], swaps: ["int", "1"], i: ["int", "0"], m: ["int", "3"] }, out: "", note: "<b>swaps = 1</b>. That is the only swap this data will ever need from selection sort. Bubble sort needed 5 swaps on the same array." },
+          { line: 10, vars: { a: ["int[4]", "{1, 2, 4, 5}"], comparisons: ["int", "5"], swaps: ["int", "1"], i: ["int", "1"], m: ["int", "1"], j: ["int", "3"] }, out: "", note: "<b>The parting step for the swap-every-pass prediction.</b> Pass 2 tests the rest (counters 4 and 5): the minimum of {2, 4, 5} is already at the front, so m ends equal to i — <b>no swap runs</b>, and swaps stays 1. Selection sort has no early exit, so it pays the tests anyway." },
+          { line: 10, vars: { a: ["int[4]", "{1, 2, 4, 5}"], comparisons: ["int", "6"], swaps: ["int", "1"], i: ["int", "2"], m: ["int", "2"], j: ["int", "3"] }, out: "", note: "Pass 3 makes the final test (counter <b>6</b>): 5 &lt; 4 is false, m == i again, no swap. Totals: <b>6 comparisons, 1 swap</b> — the same comparison bill as bubble sort, a fifth of its swaps." },
+          { line: 18, vars: { a: ["int[4]", "{1, 2, 4, 5}"], comparisons: ["int", "6"], swaps: ["int", "1"], i: ["int", "4"] }, out: "1 2 4 5 ", note: "The print loop walks the sorted array: <b>1 2 4 5</b>." },
+          { line: 19, vars: { a: ["int[4]", "{1, 2, 4, 5}"], comparisons: ["int", "6"], swaps: ["int", "1"], i: ["int", "4"] }, out: "1 2 4 5 | 6 | 1", note: "Then both counters: <b>| 6 | 1</b>. The program ends. Two quadratic sorts, one honest scoreboard: comparisons tie at 6, swaps 5 against 1." }
+        ],
+        modify: {
+          prompt: "The array changes to {3, 1, 4, 2} — the same change as the last exercise's Modify. What prints now?",
+          code: 'int a[4] = {<mark>3, 1, 4, 2</mark>};\nint comparisons = 0;\nint swaps = 0;\n// selection sort, unchanged',
+          options: ["1 2 3 4 | 6 | 3", "1 2 3 4 | 6 | 1", "1 2 3 4 | 4 | 3", "1 3 2 4 | 6 | 3"],
+          correct: 0,
+          explain: "Comparisons are still <b>6</b> — the data never changes that count. But this array's minima are never in place, so all three passes swap: <b>3 swaps</b>. Bubble sort on this same data also paid 6 comparisons; the swap counts are where the algorithms' characters show — verified by running the changed program."
+        }
+      },
+      {
+        concept: "Sorting & cost · insertion sort",
+        topic: "Searching and sorting",
+        title: "Nearly sorted, nearly free",
+        goal: "Insertion sort's cost <b>depends on the data</b>: each key is compared against its sorted neighbours until a smaller-or-equal one stops it. On nearly sorted data, most keys stop after <b>one</b> comparison.",
+        stories: {
+          health:   "Five <strong>recovery times</strong> — 1, 2, 3, 5, 4 days — are almost in order already: one value sits one place too far right. An insertion sort runs with a comparison counter. The program prints the sorted array and the count.",
+          psych:    "Five <strong>response scores</strong> — 1, 2, 3, 5, 4 — are almost in order already: one value sits one place too far right. An insertion sort runs with a comparison counter. The program prints the sorted array and the count.",
+          business: "Five <strong>daily totals</strong> — 1, 2, 3, 5, 4 — are almost in order already: one value sits one place too far right. An insertion sort runs with a comparison counter. The program prints the sorted array and the count.",
+          arts:     "Five <strong>running times</strong> — 1, 2, 3, 5, 4 minutes — are almost in order already: one value sits one place too far right. An insertion sort runs with a comparison counter. The program prints the sorted array and the count."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int a[5] = {1, 2, 3, 5, 4};",
+          "    int comparisons = 0;",
+          "    for (int i = 1; i < 5; i++) {",
+          "        int key = a[i];",
+          "        int j = i - 1;",
+          "        while (j >= 0 && a[j] > key) {",
+          "            comparisons++;",
+          "            a[j + 1] = a[j];",
+          "            j--;",
+          "        }",
+          "        if (j >= 0) { comparisons++; }",
+          "        a[j + 1] = key;",
+          "    }",
+          "    for (int i = 0; i < 5; i++) { cout << a[i] << \" \"; }",
+          "    cout << \"| \" << comparisons;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print — the sorted array, then the final comparison count?",
+        options: ["1 2 3 4 5 | 5", "1 2 3 4 5 | 10", "1 2 3 5 4 | 5", "1 2 3 4 5 | 4"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 5, text: "<b>Named misconception: insertion sort is always slow.</b> 10 is the worst case for 5 elements (4 + 3 + 2 + 1) — what insertion sort pays on <em>reversed</em> data. But its inner loop stops at the first neighbour that is not bigger than the key. The parting step is the third key (5): like the two before it, it stops after <b>one</b> comparison. On nearly sorted data the count collapses — that adaptiveness is insertion sort's whole character." },
+          2: { step: 9, text: "Nearly sorted is not sorted. The 4 still has to travel one place left, past the 5 — and the parting step is where it lands: <b>a[j + 1] = key</b> writes it into index 3, giving <b>{1, 2, 3, 4, 5}</b>. One element out of place is exactly the work insertion sort exists to do cheaply." },
+          3: { step: 2, text: "You counted only the comparisons that <em>shift</em> something. But the test that <b>stops</b> the shifting is also a comparison — the code counts it on the <b>if (j &gt;= 0)</b> line, for every key that stops against a neighbour instead of falling off the front. The parting step is the very first key: it shifts nothing, yet the counter rises to 1. Four keys stop against a neighbour (4 counts) and one key also shifts (1 more): 5." }
+        },
+        steps: [
+          { line: 4, vars: { a: ["int[5]", "{1, 2, 3, 5, 4}"] }, out: "", note: "The array <b>1, 2, 3, 5, 4</b> is one swap away from sorted. The question is what insertion sort <em>charges</em> for noticing that." },
+          { line: 5, vars: { a: ["int[5]", "{1, 2, 3, 5, 4}"], comparisons: ["int", "0"] }, out: "", note: "The counter starts at 0. In this code a comparison is counted in two places: each shift inside the while loop, and the single stopping test after it (the <b>if (j &gt;= 0)</b> line)." },
+          { line: 14, vars: { a: ["int[5]", "{1, 2, 3, 5, 4}"], comparisons: ["int", "1"], i: ["int", "1"], key: ["int", "2"], j: ["int", "0"] }, out: "", note: "<b>The parting step for the shifts-only count.</b> Key = 2: the while test (1 &gt; 2) fails at once, nothing shifts — but the stopping test still counts. <b>comparisons = 1</b>." },
+          { line: 15, vars: { a: ["int[5]", "{1, 2, 3, 5, 4}"], comparisons: ["int", "1"], i: ["int", "1"], key: ["int", "2"], j: ["int", "0"] }, out: "", note: "The key is written back where it already was. Array unchanged — but the visit cost 1 comparison." },
+          { line: 14, vars: { a: ["int[5]", "{1, 2, 3, 5, 4}"], comparisons: ["int", "2"], i: ["int", "2"], key: ["int", "3"], j: ["int", "1"] }, out: "", note: "Key = 3: the test (2 &gt; 3) fails immediately. Counter: <b>2</b>. Two keys placed for 2 comparisons — bubble and selection would already have spent more." },
+          { line: 14, vars: { a: ["int[5]", "{1, 2, 3, 5, 4}"], comparisons: ["int", "3"], i: ["int", "3"], key: ["int", "5"], j: ["int", "2"] }, out: "", note: "<b>The parting step for the always-slow prediction.</b> Key = 5: the test (3 &gt; 5) fails at once, counter <b>3</b>. Three keys in, insertion sort has paid 3 comparisons — nowhere near the worst case's pace. The count is following the data, not the formula." },
+          { line: 9, vars: { a: ["int[5]", "{1, 2, 3, 5, 4}"], comparisons: ["int", "3"], i: ["int", "4"], key: ["int", "4"], j: ["int", "3"] }, out: "", note: "The last key, 4, is the only traveller. First while test: is a[3] = 5 &gt; 4? <b>Yes</b> — this comparison counts inside the loop." },
+          { line: 10, vars: { a: ["int[5]", "{1, 2, 3, 5, 5}"], comparisons: ["int", "4"], i: ["int", "4"], key: ["int", "4"], j: ["int", "3"] }, out: "", note: "Counter <b>4</b>, and the 5 shifts one place right: <b>{1, 2, 3, 5, 5}</b>. The key (4) is safe in its own box — the doubled 5 is a doorway, not a loss." },
+          { line: 14, vars: { a: ["int[5]", "{1, 2, 3, 5, 5}"], comparisons: ["int", "5"], i: ["int", "4"], key: ["int", "4"], j: ["int", "2"] }, out: "", note: "j steps back to 2, and the next test (3 &gt; 4) fails — the stopping test counts: <b>comparisons = 5</b>. The key has found its place." },
+          { line: 15, vars: { a: ["int[5]", "{1, 2, 3, 4, 5}"], comparisons: ["int", "5"], i: ["int", "4"], key: ["int", "4"], j: ["int", "2"] }, out: "", note: "<b>The parting step for the already-sorted prediction.</b> The key lands at index 3: <b>{1, 2, 3, 4, 5}</b>. Sorted — for a total of 5 comparisons, half the worst case." },
+          { line: 17, vars: { a: ["int[5]", "{1, 2, 3, 4, 5}"], comparisons: ["int", "5"], i: ["int", "5"] }, out: "1 2 3 4 5 ", note: "The print loop walks the sorted array." },
+          { line: 18, vars: { a: ["int[5]", "{1, 2, 3, 4, 5}"], comparisons: ["int", "5"], i: ["int", "5"] }, out: "1 2 3 4 5 | 5", note: "Then the count: <b>| 5</b>. The program ends. Same algorithm that can pay 10 paid 5 — because the data was nearly sorted. Cost is a property of algorithm <em>and</em> input together." }
+        ],
+        modify: {
+          prompt: "The array changes to {2, 3, 4, 5, 1} — now the small value sits at the far end instead. The sort is untouched. What prints now?",
+          code: 'int a[5] = {<mark>2, 3, 4, 5, 1</mark>};\n// insertion sort with counter, unchanged',
+          options: ["1 2 3 4 5 | 7", "1 2 3 4 5 | 5", "1 2 3 4 5 | 10", "1 2 3 4 5 | 4"],
+          correct: 0,
+          explain: "Three keys stop after one comparison each (3), but the final key, 1, shifts past all four neighbours — 4 comparisons, and no stopping test because it falls off the front (j reaches −1). Total: 3 + 4 = <b>7</b> — verified by running the changed program. Where the disorder sits decides the bill."
+        }
+      },
+      {
+        concept: "Sorting & cost · merge step",
+        topic: "Searching and sorting",
+        title: "Two sorted halves, one array",
+        goal: "The <b>merge step</b> combines two <em>already sorted</em> runs by comparing only their two front elements. When one run empties, the rest of the other is <b>copied with no comparisons at all</b>.",
+        stories: {
+          health:   "Two sorted lists of <strong>recovery times</strong> — 2, 5, 9 from one ward and 3, 7, 8 from another — are merged into one sorted list of six. A counter records the comparisons. The program prints the merged list and the count.",
+          psych:    "Two sorted lists of <strong>response scores</strong> — 2, 5, 9 and 3, 7, 8 — are merged into one sorted list of six. A counter records the comparisons. The program prints the merged list and the count.",
+          business: "Two sorted lists of <strong>daily totals</strong> — 2, 5, 9 and 3, 7, 8 — are merged into one sorted list of six. A counter records the comparisons. The program prints the merged list and the count.",
+          arts:     "Two sorted lists of <strong>running times</strong> — 2, 5, 9 and 3, 7, 8 — are merged into one sorted list of six. A counter records the comparisons. The program prints the merged list and the count."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int left[3] = {2, 5, 9};",
+          "    int right[3] = {3, 7, 8};",
+          "    int merged[6];",
+          "    int i = 0, j = 0, k = 0;",
+          "    int comparisons = 0;",
+          "    while (i < 3 && j < 3) {",
+          "        comparisons++;",
+          "        if (left[i] <= right[j]) {",
+          "            merged[k] = left[i]; i++;",
+          "        } else {",
+          "            merged[k] = right[j]; j++;",
+          "        }",
+          "        k++;",
+          "    }",
+          "    while (i < 3) { merged[k] = left[i]; i++; k++; }",
+          "    while (j < 3) { merged[k] = right[j]; j++; k++; }",
+          "    for (int t = 0; t < 6; t++) { cout << merged[t] << \" \"; }",
+          "    cout << \"| \" << comparisons;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print — the merged array, then the final comparison count?",
+        options: ["2 3 5 7 8 9 | 5", "2 3 5 7 8 9 | 6", "2 5 9 3 7 8 | 0", "2 3 5 7 8 9 | 9"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 7, text: "You counted the final copy as a comparison. After the fifth comparison the right run is empty, so the while loop's test (j &lt; 3) fails and merging is over: the leftover 9 is <b>copied</b> by the cleanup loop, which contains no comparison at all. The parting step is that copy line — the counter sits at <b>5</b> while it runs. Copies are free in this accounting; only front-against-front tests cost." },
+          2: { step: 3, text: "That is the two halves simply joined end to end — concatenation, not merging. The parting step is the second comparison, where the right run's front (3) beats the left's front (5) and is taken <em>out of order</em>: the merged array interleaves the halves. And merge only works at all because both halves arrive sorted — feed it unsorted halves and this front-element rule produces a wrong order with no warning." },
+          3: { step: 2, text: "9 would be every left element tested against every right element (3 × 3) — the quadratic habit from the last exercises. Merge never does that: it only ever compares the <b>two fronts</b>, and each comparison retires one element for good. The parting step is the second comparison: the 2 has already left the contest; it will never be compared again. Six elements need at most 5 comparisons here, not 9." }
+        },
+        steps: [
+          { line: 6, vars: { left: ["int[3]", "{2, 5, 9}"], right: ["int[3]", "{3, 7, 8}"], merged: ["int[6]", "{?, ?, ?, ?, ?, ?}"] }, out: "", note: "Two sorted runs: <b>left</b> = 2, 5, 9 and <b>right</b> = 3, 7, 8. <b>merged</b> exists but holds nothing yet. The sortedness of both halves is the merge's licence to work — it never looks past either front." },
+          { line: 8, vars: { left: ["int[3]", "{2, 5, 9}"], right: ["int[3]", "{3, 7, 8}"], merged: ["int[6]", "{?, ?, ?, ?, ?, ?}"], i: ["int", "0"], j: ["int", "0"], k: ["int", "0"], comparisons: ["int", "0"] }, out: "", note: "Three indexes: <b>i</b> reads left, <b>j</b> reads right, <b>k</b> writes merged. The counter starts at 0." },
+          { line: 12, vars: { left: ["int[3]", "{2, 5, 9}"], right: ["int[3]", "{3, 7, 8}"], merged: ["int[6]", "{2, ?, ?, ?, ?, ?}"], i: ["int", "1"], j: ["int", "0"], k: ["int", "1"], comparisons: ["int", "1"] }, out: "", note: "Comparison 1: fronts 2 vs 3 — 2 is smaller, so it is taken: <b>merged[0] = 2</b>, i steps on. The 2 will never be compared again." },
+          { line: 14, vars: { left: ["int[3]", "{2, 5, 9}"], right: ["int[3]", "{3, 7, 8}"], merged: ["int[6]", "{2, 3, ?, ?, ?, ?}"], i: ["int", "1"], j: ["int", "1"], k: ["int", "2"], comparisons: ["int", "2"] }, out: "", note: "<b>The parting step for the concatenation prediction.</b> Comparison 2: fronts 5 vs 3 — the <em>right</em> front wins and is taken next: <b>merged[1] = 3</b>. The halves interleave; this is merging, not joining." },
+          { line: 12, vars: { left: ["int[3]", "{2, 5, 9}"], right: ["int[3]", "{3, 7, 8}"], merged: ["int[6]", "{2, 3, 5, ?, ?, ?}"], i: ["int", "2"], j: ["int", "1"], k: ["int", "3"], comparisons: ["int", "3"] }, out: "", note: "Comparison 3: fronts 5 vs 7 — take the 5: <b>merged[2] = 5</b>." },
+          { line: 14, vars: { left: ["int[3]", "{2, 5, 9}"], right: ["int[3]", "{3, 7, 8}"], merged: ["int[6]", "{2, 3, 5, 7, ?, ?}"], i: ["int", "2"], j: ["int", "2"], k: ["int", "4"], comparisons: ["int", "4"] }, out: "", note: "Comparison 4: fronts 9 vs 7 — take the 7: <b>merged[3] = 7</b>." },
+          { line: 14, vars: { left: ["int[3]", "{2, 5, 9}"], right: ["int[3]", "{3, 7, 8}"], merged: ["int[6]", "{2, 3, 5, 7, 8, ?}"], i: ["int", "2"], j: ["int", "3"], k: ["int", "5"], comparisons: ["int", "5"] }, out: "", note: "Comparison 5: fronts 9 vs 8 — take the 8: <b>merged[4] = 8</b>. The right run is now empty (j = 3), so the merge loop's test fails." },
+          { line: 18, vars: { left: ["int[3]", "{2, 5, 9}"], right: ["int[3]", "{3, 7, 8}"], merged: ["int[6]", "{2, 3, 5, 7, 8, 9}"], i: ["int", "3"], j: ["int", "3"], k: ["int", "6"], comparisons: ["int", "5"] }, out: "", note: "<b>The parting step for the count of 6.</b> The cleanup loop copies the one leftover — the 9 — straight across: <b>merged[5] = 9</b>. No comparison runs on this line; the counter stays at <b>5</b>. Everything remaining in a run is already in order, so there is nothing left to test it against." },
+          { line: 20, vars: { left: ["int[3]", "{2, 5, 9}"], right: ["int[3]", "{3, 7, 8}"], merged: ["int[6]", "{2, 3, 5, 7, 8, 9}"], i: ["int", "3"], j: ["int", "3"], k: ["int", "6"], comparisons: ["int", "5"], t: ["int", "6"] }, out: "2 3 5 7 8 9 ", note: "The print loop walks the merged array: <b>2 3 5 7 8 9</b>." },
+          { line: 21, vars: { left: ["int[3]", "{2, 5, 9}"], right: ["int[3]", "{3, 7, 8}"], merged: ["int[6]", "{2, 3, 5, 7, 8, 9}"], i: ["int", "3"], j: ["int", "3"], k: ["int", "6"], comparisons: ["int", "5"], t: ["int", "6"] }, out: "2 3 5 7 8 9 | 5", note: "Then the count: <b>| 5</b>. The program ends. Six elements merged for 5 comparisons — fewer than the 6 elements alone would suggest, because merging exploits order that already exists." }
+        ],
+        modify: {
+          prompt: "The halves change: left is {1, 6, 8} and right is {2, 5, 9}. The merge code is untouched. What prints now?",
+          code: 'int left[3] = {<mark>1, 6, 8</mark>};\nint right[3] = {<mark>2, 5, 9</mark>};\n// merge with counter, unchanged',
+          options: ["1 2 5 6 8 9 | 5", "1 2 5 6 8 9 | 6", "1 6 8 2 5 9 | 0", "1 2 5 6 8 9 | 4"],
+          correct: 0,
+          explain: "The fronts go 1 (take), 6 vs 2 (take 2), 6 vs 5 (take 5), 6 vs 9 (take 6), 8 vs 9 (take 8) — <b>5</b> comparisons — then the 9 is copied free. Merged: <b>1 2 5 6 8 9 | 5</b>, verified by running the changed program."
+        }
+      },
+      {
+        concept: "Sorting & cost · partition",
+        topic: "Searching and sorting",
+        title: "One pivot, one pass",
+        goal: "A <b>partition</b> step makes one pass around the <b>pivot</b> (here, the last element): everything smaller is swapped to the front, then the pivot is swapped into the boundary — its <b>final sorted place</b>. The sides are <em>not</em> sorted; they are only on the right side of the pivot.",
+        stories: {
+          health:   "Five <strong>recovery times</strong> — 8, 3, 9, 2, 7 days — go through one quicksort partition step around the last value, 7, with a comparison counter running. The program prints the array after partitioning and the count.",
+          psych:    "Five <strong>response scores</strong> — 8, 3, 9, 2, 7 — go through one quicksort partition step around the last value, 7, with a comparison counter running. The program prints the array after partitioning and the count.",
+          business: "Five <strong>daily totals</strong> — 8, 3, 9, 2, 7 — go through one quicksort partition step around the last value, 7, with a comparison counter running. The program prints the array after partitioning and the count.",
+          arts:     "Five <strong>running times</strong> — 8, 3, 9, 2, 7 minutes — go through one quicksort partition step around the last value, 7, with a comparison counter running. The program prints the array after partitioning and the count."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int a[5] = {8, 3, 9, 2, 7};",
+          "    int pivot = a[4];",
+          "    int i = -1;",
+          "    int comparisons = 0;",
+          "    for (int j = 0; j < 4; j++) {",
+          "        comparisons++;",
+          "        if (a[j] < pivot) {",
+          "            i++;",
+          "            int t = a[i]; a[i] = a[j]; a[j] = t;",
+          "        }",
+          "    }",
+          "    int t = a[i + 1]; a[i + 1] = a[4]; a[4] = t;",
+          "    for (int k = 0; k < 5; k++) { cout << a[k] << \" \"; }",
+          "    cout << \"| \" << comparisons;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print — the array after this one partition step, then the comparison count?",
+        options: ["3 2 7 8 9 | 4", "3 2 8 9 7 | 4", "2 3 7 8 9 | 4", "3 2 7 8 9 | 5"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 6, text: "<b>Named misconception: the pivot stays where it started.</b> During the scan the pivot sits at the end, out of the way — but the step is not finished until the <b>final swap</b> trades it into the boundary at i + 1. The parting step is that swap: the 7 lands at index 2, the place it occupies in the fully sorted array. A partition that leaves the pivot at the end has done only half its job." },
+          2: { step: 5, text: "<b>Named misconception: partition sorts the sides.</b> The left side here is 3, 2 — in scan order, not sorted order: the 3 was swapped forward before the 2 was even seen. Partition guarantees only two things: everything left of the pivot is smaller, everything right of it is larger-or-equal, and the pivot itself is in its final place. Sorting each side is what the <em>recursive</em> calls would do next — this program makes only the one pass." },
+          3: { step: 6, text: "You charged the final pivot swap as a fifth comparison. Look at where <b>comparisons++</b> lives: inside the scan loop only, which runs j = 0 to 3 — <b>4</b> tests. The pivot placement after the loop is a swap, not a comparison: no two values are tested on that line. Counting every line that moves data as a comparison inflates the bill." }
+        },
+        steps: [
+          { line: 4, vars: { a: ["int[5]", "{8, 3, 9, 2, 7}"] }, out: "", note: "The array: <b>8, 3, 9, 2, 7</b>. One partition pass is coming — not a full sort. Predict the array <em>after the pass</em>, not the sorted array." },
+          { line: 5, vars: { a: ["int[5]", "{8, 3, 9, 2, 7}"], pivot: ["int", "7"] }, out: "", note: "The <b>pivot</b> is the last element: <b>7</b>. Every other value will be tested against it, once." },
+          { line: 6, vars: { a: ["int[5]", "{8, 3, 9, 2, 7}"], pivot: ["int", "7"], i: ["int", "-1"], comparisons: ["int", "0"] }, out: "", note: "<b>i = −1</b> marks the boundary of the smaller-than-pivot region: so far it is empty, so its boundary sits before the array. The counter starts at 0." },
+          { line: 9, vars: { a: ["int[5]", "{8, 3, 9, 2, 7}"], pivot: ["int", "7"], i: ["int", "-1"], comparisons: ["int", "1"], j: ["int", "0"] }, out: "", note: "Comparison 1: is 8 &lt; 7? <b>No.</b> The 8 stays in the large region; i does not move. The counter rose anyway — a test costs whether it passes or fails." },
+          { line: 12, vars: { a: ["int[5]", "{3, 8, 9, 2, 7}"], pivot: ["int", "7"], i: ["int", "0"], comparisons: ["int", "2"], j: ["int", "1"] }, out: "", note: "Comparison 2: is 3 &lt; 7? Yes — i steps to 0 and a[0] ↔ a[1] swap: <b>{3, 8, 9, 2, 7}</b>. The small region is now {3}." },
+          { line: 9, vars: { a: ["int[5]", "{3, 8, 9, 2, 7}"], pivot: ["int", "7"], i: ["int", "0"], comparisons: ["int", "3"], j: ["int", "2"] }, out: "", note: "Comparison 3: is 9 &lt; 7? No. The large region grows; nothing moves." },
+          { line: 12, vars: { a: ["int[5]", "{3, 2, 9, 8, 7}"], pivot: ["int", "7"], i: ["int", "1"], comparisons: ["int", "4"], j: ["int", "3"] }, out: "", note: "Comparison 4: is 2 &lt; 7? Yes — i steps to 1 and a[1] ↔ a[3] swap: <b>{3, 2, 9, 8, 7}</b>. Note the small region: <b>3, 2</b> — scan order, not sorted order. The scan is done: 4 comparisons." },
+          { line: 15, vars: { a: ["int[5]", "{3, 2, 7, 8, 9}"], pivot: ["int", "7"], i: ["int", "1"], comparisons: ["int", "4"] }, out: "", note: "<b>The parting step.</b> The final swap trades a[i + 1] = a[2] with the pivot at a[4]: <b>{3, 2, 7, 8, 9}</b>. The 7 now sits at index 2 — exactly where it belongs in the sorted array — with everything smaller on its left and everything larger on its right. No comparison ran on this line." },
+          { line: 16, vars: { a: ["int[5]", "{3, 2, 7, 8, 9}"], pivot: ["int", "7"], i: ["int", "1"], comparisons: ["int", "4"], k: ["int", "5"] }, out: "3 2 7 8 9 ", note: "The print loop walks the partitioned array: <b>3 2 7 8 9</b> — partitioned, not sorted." },
+          { line: 17, vars: { a: ["int[5]", "{3, 2, 7, 8, 9}"], pivot: ["int", "7"], i: ["int", "1"], comparisons: ["int", "4"], k: ["int", "5"] }, out: "3 2 7 8 9 | 4", note: "Then the count: <b>| 4</b>. The program ends. One pass, 4 comparisons, and one element — the pivot — is permanently home. Quicksort's saving comes from never comparing the two sides against each other again." }
+        ],
+        modify: {
+          prompt: "The array changes to {6, 9, 4, 8, 5}, so the pivot is now the last value, 5. The partition code is untouched. What prints now?",
+          code: 'int a[5] = {<mark>6, 9, 4, 8, 5</mark>};\nint pivot = a[4];\n// one partition pass, unchanged',
+          options: ["4 5 6 8 9 | 4", "4 6 8 9 5 | 4", "4 5 6 8 9 | 5", "5 4 6 8 9 | 4"],
+          correct: 0,
+          explain: "The scan tests 6, 9, 4, 8 against 5 (4 comparisons): only the 4 is smaller, so it swaps to the front, and the final swap places the pivot at index 1: <b>4 5 6 8 9</b> — which happens to look sorted, though the guarantee is only the pivot's place. Verified by running the changed program."
+        }
+      },
+      {
+        concept: "Sorting & cost · the payoff",
+        topic: "Searching and sorting",
+        title: "28 against 17",
+        goal: "The same 8 values, sorted twice: bubble sort's counter and a merge sort's counter (built from repeated <b>merge steps</b>, bottom-up). The gap between the two counts <em>is</em> Big-O, measured instead of asserted: n² growth against n log n growth.",
+        stories: {
+          health:   "Eight <strong>recovery times</strong> — 5, 2, 8, 1, 9, 3, 7, 4 days — are sorted twice by one program: once by bubble sort, once by merge sort (repeated merge steps). Each sort keeps its own comparison counter. The program prints the two counts, bubble first.",
+          psych:    "Eight <strong>response scores</strong> — 5, 2, 8, 1, 9, 3, 7, 4 — are sorted twice by one program: once by bubble sort, once by merge sort (repeated merge steps). Each sort keeps its own comparison counter. The program prints the two counts, bubble first.",
+          business: "Eight <strong>daily totals</strong> — 5, 2, 8, 1, 9, 3, 7, 4 — are sorted twice by one program: once by bubble sort, once by merge sort (repeated merge steps). Each sort keeps its own comparison counter. The program prints the two counts, bubble first.",
+          arts:     "Eight <strong>running times</strong> — 5, 2, 8, 1, 9, 3, 7, 4 minutes — are sorted twice by one program: once by bubble sort, once by merge sort (repeated merge steps). Each sort keeps its own comparison counter. The program prints the two counts, bubble first."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int a[8] = {5, 2, 8, 1, 9, 3, 7, 4};",
+          "    int bubbleCmp = 0;",
+          "    for (int i = 0; i < 7; i++) {",
+          "        for (int j = 0; j < 7 - i; j++) {",
+          "            bubbleCmp++;",
+          "            if (a[j] > a[j + 1]) {",
+          "                int t = a[j]; a[j] = a[j + 1]; a[j + 1] = t;",
+          "            }",
+          "        }",
+          "    }",
+          "    int b[8] = {5, 2, 8, 1, 9, 3, 7, 4};",
+          "    int tmp[8];",
+          "    int mergeCmp = 0;",
+          "    for (int w = 1; w < 8; w = w * 2) {",
+          "        for (int lo = 0; lo < 8; lo = lo + 2 * w) {",
+          "            int mid = lo + w;",
+          "            int hi = lo + 2 * w;",
+          "            if (mid > 8) { mid = 8; }",
+          "            if (hi > 8) { hi = 8; }",
+          "            int i = lo, j = mid, k = lo;",
+          "            while (i < mid && j < hi) {",
+          "                mergeCmp++;",
+          "                if (b[i] <= b[j]) { tmp[k] = b[i]; i++; }",
+          "                else { tmp[k] = b[j]; j++; }",
+          "                k++;",
+          "            }",
+          "            while (i < mid) { tmp[k] = b[i]; i++; k++; }",
+          "            while (j < hi) { tmp[k] = b[j]; j++; k++; }",
+          "        }",
+          "        for (int t = 0; t < 8; t++) { b[t] = tmp[t]; }",
+          "    }",
+          "    cout << bubbleCmp << \" \" << mergeCmp;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print — bubble sort's comparison count, then merge sort's?",
+        options: ["28 17", "28 28", "17 28", "28 21"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 7, text: "<b>Named misconception: same input, same cost.</b> The input is identical; the <em>algorithms</em> are not, and the quadratic gap opens between them. Bubble sort tests every neighbouring pair on every pass — 7 + 6 + … + 1 = 28, whatever the data. Merge sort only ever compares the fronts of two sorted runs, and each pass over all 8 elements costs at most 7 comparisons across 3 passes. The parting step is the finished merge count: <b>17</b>, not 28. Cost is a property of the method, not just the data." },
+          2: { step: 3, text: "The counts are real but reversed. <b>bubbleCmp</b> finishes first in the program, and it is the big one — watch its pass structure: 7 + 6 + 5 + 4 + 3 + 2 + 1 = <b>28</b>. The 17 belongs to merge sort, printed second — the quadratic gap runs 28 first, 17 second. The parting step is the end of the bubble loops, where the first counter closes at 28 before merge sort has even started." },
+          3: { step: 7, text: "21 charges merge sort for its <b>copies</b> as well as its comparisons. But mergeCmp++ lives only inside the front-against-front while loop — when a run empties, the cleanup loops copy the rest <em>without</em> raising the counter (the merge step's rule from Exercise 57). The parting step is the final merge count: <b>17</b>. The quadratic gap is 28 against 17; padding the smaller number with free copies hides exactly the gap this exercise exists to measure." }
+        },
+        steps: [
+          { line: 4, vars: { a: ["int[8]", "{5, 2, 8, 1, 9, 3, 7, 4}"] }, out: "", note: "Eight values: <b>5, 2, 8, 1, 9, 3, 7, 4</b>. Two sorts will race on identical copies of this array, each with its own counter. Commit to <em>both</em> numbers before you step." },
+          { line: 8, vars: { a: ["int[8]", "{5, 2, 8, 1, 9, 3, 7, 4}"], bubbleCmp: ["int", "1"], i: ["int", "0"], j: ["int", "0"] }, out: "", note: "Bubble sort starts: first test (5 &gt; 2), counter 1. Its passes will test 7, 6, 5, 4, 3, 2, then 1 pairs — that schedule is fixed before the data is even read." },
+          { line: 10, vars: { a: ["int[8]", "{2, 5, 1, 8, 3, 7, 4, 9}"], bubbleCmp: ["int", "7"], i: ["int", "0"], j: ["int", "6"] }, out: "", note: "Pass 1 ends after 7 comparisons: <b>{2, 5, 1, 8, 3, 7, 4, 9}</b> — the 9 has bubbled home, everything else is barely stirred. Six more passes are already owed." },
+          { line: 13, vars: { a: ["int[8]", "{1, 2, 3, 4, 5, 7, 8, 9}"], bubbleCmp: ["int", "28"] }, out: "", note: "<b>The parting step for the reversed-counts prediction.</b> Bubble sort finishes: a is sorted and <b>bubbleCmp = 28</b> — 7 + 6 + 5 + 4 + 3 + 2 + 1, the full quadratic schedule for n = 8. That is the first number the program will print." },
+          { line: 16, vars: { a: ["int[8]", "{1, 2, 3, 4, 5, 7, 8, 9}"], bubbleCmp: ["int", "28"], b: ["int[8]", "{5, 2, 8, 1, 9, 3, 7, 4}"], mergeCmp: ["int", "0"] }, out: "", note: "Now merge sort takes its own fresh copy, <b>b</b>, and its counter starts at 0. It works bottom-up: first merging runs of width 1, then 2, then 4 — the merge step from Exercise 57, repeated." },
+          { line: 33, vars: { a: ["int[8]", "{1, 2, 3, 4, 5, 7, 8, 9}"], bubbleCmp: ["int", "28"], b: ["int[8]", "{2, 5, 1, 8, 3, 9, 4, 7}"], mergeCmp: ["int", "4"] }, out: "", note: "Width 1: four tiny merges (5|2, 8|1, 9|3, 7|4), one comparison each — counter <b>4</b>. b now holds sorted pairs. A whole pass over 8 elements cost 4 comparisons; bubble's first pass cost 7." },
+          { line: 33, vars: { a: ["int[8]", "{1, 2, 3, 4, 5, 7, 8, 9}"], bubbleCmp: ["int", "28"], b: ["int[8]", "{1, 2, 5, 8, 3, 4, 7, 9}"], mergeCmp: ["int", "10"] }, out: "", note: "Width 2: two merges of sorted pairs into sorted fours — 3 comparisons each — counter <b>10</b>. b holds two sorted runs of four." },
+          { line: 33, vars: { a: ["int[8]", "{1, 2, 3, 4, 5, 7, 8, 9}"], bubbleCmp: ["int", "28"], b: ["int[8]", "{1, 2, 3, 4, 5, 7, 8, 9}"], mergeCmp: ["int", "17"] }, out: "", note: "<b>The parting step.</b> Width 4: one final merge of the two fours — 7 comparisons — and b is sorted. <b>mergeCmp = 17</b>. Not 28, and not 21: the copies after each run emptied were never charged. 4 + 6 + 7 = 17, against bubble's 28." },
+          { line: 35, vars: { a: ["int[8]", "{1, 2, 3, 4, 5, 7, 8, 9}"], bubbleCmp: ["int", "28"], b: ["int[8]", "{1, 2, 3, 4, 5, 7, 8, 9}"], mergeCmp: ["int", "17"] }, out: "28 17", note: "The program prints <b>28 17</b>. Both arrays end identically sorted — the outputs match; only the bills differ." },
+          { line: 36, vars: { a: ["int[8]", "{1, 2, 3, 4, 5, 7, 8, 9}"], bubbleCmp: ["int", "28"], b: ["int[8]", "{1, 2, 3, 4, 5, 7, 8, 9}"], mergeCmp: ["int", "17"] }, out: "28 17", note: "The program ends. At n = 8 the gap is 28 to 17. Double the data and bubble's bill roughly quadruples while merge sort's roughly doubles-plus-a-pass — that difference in <em>growth</em>, not either single number, is what O(n²) and O(n log n) mean." }
+        ],
+        modify: {
+          prompt: "Both arrays change to already-sorted {1, 2, 3, 4, 5, 6, 7, 8}. The two sorts and their counters are untouched. What prints now?",
+          code: 'int a[8] = {<mark>1, 2, 3, 4, 5, 6, 7, 8</mark>};\nint b[8] = {<mark>1, 2, 3, 4, 5, 6, 7, 8</mark>};\n// both sorts unchanged',
+          options: ["28 12", "12 12", "28 17", "7 12"],
+          correct: 0,
+          explain: "Bubble sort has no early exit, so it pays the full <b>28</b> even on sorted data. Merge sort's fronts resolve faster when runs are already in order: 4 + 4 + 4 = <b>12</b>. <b>28 12</b> — verified by running the changed program. (Insertion sort, from Exercise 56, would have paid just 7 here: three different answers to the same sorted input.)"
+        }
+      },
+      {
+        concept: "Pointers",
+        topic: "Pointers",
+        title: "The box nobody can reach",
+        goal: "<b>new</b> puts a box on the <b>heap</b>, where no scope owns it. When the only pointer to it dies at the end of a function, the box is <b>not</b> freed — it is <b>orphaned</b>: still allocated, forever unreachable. That is a memory leak.",
+        stories: {
+          health:   "A clinic program calls a helper that reserves space for one <strong>vital-sign reading</strong> at run time and stores 77 in it. The helper keeps the address in a local pointer — and then returns without handing the address to anyone and without releasing the space. The main program then prints its done message.",
+          psych:    "A study program calls a helper that reserves space for one <strong>response value</strong> at run time and stores 77 in it. The helper keeps the address in a local pointer — and then returns without handing the address to anyone and without releasing the space. The main program then prints its done message.",
+          business: "A stock program calls a helper that reserves space for one <strong>figure</strong> at run time and stores 77 in it. The helper keeps the address in a local pointer — and then returns without handing the address to anyone and without releasing the space. The main program then prints its done message.",
+          arts:     "A media program calls a helper that reserves space for one <strong>level value</strong> at run time and stores 77 in it. The helper keeps the address in a local pointer — and then returns without handing the address to anyone and without releasing the space. The main program then prints its done message."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "void stash() {",
+          "    int* temp = new int[1];",
+          "    temp[0] = 77;",
+          "}",
+          "",
+          "int main() {",
+          "    stash();",
+          "    cout << \"done\";",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print — and what is the state of the heap when it ends?",
+        options: ["done · heap #1 still holds 77, unreachable (leaked)", "done · heap #1 was freed when temp went out of scope", "77", "done · heap #1 holds 77 and temp can still reach it from main"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 4, text: "<b>Named misconception: scope frees the heap.</b> Scope destroys <em>stack</em> boxes — temp the pointer is indeed gone when stash returns. But the box temp pointed at lives on the <b>heap</b>, and heap boxes are released only by <b>delete</b>, which this program never calls. The parting step is the return from stash: the pointer dies, the heap box survives, and with no other pointer holding its address it is <b>orphaned</b> — allocated, unreachable, unrecoverable. That is a memory <b>leak</b>, and it is silent: the program prints done and reports no error." },
+          2: { step: 2, text: "77 is stored — but nothing ever prints it. The only print statement in the program is main's <b>cout &lt;&lt; \"done\"</b>; stash has no cout at all. The parting step is the store itself: <b>temp[0] = 77</b> writes into the heap box and the value simply sits there. A value being in memory and a value being printed are different events." },
+          3: { step: 4, text: "The heap box does still hold 77 — but <b>temp</b> cannot reach it from main, because temp never existed in main. It was stash's local box, created fresh for that call and destroyed when the call returned. The parting step is the return: from that moment, no live pointer anywhere in the program holds heap #1's address. The box survives; every road to it is gone." }
+        },
+        steps: [
+          { line: 9, vars: {}, frames: [{ name: "main", vars: {} }], out: "", note: "<b>main</b> calls <b>stash()</b>. Watch two places as you step: the call stack (temp will live there) and the <b>Heap</b> region below the memory boxes (the new box will live there). They have different lifetimes." },
+          { line: 4, vars: { temp: ["int*", "→ heap #1"] }, frames: [{ name: "main", vars: {} }, { name: "stash", vars: { temp: ["int*", "→ heap #1"] } }], out: "", note: "<b>new int[1]</b> allocates one int on the heap — <b>heap #1</b> in the Heap region. stash's local pointer <b>temp</b> holds its address: temp → heap #1. The pointer is a stack box; the pointee is a heap box. Only one of them obeys scope." },
+          { line: 5, vars: { temp: ["int*", "→ heap #1"] }, frames: [{ name: "main", vars: {} }, { name: "stash", vars: { temp: ["int*", "→ heap #1"] } }], out: "", note: "<b>temp[0] = 77</b> writes through the pointer into the heap box: heap #1 now holds <b>77</b>. Nothing prints — stash has no cout." },
+          { line: 6, vars: { temp: ["int*", "→ heap #1"] }, frames: [{ name: "main", vars: {} }, { name: "stash", vars: { temp: ["int*", "→ heap #1"] } }], out: "", note: "stash reaches its closing brace. Its frame — and temp with it — is about to be destroyed. Heap #1 is not in that frame; it is not stash's to take with it." },
+          { line: 9, vars: {}, frames: [{ name: "main", vars: {} }], out: "", note: "<b>The parting step.</b> Back in main. temp is gone — no variable in the program holds heap #1's address any more. But look at the Heap region: heap #1 is <b>still there, still holding 77</b>, now marked orphaned. Not freed — <em>leaked</em>. Only a delete could have released it, and the one pointer that could have done it just died." },
+          { line: 10, vars: {}, frames: [{ name: "main", vars: {} }], out: "done", note: "main prints <b>done</b>. No error, no warning: a leak is silent, which is why it is found by reasoning about lifetimes, not by watching output." },
+          { line: 11, vars: {}, frames: [{ name: "main", vars: {} }], out: "done", note: "The program ends. Final state: output <b>done</b>, and heap #1 still allocated, holding 77, unreachable for the rest of the program's life — the definition of a memory leak." }
+        ],
+        modify: {
+          prompt: "main now calls stash() twice instead of once. Nothing else changes. What is the final state?",
+          code: 'int main() {\n    stash();\n    <mark>stash();</mark>\n    cout << "done";\n}',
+          options: ["done · heap #1 and heap #2 both leaked, each holding 77", "done · one heap box, reused by the second call", "done · both boxes freed when each call returned", "77 77"],
+          correct: 0,
+          explain: "Each call runs <b>new int[1]</b> again, allocating a <em>fresh</em> heap box — heap #1, then heap #2 — and each call's temp dies on return. Two allocations, zero deletes, two orphaned boxes each holding 77, and the output is still just <b>done</b>. Nothing about a second call reuses or repairs the first leak."
+        }
       }
-
     ];
 
     /* ---------------- State (persisted in this browser — see persistence block at the end) ---------------- */
@@ -5830,7 +6337,7 @@ int main() {
       { name: "Foundations", list: [0, 1, 2] },
       { name: "Loops & Functions", list: [3, 4, 5, 6, 23, 24, 28, 44] },
       { name: "Arrays & Strings", list: [7, 8, 25, 26, 29, 45, 46, 52] },
-      { name: "Pointers", list: [9, 10, 11, 12] },
+      { name: "Pointers", list: [9, 10, 11, 12, 59] },
       { name: "Recursion", list: [13, 14, 15] },
       { name: "Searching & Sorting", list: [16, 17, 41, 42, 43] },
       { name: "Decisions & References", list: [18, 19, 27, 51] },
@@ -5840,7 +6347,8 @@ int main() {
       { name: "Maps & Sets", list: [35, 36] },
       { name: "Scope & Lifetime", list: [37, 38, 39, 40] },
       { name: "Bits & Shifts", list: [47, 48] },
-      { name: "Stacks & Queues", list: [49, 50] }
+      { name: "Stacks & Queues", list: [49, 50] },
+      { name: "Sorting & cost", list: [53, 54, 55, 56, 57, 58] }
     ];
     function renderExNav() {
       var box = $("exnav"); box.innerHTML = ""; box.className = "ex-groups";
@@ -6355,6 +6863,7 @@ int main() {
       var vtype = box.type, vval = box.value || "";
       var isPtr = vtype.indexOf("*") !== -1 || vval.indexOf("→") === 0;
       var ptrTarget = vval.indexOf("→") === 0 ? vval.slice(1).trim() : "";
+      d.setAttribute("data-box-name", box.name);
       d.setAttribute("role", "group");
       d.setAttribute("aria-label", boxAria(box) + (ptrTarget ? ", points to " + ptrTarget : ""));
       d.setAttribute("tabindex", "0");
@@ -6397,6 +6906,76 @@ int main() {
     function varsToBoxes(vars) {
       return Object.keys(vars || {}).map(function (n) { return { name: n, type: vars[n][0], value: vars[n][1] }; });
     }
+    /* ---------------- Heap view data (pointers exercises) ----------------
+       Heap boxes are labelled by allocation order (heap #1, heap #2) —
+       the platform models addresses abstractly, so no fake addresses are
+       shown. HEAP_STEPS is keyed by exercise index, then step index; an
+       entry's `from` names the pointer variable whose box carries the
+       "points to" link chip. Exercises 10-13 (indexes 9-12) and 60
+       (index 59) get the region; on 10-12 nothing is allocated with new,
+       so the region shows its empty note. What-if stays as it was:
+       these exercises were already ineligible (the interpreter cannot
+       run `new`), and nothing here changes that. */
+    var HEAP_EXERCISES = { 9: true, 10: true, 11: true, 12: true, 59: true };
+    var HEAP_STEPS = {
+      12: [
+        [{ name: "heap #1", type: "int[5]", elems: ["?", "?", "?", "?", "?"], from: "squares" }],
+        [{ name: "heap #1", type: "int[5]", elems: ["1", "?", "?", "?", "?"], from: "squares" }],
+        [{ name: "heap #1", type: "int[5]", elems: ["1", "4", "?", "?", "?"], from: "squares" }],
+        [{ name: "heap #1", type: "int[5]", elems: ["1", "4", "9", "?", "?"], from: "squares" }],
+        [{ name: "heap #1", type: "int[5]", elems: ["1", "4", "9", "16", "?"], from: "squares" }],
+        [{ name: "heap #1", type: "int[5]", elems: ["1", "4", "9", "16", "25"], from: "squares" }],
+        [{ name: "heap #1", type: "int[5]", elems: ["1", "4", "9", "16", "25"], from: "squares" }],
+        [{ name: "heap #1", type: "int[5]", elems: ["1", "4", "9", "16", "25"], from: "squares", freed: true }],
+        [{ name: "heap #1", type: "int[5]", elems: ["1", "4", "9", "16", "25"], from: "squares", freed: true }]
+      ],
+      59: [
+        [],
+        [{ name: "heap #1", type: "int[1]", elems: ["?"], from: "temp" }],
+        [{ name: "heap #1", type: "int[1]", elems: ["77"], from: "temp" }],
+        [{ name: "heap #1", type: "int[1]", elems: ["77"], from: "temp" }],
+        [{ name: "heap #1", type: "int[1]", elems: ["77"], orphaned: true }],
+        [{ name: "heap #1", type: "int[1]", elems: ["77"], orphaned: true }],
+        [{ name: "heap #1", type: "int[1]", elems: ["77"], orphaned: true }]
+      ]
+    };
+    function paintHeap(o, step) {
+      var el = o.heapEl;
+      if (!el) return;
+      var exIdx = (typeof EXERCISES !== "undefined") ? EXERCISES.indexOf(o.ex) : -1;
+      if (!step || !HEAP_EXERCISES[exIdx]) { el.hidden = true; el.innerHTML = ""; return; }
+      var entries = (HEAP_STEPS[exIdx] && HEAP_STEPS[exIdx][o.stepIdx]) || [];
+      el.hidden = false;
+      var html = '<h4>Heap — memory allocated with new</h4>';
+      if (!entries.length) {
+        html += '<p class="heap-note">Nothing on the heap at this step. Every pointer in this program points at an ordinary stack box — boxes created with <b>new</b> would appear here.</p>';
+      } else {
+        html += '<div class="heap-boxes">' + entries.map(function (e) {
+          var inner = '<div class="vname"><span>' + esc(e.name) + '</span><span class="vtype">' + esc(e.type) + "</span></div>";
+          if (e.elems) inner += '<div class="mem-elems">' + e.elems.map(function (v, ei) { return '<span class="mem-elem">' + esc(v) + "<small>[" + ei + "]</small></span>"; }).join("") + "</div>";
+          else if (e.display) inner += '<div class="vval heap-disp">' + esc(e.display) + "</div>";
+          if (e.freed) inner += '<span class="heap-tag freed">freed by delete</span>';
+          if (e.orphaned) inner += '<span class="heap-tag orphan">leaked — no pointer reaches it</span>';
+          return '<div class="heap-box' + (e.freed ? " freed" : "") + (e.orphaned ? " orphaned" : "") + '" role="group" aria-label="' + esc(e.name) + ", " + esc(e.type) + (e.freed ? ", freed" : "") + (e.orphaned ? ", leaked, no pointer reaches it" : "") + '">' + inner + "</div>";
+        }).join("") + "</div>";
+      }
+      el.innerHTML = html;
+      // Pointer link chips: a labelled chip inside the pointer's own box
+      // naming its heap box (a drawn connector does not survive the
+      // responsive stack/memory reflow; the chip renders in both).
+      var layout = el.closest ? el.closest(".stack-layout") : null;
+      var root = layout || el.parentElement;
+      if (root) entries.forEach(function (e) {
+        if (!e.from) return;
+        var boxEl = root.querySelector('[data-box-name="' + e.from + '"]');
+        if (!boxEl) return;
+        var chip = document.createElement("span");
+        chip.className = "ptr-chip" + (e.freed ? " dangling" : "");
+        chip.textContent = e.freed ? ("⚠ dangling — points to freed " + e.name) : ("→ points to " + e.name);
+        boxEl.appendChild(chip);
+      });
+    }
+
     /* Paints the memory area + unified call stack for one step. With no
        effective frames this is exactly the old flat memory display. */
     function paintMemoryStack(o) {
@@ -6452,6 +7031,7 @@ int main() {
           }
         }
       }
+      paintHeap(o, step);
     }
 
     /* ---------------- What-if stepping (exploration only) ----------------
@@ -6651,7 +7231,7 @@ int main() {
       if (pn0 && !(partingPauseActive && partingPauseEx === state.current && s.step === partingStepIndex())) pn0.hidden = true;
 
       wiPaint = s.locked && s.step >= 0 && !s.traceDone && s.step < ex.steps.length - 1 && !wiState && wiExEligible(ex);
-      paintMemoryStack({ memEl: $("memory"), memHeadEl: $("memory-h"), layoutEl: $("stack-layout"), stackColEl: $("stack-col"), stackEl: $("callstack"), ex: ex, stepIdx: s.step,
+      paintMemoryStack({ memEl: $("memory"), memHeadEl: $("memory-h"), layoutEl: $("stack-layout"), stackColEl: $("stack-col"), stackEl: $("callstack"), heapEl: $("heap-region"), ex: ex, stepIdx: s.step,
         notStartedMsg: "Memory is empty — the program has not started. No boxes exist yet.",
         emptyMsg: "No variable boxes exist at this moment. Watch this space: boxes appear when declarations run." });
       wiPaint = false;
@@ -6818,6 +7398,9 @@ int main() {
       { key: "charf", label: "a char is a character, and + 1 moves to the next one", match: /Characters/, hand: true,
         code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    char c = 'B';", "    c = c + 1;", "    cout << c << endl;", "    return 0;", "}"],
         correct: "C", wrong: "67" },
+      { key: "leakfam", label: "a heap box outlives the pointer that owned it — scope does not free the heap", match: /Pointers/, diagRe: /leak|orphan/, hand: true,
+        code: ["#include <iostream>", "using namespace std;", "", "int* keep;", "", "void stash() {", "    keep = new int(9);", "}", "", "int main() {", "    stash();", "    cout << *keep << endl;", "    return 0;", "}"],
+        correct: "9", wrong: "0" },
       { key: "pointerf", label: "writing through a pointer writes into the original box", match: /Pointers/, hand: true,
         code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int x = 20;", "    int* p = &x;", "    *p = 35;", "    cout << x << endl;", "    return 0;", "}"],
         correct: "35", wrong: "20" },
@@ -6827,6 +7410,24 @@ int main() {
       { key: "recursionf", label: "each recursive call waits, and the answers assemble on the way back", match: /^Recursion$/,
         code: ["#include <iostream>", "using namespace std;", "", "int sumTo(int n) {", "    if (n <= 0) return 0;", "    return n + sumTo(n - 1);", "}", "", "int main() {", "    cout << sumTo(4) << endl;", "    return 0;", "}"],
         correct: "10", wrong: "4" },
+      { key: "bigofam", label: "merge sort's comparisons grow more slowly than bubble sort's — same input, different bill", match: /Sorting & cost/, diagRe: /quadratic gap/,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int a[4] = {2, 1, 4, 3};", "    int bubbleCmp = 0;", "    for (int i = 0; i < 3; i++) {", "        for (int j = 0; j < 3 - i; j++) {", "            bubbleCmp++;", "            if (a[j] > a[j + 1]) { int t = a[j]; a[j] = a[j + 1]; a[j + 1] = t; }", "        }", "    }", "    int b[4] = {2, 1, 4, 3};", "    int tmp[4];", "    int mergeCmp = 0;", "    for (int w = 1; w < 4; w = w * 2) {", "        for (int lo = 0; lo < 4; lo = lo + 2 * w) {", "            int mid = lo + w; int hi = lo + 2 * w;", "            if (mid > 4) mid = 4;", "            if (hi > 4) hi = 4;", "            int i = lo, j = mid, k = lo;", "            while (i < mid && j < hi) {", "                mergeCmp++;", "                if (b[i] <= b[j]) { tmp[k] = b[i]; i++; } else { tmp[k] = b[j]; j++; }", "                k++;", "            }", "            while (i < mid) { tmp[k] = b[i]; i++; k++; }", "            while (j < hi) { tmp[k] = b[j]; j++; k++; }", "        }", "        for (int t = 0; t < 4; t++) { b[t] = tmp[t]; }", "    }", "    cout << bubbleCmp << \" \" << mergeCmp << endl;", "    return 0;", "}"],
+        correct: "6 4", wrong: "6 6" },
+      { key: "insertionfam", label: "insertion sort's count follows the data — nearly sorted data is cheap", match: /Sorting & cost/, diagRe: /always slow|always pays the full/,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int a[4] = {1, 2, 4, 3};", "    int comparisons = 0;", "    for (int i = 1; i < 4; i++) {", "        int key = a[i];", "        int j = i - 1;", "        while (j >= 0 && a[j] > key) {", "            comparisons++;", "            a[j + 1] = a[j];", "            j--;", "        }", "        if (j >= 0) { comparisons++; }", "        a[j + 1] = key;", "    }", "    cout << comparisons << endl;", "    return 0;", "}"],
+        correct: "4", wrong: "6" },
+      { key: "mergefam", label: "merging compares only the two fronts; leftover tails copy for free", match: /Sorting & cost/, diagRe: /final copy|unsorted halves/,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int left[2] = {1, 4};", "    int right[2] = {2, 3};", "    int merged[4];", "    int i = 0, j = 0, k = 0;", "    int comparisons = 0;", "    while (i < 2 && j < 2) {", "        comparisons++;", "        if (left[i] <= right[j]) { merged[k] = left[i]; i++; }", "        else { merged[k] = right[j]; j++; }", "        k++;", "    }", "    while (i < 2) { merged[k] = left[i]; i++; k++; }", "    while (j < 2) { merged[k] = right[j]; j++; k++; }", "    for (int t = 0; t < 4; t++) { cout << merged[t] << \" \"; }", "    cout << comparisons << endl;", "    return 0;", "}"],
+        correct: "1 2 3 4 3", wrong: "1 2 3 4 4" },
+      { key: "pivotfam", label: "the final swap places the pivot in its final position; the sides stay unsorted", match: /Sorting & cost/, diagRe: /pivot/,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int a[3] = {8, 3, 5};", "    int pivot = a[2];", "    int i = -1;", "    int comparisons = 0;", "    for (int j = 0; j < 2; j++) {", "        comparisons++;", "        if (a[j] < pivot) {", "            i++;", "            int t = a[i]; a[i] = a[j]; a[j] = t;", "        }", "    }", "    int t = a[i + 1]; a[i + 1] = a[2]; a[2] = t;", "    for (int k = 0; k < 3; k++) { cout << a[k] << \" \"; }", "    cout << comparisons << endl;", "    return 0;", "}"],
+        correct: "3 5 8 2", wrongs: [{ re: /final swap/, out: "3 5 8 3" }], wrong: "3 8 5 2" },
+      { key: "sortswap", label: "comparisons count every test; swaps are a separate tally", match: /Sorting & cost/, diagRe: /swaps instead of comparisons|counting swaps/,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int a[3] = {2, 3, 1};", "    int comparisons = 0;", "    int swaps = 0;", "    for (int j = 0; j < 2; j++) {", "        comparisons++;", "        if (a[j] > a[j + 1]) {", "            int t = a[j]; a[j] = a[j + 1]; a[j + 1] = t;", "            swaps++;", "        }", "    }", "    cout << comparisons << \" \" << swaps << endl;", "    return 0;", "}"],
+        correct: "2 1", wrongs: [{ re: /every pass/, out: "2 2" }], wrong: "1 1" },
+      { key: "sortcost", label: "a comparison is counted at the test, whether or not anything moves", match: /Sorting & cost/,
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int a[3] = {2, 3, 1};", "    int comparisons = 0;", "    int swaps = 0;", "    for (int j = 0; j < 2; j++) {", "        comparisons++;", "        if (a[j] > a[j + 1]) {", "            int t = a[j]; a[j] = a[j + 1]; a[j + 1] = t;", "            swaps++;", "        }", "    }", "    cout << comparisons << \" \" << swaps << endl;", "    return 0;", "}"],
+        correct: "2 1", wrong: "1 1" },
       { key: "sortf", label: "one pass puts one value in its final place — it does not finish the sort", match: /Sorting/,
         code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int a[3] = {4, 2, 3};", "    int m = 0;", "    if (a[1] < a[m]) m = 1;", "    if (a[2] < a[m]) m = 2;", "    int t = a[0]; a[0] = a[m]; a[m] = t;", "    cout << a[0] << \" \" << a[1] << \" \" << a[2] << endl;", "    return 0;", "}"],
         correct: "2 4 3", wrong: "2 3 4" },
@@ -6875,7 +7476,7 @@ int main() {
     ];
     function followFor(ex, diagText) {
       var fam = null;
-      for (var i = 0; i < FOLLOWUPS.length; i++) { if (FOLLOWUPS[i].match.test(ex.concept)) { fam = FOLLOWUPS[i]; break; } }
+      for (var i = 0; i < FOLLOWUPS.length; i++) { if (FOLLOWUPS[i].diagRe && !FOLLOWUPS[i].diagRe.test(diagText || "")) continue; if (FOLLOWUPS[i].match.test(ex.concept)) { fam = FOLLOWUPS[i]; break; } }
       if (!fam) {
         var byTopic = { "Loops": "loopaccum", "Branches": "branch", "Functions": "funcf", "Arrays and vectors": "arrayidx", "Strings and characters": "stringf", "Pointers": "pointerf", "Recursion": "recursionf", "Scope": "globalf", "Searching and sorting": "sortf" };
         var k = byTopic[ex.topic];
@@ -8203,7 +8804,7 @@ int main() {
       }
       var lpn = $("lec-parting-note");
       if (lpn && !(lecPartingPauseActive && lecture.step === lecPartingStepIndex())) lpn.hidden = true;
-      paintMemoryStack({ memEl: $("lec-memory"), memHeadEl: $("lec-memory-h"), layoutEl: $("lec-stack-layout"), stackColEl: $("lec-stack-col"), stackEl: $("lec-callstack"), ex: ex, stepIdx: lecture.step,
+      paintMemoryStack({ memEl: $("lec-memory"), memHeadEl: $("lec-memory-h"), layoutEl: $("lec-stack-layout"), stackColEl: $("lec-stack-col"), stackEl: $("lec-callstack"), heapEl: $("lec-heap-region"), ex: ex, stepIdx: lecture.step,
         notStartedMsg: "Memory is empty — the program has not started. No boxes exist yet.",
         emptyMsg: "No variable boxes exist at this moment. Boxes appear when declarations run." });
       $("lec-cout").innerHTML = step && step.out ? esc(step.out) : '<span class="cursor"></span>';
@@ -15736,6 +16337,218 @@ int main() {
       if (filesInput) filesInput.value = ""; digestFileTexts = [];
     });
 
+    /* ---------------- Instructor assignments (TFA1:) ----------------
+       Additive, same-device workflow inside Session & instructor tools.
+       An assignment is { title, due, exs: [0-based exercise indexes] }.
+       Its share code is "TFA1:" + base64url(JSON {t, d, e:[1-based]});
+       the shareable link is the page address + "#assign-" + code, the
+       same fragment mechanism as share-a-prediction (#tracer-N).
+       Created assignments persist additively as `assignments` inside
+       tracefirst-progress-v1. Completion ticks and the CSV are built
+       from THIS browser's saved prediction record only — the CSV says
+       so in its rows' source: locked predictions and the mastery
+       mirror's attempt dates (gapState.attempts). Nothing syncs. */
+    var assignments = [];
+    var currentAssignment = null;
+    function assignEncode(a) {
+      var payload = { t: a.title, d: a.due, e: a.exs.map(function (i) { return i + 1; }) };
+      var b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+      return "TFA1:" + b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    }
+    function assignDecode(code) {
+      if (!code) return null;
+      var s = String(code).trim();
+      var at = s.indexOf("TFA1:");
+      if (at === -1) return null;
+      s = s.slice(at + 5).trim().split(/\s/)[0];
+      if (!s) return null;
+      try {
+        var b64 = s.replace(/-/g, "+").replace(/_/g, "/");
+        while (b64.length % 4) b64 += "=";
+        var obj = JSON.parse(decodeURIComponent(escape(atob(b64))));
+        if (!obj || typeof obj.t !== "string" || !Array.isArray(obj.e)) return null;
+        var exs = [];
+        obj.e.forEach(function (n) { if (typeof n === "number" && n >= 1 && n <= EXERCISES.length) exs.push(n - 1); });
+        if (!exs.length) return null;
+        return { title: obj.t.slice(0, 120) || "Assignment", due: (typeof obj.d === "string" && /^\d{4}-\d{2}-\d{2}$/.test(obj.d)) ? obj.d : "", exs: exs };
+      } catch (e) { return null; }
+    }
+    function assignSlug(title) {
+      var s = String(title || "assignment").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+      return s || "assignment";
+    }
+    function assignStatusOf(idx) {
+      var s = state.ex[idx];
+      if (!s) return { status: "not attempted", attempts: 0, confidence: "", date: "" };
+      var attempted = !!(s.locked || s.modDone);
+      var att = (typeof gapState !== "undefined" && gapState && gapState.attempts && gapState.attempts[idx]) ? gapState.attempts[idx] : null;
+      return {
+        status: !attempted ? "not attempted" : (s.correct ? "correct" : "attempted"),
+        attempts: s.locked ? 1 : 0,
+        confidence: s.confidence === "sure" ? "Sure" : (s.confidence === "unsure" ? "Not sure" : ""),
+        date: att && att.date ? att.date : ""
+      };
+    }
+    function assignCsvText(a) {
+      function q(v) { var s = String(v == null ? "" : v); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
+      var rows = [["Exercise", "Title", "Status", "Attempts", "Confidence", "Completion date"]];
+      a.exs.forEach(function (idx) {
+        var st = assignStatusOf(idx);
+        rows.push([idx + 1, EXERCISES[idx].title + " (" + EXERCISES[idx].concept + ")", st.status, st.attempts, st.confidence, st.date]);
+      });
+      return rows.map(function (r) { return r.map(q).join(","); }).join("\r\n") + "\r\n";
+    }
+    function assignDownloadCsv(a) {
+      var blob = new Blob([assignCsvText(a)], { type: "text/csv;charset=utf-8" });
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement("a");
+      link.href = url; link.download = assignSlug(a.title) + ".csv";
+      document.body.appendChild(link); link.click();
+      setTimeout(function () { document.body.removeChild(link); URL.revokeObjectURL(url); }, 400);
+      announce("Assignment CSV downloaded: " + link.download + " — one row per exercise in “" + a.title + "”, from this browser's saved record.");
+    }
+    function renderAssignView() {
+      var box = $("assign-view");
+      if (!box) return;
+      var a = currentAssignment;
+      if (!a) { box.hidden = true; box.innerHTML = ""; return; }
+      var today = (typeof todayStr === "function") ? todayStr() : "";
+      var pastDue = !!(a.due && today && a.due < today);
+      var doneN = 0;
+      var rowsHtml = a.exs.map(function (idx) {
+        var st = assignStatusOf(idx);
+        var done = st.status !== "not attempted";
+        if (done) doneN++;
+        return '<li style="display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between;border:1px solid var(--line);background:var(--panel-2);border-radius:10px;padding:9px 12px;">' +
+          '<span><strong>' + (done ? "✓" : "○") + " Exercise " + (idx + 1) + "</strong> — " + esc(EXERCISES[idx].title) +
+          ' <span style="color:var(--ink-soft);font-size:.88rem;">(' + esc(st.status) + (st.date ? " · " + esc(st.date) : "") + ")</span></span>" +
+          '<button class="btn ghost small" type="button" data-assign-go="' + idx + '">Go to exercise</button></li>';
+      }).join("");
+      box.innerHTML = '<h4 style="font-size:1.05rem;">' + esc(a.title) + "</h4>" +
+        '<p style="font-size:.93rem;color:var(--ink-soft);margin-top:4px;">Due: ' + (a.due ? esc(a.due) : "no due date") +
+        (pastDue ? ' <strong style="color:var(--rust);">· past due</strong>' : "") +
+        " · " + doneN + " of " + a.exs.length + " attempted in this browser's record.</p>" +
+        '<ul style="list-style:none;padding:0;margin:12px 0 0;display:grid;gap:8px;">' + rowsHtml + "</ul>" +
+        '<div class="journal-actions"><button class="btn" type="button" id="assign-view-csv">Export assignment CSV</button>' +
+        '<span style="font-size:.88rem;color:var(--ink-soft);">Built from this browser\'s saved record — it does not sync anywhere.</span></div>';
+      box.hidden = false;
+      box.querySelectorAll("[data-assign-go]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          var idx = parseInt(b.getAttribute("data-assign-go"), 10);
+          if (typeof stopPlayback === "function") stopPlayback();
+          if (typeof exitInstPlay === "function") exitInstPlay();
+          if (typeof setMode === "function") setMode("tracer");
+          state.current = idx;
+          renderAll();
+          var h = $("ex-title"); if (h) h.scrollIntoView({ behavior: "smooth", block: "start" });
+          announce("Exercise " + (idx + 1) + " opened from the assignment.");
+        });
+      });
+      var csvBtn = $("assign-view-csv");
+      if (csvBtn) csvBtn.addEventListener("click", function () { assignDownloadCsv(currentAssignment); });
+    }
+    function openAssignment(code, sourceNote) {
+      var a = assignDecode(code);
+      var status = $("assign-open-status");
+      if (!a) {
+        if (status) status.textContent = "That code could not be read — check it starts with TFA1: and is complete.";
+        announce("That assignment code could not be read.");
+        return false;
+      }
+      currentAssignment = a;
+      renderAssignView();
+      var tools = $("session-tools"); if (tools) tools.open = true;
+      var sec = $("assign-section"); if (sec) sec.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (status) status.textContent = sourceNote || ("Opened “" + a.title + "” — " + a.exs.length + " exercises.");
+      announce("Assignment opened: " + a.title + ".");
+      return true;
+    }
+    function renderAssignSaved() {
+      var box = $("assign-saved-list");
+      if (!box) return;
+      if (!assignments.length) {
+        box.innerHTML = '<p style="font-size:.92rem;color:var(--ink-soft);">No assignments created in this browser yet.</p>';
+        return;
+      }
+      box.innerHTML = "";
+      assignments.forEach(function (a, ai) {
+        var row = document.createElement("div");
+        row.style.cssText = "display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-top:6px;";
+        var code = assignEncode(a);
+        row.innerHTML = '<span><strong>' + esc(a.title) + "</strong> <span style=\"color:var(--ink-soft);font-size:.88rem;\">· due " + (a.due ? esc(a.due) : "—") + " · " + a.exs.length + ' exercises</span><br><span style="font-family:\'IBM Plex Mono\',monospace;font-size:.78rem;word-break:break-all;">' + esc(code) + "</span></span>";
+        var acts = document.createElement("span");
+        acts.style.cssText = "display:inline-flex;gap:8px;flex-wrap:wrap;";
+        function mkBtn(label, fn) { var b = document.createElement("button"); b.type = "button"; b.className = "btn ghost small"; b.textContent = label; b.addEventListener("click", fn); return b; }
+        acts.appendChild(mkBtn("View", function () { currentAssignment = assignments[ai]; renderAssignView(); var v = $("assign-view"); if (v) v.scrollIntoView({ behavior: "smooth", block: "start" }); }));
+        acts.appendChild(mkBtn("Copy code", function () { assignCopyText(code, "Assignment code copied for “" + a.title + "”."); }));
+        acts.appendChild(mkBtn("Export CSV", function () { assignDownloadCsv(assignments[ai]); }));
+        row.appendChild(acts);
+        box.appendChild(row);
+      });
+    }
+    function assignCopyText(text, okMsg) {
+      var status = $("assign-copy-status") || $("assign-create-status");
+      function done(ok) {
+        if (status) status.textContent = ok ? okMsg : "Copy failed — select the text and copy it manually.";
+        announce(ok ? okMsg : "Copying failed.");
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+      } else { done(false); }
+    }
+    (function initAssignments() {
+      var list = $("assign-exlist");
+      if (list) {
+        list.innerHTML = EXERCISES.map(function (ex, i) {
+          return '<label style="display:flex;gap:9px;align-items:baseline;font-size:.93rem;padding:3px 0;"><input type="checkbox" data-assign-ex="' + i + '"><span><strong>' + (i + 1) + ".</strong> " + esc(ex.title) + ' <span style="color:var(--ink-soft);">· ' + esc(ex.concept) + "</span></span></label>";
+        }).join("");
+      }
+      renderAssignSaved();
+      var createBtn = $("assign-create-btn");
+      if (createBtn) createBtn.addEventListener("click", function () {
+        var title = ($("assign-title").value || "").trim();
+        var due = $("assign-due").value || "";
+        var exs = [];
+        list.querySelectorAll("[data-assign-ex]").forEach(function (cb) { if (cb.checked) exs.push(parseInt(cb.getAttribute("data-assign-ex"), 10)); });
+        var status = $("assign-create-status");
+        if (!title) { if (status) status.textContent = "Give the assignment a title first."; return; }
+        if (!due) { if (status) status.textContent = "Pick a due date first."; return; }
+        if (!exs.length) { if (status) status.textContent = "Tick at least one exercise first."; return; }
+        var a = { title: title.slice(0, 120), due: due, exs: exs };
+        assignments.push(a);
+        if (typeof tfSave === "function") tfSave();
+        renderAssignSaved();
+        var code = assignEncode(a);
+        var out = $("assign-code-out"); if (out) out.value = code;
+        var created = $("assign-created"); if (created) created.hidden = false;
+        if (status) status.textContent = "Created “" + a.title + "” — its code is below, and it is saved in the list above the open box.";
+        announce("Assignment created: " + a.title + " — " + exs.length + " exercises, due " + due + ".");
+      });
+      var copyCode = $("assign-copy-code-btn");
+      if (copyCode) copyCode.addEventListener("click", function () { var out = $("assign-code-out"); if (out) assignCopyText(out.value, "Assignment code copied."); });
+      var copyLink = $("assign-copy-link-btn");
+      if (copyLink) copyLink.addEventListener("click", function () {
+        var out = $("assign-code-out"); if (!out || !out.value) return;
+        assignCopyText(location.href.split("#")[0] + "#assign-" + out.value, "Assignment link copied.");
+      });
+      var openBtn = $("assign-open-btn");
+      if (openBtn) openBtn.addEventListener("click", function () { openAssignment($("assign-open-code").value); });
+      var csvBtn = $("assign-csv-btn");
+      if (csvBtn) csvBtn.addEventListener("click", function () {
+        var a = currentAssignment || assignments[0];
+        var note = $("assign-csv-note");
+        if (!a) { if (note) note.textContent = "Create or open an assignment first."; return; }
+        downloadText(assignCsvText(a), assignSlug(a.title) + ".csv");
+        if (note) note.textContent = "Exported \u201C" + a.title + "\u201D (" + a.exs.length + " exercises).";
+      });
+      var m = /^#assign-(.+)$/.exec(location.hash || "");
+      if (m) {
+        var code = decodeURIComponent(m[1]);
+        var ta = $("assign-open-code"); if (ta) ta.value = code;
+        openAssignment(code, "Opened from the assignment link.");
+      }
+    })();
+
 
     /* ================= Gap builds (1–10): shared additive state =================
        All state in this section lives in ONE additive field, `gap`, inside
@@ -15767,6 +16580,15 @@ int main() {
 
     /* ================= Gap 2: Reading layer — Briefings ================= */
     var BRIEFINGS = {
+      "Sorting & cost": { title: "Briefing: Sorting & cost — counting comparisons",
+        body: "A sort's <b>cost</b> can be counted, not just felt: put an ordinary variable, <code>int comparisons = 0;</code>, in the program and raise it at every element-against-element test. The count separates things beginners merge: a <b>comparison</b> is a test, a <b>swap</b> is a move — bubble sort on 4 elements makes 6 comparisons but only as many swaps as the data forces. Bubble and selection sort both test <b>3 + 2 + 1 = 6</b> pairs on 4 elements whatever the data (their bill grows like <b>n²</b>), while <b>insertion sort</b> stops each key at the first smaller neighbour, so its bill collapses on nearly sorted data. The <b>merge step</b> combines two <em>already sorted</em> runs by comparing only their fronts, and copies any leftover tail for free; repeating it bottom-up is merge sort, whose bill grows like <b>n log n</b> — on 8 values, 17 comparisons against bubble sort's 28. A <b>partition</b> pass spends one comparison per element to place its pivot in its final home, without sorting either side.",
+        example: ["int comparisons = 0;", "for (int j = 0; j < 3; j++) {", "    comparisons++;", "    if (a[j] > a[j + 1]) { swap them }", "}"], note: "One pass over 4 elements runs <b>comparisons++</b> <b>3</b> times — once per pair tested — whether or not any swap happens. Three passes test 3 + 2 + 1 = <b>6</b> pairs.",
+        checks: [
+          { q: "Bubble sort on 4 elements tests 3 pairs, then 2, then 1. How many comparisons in total?", options: ["6", "3", "4", "12"], correct: 0, why: "Cost is the sum over all passes: 3 + 2 + 1 = 6." },
+          { q: "When does insertion sort make very few comparisons?", options: ["When the array is nearly sorted", "When the array is reversed", "Never — its count is fixed by n alone"], correct: 0, why: "Each key stops at the first neighbour that is not bigger, so tidy data means almost no shifting and few tests." },
+          { q: "In a merge step, one run empties. What happens to the rest of the other run?", options: ["It is copied across with no more comparisons", "It is compared against itself", "It is thrown away"], correct: 0, why: "What remains is already in order and nothing is left to test it against, so it copies for free." }
+        ],
+        drag: { q: "Drag (or tap) the right token into the declaration so the counter below counts every comparison the sort makes:", pre: "int ", slot: "", post: " = 0;", tokens: ["comparisons", "swaps", "passes"], correct: "comparisons", why: "The counter that rises at every test is the comparison count; swaps and passes are different tallies." } },
       "Foundations": { title: "Briefing: Values & Assignment",
         body: "A variable is a <b>named box</b>. A declaration (<code>int score = 25;</code>) creates the box and fills it. An assignment (<code>score = score + 5;</code>) always works <b>right side first</b>: the old value is read, the new value computed, and only then is the box overwritten — the old value is gone. The type on the declaration decides what the box may hold: an <code>int</code> box can never hold a fraction, which is why 19.95 belongs in a <code>double</code>.",
         example: ["int score = 25;", "score = score + 5;", "cout << score;"], note: "Prints <b>30</b>: the second line reads the old 25, adds 5, and stores 30 back in the same box.",
@@ -16803,6 +17625,11 @@ int main() {
           });
         }
       } catch (e) {}
+      try {
+        if (typeof assignments !== "undefined" && Array.isArray(assignments)) {
+          data.assignments = assignments.map(function (a) { return { title: a.title, due: a.due, exs: (a.exs || []).slice() }; });
+        }
+      } catch (e) {}
       try { data.gap = JSON.parse(JSON.stringify(gapState)); } catch (e) {}
       return data;
     }
@@ -16810,6 +17637,7 @@ int main() {
       if (!d) return false;
       if (Array.isArray(d.authoredExercises) && d.authoredExercises.length) return true;
       if (Array.isArray(d.instructorExercises) && d.instructorExercises.length) return true;
+      if (Array.isArray(d.assignments) && d.assignments.length) return true;
       if (d.primerRead) return true;
       if (d.testOut && d.testOut.passed) return true;
       if ((d.tracer || []).some(function (x) { return !!x; })) return true;
@@ -17005,6 +17833,18 @@ int main() {
         if (typeof d.testOut.score === "number") testOut.score = d.testOut.score;
         if (Array.isArray(d.testOut.via)) testOut.via = [!!d.testOut.via[0], !!d.testOut.via[1], !!d.testOut.via[2]];
       }
+      // Instructor assignments (additive field; absent in older saves)
+      try {
+        if (Array.isArray(d.assignments) && typeof assignments !== "undefined") {
+          assignments = d.assignments.filter(function (a) {
+            return a && typeof a.title === "string" && Array.isArray(a.exs) && a.exs.length;
+          }).map(function (a) {
+            return { title: a.title.slice(0, 120), due: (typeof a.due === "string" && /^\d{4}-\d{2}-\d{2}$/.test(a.due)) ? a.due : "",
+              exs: a.exs.filter(function (n) { return typeof n === "number" && n >= 0 && n < EXERCISES.length; }) };
+          }).filter(function (a) { return a.exs.length; });
+          if (typeof renderAssignSaved === "function") renderAssignSaved();
+        }
+      } catch (e) {}
       // Gap-build state (additive field; absent in older saves)
       try {
         if (d.gap && typeof d.gap === "object" && typeof gapState !== "undefined") {
