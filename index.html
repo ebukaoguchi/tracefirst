@@ -1744,12 +1744,12 @@
           <h2>Meet Bolt — programming before the syntax gets heavy.</h2>
           <p>Bolt is a workshop robot who understands exactly <strong>four commands</strong>: move, turn left, pick up a battery cell, put one down. That is all he will ever know. Everything Bolt does — crossing the Workshop, harvesting a row of cells, feeling his way around crates — is built by combining those four commands with loops, decisions, and functions you define yourself.</p>
           <p>The programs are written in <strong>real C++ shape</strong>: every command ends with a semicolon, blocks wear braces, and helpers are <strong>void</strong> functions. Nothing here is a toy language you will have to unlearn. When you move on to the Prediction Tracer, the syntax will already look familiar; only the ideas will be new.</p>
-          <div class="bolt-order"><strong>Start here.</strong> This mode comes first on purpose: finish these nineteen worlds and you already think in sequences, loops, decisions, and functions. Then predict and trace real code in the Prediction Tracer, where the same logic wears full C++ syntax.</div>
+          <div class="bolt-order"><strong>Start here.</strong> This mode comes first on purpose: finish these twenty-nine worlds and you already think in sequences, loops, decisions, and functions. Then predict and trace real code in the Prediction Tracer, where the same logic wears full C++ syntax.</div>
         </section>
 
         <section class="toolbar" id="bolt-worlds" aria-label="Choose a world">
           <div>
-            <div class="tlabel">Worlds — nineteen workshops, in order</div>
+            <div class="tlabel">Worlds — twenty-nine workshops, in order</div>
             <div class="exnav" id="boltnav"></div>
           </div>
           <div class="scorebar" id="bolt-scorebar" aria-label="Your Bolt's World progress"></div>
@@ -1758,7 +1758,7 @@
         <details class="toolbar bolt-chal-details" id="bolt-challenges" aria-labelledby="bolt-chal-h">
           <summary id="bolt-chal-h">Bolt Challenges (optional) <span class="gcount">8 extra worlds &#9662;</span></summary>
           <div style="margin-top:10px;">
-            <p class="bolt-chal-framing">For students who <strong>finish the nineteen worlds and want more</strong>. These challenges are entirely opt-in: they gate nothing and unlock nothing, and they use the same Workshop, the same editor, and the same Run, Step, and Reset controls below. Pick one to load it into the board.</p>
+            <p class="bolt-chal-framing">For students who <strong>finish the twenty-nine worlds and want more</strong>. These challenges are entirely opt-in: they gate nothing and unlock nothing, and they use the same Workshop, the same editor, and the same Run, Step, and Reset controls below. Pick one to load it into the board.</p>
             <div class="exnav" id="boltchalnav" style="margin-top:12px;" role="group" aria-label="Choose an optional Bolt challenge"></div>
           </div>
           <div class="scorebar" id="bolt-chal-scorebar" aria-label="Your Bolt Challenges progress" style="margin-top:10px;"></div>
@@ -2288,7 +2288,7 @@ for (int i = 0; i < 3; i++) {
       <div id="gym-mode" role="tabpanel" tabindex="0" hidden>
         <section class="gym-intro">
           <h2>Find the bugs. Classify them. Then prove the fix.</h2>
-          <p>Fourteen short programs, broken on purpose — the first three from a debugging and code-reading lab built for a first-year introductory C++ course serving CS and non-CS majors together, the rest extending the same hunt to loops, arrays, functions, and strings. <strong>Click a line to accuse it of being a bug.</strong> Every accusation that lands must then be classified, because the distinction this gym trains is the one beginners blur:</p>
+          <p>Twenty-four short programs, broken on purpose — the first three from a debugging and code-reading lab built for a first-year introductory C++ course serving CS and non-CS majors together, the rest extending the same hunt to loops, arrays, functions, and strings. <strong>Click a line to accuse it of being a bug.</strong> Every accusation that lands must then be classified, because the distinction this gym trains is the one beginners blur:</p>
           <div class="taxonomy">
             <div class="tax syntax"><b>Syntax error</b>The code breaks a rule of the language. The compiler catches it and the program never runs.</div>
             <div class="tax logic"><b>Logic error</b>The code is legal, compiles clean, and still does the wrong thing. Only the output exposes it.</div>
@@ -2306,7 +2306,7 @@ for (int i = 0; i < 3; i++) {
 
         <section class="toolbar" id="gym-rounds" aria-label="Choose a gym round">
           <div>
-            <div class="tlabel">Rounds — fourteen broken programs, in order</div>
+            <div class="tlabel">Rounds — twenty-four broken programs, in order</div>
             <div class="exnav" id="gymnav"></div>
           </div>
           <div class="scorebar" id="gym-scorebar" aria-label="Your gym scoreboard"></div>
@@ -9408,6 +9408,464 @@ int main() {
         fixedLines: [4, 6, 8, 16],
         sampleHead: "Verified sample run — the scores {72, 41, 88, 50, 63} written in the program",
         sample: "Passed: 4"
+      },
+      {
+        title: "One Past the End",
+        milestone: "Arrays · Boundaries and the last legal index",
+        story: "A teacher's program holds four quiz scores in an array and prints their total. Four bugs: two missing semicolons, a reversed stream operator, and one loop bound that walks the loop one step past the end of the array.",
+        file: "onePastTheEnd.cpp",
+        code: [
+          "#include <iostream>",
+          "using namespace std",
+          "int main() {",
+          "    int scores[4] = {72, 85, 90, 64};",
+          "    int total = 0",
+          "    for (int i = 0; i <= 4; i++) {",
+          "        total += scores[i];",
+          "    }",
+          "    cout << \"Total: \" >> total << endl;",
+          "    return 0;",
+          "}"
+        ],
+        bugs: {
+          2: { kind: "syntax", text: "Missing semicolon after <b>using namespace std</b>. The statement never ends, so the compiler reads straight into the next line hunting for it." },
+          5: { kind: "syntax", text: "Missing semicolon after <b>int total = 0</b>. The declaration never ends, so the compiler reads the for header below as part of it." },
+          6: { kind: "logic", text: "Off by one. With <b>i &lt;= 4</b> the loop runs <b>five</b> times, and on the last pass i is 4 — but a four-slot array's legal indexes are 0 to 3, so <b>scores[4]</b> reads one element past the end. The compiler says nothing; the read is simply wrong. Array loops end at <b>i &lt; 4</b>." },
+          9: { kind: "syntax", text: "Reversed stream operator inside the output chain. <b>\"Total: \" &gt;&gt; total</b> should be <b>&lt;&lt; total</b> — one wrong arrow breaks the whole cout statement." }
+        },
+        fixed: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int scores[4] = {72, 85, 90, 64};",
+          "    int total = 0;",
+          "    for (int i = 0; i < 4; i++) {",
+          "        total += scores[i];",
+          "    }",
+          "    cout << \"Total: \" << total << endl;",
+          "    return 0;",
+          "}"
+        ],
+        fixedLines: [2, 5, 6, 9],
+        sampleHead: "Verified sample run — the scores {72, 85, 90, 64} written in the program",
+        sample: "Total: 311"
+      },
+      {
+        title: "The Split Bill",
+        milestone: "Expressions · Integer division throws the fraction away",
+        story: "A program splits a bill: it reads the total cost and the number of people, and prints each person's share. Four bugs: two reversed stream operators, a missing semicolon, and one division that throws away the fraction before the answer is ever stored in a double.",
+        file: "splitBill.cpp",
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int total;",
+          "    int people;",
+          "    cout >> \"Total: \";",
+          "    cin >> total;",
+          "    cout << \"People: \";",
+          "    cin << people;",
+          "    double share = total / people;",
+          "    cout << \"Share: \" << share << endl;",
+          "    return 0",
+          "}"
+        ],
+        bugs: {
+          6: { kind: "syntax", text: "Reversed stream operator. A prompt is <em>output</em>, and output flows through <b>cout &lt;&lt;</b>. <b>cout &gt;&gt;</b> points the stream the wrong way." },
+          9: { kind: "syntax", text: "Reversed stream operator. Input is read with <b>cin &gt;&gt;</b>. <b>cin &lt;&lt; people;</b> tries to push a value into the stream instead of pulling one out of it." },
+          10: { kind: "logic", text: "Integer division truncates <em>before</em> the result is stored. <b>total</b> and <b>people</b> are both <b>int</b>, so <b>total / people</b> is whole-number division: 10 / 4 is 2, and the .5 is gone before the double ever sees it. The fraction has to exist before the division: <b>total * 1.0 / people</b>." },
+          12: { kind: "syntax", text: "Missing semicolon after <b>return 0</b> — the last statement of the program, and still a statement. The closing brace does not excuse it." }
+        },
+        fixed: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int total;",
+          "    int people;",
+          "    cout << \"Total: \";",
+          "    cin >> total;",
+          "    cout << \"People: \";",
+          "    cin >> people;",
+          "    double share = total * 1.0 / people;",
+          "    cout << \"Share: \" << share << endl;",
+          "    return 0;",
+          "}"
+        ],
+        fixedLines: [6, 9, 10, 12],
+        sampleHead: "Verified sample run — total 10, people 4",
+        sample: "Share: 2.5"
+      },
+      {
+        title: "The Medal Stand",
+        milestone: "Decisions · Separate ifs are not else-ifs",
+        story: "A results program reads one score and awards a medal: 90 or above is Gold, 70 to 89 is Silver, 50 to 69 is Bronze, anything lower is None. Four bugs: a missing semicolon, a reversed stream operator, and two if statements that are not exclusive — so a higher medal is overwritten by every lower one that also matches.",
+        file: "medalStand.cpp",
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "int main() {",
+          "    int score",
+          "    cout << \"Score: \";",
+          "    cin >> score;",
+          "    string medal = \"None\";",
+          "    if (score >= 90) medal = \"Gold\";",
+          "    if (score >= 70) medal = \"Silver\";",
+          "    if (score >= 50) medal = \"Bronze\";",
+          "    cout << \"Medal: \" >> medal << endl;",
+          "    return 0;",
+          "}"
+        ],
+        bugs: {
+          5: { kind: "syntax", text: "Missing semicolon after <b>int score</b>. The declaration never ends, so the compiler swallows the next line into it and reports the error somewhere it does not live." },
+          10: { kind: "logic", text: "Not exclusive. This is a separate <b>if</b>, not an <b>else if</b> — so after the Gold line awards Gold to a score of 95, this line runs anyway and overwrites it with Silver. The band has to exclude the band above it: <b>score &gt;= 70 &amp;&amp; score &lt; 90</b>." },
+          11: { kind: "logic", text: "Not exclusive, again. A score of 95 has already been awarded Gold and then Silver by the time this line runs — and it overwrites the medal a third time, with Bronze. The band has to exclude every band above it: <b>score &gt;= 50 &amp;&amp; score &lt; 70</b>." },
+          12: { kind: "syntax", text: "Reversed stream operator inside the output chain. <b>\"Medal: \" &gt;&gt; medal</b> should be <b>&lt;&lt; medal</b> — one wrong arrow breaks the whole cout statement." }
+        },
+        fixed: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "int main() {",
+          "    int score;",
+          "    cout << \"Score: \";",
+          "    cin >> score;",
+          "    string medal = \"None\";",
+          "    if (score >= 90) medal = \"Gold\";",
+          "    if (score >= 70 && score < 90) medal = \"Silver\";",
+          "    if (score >= 50 && score < 70) medal = \"Bronze\";",
+          "    cout << \"Medal: \" << medal << endl;",
+          "    return 0;",
+          "}"
+        ],
+        fixedLines: [5, 10, 11, 12],
+        sampleHead: "Verified sample run — score 95",
+        sample: "Medal: Gold"
+      },
+      {
+        title: "The Charity Jar",
+        milestone: "Loops & accumulators · An accumulator starts where you leave it",
+        story: "A charity collection program reads four donations and prints their total. Four bugs: two missing semicolons, a reversed stream operator, and one stale leftover: the accumulator still holds a 10 from a test donation used while the program was being written, so every collection it reports is inflated by exactly that much — a plausible-looking total that is quietly wrong.",
+        file: "charityJar.cpp",
+        code: [
+          "#include <iostream>",
+          "using namespace std",
+          "int main() {",
+          "    int total = 10;",
+          "    int gift",
+          "    for (int i = 0; i < 4; i++) {",
+          "        cin << gift;",
+          "        total += gift;",
+          "    }",
+          "    cout << \"Total: \" << total << endl;",
+          "    return 0;",
+          "}"
+        ],
+        bugs: {
+          2: { kind: "syntax", text: "Missing semicolon after <b>using namespace std</b>. The checklist's first item, doing its usual damage at the top of the file." },
+          4: { kind: "logic", text: "The accumulator starts from a <b>stale leftover</b>. <b>int total = 10;</b> seeds the total with a 10 that was a test donation while the program was being written — and it was never taken back out. Every collection this program reports is exactly 10 too much, however many donations are read. An accumulator must be born at zero, because nothing has been added yet: <b>int total = 0;</b>" },
+          5: { kind: "syntax", text: "Missing semicolon after <b>int gift</b>. The declaration never ends, so the compiler reads the for header below as part of it." },
+          7: { kind: "syntax", text: "Reversed stream operator. Input is read with <b>cin &gt;&gt;</b>. <b>cin &lt;&lt; gift;</b> tries to push a value into the stream instead of pulling one out of it." }
+        },
+        fixed: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int total = 0;",
+          "    int gift;",
+          "    for (int i = 0; i < 4; i++) {",
+          "        cin >> gift;",
+          "        total += gift;",
+          "    }",
+          "    cout << \"Total: \" << total << endl;",
+          "    return 0;",
+          "}"
+        ],
+        fixedLines: [2, 4, 5, 7],
+        sampleHead: "Verified sample run — donations 10 20 30 40",
+        sample: "Total: 100"
+      },
+      {
+        title: "The Fence Posts",
+        milestone: "Loops · An inclusive range includes its end",
+        story: "A program reads a number n and prints the sum 1 + 2 + … + n — every whole number up to and including n. Four bugs: a missing semicolon, two reversed stream operators, and one loop test that stops a single step early, so the largest number in the range is never added.",
+        file: "fencePosts.cpp",
+        code: [
+          "#include <iostream>",
+          "using namespace std",
+          "int main() {",
+          "    int n;",
+          "    cout << \"Up to: \";",
+          "    cin << n;",
+          "    int sum = 0;",
+          "    for (int i = 1; i < n; i++) {",
+          "        sum += i;",
+          "    }",
+          "    cout << \"Sum: \" >> sum << endl;",
+          "    return 0;",
+          "}"
+        ],
+        bugs: {
+          2: { kind: "syntax", text: "Missing semicolon after <b>using namespace std</b>. The statement never ends, so the compiler reads straight into the next line hunting for it." },
+          6: { kind: "syntax", text: "Reversed stream operator. Input is read with <b>cin &gt;&gt;</b>. <b>cin &lt;&lt; n;</b> tries to push a value into the stream instead of pulling one out of it." },
+          8: { kind: "logic", text: "The test stops one step early. The range is <em>inclusive</em> — n itself belongs in the sum — but <b>i &lt; n</b> is false when i reaches n, so the loop ends before adding it. For n = 5 the program adds 1+2+3+4 and never adds 5. An inclusive end takes <b>i &lt;= n</b>." },
+          11: { kind: "syntax", text: "Reversed stream operator inside the output chain. <b>\"Sum: \" &gt;&gt; sum</b> should be <b>&lt;&lt; sum</b> — one wrong arrow breaks the whole cout statement." }
+        },
+        fixed: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int n;",
+          "    cout << \"Up to: \";",
+          "    cin >> n;",
+          "    int sum = 0;",
+          "    for (int i = 1; i <= n; i++) {",
+          "        sum += i;",
+          "    }",
+          "    cout << \"Sum: \" << sum << endl;",
+          "    return 0;",
+          "}"
+        ],
+        fixedLines: [2, 6, 8, 11],
+        sampleHead: "Verified sample run — input 5",
+        sample: "Sum: 15"
+      },
+      {
+        title: "The Echo",
+        milestone: "Strings · Indexing starts at 0",
+        story: "An echo program reads one word and prints it back, character by character. Four bugs: a reversed stream operator, a missing semicolon, another reversed operator — and a loop that starts one character too late, so the echoed word comes out missing its first letter.",
+        file: "theEcho.cpp",
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "int main() {",
+          "    string word;",
+          "    cout >> \"Word: \";",
+          "    cin >> word",
+          "    cout << \"Echo: \";",
+          "    for (int i = 1; i < word.length(); i++) {",
+          "        cout << word[i];",
+          "    }",
+          "    cout >> endl;",
+          "    return 0;",
+          "}"
+        ],
+        bugs: {
+          6: { kind: "syntax", text: "Reversed stream operator. A prompt is <em>output</em>, and output flows through <b>cout &lt;&lt;</b>. <b>cout &gt;&gt;</b> points the stream the wrong way." },
+          7: { kind: "syntax", text: "Missing semicolon after <b>cin &gt;&gt; word</b>. The input statement never ends, so it runs into the line below it." },
+          9: { kind: "logic", text: "Indexing starts at 0, so starting the loop at <b>i = 1</b> skips the word's first character entirely — hello echoes as ello. The first character is <b>word[0]</b>, and the loop must start there: <b>i = 0</b>." },
+          12: { kind: "syntax", text: "Reversed stream operator. <b>cout &gt;&gt; endl</b> should be <b>&lt;&lt; endl</b> — output chains use <b>&lt;&lt;</b> for every single value, endl included." }
+        },
+        fixed: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "int main() {",
+          "    string word;",
+          "    cout << \"Word: \";",
+          "    cin >> word;",
+          "    cout << \"Echo: \";",
+          "    for (int i = 0; i < word.length(); i++) {",
+          "        cout << word[i];",
+          "    }",
+          "    cout << endl;",
+          "    return 0;",
+          "}"
+        ],
+        fixedLines: [6, 7, 9, 12],
+        sampleHead: "Verified sample run — word hello",
+        sample: "Echo: hello"
+      },
+      {
+        title: "The Bonus That Vanished",
+        milestone: "Functions · A parameter is a copy unless the value travels back",
+        story: "A grading program reads a score and calls a helper to add a 10-point bonus, then prints the score. Five bugs: a missing semicolon, a reversed stream operator, and one fault in three parts — the helper works on a copy of the score, never hands the new value back, and the call site never keeps it. The bonus is computed correctly and then vanishes.",
+        file: "bonusThatVanished.cpp",
+        code: [
+          "#include <iostream>",
+          "using namespace std",
+          "void applyBonus(int score) {",
+          "    score = score + 10;",
+          "}",
+          "",
+          "int main() {",
+          "    int score;",
+          "    cin >> score;",
+          "    applyBonus(score);",
+          "    cout << \"Score: \" >> score << endl;",
+          "    return 0;",
+          "}"
+        ],
+        bugs: {
+          2: { kind: "syntax", text: "Missing semicolon after <b>using namespace std</b>. The statement never ends, so the compiler reads straight into the next line hunting for it." },
+          3: { kind: "logic", text: "The helper receives a <b>copy</b>. A parameter declared <b>int score</b> is a fresh box filled with the caller's value — adding 10 inside the function changes the copy, not the caller's variable. And the function is declared <b>void</b>, so it cannot hand the new value back either. The declaration has to promise the value: <b>int applyBonus(int score)</b>." },
+          5: { kind: "logic", text: "The function reaches its closing brace <b>without returning</b> the score it computed. There is no <b>return score;</b> — the work is done and then thrown away. (In the Fix stage, this line carries the repair: the corrected line reads <b>return score; }</b> — the return and the closing brace on the one line.)" },
+          10: { kind: "logic", text: "The call <b>discards</b> the result. Even once the function returns the new score, calling it as a bare statement throws that value away and main's score never changes. The call has to keep what comes back: <b>score = applyBonus(score);</b>" },
+          11: { kind: "syntax", text: "Reversed stream operator inside the output chain. <b>\"Score: \" &gt;&gt; score</b> should be <b>&lt;&lt; score</b> — one wrong arrow breaks the whole cout statement." }
+        },
+        fixed: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int applyBonus(int score) {",
+          "    score = score + 10;",
+          "    return score; }",
+          "",
+          "int main() {",
+          "    int score;",
+          "    cin >> score;",
+          "    score = applyBonus(score);",
+          "    cout << \"Score: \" << score << endl;",
+          "    return 0;",
+          "}"
+        ],
+        fixedLines: [2, 3, 5, 10, 11],
+        sampleHead: "Verified sample run — score 65",
+        sample: "Score: 75"
+      },
+      {
+        title: "The First Within Budget",
+        milestone: "Arrays & search · The comparison points the search",
+        story: "A shopping program holds five prices in an array, reads a budget, and prints the index of the first price within budget — at or under it — or -1 if none qualifies. Four bugs: a missing semicolon, two reversed stream operators, and one comparison facing the wrong way, so the search finds the first price over budget instead.",
+        file: "firstWithinBudget.cpp",
+        code: [
+          "#include <iostream>",
+          "using namespace std",
+          "int main() {",
+          "    int prices[5] = {42, 35, 28, 50, 31};",
+          "    int budget;",
+          "    cin << budget;",
+          "    int found = -1;",
+          "    for (int i = 0; i < 5; i++) {",
+          "        if (prices[i] >= budget && found == -1) {",
+          "            found = i;",
+          "        }",
+          "    }",
+          "    cout << \"First: \" >> found << endl;",
+          "    return 0;",
+          "}"
+        ],
+        bugs: {
+          2: { kind: "syntax", text: "Missing semicolon after <b>using namespace std</b>. The statement never ends, so the compiler reads straight into the next line hunting for it." },
+          6: { kind: "syntax", text: "Reversed stream operator. Input is read with <b>cin &gt;&gt;</b>. <b>cin &lt;&lt; budget;</b> tries to push a value into the stream instead of pulling one out of it." },
+          9: { kind: "logic", text: "The comparison is reversed. The search wants the first price <em>at or under</em> the budget, but <b>prices[i] &gt;= budget</b> matches the first price at or <em>over</em> it — for a budget of 30 it stops at index 0 (42) and never reaches the 28 at index 2. The test must be <b>prices[i] &lt;= budget</b>." },
+          13: { kind: "syntax", text: "Reversed stream operator inside the output chain. <b>\"First: \" &gt;&gt; found</b> should be <b>&lt;&lt; found</b> — one wrong arrow breaks the whole cout statement." }
+        },
+        fixed: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int prices[5] = {42, 35, 28, 50, 31};",
+          "    int budget;",
+          "    cin >> budget;",
+          "    int found = -1;",
+          "    for (int i = 0; i < 5; i++) {",
+          "        if (prices[i] <= budget && found == -1) {",
+          "            found = i;",
+          "        }",
+          "    }",
+          "    cout << \"First: \" << found << endl;",
+          "    return 0;",
+          "}"
+        ],
+        fixedLines: [2, 6, 9, 13],
+        sampleHead: "Verified sample run — budget 30, the prices {42, 35, 28, 50, 31} written in the program",
+        sample: "First: 2"
+      },
+      {
+        title: "The Crooked Grid",
+        milestone: "Nested loops · Each loop has its own bound",
+        story: "A seating program reads a number of rows and a number of seats per row, and counts the seats in the grid. Five bugs: a missing semicolon at the top, a reversed stream operator, another missing semicolon, a reversed output operator — and an inner loop bounded by the wrong variable, so the grid comes out crooked: each row longer than the one before, instead of every row the same length.",
+        file: "crookedGrid.cpp",
+        code: [
+          "#include <iostream>",
+          "using namespace std",
+          "int main() {",
+          "    int rows;",
+          "    int cols;",
+          "    cin >> rows;",
+          "    cin << cols;",
+          "    int count = 0",
+          "    for (int i = 0; i < rows; i++) {",
+          "        for (int j = 0; j < i; j++) {",
+          "            count++;",
+          "        }",
+          "    }",
+          "    cout << \"Cells: \" >> count << endl;",
+          "    return 0;",
+          "}"
+        ],
+        bugs: {
+          2: { kind: "syntax", text: "Missing semicolon after <b>using namespace std</b>. The statement never ends, so the compiler reads straight into the next line hunting for it." },
+          7: { kind: "syntax", text: "Reversed stream operator. Input is read with <b>cin &gt;&gt;</b>. <b>cin &lt;&lt; cols;</b> tries to push a value into the stream instead of pulling one out of it." },
+          8: { kind: "syntax", text: "Missing semicolon after <b>int count = 0</b>. The declaration never ends, so the compiler reads the for header below as part of it." },
+          10: { kind: "logic", text: "The inner loop is bounded by the <b>outer</b> variable. <b>j &lt; i</b> makes the inner loop run 0 times on the first row, once on the second, twice on the third — a triangle, not a grid. The inner loop has its own bound, the seats per row: <b>j &lt; cols</b>." },
+          14: { kind: "syntax", text: "Reversed stream operator inside the output chain. <b>\"Cells: \" &gt;&gt; count</b> should be <b>&lt;&lt; count</b> — one wrong arrow breaks the whole cout statement." }
+        },
+        fixed: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int rows;",
+          "    int cols;",
+          "    cin >> rows;",
+          "    cin >> cols;",
+          "    int count = 0;",
+          "    for (int i = 0; i < rows; i++) {",
+          "        for (int j = 0; j < cols; j++) {",
+          "            count++;",
+          "        }",
+          "    }",
+          "    cout << \"Cells: \" << count << endl;",
+          "    return 0;",
+          "}"
+        ],
+        fixedLines: [2, 7, 8, 10, 14],
+        sampleHead: "Verified sample run — rows 3, seats per row 4",
+        sample: "Cells: 12"
+      },
+      {
+        title: "The Ticket Till",
+        milestone: "Loops · The sentinel is a stop sign, not data",
+        story: "A till program reads sale amounts one at a time and totals them. The amount -1 is the sentinel: it means <em>stop</em>, and is not itself a sale. Four bugs: a missing semicolon, two reversed stream operators, and one ordering fault — every amount, the sentinel included, is added to the total before the loop gets a chance to stop.",
+        file: "ticketTill.cpp",
+        code: [
+          "#include <iostream>",
+          "using namespace std",
+          "int main() {",
+          "    int total = 0;",
+          "    int x = 0;",
+          "    while (x != -1) {",
+          "        cin << x;",
+          "        total += x;",
+          "    }",
+          "    cout << \"Total: \" >> total << endl;",
+          "    return 0;",
+          "}"
+        ],
+        bugs: {
+          2: { kind: "syntax", text: "Missing semicolon after <b>using namespace std</b>. The statement never ends, so the compiler reads straight into the next line hunting for it." },
+          7: { kind: "syntax", text: "Reversed stream operator. Input is read with <b>cin &gt;&gt;</b>. <b>cin &lt;&lt; x;</b> tries to push a value into the stream instead of pulling one out of it." },
+          8: { kind: "logic", text: "The sentinel is processed as data. The loop tests <b>x</b> at the top, but by the time a fresh -1 has been read at line 7, control is already here — and this line adds it to the total before the test ever sees it. Every total comes out exactly 1 too small. The add has to be guarded: <b>if (x != -1) total += x;</b>" },
+          10: { kind: "syntax", text: "Reversed stream operator inside the output chain. <b>\"Total: \" &gt;&gt; total</b> should be <b>&lt;&lt; total</b> — one wrong arrow breaks the whole cout statement." }
+        },
+        fixed: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int total = 0;",
+          "    int x = 0;",
+          "    while (x != -1) {",
+          "        cin >> x;",
+          "        if (x != -1) total += x;",
+          "    }",
+          "    cout << \"Total: \" << total << endl;",
+          "    return 0;",
+          "}"
+        ],
+        fixedLines: [2, 7, 8, 10],
+        sampleHead: "Verified sample run — amounts 5 10 -1",
+        sample: "Total: 15"
       }
 
     ];
@@ -9471,6 +9929,46 @@ int main() {
       {
         visible: { input: "", inputLabel: "the scores {72, 41, 88, 50, 63} written in the program", expected: ["Passed: 4"] },
         unseen:  { input: "", inputLabel: "the scores {30, 55, 49, 100, 50} written in the program", expected: ["Passed: 3"], swapArray: "{30, 55, 49, 100, 50}" }
+      },
+      {
+        visible: { input: "", inputLabel: "the scores {72, 85, 90, 64} written in the program", expected: ["Total: 311"] },
+        unseen:  { input: "", inputLabel: "the scores {50, 60, 70, 80} written in the program", expected: ["Total: 260"], swapArray: "{50, 60, 70, 80}" }
+      },
+      {
+        visible: { input: "10\n4", inputLabel: "10 / 4", expected: ["Share: 2.5"] },
+        unseen:  { input: "7\n2", inputLabel: "7 / 2", expected: ["Share: 3.5"] }
+      },
+      {
+        visible: { input: "95", inputLabel: "95", expected: ["Medal: Gold"] },
+        unseen:  { input: "75", inputLabel: "75", expected: ["Medal: Silver"] }
+      },
+      {
+        visible: { input: "10 20 30 40", inputLabel: "10 20 30 40", expected: ["Total: 100"] },
+        unseen:  { input: "5 15 25 35", inputLabel: "5 15 25 35", expected: ["Total: 80"] }
+      },
+      {
+        visible: { input: "5", inputLabel: "5", expected: ["Sum: 15"] },
+        unseen:  { input: "4", inputLabel: "4", expected: ["Sum: 10"] }
+      },
+      {
+        visible: { input: "hello", inputLabel: "hello", expected: ["Echo: hello"] },
+        unseen:  { input: "bravo", inputLabel: "bravo", expected: ["Echo: bravo"] }
+      },
+      {
+        visible: { input: "65", inputLabel: "65", expected: ["Score: 75"] },
+        unseen:  { input: "40", inputLabel: "40", expected: ["Score: 50"] }
+      },
+      {
+        visible: { input: "30", inputLabel: "30", expected: ["First: 2"] },
+        unseen:  { input: "25", inputLabel: "25", expected: ["First: 0"], swapArray: "{18, 44, 26, 39, 22}" }
+      },
+      {
+        visible: { input: "3\n4", inputLabel: "3 / 4", expected: ["Cells: 12"] },
+        unseen:  { input: "2\n5", inputLabel: "2 / 5", expected: ["Cells: 10"] }
+      },
+      {
+        visible: { input: "5 10 -1", inputLabel: "5 10 -1", expected: ["Total: 15"] },
+        unseen:  { input: "20 3 -1", inputLabel: "20 3 -1", expected: ["Total: 23"] }
       }
 
     ];
@@ -9646,6 +10144,91 @@ int main() {
           "The return sits inside the loop's if, so the function hands back 1 the moment it meets the first passing score — the remaining scores are never examined.",
           "The return hands back the score itself rather than the count, so the program prints 72 instead of a tally.",
           "The function counts correctly, but main ignores the returned value and prints the array's length instead."
+        ] }
+      },
+      {
+        6: { correct: 0, options: [
+          "The loop runs one pass too many: on the last pass i is 4, and scores[4] reads one element past the end of the array — a value that was never part of the data.",
+          "The loop stops one pass early, so the last score in the array is never added to the total.",
+          "The loop never runs at all, because i starts out already equal to the array's size."
+        ] }
+      },
+      {
+        10: { correct: 1, options: [
+          "The share is computed correctly, but it is printed rounded down to a whole number, so 2.5 appears as 2.",
+          "Both operands are int, so the division truncates to a whole number first — 10 / 4 becomes 2 — and only that whole number is stored in the double; the fraction never exists.",
+          "The program divides the number of people by the total instead, so the share comes out as a small fraction."
+        ] }
+      },
+      {
+        10: { correct: 0, options: [
+          "The Silver if is a separate statement, not an else if — so a score of 95, already awarded Gold, is tested again here and overwritten with Silver.",
+          "The Silver band starts at the wrong value, so scores in the 70s are awarded Bronze instead.",
+          "The medal variable is reset to None between the ifs, so only the last if can ever leave a medal standing."
+        ] },
+        11: { correct: 0, options: [
+          "The Bronze if also runs for every score the higher bands already claimed — a score of 95 ends as Bronze, because this line has the last word.",
+          "The Bronze if never runs, because the two ifs above it end the program when they match.",
+          "The three ifs run in reverse order, so Bronze is awarded first and then corrected by the others."
+        ] }
+      },
+      {
+        4: { correct: 0, options: [
+          "The total starts at 10 — a stale test donation left in the initialiser — so every total the program prints is exactly 10 too big: 110 instead of 100 for the sample donations.",
+          "The total starts at 4, because the loop is going to run four times.",
+          "The total starts at the first donation, so the first gift is counted twice."
+        ] }
+      },
+      {
+        8: { correct: 0, options: [
+          "The test i < n is already false when i reaches n, so the largest number in the range is never added — for n = 5 the program sums 1+2+3+4 and stops.",
+          "The loop adds n twice, once inside the loop and once after it.",
+          "The sum is correct, but it is printed before the last pass runs, so the screen shows a partial total."
+        ] }
+      },
+      {
+        9: { correct: 0, options: [
+          "The first character is skipped: the loop starts at index 1, so hello is echoed as ello.",
+          "Every character is printed twice, because the loop reads each index two times.",
+          "The loop runs one pass too many and reads past the end of the word."
+        ] }
+      },
+      {
+        3: { correct: 0, options: [
+          "The parameter is a copy of the caller's score: the function adds 10 to its own box, and because it is void it hands nothing back — the caller's score is untouched.",
+          "The function adds 10 correctly and the caller's score does change, but main prints the score before the call runs.",
+          "The bonus is added twice, so the printed score is 20 too high."
+        ] },
+        5: { correct: 0, options: [
+          "The function finishes without returning the score it computed — the new score is thrown away when the closing brace is reached.",
+          "The function returns the bonus (10) instead of the new score.",
+          "The return hands back the score before the 10 is added."
+        ] },
+        10: { correct: 0, options: [
+          "The value the function returns is thrown away: the call is a bare statement, so main's score keeps its old value whatever the function computed.",
+          "The call passes the wrong variable, so the bonus lands on a different score.",
+          "The call runs after the cout, so the printed score is the pre-bonus one."
+        ] }
+      },
+      {
+        9: { correct: 0, options: [
+          "The comparison faces the wrong way: the search stops at the first price at or over the budget (index 0, price 42) instead of the first price at or under it (index 2, price 28).",
+          "The search starts at index 1, so the price at index 0 is never considered.",
+          "The loop stops one pass early, so the last price is never checked against the budget."
+        ] }
+      },
+      {
+        10: { correct: 0, options: [
+          "The inner loop is bounded by the outer counter, so the rows come out 0, 1, 2 seats long — a triangle totalling 3 — instead of 4 seats on every row.",
+          "The inner loop runs one time too many on each row, so every row has an extra seat.",
+          "The counter is reset inside the outer loop, so only the last row is counted."
+        ] }
+      },
+      {
+        8: { correct: 0, options: [
+          "Every amount the loop reads is added before the test at the top can stop the loop — the sentinel -1 included — so the total comes out exactly 1 too small.",
+          "The loop stops before the last real sale is read, so one genuine amount is missing from the total.",
+          "The sentinel is added twice, once when it is read and once after the loop."
         ] }
       }
 
@@ -11746,7 +12329,77 @@ int main() {
         goalText: "Deliver the cell from (1,6) to the HOME square at (10,6), and also collect the cells at (5,6) and (10,1) (bag holds 2 at the end).",
         hint: "Climb column 1 with while (frontIsClear()) { move(); } and pick the delivery cell up. Face East (three lefts), count four moves to (5,6) and pick, then let the sensor run Bolt to (10,6) and put the delivery down. Face South (three lefts) and descend the last column the same way to the final cell.",
         goal: function (st) { return (st.cells["10,6"] || 0) >= 1 && st.bag >= 2; },
-        starter: "// The Grand Round: up column 1,\n// deliver across the top to HOME,\n// collect (5,6) on the way, then\n// down column 10 for (10,1).\n\n" }
+        starter: "// The Grand Round: up column 1,\n// deliver across the top to HOME,\n// collect (5,6) on the way, then\n// down column 10 for (10,1).\n\n" },
+      { name: "The Three Bays", concept: "Functions · Sensor loops", w: 9, h: 4, par: 41,
+        start: { x: 1, y: 1, dir: 0 }, crates: [], cells: {"2,4":1,"5,4":1,"8,4":1},
+        story: "Three charging bays stand on the top row of a wide workshop, at (2,4), (5,4), and (8,4), each holding one battery cell. Fetching each one is the same climb: north until the cell's square, pick, come back south, face East again. The pattern happens three times here — a function is not a luxury any more, it is the only sane way to write the program.",
+        goalText: "Collect all three cells on the top row and finish standing on square (9,1).",
+        hint: "Write a helper — void fetchCell() — that turns north, climbs with while (!cellsPresent()) { move(); }, picks, turns around, walks south with while (frontIsClear()) { move(); }, and faces East again. Then: move once, fetch, move three times, fetch, move three times, fetch, move once.",
+        goal: function (st) { return st.bag >= 3 && st.x === 9 && st.y === 1; },
+        starter: "// Three bays, one fetch pattern.\n// Write it once as a helper function:\n// void fetchCell() { ... }\n// Its climb north can stop on the cell:\n// while (!cellsPresent()) { move(); }\n\n" },
+      { name: "Five Steps Up", concept: "Functions · Repeated patterns", w: 7, h: 6, par: 35,
+        start: { x: 1, y: 1, dir: 0 }, crates: [], cells: {"2,2":1,"3,3":1,"4,4":1,"5,5":1,"6,6":1},
+        story: "Five cells climb a long diagonal staircase: (2,2), (3,3), (4,4), (5,5), and (6,6). The climb to each one is the same little dance — step east, turn, step north, turn back, pick — and Bolt still has no turn-right command. Five repetitions of the dance is a function and a loop asking to be written.",
+        goalText: "Collect all five cells (bag holds 5) and finish standing on (6,6).",
+        hint: "Turning right takes three lefts: write void turnRight() once. Then write void stepUp() for the whole dance — move, turn left, move, turnRight, pick — and repeat it five times with a for loop.",
+        goal: function (st) { return st.bag >= 5 && st.x === 6 && st.y === 6; },
+        starter: "// Five steps, one dance.\n// void turnRight() first, then\n// void stepUp() { ... } and a for loop\n// to climb all five steps.\n\n" },
+      { name: "Find the Gap", concept: "Loops — while · Sensors", w: 10, h: 4, par: 17,
+        start: { x: 1, y: 1, dir: 0 }, crates: [[6,1],[6,2],[6,3]], cells: {"10,4":1},
+        story: "A wall of crates crosses this workshop at column 6, leaving a single gap somewhere along it — nobody recorded which row. The cell waits at the far top corner, at (10,4). Counting squares will not find the gap; Bolt's front sensor will, because a leg of the journey ends exactly where the sensor says it does.",
+        goalText: "Thread the gap in the crate wall and collect the cell at (10,4) (bag holds 1).",
+        hint: "Run east along the bottom with while (frontIsClear()) { move(); } — the wall stops Bolt in column 5. Turn left and climb the same way: the top row is where the sensor stops him. Turn to face East (three lefts) and run the top row the same way to the cell.",
+        goal: function (st) { return st.bag >= 1; },
+        starter: "// The gap's row is not recorded.\n// Let the front sensor measure each\n// leg: while (frontIsClear()) walks\n// Bolt until a wall stops him.\n\n" },
+      { name: "Empty the Row", concept: "Loops — while · Sensors · Stacks", w: 9, h: 2, par: 11,
+        start: { x: 1, y: 1, dir: 0 }, crates: [], cells: {"4,1":2,"7,1":3},
+        story: "Two stacks of battery cells sit on the bottom row of this hall: two cells share the square at (4,1) and three share the square at (7,1). Nobody wrote down how tall each stack is — so no counted loop can empty them. Only a sensor can say when a square is truly empty.",
+        goalText: "Collect every cell on the row: the stack of two at (4,1) and the stack of three at (7,1) (bag holds 5).",
+        hint: "Walk the row with while (frontIsClear()) { move(); ... } and, on every square, empty whatever is there with while (cellsPresent()) { pickCell(); } — the inner loop stops only when the square is truly empty, however tall the stack was.",
+        goal: function (st) { return st.bag >= 5; },
+        starter: "// Two stacks, heights unknown.\n// A counted pick cannot empty them:\n// while (cellsPresent()) picks until\n// the square is truly empty.\n\n" },
+      { name: "The Three Corners Run", concept: "Loops — while · Sensors", w: 7, h: 3, par: 20,
+        start: { x: 1, y: 1, dir: 0 }, crates: [], cells: {"1,3":1,"7,3":1,"7,1":1},
+        story: "Three battery cells mark three corners of this workshop: directly above Bolt's start at (1,3), the far top corner at (7,3), and the far bottom corner at (7,1). The run is a rectangle with no measured sides — every leg ends where the edge of the Workshop says so, which is exactly what Bolt's front sensor reports.",
+        goalText: "Collect all three corner cells (bag holds 3).",
+        hint: "Let the sensor measure every leg: turn left and run north with while (frontIsClear()) { move(); }, pick; turn to face East (three lefts), run the top row the same way, pick; turn to face South (three lefts), run the last column down, pick.",
+        goal: function (st) { return st.bag >= 3; },
+        starter: "// Three corners, three sensor runs:\n// up, across, down. while\n// (frontIsClear()) measures each leg.\n\n" },
+      { name: "Pick and Post", concept: "Decisions — if · Carrying", w: 8, h: 3, par: 20,
+        start: { x: 1, y: 1, dir: 0 }, crates: [], cells: {"3,1":1,"6,1":1},
+        story: "Two battery cells wait on the bottom row, at (3,1) and (6,1) — and neither is Bolt's to keep. Each one belongs on the top row, directly above where it sits: the first at (3,3), the second at (6,3). Whether a square holds a cell is a question Bolt must ask before picking — that is what if (cellsPresent()) is for.",
+        goalText: "Move both cells to the top row: one put down at (3,3) and one at (6,3). Bolt's bag must be empty at the end.",
+        hint: "Write a helper — void postCell() — that picks only if (cellsPresent()), turns north, climbs two squares, puts the cell down, comes back south, and faces East again. Use it at column 3 and again at column 6.",
+        goal: function (st) { return (st.cells["3,3"] || 0) >= 1 && (st.cells["6,3"] || 0) >= 1 && st.bag === 0; },
+        starter: "// Two cells, two posts: (3,1) up to\n// (3,3), and (6,1) up to (6,3).\n// Ask before picking:\n// if (cellsPresent()) { pickCell(); }\n\n" },
+      { name: "Stacks and Singles", concept: "Decisions — if · Sensors · Carrying", w: 9, h: 2, par: 23,
+        start: { x: 1, y: 1, dir: 0 }, crates: [], cells: {"3,1":2,"5,1":1,"8,1":3,"8,2":1},
+        story: "The bottom row of this workshop holds a stack of two at (3,1), a single at (5,1), and a stack of three at (8,1) — with one more single at the top of the last column, at (8,2). Bolt is to gather everything, then post two of the cells on the final square at (9,1) and keep the rest in his bag.",
+        goalText: "Collect all seven cells, then put two of them down at (9,1). Bolt finishes holding the other five (bag holds 5, and (9,1) holds 2).",
+        hint: "Walk the bottom row emptying every square with while (cellsPresent()) { pickCell(); }. At column 8, turn left for the last single, come back down, face East (one left from South), step to (9,1), and put two cells down.",
+        goal: function (st) { return st.bag >= 5 && (st.cells["9,1"] || 0) >= 2; },
+        starter: "// Stacks of two and three, and two\n// singles. Empty every square, climb\n// for the last one, post two at (9,1).\n\n" },
+      { name: "The Gate Check", concept: "Decisions — if · Sensors", w: 8, h: 3, par: 29,
+        start: { x: 1, y: 1, dir: 0 }, crates: [[3,1],[6,1]], cells: {"4,1":1,"8,1":1},
+        story: "Two single crates block the bottom row of this workshop, at (3,1) and (6,1), and a battery cell waits just past each one: at (4,1) and at the far end, (8,1). Bolt cannot know a gate is blocked until he checks — so the program checks: if the square ahead is not clear, hop up, over, and back down; then ask the square he lands on whether it holds a cell.",
+        goalText: "Hop both blocked gates and collect both cells (bag holds 2).",
+        hint: "Write void hopOver() for the detour — turn left, move, turn to face East (three lefts), move twice, turn to face South (three lefts), move, face East (one left). Then walk the row: if (!frontIsClear()) { hopOver(); } at each crate, and if (cellsPresent()) { pickCell(); } after each landing.",
+        goal: function (st) { return st.bag >= 2; },
+        starter: "// A crate blocks the row twice.\n// Check, then hop: if (!frontIsClear())\n// { hopOver(); } — and ask each landing\n// square: if (cellsPresent()) { ... }\n\n" },
+      { name: "The High Switchbacks", concept: "Capstone · Functions · Sensors · Delivery", w: 10, h: 6, par: 30,
+        start: { x: 1, y: 1, dir: 0 }, crates: [[4,1],[4,2],[4,3],[7,3],[7,4],[7,5]], cells: {"1,6":1,"5,6":1,"10,1":1}, home: "10,6",
+        story: "The capstone round. Two staggered crate walls guard this tall workshop, but the top row is a clear highway. A delivery cell waits at the top of the first column, at (1,6), bound for the HOME square at (10,6); one more ordinary cell sits halfway along the top row at (5,6), and a third waits at the bottom of the last column, at (10,1). Everything Bolt has learned is in this one: a helper for turning right, sensor runs for the unmeasured legs, a counted run to the halfway cell, and a conditional pick when he gets there.",
+        goalText: "Deliver the cell from (1,6) to the HOME square at (10,6), and also collect the cells at (5,6) and (10,1) (bag holds 2 at the end).",
+        hint: "Write void turnRight() once. Climb column 1 with while (frontIsClear()) { move(); } and pick the delivery cell up. Face East, count four moves to (5,6), and pick only if (cellsPresent()). Let the sensor run Bolt the rest of the top row and put the delivery down at (10,6). Face South and descend the last column the same way to the final cell.",
+        goal: function (st) { return (st.cells["10,6"] || 0) >= 1 && st.bag >= 2; },
+        starter: "// The High Switchbacks: up column 1,\n// deliver across the top to HOME,\n// collect (5,6) on the way, then\n// down column 10 for (10,1).\n\n" },
+      { name: "Bays and the Drop", concept: "Capstone · Functions · Sensors · Delivery", w: 9, h: 5, par: 42,
+        start: { x: 1, y: 1, dir: 0 }, crates: [], cells: {"3,5":1,"6,5":1,"9,1":1}, home: "9,5",
+        story: "The final workshop combines everything. Two charging bays stand on the top row, at (3,5) and (6,5), each holding a cell that belongs at the HOME square in the far top corner, at (9,5) — and one more cell waits at the far end of the bottom row, at (9,1), which is Bolt's to keep. Fetch each bay cell with the same helper, gather the last cell on the way past, climb the final column, and make the drop.",
+        goalText: "Put both bay cells down on the HOME square at (9,5), and finish holding the cell from (9,1) (bag holds 1).",
+        hint: "Write void fetchCell() — turn north, climb with while (!cellsPresent()) { move(); }, pick, return south, face East. Move twice, fetch; move three times, fetch; move three times and pick the last cell at (9,1). Then turn left, climb the final column with while (frontIsClear()) { move(); }, and put both cells down.",
+        goal: function (st) { return (st.cells["9,5"] || 0) >= 2 && st.bag >= 1; },
+        starter: "// Bays and the Drop: fetch (3,5) and\n// (6,5) with one helper, keep (9,1),\n// climb the last column, drop both\n// cells at HOME, (9,5).\n\n" }
 
     ];
 
@@ -16585,7 +17238,7 @@ int main() {
       };
       var NAV = [
         { mode: "bolt", items: [
-          { label: "Worlds \u2014 nineteen workshops, in order", target: "bolt-worlds" },
+          { label: "Worlds \u2014 twenty-nine workshops, in order", target: "bolt-worlds" },
           { label: "Bolt Challenges (optional)", target: "bolt-challenges" },
           { label: "Your program for Bolt", target: "bolt-program" },
           { label: "Bolt's command card", target: "bolt-commands" }
@@ -16601,7 +17254,7 @@ int main() {
           { label: "For instructors", target: "instructors-section", expand: "instructors" }
         ] },
         { mode: "gym", items: [
-          { label: "Rounds \u2014 fourteen broken programs, in order", target: "gym-rounds" },
+          { label: "Rounds \u2014 twenty-four broken programs, in order", target: "gym-rounds" },
           { label: "The hunt \u2014 find and classify the bugs", target: "gym-hunt" },
           { label: "What does each logic bug actually do?", target: "gym-hypo-card", fallback: "gym-hunt" },
           { label: "Fix the program yourself", target: "gym-fix-card", fallback: "gym-hunt" }
