@@ -1368,7 +1368,7 @@
         padding:9px 11px;font-size:.92rem;font-weight:600;color:var(--ink);line-height:1.35;
       }
       .mode-menu-item:hover,.mode-menu-item:focus-visible{background:var(--accent-soft);color:var(--accent-strong)}
-      #bolt-worlds,#bolt-challenges,#bolt-program,#bolt-commands,#tracer-exercises,#review-panel,#potd-box,#lecture-entry,#crosswalk-section,#instructors-section,#gym-rounds,#gym-hunt,#gym-hypo-card,#gym-fix-card,#translator-sample,#translator-search,#trans-list,#bridge-activities,#bridge-card,#make-prompts,#make-editor-card,#trace-panel,#make-ladders,.ch-collapse{scroll-margin-top:92px}
+      #bolt-worlds,#bolt-challenges,#bolt-program,#bolt-commands,#tracer-exercises,#review-panel,#mytraps-block,#potd-box,#lecture-entry,#crosswalk-section,#instructors-section,#gym-rounds,#gym-hunt,#gym-hypo-card,#gym-fix-card,#rawp-details,#translator-sample,#translator-search,#trans-list,#bridge-activities,#bridge-card,#make-prompts,#make-editor-card,#trace-panel,#make-ladders,.ch-collapse{scroll-margin-top:92px}
       .section-highlight{outline:3px solid var(--amber) !important;outline-offset:3px}
       /* Drawer section sub-rows (mobile) */
       .drawer-subs{display:flex;flex-direction:column;background:var(--panel-2);border-bottom:1px solid var(--line);padding:4px 0}
@@ -1529,6 +1529,37 @@
         .ex-groups { grid-template-columns: 1fr 1fr; align-items: start; }
         .ex-group[open] { grid-column: 1 / -1; }
       }
+      /* ---------- My traps (inside the Review panel) ---------- */
+      .traps-block { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; margin-top: 12px; background: var(--panel-2); }
+      .traps-rule { font-size: .88rem; color: var(--ink-soft); margin-top: 4px; }
+      .trap-row { border-top: 1px dashed var(--line); padding: 9px 0 2px; margin-top: 9px; }
+      .trap-row-head { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; justify-content: space-between; }
+      .trap-name { font-weight: 700; font-size: .95rem; min-width: 0; overflow-wrap: break-word; }
+      .trap-count { font-size: .85rem; color: var(--ink-soft); }
+      .trap-status { font-size: .72rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; border-radius: 5px; padding: 1px 7px; flex: none; }
+      .trap-status.active { color: var(--amber); background: var(--amber-soft); }
+      .trap-status.repaired { color: var(--accent-strong); background: var(--accent-soft); }
+      .trap-diag { font-size: .88rem; color: var(--ink-soft); margin-top: 4px; overflow-wrap: break-word; }
+      /* ---------- Peer review (inside the Make extras box) ---------- */
+      .peer-box { margin-top: 14px; border-top: 1px dashed var(--line); padding-top: 12px; }
+      .peer-slot { border: 1px solid var(--line); border-radius: 10px; padding: 11px 13px; margin-top: 10px; }
+      .peer-slot h5 { font-size: .92rem; margin: 0; }
+      .peer-code-label { font-family: "IBM Plex Mono", monospace; font-size: .72rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--accent-strong); margin-top: 8px; }
+      .peer-rubric { display: grid; gap: 8px; margin-top: 10px; }
+      .peer-rubric label { font-size: .88rem; font-weight: 600; display: grid; gap: 4px; }
+      .peer-rubric select, .peer-rubric input[type="text"] { font: inherit; font-size: .92rem; padding: 8px 10px; border: 1.5px solid var(--line); border-radius: 8px; background: var(--panel-2); color: var(--ink); max-width: 100%; box-sizing: border-box; width: 100%; }
+      .peer-verdict { margin-top: 10px; }
+      .peer-share-code { width: 100%; box-sizing: border-box; font-family: "IBM Plex Mono", monospace; font-size: .8rem; }
+      /* ---------- Right answer, wrong program (Gym) ---------- */
+      .rawp-details > summary { flex-wrap: wrap; }
+      .rawp-details .gcount { white-space: normal; overflow-wrap: break-word; }
+      .rawp-stage-tag { font-family: "IBM Plex Mono", monospace; font-size: .72rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--accent-strong); }
+      .rawp-opts { display: grid; gap: 8px; margin-top: 10px; }
+      /* ---------- Mode dropdown: More grouping ---------- */
+      .mode-menu-more { display: block; width: 100%; box-sizing: border-box; text-align: left; background: transparent; border: none; border-top: 1px solid var(--line); border-radius: 0 0 8px 8px; padding: 9px 11px; font-size: .88rem; font-weight: 600; color: var(--ink-soft); margin-top: 4px; }
+      .mode-menu-more:hover, .mode-menu-more:focus-visible { background: var(--panel-2); color: var(--accent-strong); }
+      .mode-menu .more-wrap { display: grid; gap: 2px; }
+      .mode-menu .more-wrap[hidden] { display: none; }
     </style>
   </head>
   <body>
@@ -2269,6 +2300,11 @@ for (int i = 0; i < 3; i++) {
         <span class="concept-tag">Review · spaced practice</span>
         <h3 id="review-h" style="font-size:1.15rem;">Review: bring old ideas back before they fade</h3>
         <p style="font-size:.93rem;color:var(--ink-soft);margin-top:6px;">A mixed review set is assembled from exercises that are <strong>due</strong>: ones you got wrong before, ones you have not attempted recently, and ones never attempted. Answering here updates the same mastery record as the tracer itself. This all happens in this page, on this device — there are no accounts and no notifications.</p>
+        <div class="traps-block" id="mytraps-block">
+          <h4 style="font-size:1rem;">My traps</h4>
+          <p class="traps-rule">A trap counts as repaired when you pass its Check the repair follow-up, or get a later exercise with the same trap right.</p>
+          <div id="mytraps-body"></div>
+        </div>
         <div class="potd-box" id="potd-box" aria-labelledby="potd-h">
           <h4 id="potd-h" style="font-size:1rem;">Problem of the Day</h4>
           <div id="potd-body"></div>
@@ -2449,6 +2485,17 @@ for (int i = 0; i < 3; i++) {
 
         <p style="margin-top:22px; color:var(--ink-soft); max-width:760px;">Find each bug, and say whether it is a syntax error or a logic error.</p>
         <p style="margin-top:6px; color:var(--ink-soft); max-width:760px;">Then say what each logic bug does, fix the code yourself, and prove the fix on a test you have not seen.</p>
+
+        <details class="ch-collapse rawp-details" id="rawp-details" style="margin-top:22px;">
+          <summary>Right answer, wrong program <span class="gcount">7 rounds &#9662;</span></summary>
+          <div class="ch-collapse-inner">
+            <p class="ch-section-sub">These programs pass their sample test; find the input that breaks them. Each one prints the right answer on its sample input — and the wrong answer somewhere else. Pick the breaking input, predict what the program prints on it, then fix the one faulty line and prove the fix on the sample, the breaking input, and one unseen input.</p>
+            <div class="scorebar" id="rawp-scorebar" aria-label="Your Right answer, wrong program progress" style="border-top:none;padding-top:0;"></div>
+            <div class="tlabel" style="margin-top:12px;">Rounds — seven programs that pass their sample</div>
+            <div class="exnav" id="rawpnav"></div>
+            <div id="rawp-body" style="margin-top:14px;"></div>
+          </div>
+        </details>
       </div><!-- /gym-mode -->
 
       <div id="translator-mode" role="tabpanel" tabindex="0" hidden>
@@ -16893,7 +16940,18 @@ int main() {
         else if (a) stale.push(i);
         else fresh.push(i);
       });
-      reviewSet = wrong.concat(stale, fresh).slice(0, 5);
+      var dueAll = wrong.concat(stale, fresh);
+      if (typeof tfWeakestFamilyKeys === "function" && typeof tfExerciseFamilyKey === "function") {
+        var wk = tfWeakestFamilyKeys();
+        if (wk.length) {
+          dueAll = dueAll.map(function (v, k) { return [v, k]; }).sort(function (a, b) {
+            var ra = wk.indexOf(tfExerciseFamilyKey(a[0])), rb = wk.indexOf(tfExerciseFamilyKey(b[0]));
+            ra = ra < 0 ? 999 : ra; rb = rb < 0 ? 999 : rb;
+            return ra !== rb ? ra - rb : a[1] - b[1];
+          }).map(function (p) { return p[0]; });
+        }
+      }
+      reviewSet = dueAll.slice(0, 5);
       reviewAns = {};
       $("review-note").textContent = reviewSet.length ? "Your set: " + reviewSet.map(function (i) { return "Exercise " + (i + 1) + " (" + exerciseDue(i).why + ")"; }).join(" · ") : "Nothing is due — every exercise is either mastered recently or still fresh. Come back in a few days and early exercises will resurface.";
       renderReviewItemRefresh();
@@ -18067,6 +18125,671 @@ int main() {
         }
       });
     })();
+
+    /* ================= My traps: the student's own misconception history =================
+       Nothing new is stored. A trap firing is derived at render: a tracer
+       record with locked && correct===false whose chosen option carries a
+       diagnosis; its family comes from followFor(), the same mapping the
+       Check-the-repair follow-up uses. A family counts as repaired when
+       any firing exercise of that family has followCorrect===true, OR a
+       later exercise of the same family has a correct gapState.attempts
+       entry dated on/after the firing's attempt date. Rows are ordered
+       weakest first: unrepaired before repaired; among unrepaired, most
+       firings first, ties by most recent firing date. */
+    function tfStripTags(s) { return String(s == null ? "" : s).replace(/<[^>]+>/g, ""); }
+    function tfFamilyKeyForExercise(j) {
+      var ex = EXERCISES[j]; if (!ex) return null;
+      var fu = null;
+      try { fu = followFor(ex, ""); } catch (e) { fu = null; }
+      if (fu) return fu.fam.key;
+      for (var i = 0; i < FOLLOWUPS.length; i++) { if (FOLLOWUPS[i].match.test(ex.concept)) return FOLLOWUPS[i].key; }
+      return null;
+    }
+    function tfFirings() {
+      var out = [];
+      EXERCISES.forEach(function (ex, i) {
+        var s = state.ex[i];
+        if (!s || !s.locked || s.correct !== false) return;
+        var d = ex.diagnoses ? ex.diagnoses[s.selected] : null;
+        if (!d) return;
+        var fu = null;
+        try { fu = followFor(ex, tfStripTags(d.text)); } catch (e) { fu = null; }
+        if (!fu) return;
+        var att = (typeof gapState !== "undefined" && gapState && gapState.attempts) ? gapState.attempts[i] : null;
+        out.push({ idx: i, key: fu.fam.key, label: fu.fam.label, diag: tfStripTags(d.text), date: (att && att.date) || "", followCorrect: s.followCorrect === true });
+      });
+      return out;
+    }
+    function tfComputeTraps() {
+      var firings = tfFirings();
+      var byKey = {};
+      firings.forEach(function (f) { (byKey[f.key] = byKey[f.key] || []).push(f); });
+      var rows = Object.keys(byKey).map(function (key) {
+        var fs = byKey[key];
+        var repaired = fs.some(function (f) { return f.followCorrect; });
+        if (!repaired) {
+          repaired = fs.some(function (f) {
+            return EXERCISES.some(function (_ex2, j) {
+              if (j === f.idx) return false;
+              if (tfFamilyKeyForExercise(j) !== key) return false;
+              var a = gapState.attempts[j];
+              return !!(a && a.correct === true && a.date && a.date >= (f.date || ""));
+            });
+          });
+        }
+        var recent = fs[0];
+        fs.forEach(function (f) { if ((f.date || "") > (recent.date || "") || ((f.date || "") === (recent.date || "") && f.idx > recent.idx)) recent = f; });
+        return { key: key, label: fs[0].label, count: fs.length, repaired: repaired, recentDate: recent.date || "", recentDiag: recent.diag };
+      });
+      rows.sort(function (a, b) {
+        if (a.repaired !== b.repaired) return a.repaired ? 1 : -1;
+        if (b.count !== a.count) return b.count - a.count;
+        if (a.recentDate !== b.recentDate) return a.recentDate < b.recentDate ? 1 : -1;
+        return 0;
+      });
+      return rows;
+    }
+    function tfWeakestFamilyKeys() {
+      return tfComputeTraps().filter(function (r) { return !r.repaired; }).map(function (r) { return r.key; });
+    }
+    function tfExerciseFamilyKey(i) {
+      var s = state.ex[i];
+      if (s && s.locked && s.correct === false) {
+        var ex = EXERCISES[i];
+        var d = ex && ex.diagnoses ? ex.diagnoses[s.selected] : null;
+        if (d) {
+          var fu = null;
+          try { fu = followFor(ex, tfStripTags(d.text)); } catch (e) { fu = null; }
+          if (fu) return fu.fam.key;
+        }
+      }
+      return tfFamilyKeyForExercise(i);
+    }
+    function renderMyTraps() {
+      var box = $("mytraps-body"); if (!box) return;
+      var rows = tfComputeTraps();
+      var sig = rows.map(function (r) { return r.key + ":" + r.count + ":" + (r.repaired ? 1 : 0) + ":" + r.recentDate; }).join("|");
+      if (sig === renderMyTraps._sig) return;
+      renderMyTraps._sig = sig;
+      if (!rows.length) {
+        box.innerHTML = '<p style="font-size:.92rem;color:var(--ink-soft);margin-top:8px;">No traps have fired yet. A trap fires when a locked prediction parts from the machine and the parting is diagnosed — work through the tracer exercises and your own history will collect here.</p>' +
+          '<div class="lockrow"><button class="btn ghost small" type="button" id="mytraps-go">Go to Exercise 1</button></div>';
+        var go = $("mytraps-go");
+        if (go) go.addEventListener("click", function () {
+          if (typeof stopPlayback === "function") stopPlayback();
+          if (typeof exitInstPlay === "function") exitInstPlay();
+          state.current = 0;
+          renderAll();
+          var h = $("ex-title"); if (h) h.scrollIntoView({ behavior: "smooth", block: "start" });
+          announce("Exercise 1 opened.");
+        });
+        return;
+      }
+      box.innerHTML = rows.map(function (r) {
+        return '<div class="trap-row"><div class="trap-row-head"><span class="trap-name">' + esc(r.label) + '</span>' +
+          '<span style="display:inline-flex;gap:8px;align-items:center;flex:none;"><span class="trap-count">fired on ' + r.count + " exercise" + (r.count === 1 ? "" : "s") + '</span>' +
+          '<span class="trap-status ' + (r.repaired ? "repaired" : "active") + '">' + (r.repaired ? "Repaired" : "Still active") + "</span></span></div>" +
+          '<p class="trap-diag">Most recent firing: ' + esc(r.recentDiag) + "</p></div>";
+      }).join("");
+    }
+    renderMyTraps();
+    setInterval(function () { try { renderMyTraps(); } catch (e) {} }, 1200);
+    /* ================= Right answer, wrong program (Gym section) =================
+       Seven programs that pass their sample test and fail elsewhere. Flow:
+       pick the breaking input (retries allowed) -> predict the faulty
+       program's output on it -> the interpreter runs the faulty program
+       live and shows predicted vs actual vs correct -> fix the one faulty
+       line (all other lines locked, the existing Gym fix style) -> Verify
+       runs the fixed program on sample + breaking + one unseen input; all
+       three must pass. Only completed rounds persist, additively, as
+       rawp[] booleans in the progress store; unfinished rounds restart. */
+    var RAWP_ROUNDS = [
+      { title: "The invisible maximum",
+        story: "This program reads a count n, then n values, and prints the largest of them.",
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int n;", "    cin >> n;", "    int best = 0;", "    for (int i = 0; i < n; i++) {", "        int x;", "        cin >> x;", "        if (x > best) best = x;", "    }", "    cout << best;", "    return 0;", "}"],
+        buggyLine: 7, fixedLine: "    int best = -1000000;",
+        why: "best starts at 0, so when every value is negative the program reports a maximum that was never in the input. The fix starts best below every possible value.",
+        sample: { input: "5 3 9 4 7 1", correct: "9" },
+        candidates: [
+          { input: "3 -1 5 -2", correct: "5" },
+          { input: "4 -5 -2 -9 -4", correct: "-2", breaks: true, wrong: "0" },
+          { input: "2 0 -7", correct: "0" }
+        ],
+        predOptions: ["0", "-2", "-9"],
+        unseen: { input: "3 -10 -3 -8", correct: "-3" } },
+      { title: "The rounded average",
+        story: "This program reads three integers and prints their average, to two decimal places.",
+        code: ["#include <iostream>", "#include <iomanip>", "using namespace std;", "", "int main() {", "    int a;", "    int b;", "    int c;", "    cin >> a;", "    cin >> b;", "    cin >> c;", "    int total = a + b + c;", "    double avg = total / 3;", "    cout << fixed << setprecision(2) << avg;", "    return 0;", "}"],
+        buggyLine: 13, fixedLine: "    double avg = total / 3.0;",
+        why: "total / 3 is integer division: the fraction is discarded before the result is ever stored in the double. Dividing by 3.0 divides as doubles.",
+        sample: { input: "6 9 3", correct: "6.00" },
+        candidates: [
+          { input: "9 9 9", correct: "9.00" },
+          { input: "5 8 3", correct: "5.33", breaks: true, wrong: "5.00" },
+          { input: "0 3 0", correct: "1.00" }
+        ],
+        predOptions: ["5.00", "5.33", "5.30"],
+        unseen: { input: "1 2 4", correct: "2.33" } },
+      { title: "Sixty is not enough",
+        story: "This program reads a score and prints Pass or Fail. The rule it must follow: a score of 60 or above passes.",
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int score;", "    cin >> score;", "    if (score > 60) {", "        cout << \"Pass\";", "    } else {", "        cout << \"Fail\";", "    }", "    return 0;", "}"],
+        buggyLine: 7, fixedLine: "    if (score >= 60) {",
+        why: "The test is strictly greater than 60, so the boundary score itself fails. The rule says 60 passes, so the test must include it: >=.",
+        sample: { input: "75", correct: "Pass" },
+        candidates: [
+          { input: "45", correct: "Fail" },
+          { input: "60", correct: "Pass", breaks: true, wrong: "Fail" },
+          { input: "90", correct: "Pass" }
+        ],
+        predOptions: ["Fail", "Pass", "Nothing is printed"],
+        unseen: { input: "59", correct: "Fail" } },
+      { title: "The skipped last number",
+        story: "This program reads a count n, then n values into an array, and prints their sum.",
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int n;", "    cin >> n;", "    int a[10];", "    for (int i = 0; i < n; i++) {", "        cin >> a[i];", "    }", "    int total = 0;", "    for (int i = 0; i < n - 1; i++) {", "        total += a[i];", "    }", "    cout << total;", "    return 0;", "}"],
+        buggyLine: 12, fixedLine: "    for (int i = 0; i < n; i++) {",
+        why: "The summing loop stops at i < n - 1, one pass early, so the last value is never added. The sample hid it because its last value was 0.",
+        sample: { input: "4 5 3 2 0", correct: "10" },
+        candidates: [
+          { input: "3 1 2 0", correct: "3" },
+          { input: "4 5 3 2 7", correct: "17", breaks: true, wrong: "10" },
+          { input: "2 6 0", correct: "6" }
+        ],
+        predOptions: ["10", "17", "15"],
+        unseen: { input: "5 1 1 1 1 9", correct: "13" } },
+      { title: "The product that starts at zero",
+        story: "This program reads a count n, then n values, and prints their product.",
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int n;", "    cin >> n;", "    int prod = 0;", "    for (int i = 0; i < n; i++) {", "        int x;", "        cin >> x;", "        prod = prod * x;", "    }", "    cout << prod;", "    return 0;", "}"],
+        buggyLine: 7, fixedLine: "    int prod = 1;",
+        why: "A product that starts at 0 stays 0 forever: 0 times anything is 0. The sample hid it because 0 was one of its values, so 0 happened to be right. Products start at 1.",
+        sample: { input: "3 4 0 5", correct: "0" },
+        candidates: [
+          { input: "2 7 0", correct: "0" },
+          { input: "3 2 3 4", correct: "24", breaks: true, wrong: "0" },
+          { input: "1 0", correct: "0" }
+        ],
+        predOptions: ["0", "24", "9"],
+        unseen: { input: "4 1 5 2 3", correct: "30" } },
+      { title: "Any negative stops it",
+        story: "This program reads values one at a time and prints their sum. The value -1 is the sentinel: it ends the input and is not added.",
+        code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int x;", "    int total = 0;", "    cin >> x;", "    while (x > 0) {", "        total += x;", "        cin >> x;", "    }", "    cout << total;", "    return 0;", "}"],
+        buggyLine: 8, fixedLine: "    while (x != -1) {",
+        why: "The loop stops at any value that is not positive, so an ordinary negative value ends the sum early as if it were the sentinel. Only -1 should stop it.",
+        sample: { input: "4 6 -1", correct: "10" },
+        candidates: [
+          { input: "5 -1", correct: "5" },
+          { input: "4 -3 -1", correct: "1", breaks: true, wrong: "4" },
+          { input: "-1", correct: "0" }
+        ],
+        predOptions: ["4", "1", "0"],
+        unseen: { input: "-2 5 -1", correct: "3" } },
+      { title: "The first letter never counts",
+        story: "This program reads one word and prints how many lowercase a's it contains.",
+        code: ["#include <iostream>", "#include <string>", "using namespace std;", "", "int main() {", "    string s;", "    cin >> s;", "    int count = 0;", "    for (int i = 1; i < s.length(); i++) {", "        if (s[i] == 'a') count++;", "    }", "    cout << count;", "    return 0;", "}"],
+        buggyLine: 9, fixedLine: "    for (int i = 0; i < s.length(); i++) {",
+        why: "The loop starts at index 1, so the character at index 0 is never examined. The sample hid it because its first letter was not an a. Indexes count from 0.",
+        sample: { input: "banana", correct: "3" },
+        candidates: [
+          { input: "pear", correct: "1" },
+          { input: "apple", correct: "1", breaks: true, wrong: "0" },
+          { input: "plum", correct: "0" }
+        ],
+        predOptions: ["0", "1", "2"],
+        unseen: { input: "ananas", correct: "3" } }
+    ];
+    var rawpDone = RAWP_ROUNDS.map(function () { return false; });
+    function rawpFresh() { return { pick: -1, pickMsg: "", pred: -1, stage: 0, fixEdit: null, fixMsg: "", fixAttempts: 0 }; }
+    var rawpState = { current: 0, rounds: RAWP_ROUNDS.map(rawpFresh) };
+    function rawpBreaking(r) { for (var i = 0; i < r.candidates.length; i++) if (r.candidates[i].breaks) return r.candidates[i]; return null; }
+    function rawpRotated(arr, k) { var o = []; for (var i = 0; i < arr.length; i++) o.push(arr[(i + k) % arr.length]); return o; }
+    function rawpAssembled(idx) {
+      var r = RAWP_ROUNDS[idx], s = rawpState.rounds[idx];
+      return r.code.map(function (line, i) { return (i + 1 === r.buggyLine && s.fixEdit !== null) ? s.fixEdit : line; }).join("\n");
+    }
+    function rawpRunOn(code, input) {
+      var res = makeRunProgram(code, input || "");
+      if (!res.ok) return { ok: false, error: res.error, out: res.output || "" };
+      return { ok: true, error: null, out: res.output || "" };
+    }
+    function renderRawp() {
+      var nav = $("rawpnav"), body = $("rawp-body"), score = $("rawp-scorebar");
+      if (!nav || !body) return;
+      var doneN = rawpDone.filter(Boolean).length;
+      if (score) score.innerHTML = '<div class="metric"><span>Rounds completed</span> <strong>' + doneN + " of " + RAWP_ROUNDS.length + "</strong></div>";
+      nav.innerHTML = ""; nav.className = "chip-row";
+      RAWP_ROUNDS.forEach(function (r, i) {
+        var b = document.createElement("button");
+        b.type = "button"; b.className = "chip-btn";
+        b.setAttribute("aria-current", rawpState.current === i ? "true" : "false");
+        b.setAttribute("aria-label", "Round " + (i + 1) + ": " + r.title + (rawpDone[i] ? " (complete)" : ""));
+        b.title = r.title;
+        b.innerHTML = '<span class="chip-label">W' + (i + 1) + "</span>" + (rawpDone[i] ? '<span class="chip-check" aria-hidden="true">\u2713</span>' : "");
+        b.addEventListener("click", function () { rawpState.current = i; renderRawp(); });
+        nav.appendChild(b);
+      });
+      var hint = document.createElement("span"); hint.className = "chip-hint";
+      hint.textContent = "Round " + (rawpState.current + 1) + " \u00b7 " + RAWP_ROUNDS[rawpState.current].title;
+      nav.appendChild(hint);
+      var idx = rawpState.current, r = RAWP_ROUNDS[idx], s = rawpState.rounds[idx];
+      var done = rawpDone[idx];
+      var brk = rawpBreaking(r);
+      var html = '<section class="card" style="margin-top:0;" aria-label="Round ' + (idx + 1) + ": " + esc(r.title) + '">';
+      html += '<span class="concept-tag">Right answer, wrong program \u00b7 Round ' + (idx + 1) + " of " + RAWP_ROUNDS.length + "</span>";
+      html += '<h3 style="font-size:1.15rem;margin-top:4px;">' + esc(r.title) + "</h3>";
+      html += '<p class="story">' + esc(r.story) + "</p>";
+      html += '<div class="codebox"><div class="codehead"><span>passing.cpp</span><span>C++</span></div><pre>' +
+        r.code.map(function (l, i) { return '<div class="cline"><span class="ln">' + (i + 1) + "</span><span>" + (esc(l) || " ") + "</span></div>"; }).join("") + "</pre></div>";
+      html += '<div class="sample-out" style="margin-top:10px;"><div class="chead">Sample test \u2014 this program passes it</div><div>Input: <span class="mono">' + esc(r.sample.input) + "</span><br>Output: <span class=\"mono\">" + esc(r.sample.correct) + "</span> \u2014 correct. The fault is somewhere the sample never looks.</div></div>";
+      if (done) {
+        html += '<div class="feedback show good" style="margin-top:12px;"><strong>Round complete.</strong> You found the breaking input (' + esc(brk.input) + "), predicted the faulty output, and your fix passed all three checks: the sample, the breaking input, and an unseen input (" + esc(r.unseen.input) + " \u2192 " + esc(r.unseen.correct) + ").</div>";
+        html += '<p style="font-size:.93rem;margin-top:8px;">' + esc(r.why) + "</p>";
+        html += '<div class="lockrow"><button class="btn ghost small" type="button" id="rawp-restart">Try this round again</button></div>';
+        body.innerHTML = html;
+        $("rawp-restart").addEventListener("click", function () { rawpState.rounds[idx] = rawpFresh(); renderRawp(); });
+        return;
+      }
+      // Stage 1: pick the breaking input
+      html += '<div style="margin-top:14px;"><span class="rawp-stage-tag">Step 1 \u00b7 Find the breaking input</span>';
+      html += '<p style="font-size:.94rem;margin-top:4px;">One of these inputs makes the program print the wrong answer. The other two it handles correctly. Which one breaks it?</p>';
+      var cands = rawpRotated(r.candidates.map(function (c, ci) { return { c: c, ci: ci }; }), idx % 3);
+      html += '<div class="rawp-opts" role="group" aria-label="Candidate inputs">' + cands.map(function (e) {
+        return '<button class="opt-btn" type="button" data-rawp-pick="' + e.ci + '" aria-pressed="' + (s.pick === e.ci ? "true" : "false") + '" ' + (s.stage >= 1 ? "disabled" : "") + '><span class="key">Input</span><span class="mono">' + esc(e.c.input) + "</span></button>";
+      }).join("") + "</div>";
+      if (s.pickMsg) html += '<div class="feedback show ' + (s.stage >= 1 ? "good" : "bad") + '" style="margin-top:10px;">' + s.pickMsg + "</div>";
+      html += "</div>";
+      // Stage 2: predict the faulty output
+      if (s.stage >= 1) {
+        html += '<div style="margin-top:16px;"><span class="rawp-stage-tag">Step 2 \u00b7 Predict the wrong output</span>';
+        html += '<p style="font-size:.94rem;margin-top:4px;">On the breaking input <span class="mono">' + esc(brk.input) + '</span>, what does this program actually print? Commit to a prediction before the machine runs it.</p>';
+        var opts = rawpRotated(r.predOptions.map(function (o, oi) { return { o: o, oi: oi }; }), (idx + 1) % 3);
+        html += '<div class="rawp-opts" role="group" aria-label="Predicted outputs">' + opts.map(function (e) {
+          return '<button class="opt-btn" type="button" data-rawp-pred="' + e.oi + '" aria-pressed="' + (s.pred === e.oi ? "true" : "false") + '" ' + (s.stage >= 2 ? "disabled" : "") + '><span class="key">' + "ABC".charAt(opts.indexOf(e)) + '</span><span>' + esc(e.o) + "</span></button>";
+        }).join("") + "</div>";
+        if (s.stage === 1) html += '<div class="lockrow"><button class="btn small" type="button" id="rawp-reveal" ' + (s.pred < 0 ? "disabled" : "") + ">Lock my prediction &amp; run it</button></div>";
+        html += "</div>";
+      }
+      // Stage 3: reveal + fix
+      if (s.stage >= 2) {
+        var faultyRun = rawpRunOn(r.code.join("\n"), brk.input);
+        var actual = faultyRun.ok ? faultyRun.out.replace(/\s+$/, "") : "(the program stopped: " + faultyRun.error + ")";
+        var predicted = r.predOptions[s.pred];
+        html += '<div class="feedback show ' + (normMakeOut(predicted) === normMakeOut(brk.wrong) ? "good" : "bad") + '" style="margin-top:14px;">' +
+          "You predicted <b>" + esc(predicted) + "</b>. The machine ran the faulty program on <span class=\"mono\">" + esc(brk.input) + "</span> and it printed <b>" + esc(actual) + "</b>. The correct answer on that input is <b>" + esc(brk.correct) + "</b>.</div>";
+        html += '<p style="font-size:.93rem;margin-top:8px;">' + esc(r.why) + "</p>";
+        html += '<div style="margin-top:14px;"><span class="rawp-stage-tag">Step 3 \u00b7 Fix it \u00b7 Step 4 \u00b7 Verify</span>';
+        html += '<p style="font-size:.94rem;margin-top:4px;">Only the faulty line is editable; every other line is locked. <strong>Check my fix</strong> runs your program on the sample input, the breaking input, and one unseen input \u2014 all three must print the correct answer.</p>';
+        html += '<div class="gym-fix-list" style="margin-top:10px;">' + r.code.map(function (line, i) {
+          var ln = i + 1;
+          if (ln === r.buggyLine) return '<div class="gym-fix-row"><span class="ln">' + ln + '</span><input type="text" class="gym-fix-input" id="rawp-fix-input" spellcheck="false" aria-label="Line ' + ln + ' \u2014 faulty line, yours to fix" value="' + esc(s.fixEdit !== null ? s.fixEdit : line).replace(/"/g, "&quot;") + '"></div>';
+          return '<div class="gym-fix-row"><span class="ln">' + ln + '</span><span class="locked-line">' + (esc(line) || " ") + "</span></div>";
+        }).join("") + "</div>";
+        html += '<div class="lockrow"><button class="btn" type="button" id="rawp-check">Check my fix</button><span class="locknote">' + (s.fixAttempts ? "Attempts so far: " + s.fixAttempts : "") + "</span></div>";
+        if (s.fixMsg) html += '<div class="feedback show bad" style="margin-top:10px;">' + s.fixMsg + "</div>";
+        html += "</div>";
+      }
+      html += "</section>";
+      body.innerHTML = html;
+      body.querySelectorAll("[data-rawp-pick]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          var ci = parseInt(b.getAttribute("data-rawp-pick"), 10);
+          var cand = r.candidates[ci];
+          s.pick = ci;
+          if (cand.breaks) {
+            s.stage = 1;
+            s.pickMsg = "<strong>That is the breaking input.</strong> On <span class=\"mono\">" + esc(cand.input) + "</span> this program prints <b>" + esc(cand.wrong) + "</b>, but the correct answer is <b>" + esc(cand.correct) + "</b>. Now predict the wrong output below before it runs.";
+            announce("That input breaks the program. Now predict what it prints.");
+          } else {
+            s.pickMsg = "The program is still correct on <span class=\"mono\">" + esc(cand.input) + "</span> \u2014 it prints <b>" + esc(cand.correct) + "</b>, which is right. That input never reaches the fault. Try another.";
+            announce("The program is still correct on that input. Try another.");
+          }
+          renderRawp();
+        });
+      });
+      body.querySelectorAll("[data-rawp-pred]").forEach(function (b) {
+        b.addEventListener("click", function () { s.pred = parseInt(b.getAttribute("data-rawp-pred"), 10); renderRawp(); });
+      });
+      var rev = $("rawp-reveal");
+      if (rev) rev.addEventListener("click", function () { if (s.pred < 0) return; s.stage = 2; if (s.fixEdit === null) s.fixEdit = r.code[r.buggyLine - 1]; renderRawp(); announce("The faulty program has run on the breaking input. The fix stage is open."); });
+      var chk = $("rawp-check");
+      if (chk) chk.addEventListener("click", function () {
+        var inp = $("rawp-fix-input");
+        if (inp) s.fixEdit = inp.value;
+        s.fixAttempts++;
+        var src = rawpAssembled(idx);
+        var checks = [
+          { name: "the sample input", t: r.sample },
+          { name: "the breaking input", t: { input: brk.input, correct: brk.correct } },
+          { name: "an unseen input", t: r.unseen }
+        ];
+        for (var k = 0; k < checks.length; k++) {
+          var run = rawpRunOn(src, checks[k].t.input);
+          if (!run.ok || normMakeOut(run.out) !== normMakeOut(checks[k].t.correct)) {
+            s.fixMsg = "<strong>Not yet \u2014 your fix fails on " + checks[k].name + "</strong> (<span class=\"mono\">" + esc(checks[k].t.input) + "</span>). Expected <b>" + esc(checks[k].t.correct) + "</b>; your program printed <b>" + esc(run.ok ? (run.out.trim() === "" ? "(nothing)" : run.out.replace(/\s+$/, "")) : "(stopped: " + run.error + ")") + "</b>. Attempts so far: " + s.fixAttempts + ". Change the editable line and check again.";
+            announce("The fix failed on " + checks[k].name + ".");
+            renderRawp();
+            return;
+          }
+        }
+        rawpDone[idx] = true;
+        s.fixMsg = "";
+        if (typeof tfSave === "function") tfSave();
+        announce("Fix verified on all three inputs. Round complete.");
+        renderRawp();
+      });
+      var fixInp = $("rawp-fix-input");
+      if (fixInp) fixInp.addEventListener("input", function () { s.fixEdit = fixInp.value; });
+    }
+    renderRawp();
+    /* ================= Peer review in Make (TFR1:) =================
+       Share codes follow the verified TFA1: pattern exactly: base64url of
+       URI-escaped JSON, whitespace-token extraction on decode, alphabet
+       restore, re-pad, strict validation. Payload {p: prompt index
+       0-based, c: solution code}. Reviews are stored additively as a
+       reviews array on each Make prompt record; older saves load with the
+       field defaulted. Nothing here claims a live peer: an imported code
+       is labelled "Shared solution (imported code)" and built-ins are
+       labelled "Sample solution". */
+    var MAKE_REF = {
+      3: { title: "Word and length, printed in one statement", note: "What to notice: the word and its length come from the same box \u2014 read once, print the value and word.length() side by side.", code: "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string word;\n    cin >> word;\n    cout << word << \" \" << word.length();\n    return 0;\n}" },
+      4: { title: "Class average, summed from the array", note: "What to notice: the total is built by walking the array, and the division happens once, at the end, by the count of scores.", code: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int scores[4] = {70, 80, 90, 100};\n    int total = 0;\n    for (int i = 0; i < 4; i++) {\n        total = total + scores[i];\n    }\n    cout << total / 4;\n    return 0;\n}" }
+    };
+    /* Two built-in sample solutions per gated prompt (0,1,2,3,4,5,6,9).
+       Student-style and distinct from MAKE_ALT / MAKE_REF. Deliberately
+       mixed: most are correct; prompt 1 sample 2, prompt 4 sample 2,
+       prompt 6 sample 2 and prompt 9 sample 2 fail a visible test, and
+       prompts 0, 2, 3 and 5 each carry a correct-but-unclear sample, so
+       the rubric has something real to discriminate. Every sample's true
+       visible-test pass count is measured live at review time by running
+       it through makeRunProgram, never asserted. */
+    var MAKE_SAMPLES = {
+      0: [
+        "#include <iostream>\nusing namespace std;\n\nint main() {\n    for (int i = 1; i <= 10; i++) {\n        cout << i * i << \" \";\n    }\n    return 0;\n}",
+        "#include <iostream>\nusing namespace std;\nint main() {\n    int q = 1;\n    while (q < 11) { cout << q * q << \" \"; q = q + 1; }\n    return 0;\n}"
+      ],
+      1: [
+        "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    int total = 0;\n    for (int i = 1; i <= n; i++) total += i;\n    cout << total;\n    return 0;\n}",
+        "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    cout << n / 2 * (n + 1);\n    return 0;\n}"
+      ],
+      2: [
+        "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a;\n    int b;\n    int c;\n    cin >> a;\n    cin >> b;\n    cin >> c;\n    if (a >= b && a >= c) cout << a;\n    else if (b >= a && b >= c) cout << b;\n    else cout << c;\n    return 0;\n}",
+        "#include <iostream>\nusing namespace std;\nint main() {\n    int x;\n    int y;\n    int z;\n    cin >> x;\n    cin >> y;\n    cin >> z;\n    int m = x;\n    if (y > m) m = y;\n    if (z > m) m = z;\n    cout << m;\n    return 0;\n}"
+      ],
+      3: [
+        "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string w;\n    cin >> w;\n    cout << w << \" \" << w.length();\n    return 0;\n}",
+        "#include <iostream>\n#include <string>\nusing namespace std;\nint main() {\n    string x;\n    cin >> x;\n    cout << x;\n    cout << \" \";\n    cout << x.length();\n    return 0;\n}"
+      ],
+      4: [
+        "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << (70 + 80 + 90 + 100) / 4;\n    return 0;\n}",
+        "#include <iostream>\nusing namespace std;\n\nint main() {\n    int s[4] = {70, 80, 90, 100};\n    int t = 0;\n    for (int i = 0; i < 3; i++) t += s[i];\n    cout << t / 3;\n    return 0;\n}"
+      ],
+      5: [
+        "#include <iostream>\nusing namespace std;\n\nint area(int width, int height) {\n    return width * height;\n}\n\nint main() {\n    cout << area(5, 3);\n    return 0;\n}",
+        "#include <iostream>\nusing namespace std;\nint f(int a, int b) { return a * b; }\nint main() {\n    cout << f(5, 3);\n    return 0;\n}"
+      ],
+      6: [
+        "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string word;\n    cin >> word;\n    int count = 0;\n    for (int i = 0; i < word.length(); i++) {\n        if (word[i] == 'a' || word[i] == 'e' || word[i] == 'i' || word[i] == 'o' || word[i] == 'u') count++;\n    }\n    cout << count;\n    return 0;\n}",
+        "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string word;\n    cin >> word;\n    int count = 0;\n    for (int i = 0; i < word.length(); i++) {\n        if (word[i] == 'a' || word[i] == 'e') count++;\n    }\n    cout << count;\n    return 0;\n}"
+      ],
+      9: [
+        "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    int count = 0;\n    for (int i = 0; i < n; i++) {\n        int x;\n        cin >> x;\n        if (x % 2 == 0) count++;\n    }\n    cout << count;\n    return 0;\n}",
+        "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    int count = 0;\n    for (int i = 0; i < n; i++) {\n        int x;\n        cin >> x;\n        if (x % 2 != 0) count++;\n    }\n    cout << count;\n    return 0;\n}"
+      ]
+    };
+    function tfrEncode(p, code) {
+      var b64 = btoa(unescape(encodeURIComponent(JSON.stringify({ p: p, c: code }))));
+      return "TFR1:" + b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    }
+    function tfrDecode(text) {
+      if (!text || !String(text).trim()) return { error: "Paste a TFR1: share code first \u2014 it is one long block of text starting with TFR1:." };
+      var s = String(text);
+      var at = s.indexOf("TFR1:");
+      if (at === -1) return { error: "That does not look like a solution share code \u2014 it should start with TFR1:." };
+      s = s.slice(at + 5).trim().split(/\s/)[0];
+      if (!s) return { error: "That share code is empty after TFR1: \u2014 copy the whole code and try again." };
+      try {
+        var b64 = s.replace(/-/g, "+").replace(/_/g, "/");
+        if (!/^[A-Za-z0-9+/]+$/.test(b64)) return { error: "That share code could not be read \u2014 it contains characters no TFR1: code uses. Check the whole code was copied." };
+        while (b64.length % 4) b64 += "=";
+        var obj = JSON.parse(decodeURIComponent(escape(atob(b64))));
+        if (!obj || typeof obj.p !== "number" || obj.p % 1 !== 0 || obj.p < 0 || obj.p > 29 || typeof obj.c !== "string" || !obj.c.trim()) {
+          return { error: "That share code could not be read \u2014 it is not a solution for one of the thirty Make prompts. Nothing was loaded." };
+        }
+        return { p: obj.p, c: obj.c };
+      } catch (e) {
+        return { error: "That share code could not be read. Check that the whole code was copied, from TFR1: to the last character, and try again. Nothing was loaded." };
+      }
+    }
+    /* Additive persistence: reviews on the Make records, rawp[] for the
+       Gym section. tfCollect is wrapped (the same reassignment pattern
+       renderMakeTests already uses); restores read the saved store once
+       here, because the original hydrate ran earlier in this script. */
+    makeState.items.forEach(function (it) { if (!Array.isArray(it.reviews)) it.reviews = []; });
+    function peerValidReview(rv) {
+      return !!(rv && (rv.src === "code" || rv.src === "sample") &&
+        ["Yes", "Partly", "No"].indexOf(rv.correct) >= 0 &&
+        ["Yes", "Mostly", "Hard to follow"].indexOf(rv.clear) >= 0 &&
+        typeof rv.improve === "string" && typeof rv.note === "string");
+    }
+    (function peerRestore() {
+      try {
+        var d = (typeof tfLoad === "function") ? tfLoad() : null;
+        if (!d) return;
+        if (Array.isArray(d.make)) d.make.forEach(function (sv, i) {
+          if (sv && makeState.items[i] && Array.isArray(sv.reviews)) {
+            makeState.items[i].reviews = sv.reviews.filter(peerValidReview).slice(0, 20).map(function (rv) {
+              return { src: rv.src, correct: rv.correct, clear: rv.clear, improve: rv.improve.slice(0, 60), note: rv.note.slice(0, 140) };
+            });
+          }
+        });
+        if (Array.isArray(d.rawp)) d.rawp.forEach(function (v, i) { if (i < rawpDone.length) rawpDone[i] = !!v; });
+        renderRawp();
+      } catch (e) {}
+    })();
+    (function peerWrapCollect() {
+      var prevCollect = tfCollect;
+      tfCollect = function () {
+        var d = prevCollect();
+        try {
+          if (Array.isArray(d.make)) d.make.forEach(function (m, i) {
+            if (m) m.reviews = (makeState.items[i] && Array.isArray(makeState.items[i].reviews)) ? makeState.items[i].reviews.slice(0, 20) : [];
+          });
+        } catch (e) {}
+        try { d.rawp = rawpDone.slice(); } catch (e) {}
+        return d;
+      };
+    })();
+    var PEER_IMPROVE = ["Add comments", "Use clearer variable names", "Handle an edge case", "Break it into smaller steps"];
+    function peerFreshSlot() { return { code: null, src: null, sampleIdx: -1, msg: "", correct: "", clear: "", improve: "", note: "" }; }
+    var peerState = { slots: [peerFreshSlot(), peerFreshSlot()], share: "", shareMsg: "", lastVerdict: "" };
+    function peerReviews(st) { return Array.isArray(st.reviews) ? st.reviews : []; }
+    function peerRunVisible(code, pr) {
+      var passed = 0;
+      pr.tests.forEach(function (t) {
+        var res = makeRunProgram(code, t.input, makeFileOpts(pr, t));
+        var out = t.fileOut ? ((res.filesOut && res.filesOut[t.fileOut]) || "") : (res.output || "");
+        if (res.ok && normMakeOut(out) === normMakeOut(t.expected)) passed++;
+      });
+      return passed;
+    }
+    function peerAltHtml(ref, fname) {
+      return '<div class="alt-sol"><p style="font-size:.93rem;"><strong>' + esc(ref.title) + ".</strong> " + esc(ref.note) + '</p><div class="codebox"><div class="codehead"><span>' + fname + '</span><span>C++</span></div><pre>' +
+        ref.code.split("\n").map(function (l, i) { return '<div class="cline"><span class="ln">' + (i + 1) + "</span><span>" + (esc(l) || " ") + "</span></div>"; }).join("") + "</pre></div></div>";
+    }
+    function peerGateCompare(box) {
+      var cur = makeState.current, st = makeState.items[cur];
+      var ref = MAKE_ALT[cur] || MAKE_REF[cur];
+      if (!ref) return;
+      var reviews = peerReviews(st).length;
+      var cmp = null;
+      for (var i = 0; i < box.children.length; i++) {
+        var h = box.children[i].querySelector ? box.children[i].querySelector("h4") : null;
+        if (h && h.textContent.indexOf("Compare solutions") === 0) { cmp = box.children[i]; break; }
+      }
+      if (!cmp) {
+        cmp = document.createElement("div");
+        cmp.style.marginTop = "14px";
+        cmp.innerHTML = '<h4 style="font-size:.9rem;">Compare solutions</h4>';
+        box.appendChild(cmp);
+      }
+      var unlocked = st.done && reviews >= 2;
+      if (unlocked) {
+        if (MAKE_REF[cur]) cmp.innerHTML = '<h4 style="font-size:.9rem;">Compare solutions</h4>' + peerAltHtml(ref, "reference.cpp");
+        /* MAKE_ALT prompts: the original render already shows it. */
+      } else if (!st.done) {
+        cmp.innerHTML = '<h4 style="font-size:.9rem;">Compare solutions</h4><p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">A reference solution for this prompt unlocks here in two steps: pass every test with your own solution, then review two solutions below. Solving it your way first is the point.</p>';
+      } else {
+        cmp.innerHTML = '<h4 style="font-size:.9rem;">Compare solutions</h4><p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">Reviewing two solutions unlocks the reference solution here. You have reviewed ' + reviews + " of 2 \u2014 the review step is just below.</p>";
+      }
+    }
+    function peerRender(box) {
+      var cur = makeState.current, pr = MAKE_PROMPTS[cur], st = makeState.items[cur];
+      var wrap = document.createElement("div");
+      wrap.className = "peer-box";
+      wrap.id = "peer-review-box";
+      var reviews = peerReviews(st);
+      if (!st.done) {
+        wrap.innerHTML = '<h4 style="font-size:.9rem;">Share &amp; peer review</h4><p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">When every test passes, this is where you share your solution as a code and review two solutions against a short rubric \u2014 before the reference solution opens.</p>';
+        box.appendChild(wrap);
+        return;
+      }
+      var samples = MAKE_SAMPLES[cur] || null;
+      var html = '<h4 style="font-size:.9rem;">Share &amp; peer review</h4>';
+      html += '<p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">Hand your solution to a classmate as a code, and review theirs the same way. There is no live connection here: codes travel by hand, the way the prediction journal does.</p>';
+      html += '<div class="lockrow" style="margin-top:8px;"><button class="btn ghost small" type="button" id="peer-share-btn">Share my solution</button></div>';
+      html += '<div id="peer-share-area">';
+      if (peerState.share) {
+        html += '<div class="authored-field" style="margin-top:8px;"><label for="peer-share-code">Your share code \u2014 give it to a classmate</label>' +
+          '<textarea class="peer-share-code authored-code-out" id="peer-share-code" rows="3" readonly>' + esc(peerState.share) + "</textarea>" +
+          '<div class="authored-actions"><button class="btn ghost small" type="button" id="peer-copy-btn">Copy share code</button><span class="copy-status" id="peer-copy-status" role="status"></span></div></div>';
+      }
+      if (peerState.shareMsg) html += '<div class="make-msg show info" style="margin-top:8px;" role="status">' + esc(peerState.shareMsg) + "</div>";
+      html += "</div>";
+      html += '<h4 style="font-size:.9rem;margin-top:16px;">Review two solutions</h4>';
+      html += '<p style="font-size:.92rem;color:var(--ink-soft);margin-top:4px;">Reviewed: <strong>' + reviews.length + " of 2</strong>. For each slot, paste a classmate\u2019s TFR1: code" + (samples ? ", or pick a built-in sample" : "") + ". Your rubric call is checked against the prompt\u2019s visible tests the moment you submit.";
+      if (!samples) html += " Sample solutions are not available for this prompt yet, so shared codes are the way in here \u2014 your own exported code, re-imported, counts.";
+      html += "</p>";
+      if (peerState.lastVerdict) html += '<div class="feedback show good peer-verdict" role="status">' + esc(peerState.lastVerdict) + "</div>";
+      for (var si = 0; si < 2; si++) {
+        html += '<div class="peer-slot" data-peer-slot="' + si + '"><h5>Review ' + (si + 1) + " of 2</h5>";
+        if (reviews[si]) {
+          var rv = reviews[si];
+          html += '<p style="font-size:.92rem;margin-top:6px;"><strong>' + (rv.src === "sample" ? "Sample solution" : "Shared solution (imported code)") + "</strong> \u2014 reviewed. Your call: Correct? <strong>" + esc(rv.correct) + "</strong> \u00b7 Clear? <strong>" + esc(rv.clear) + "</strong> \u00b7 Improvement: <strong>" + esc(rv.improve) + "</strong>" + (rv.note ? " \u2014 \u201c" + esc(rv.note) + "\u201d" : "") + "</p>";
+        } else {
+          var slot = peerState.slots[si];
+          if (slot.code !== null) {
+            html += '<p class="peer-code-label">' + (slot.src === "sample" ? "Sample solution" : "Shared solution (imported code)") + "</p>";
+            html += '<div class="codebox"><div class="codehead"><span>' + (slot.src === "sample" ? "sample.cpp" : "shared.cpp") + '</span><span>C++</span></div><pre>' +
+              slot.code.split("\n").map(function (l, li) { return '<div class="cline"><span class="ln">' + (li + 1) + "</span><span>" + (esc(l) || " ") + "</span></div>"; }).join("") + "</pre></div>";
+            html += '<div class="peer-rubric">' +
+              '<label>Correct? <select id="peer-correct-' + si + '"><option value="">Choose\u2026</option>' + ["Yes", "Partly", "No"].map(function (o) { return '<option value="' + o + '"' + (slot.correct === o ? " selected" : "") + ">" + o + "</option>"; }).join("") + "</select></label>" +
+              '<label>Clear? <select id="peer-clear-' + si + '"><option value="">Choose\u2026</option>' + ["Yes", "Mostly", "Hard to follow"].map(function (o) { return '<option value="' + o + '"' + (slot.clear === o ? " selected" : "") + ">" + o + "</option>"; }).join("") + "</select></label>" +
+              '<label>One concrete improvement <select id="peer-improve-' + si + '"><option value="">Choose\u2026</option>' + PEER_IMPROVE.map(function (o) { return '<option value="' + esc(o) + '"' + (slot.improve === o ? " selected" : "") + ">" + esc(o) + "</option>"; }).join("") + "</select></label>" +
+              '<label>Your note (optional, up to 140 characters) <input type="text" id="peer-note-' + si + '" maxlength="140" value="' + esc(slot.note).replace(/"/g, "&quot;") + '" placeholder="One short, specific observation"></label>' +
+              "</div>";
+            html += '<div class="lockrow"><button class="btn small" type="button" id="peer-submit-' + si + '">Submit this review</button><button class="btn ghost small" type="button" id="peer-clear-' + si + '">Choose a different solution</button></div>';
+            if (slot.msg) html += '<div class="make-msg show bad" style="margin-top:8px;" role="status">' + esc(slot.msg) + "</div>";
+          } else {
+            html += '<div class="authored-field" style="margin-top:8px;"><label for="peer-import-' + si + '">Paste a TFR1: share code</label>' +
+              '<textarea class="peer-share-code authored-code-out" id="peer-import-' + si + '" rows="3" placeholder="TFR1:\u2026"></textarea></div>' +
+              '<div class="lockrow"><button class="btn ghost small" type="button" id="peer-load-' + si + '">Use this shared code</button></div>';
+            if (samples) {
+              html += '<div class="lockrow" style="margin-top:6px;"><span style="font-size:.88rem;color:var(--ink-soft);">Or review a built-in sample:</span>' +
+                samples.map(function (_c, ci) {
+                  var usedElsewhere = peerState.slots[1 - si].sampleIdx === ci || (reviews[1 - si] && false);
+                  return '<button class="btn ghost small" type="button" id="peer-sample-' + si + "-" + ci + '"' + (usedElsewhere ? " disabled" : "") + ">Sample solution " + (ci + 1) + "</button>";
+                }).join("") + "</div>";
+            }
+            if (slot.msg) html += '<div class="make-msg show bad" style="margin-top:8px;" role="status">' + esc(slot.msg) + "</div>";
+          }
+        }
+        html += "</div>";
+      }
+      wrap.innerHTML = html;
+      box.appendChild(wrap);
+      var shareBtn = $("peer-share-btn");
+      if (shareBtn) shareBtn.addEventListener("click", function () {
+        var code = ($("make-editor") && $("make-editor").value) || st.code || "";
+        if (!code.trim()) { peerState.shareMsg = "The editor is empty \u2014 there is no solution to share yet."; renderMakeExtras(); return; }
+        peerState.share = tfrEncode(cur, code);
+        peerState.shareMsg = "Share code ready below. It carries this prompt\u2019s number and your current code \u2014 nothing else, and it goes nowhere until you hand it over.";
+        renderMakeExtras();
+        announce("Share code ready.");
+      });
+      var copyBtn = $("peer-copy-btn");
+      if (copyBtn) copyBtn.addEventListener("click", function () {
+        var status = $("peer-copy-status");
+        function done(ok) { if (status) status.textContent = ok ? "Copied." : "Copy failed \u2014 select the code above and copy it manually."; }
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(peerState.share).then(function () { done(true); }, function () { done(false); });
+        else done(false);
+      });
+      for (var wi = 0; wi < 2; wi++) {
+        (function (slotIdx) {
+          if (reviews[slotIdx]) return;
+          var slot = peerState.slots[slotIdx];
+          var loadBtn = $("peer-load-" + slotIdx);
+          if (loadBtn) loadBtn.addEventListener("click", function () {
+            var ta = $("peer-import-" + slotIdx);
+            var dec = tfrDecode(ta ? ta.value : "");
+            if (dec.error) { slot.msg = dec.error; renderMakeExtras(); return; }
+            if (dec.p !== cur) {
+              slot.msg = "That code is for Prompt " + (dec.p + 1) + " (" + MAKE_PROMPTS[dec.p].title + ") \u2014 this is Prompt " + (cur + 1) + ". Paste a code for this prompt, or switch prompts to review that one.";
+              renderMakeExtras();
+              return;
+            }
+            slot.code = dec.c; slot.src = "code"; slot.sampleIdx = -1; slot.msg = "";
+            renderMakeExtras();
+            announce("Shared solution loaded into review slot " + (slotIdx + 1) + ".");
+          });
+          if (samples) samples.forEach(function (_c, ci) {
+            var sb = $("peer-sample-" + slotIdx + "-" + ci);
+            if (sb) sb.addEventListener("click", function () {
+              slot.code = samples[ci]; slot.src = "sample"; slot.sampleIdx = ci; slot.msg = "";
+              renderMakeExtras();
+              announce("Sample solution " + (ci + 1) + " loaded into review slot " + (slotIdx + 1) + ".");
+            });
+          });
+          ["correct", "clear", "improve", "note"].forEach(function (field) {
+            var el = $("peer-" + field + "-" + slotIdx);
+            if (el) el.addEventListener("change", function () { slot[field] = el.value; });
+            if (el && field === "note") el.addEventListener("input", function () { slot.note = el.value; });
+          });
+          var clearBtn = $("peer-clear-" + slotIdx);
+          if (clearBtn) clearBtn.addEventListener("click", function () { peerState.slots[slotIdx] = peerFreshSlot(); renderMakeExtras(); });
+          var subBtn = $("peer-submit-" + slotIdx);
+          if (subBtn) subBtn.addEventListener("click", function () {
+            ["correct", "clear", "improve", "note"].forEach(function (field) {
+              var el = $("peer-" + field + "-" + slotIdx);
+              if (el) slot[field] = el.value;
+            });
+            if (!slot.correct || !slot.clear || !slot.improve) {
+              slot.msg = "Finish the rubric first: answer Correct?, Clear?, and pick one concrete improvement.";
+              renderMakeExtras();
+              return;
+            }
+            var passed = peerRunVisible(slot.code, pr);
+            var verdict = "Your call: " + slot.correct + ". The tests say: passes " + passed + " of " + pr.tests.length + ".";
+            st.reviews = peerReviews(st);
+            st.reviews[slotIdx] = { src: slot.src, correct: slot.correct, clear: slot.clear, improve: slot.improve, note: String(slot.note || "").slice(0, 140) };
+            peerState.slots[slotIdx] = peerFreshSlot();
+            peerState.lastVerdict = "Review " + (slotIdx + 1) + " saved. " + verdict + (peerReviews(st).filter(Boolean).length >= 2 ? " Two reviews are complete \u2014 the reference solution above is open." : "");
+            if (typeof tfSave === "function") tfSave();
+            renderMakeExtras();
+            announce("Review saved. " + verdict);
+          });
+        })(wi);
+      }
+    }
+    var _peerPrevExtras = renderMakeExtras;
+    renderMakeExtras = function () {
+      _peerPrevExtras();
+      var box = $("make-extras"); if (!box) return;
+      try { peerGateCompare(box); peerRender(box); } catch (e) {}
+    };
+    var _peerPrevSelect = selectMakePrompt;
+    selectMakePrompt = function (i) {
+      peerState = { slots: [peerFreshSlot(), peerFreshSlot()], share: "", shareMsg: "", lastVerdict: "" };
+      _peerPrevSelect(i);
+    };
+    try { renderMakeExtras(); } catch (e) {}
     </script>
     <script>
     /* ---------------- Mode tab dropdowns ----------------
@@ -18081,28 +18804,34 @@ int main() {
         bolt: "Bolt's World", tracer: "Prediction Tracer", gym: "Debugging Gym",
         translator: "Error Translator", challenges: "Challenges", bridge: "Bridge", make: "Make"
       };
+      /* Declutter: primary sections first in every dropdown; secondary
+         entries carry more:true and fold behind one "More sections"
+         toggle inside the dropdown (and list flat in the mobile drawer,
+         which is a full index by design). No entry, label, or target
+         was removed or renamed. */
       var NAV = [
         { mode: "bolt", items: [
           { label: "Worlds \u2014 twenty-nine workshops, in order", target: "bolt-worlds" },
-          { label: "Bolt Challenges (optional)", target: "bolt-challenges" },
           { label: "Your program for Bolt", target: "bolt-program" },
-          { label: "Bolt's command card", target: "bolt-commands" }
+          { label: "Bolt Challenges (optional)", target: "bolt-challenges", more: true },
+          { label: "Bolt's command card", target: "bolt-commands", more: true }
         ] },
         { mode: "tracer", items: [
           { label: "Exercises", target: "tracer-exercises" },
           { label: "Briefings", target: "brief-panel" },
           { label: "Reference card", action: "refpanel" },
           { label: "Review", target: "review-panel" },
-          { label: "Problem of the Day", target: "potd-box" },
-          { label: "Lecture mode", target: "lecture-entry" },
-          { label: "Topic crosswalk", target: "crosswalk-section" },
-          { label: "For instructors", target: "instructors-section", expand: "instructors" }
+          { label: "Problem of the Day", target: "potd-box", more: true },
+          { label: "Lecture mode", target: "lecture-entry", more: true },
+          { label: "Topic crosswalk", target: "crosswalk-section", more: true },
+          { label: "For instructors", target: "instructors-section", expand: "instructors", more: true }
         ] },
         { mode: "gym", items: [
           { label: "Rounds \u2014 twenty-four broken programs, in order", target: "gym-rounds" },
           { label: "The hunt \u2014 find and classify the bugs", target: "gym-hunt" },
-          { label: "What does each logic bug actually do?", target: "gym-hypo-card", fallback: "gym-hunt" },
-          { label: "Fix the program yourself", target: "gym-fix-card", fallback: "gym-hunt" }
+          { label: "Fix the program yourself", target: "gym-fix-card", fallback: "gym-hunt" },
+          { label: "What does each logic bug actually do?", target: "gym-hypo-card", fallback: "gym-hunt", more: true },
+          { label: "Right answer, wrong program", target: "rawp-details", more: true }
         ] },
         { mode: "translator", items: [
           { label: "One broken program, three real errors", target: "translator-sample" },
@@ -18112,10 +18841,10 @@ int main() {
         { mode: "challenges", items: [
           { label: "Tasks", target: "ch-tasks-wrap" },
           { label: "Projects", target: "ch-projects-wrap" },
-          { label: "Culminating projects", target: "ch-culm-wrap" },
-          { label: "Diagnostics", target: "ch-diag-wrap" },
           { label: "Exam", target: "ch-exam-wrap" },
-          { label: "Student Labs \u2014 author & share", target: "ch-authored-wrap" }
+          { label: "Culminating projects", target: "ch-culm-wrap", more: true },
+          { label: "Diagnostics", target: "ch-diag-wrap", more: true },
+          { label: "Student Labs \u2014 author & share", target: "ch-authored-wrap", more: true }
         ] },
         { mode: "bridge", items: [
           { label: "Activities \u2014 Parsons and faded, in order", target: "bridge-activities" },
@@ -18125,8 +18854,8 @@ int main() {
         { mode: "make", items: [
           { label: "Prompts \u2014 thirty programs to write, in order", target: "make-prompts" },
           { label: "Editor & test bench", target: "make-editor-card" },
-          { label: "Your program, stepped", target: "trace-panel", fallback: "make-editor-card" },
-          { label: "Micro-problem ladders", target: "make-ladders" }
+          { label: "Your program, stepped", target: "trace-panel", fallback: "make-editor-card", more: true },
+          { label: "Micro-problem ladders", target: "make-ladders", more: true }
         ] }
       ];
       var openMode = null;
@@ -18232,6 +18961,7 @@ int main() {
         menu.setAttribute("aria-label", MODE_LABELS[entry.mode] + " sections");
         menu.hidden = true;
         var itemBtns = [];
+        var moreWrap = null, moreToggle = null;
         entry.items.forEach(function (item) {
           var b = document.createElement("button");
           b.type = "button";
@@ -18242,8 +18972,30 @@ int main() {
             var g = groups[entry.mode];
             navigate(entry, item, g ? g.caret : null);
           });
-          menu.appendChild(b);
-          itemBtns.push(b);
+          if (item.more) {
+            if (!moreWrap) {
+              moreWrap = document.createElement("div");
+              moreWrap.className = "more-wrap";
+              moreWrap.hidden = true;
+              moreToggle = document.createElement("button");
+              moreToggle.type = "button";
+              moreToggle.className = "mode-menu-more";
+              moreToggle.setAttribute("aria-expanded", "false");
+              moreToggle.textContent = "More sections \u25be";
+              moreToggle.addEventListener("click", function () {
+                var open = moreWrap.hidden;
+                moreWrap.hidden = !open;
+                moreToggle.setAttribute("aria-expanded", open ? "true" : "false");
+                moreToggle.textContent = open ? "Fewer sections \u25b4" : "More sections \u25be";
+              });
+              menu.appendChild(moreToggle);
+              menu.appendChild(moreWrap);
+            }
+            moreWrap.appendChild(b);
+          } else {
+            menu.appendChild(b);
+            itemBtns.push(b);
+          }
         });
         wrapper.appendChild(caret);
         wrapper.appendChild(menu);
