@@ -1583,6 +1583,34 @@
       .mode-menu-more:hover, .mode-menu-more:focus-visible { background: var(--panel-2); color: var(--accent-strong); }
       .mode-menu .more-wrap { display: grid; gap: 2px; }
       .mode-menu .more-wrap[hidden] { display: none; }
+
+      /* ---------- Teach-back line, TFP1 progress code, prediction duels ---------- */
+      .teachback-row { margin-top: 14px; border-top: 1px dashed var(--line); padding-top: 11px; }
+      .teachback-row label { display: block; font-size: .88rem; font-weight: 600; }
+      .teachback-row label span { font-weight: 400; color: var(--ink-soft); }
+      .teachback-input { width: 100%; box-sizing: border-box; font: inherit; font-size: .93rem; padding: 9px 11px; border: 1.5px solid var(--line); border-radius: 9px; background: var(--panel); color: var(--ink); margin-top: 6px; }
+      .teachback-note { display: block; font-size: .8rem; color: var(--ink-soft); margin-top: 4px; min-height: 1.1em; }
+      .duel-banner { margin-top: 12px; border: 1.5px solid var(--amber); background: var(--amber-soft); border-radius: 10px; padding: 11px 14px; font-size: .93rem; font-weight: 600; }
+      .duel-banner[hidden] { display: none; }
+      .duel-note { margin-top: 10px; font-size: .9rem; color: var(--ink-soft); }
+      .duel-note[hidden] { display: none; }
+      .duel-reveal { margin-top: 12px; border: 1.5px solid var(--accent); background: var(--accent-soft); border-radius: 10px; padding: 13px 15px; }
+      .duel-reveal[hidden] { display: none; }
+      .duel-reveal h4 { font-size: .98rem; color: var(--accent-strong); }
+      .duel-reveal .pair-vs { margin-top: 9px; }
+      .duel-reveal p { margin-top: 9px; font-size: .92rem; }
+      .duel-out { flex: 1 1 100%; min-width: 0; }
+      .duel-out[hidden] { display: none; }
+      .duel-out textarea { width: 100%; box-sizing: border-box; font-family: "IBM Plex Mono", monospace; font-size: .8rem; line-height: 1.5; padding: 9px 11px; border: 1.5px solid var(--line); border-radius: 9px; background: var(--panel-2); color: var(--ink); resize: vertical; word-break: break-all; }
+      .duel-out .duel-code-line { font-family: "IBM Plex Mono", monospace; font-size: .78rem; word-break: break-all; display: block; margin-top: 6px; }
+      .tfp-view { margin-top: 14px; border: 1.5px solid var(--accent); border-radius: 12px; padding: 15px 16px; }
+      .tfp-view[hidden] { display: none; }
+      .tfp-view h4 { font-size: 1.02rem; }
+      .tfp-view h5 { font-size: .93rem; margin-top: 13px; }
+      .tfp-view ul { margin: 6px 0 0; padding-left: 20px; font-size: .93rem; display: grid; gap: 4px; }
+      .tfp-view p { font-size: .93rem; margin-top: 6px; }
+      .tfp-counts { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+      .tfp-counts .chip { font-family: "IBM Plex Mono", monospace; font-size: .82rem; font-weight: 600; border: 1px solid var(--line); background: var(--panel-2); border-radius: 999px; padding: 4px 11px; }
     </style>
   </head>
   <body>
@@ -2138,6 +2166,8 @@ for (int i = 0; i < 3; i++) {
 
           <section class="card" aria-labelledby="predict-h">
             <h3 id="predict-h">Stage 1 — Predict</h3>
+            <div class="duel-banner" id="duel-banner" hidden role="status">Prediction duel — someone has already locked their prediction. Lock yours to reveal both.</div>
+            <p class="duel-note" id="duel-note" hidden role="status"></p>
             <div class="pair-toggle" role="group" aria-label="Prediction mode">
               <button class="pair-toggle-btn" type="button" id="pair-solo-btn" aria-pressed="true">Predicting solo</button>
               <button class="pair-toggle-btn" type="button" id="pair-partner-btn" aria-pressed="false">Predicting with a partner</button>
@@ -2206,6 +2236,7 @@ for (int i = 0; i < 3; i++) {
               <span class="bits-note">Optional — one tap, and locking works without it.</span>
             </div>
             <div class="locked-banner" id="locked-banner" role="status"></div>
+            <div class="duel-reveal" id="duel-reveal" hidden></div>
           </section>
 
           <section class="card" id="investigate-card" hidden aria-labelledby="inv-h">
@@ -2244,6 +2275,18 @@ for (int i = 0; i < 3; i++) {
               <button class="btn ghost small" type="button" id="worksheet-btn">Print worksheet</button>
               <button class="btn ghost small" type="button" id="share-link-btn">Copy prediction link</button>
               <span class="copy-status" id="share-link-status" role="status"></span>
+              <button class="btn ghost small" type="button" id="duel-btn">Challenge someone to a duel</button>
+              <span class="copy-status" id="duel-status" role="status"></span>
+              <span class="duel-out" id="duel-out" hidden>
+                <textarea id="duel-link-out" rows="2" readonly aria-label="Duel link"></textarea>
+                <span class="duel-code-line">Duel code: <span id="duel-code-out"></span></span>
+                <span style="font-size:.85rem;color:var(--ink-soft);display:block;margin-top:4px;">Send the link or the code. Your prediction travels inside it, encoded — it is not readable in the link, and the other person sees it only after they lock their own prediction.</span>
+              </span>
+              <span class="duel-out" style="display:block;">
+                <span style="font-size:.85rem;color:var(--ink-soft);display:block;">Were you challenged? Paste the duel link or code here:</span>
+                <span style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;"><input type="text" id="duel-open-input" placeholder="Paste a duel link or TFD1: code" autocomplete="off" style="flex:1 1 220px;min-width:0;font:inherit;font-size:.9rem;padding:8px 11px;border:1.5px solid var(--line);border-radius:9px;background:var(--panel-2);color:var(--ink);"><button class="btn ghost small" type="button" id="duel-open-btn">Open duel</button></span>
+                <span class="copy-status" id="duel-open-status" role="status"></span>
+              </span>
               <span style="font-size:.85rem;color:var(--ink-soft);">This exercise on paper: code, blank prediction and memory boxes — answer key on page two. The prediction link opens this exercise, ready to predict — it carries no answer and no progress.</span>
             </div></div>
         </div>
@@ -2322,7 +2365,7 @@ for (int i = 0; i < 3; i++) {
         </div>
       </section>
       <details class="session-tools" id="session-tools">
-        <summary><span class="session-tools-title">Session &amp; instructor tools</span><span class="gcount">Review &middot; Problem of the Day &middot; Lecture mode &middot; Journal &middot; Progress file &middot; Assignments &middot; Crosswalk &#9662;</span></summary>
+        <summary><span class="session-tools-title">Session &amp; instructor tools</span><span class="gcount">Review &middot; Problem of the Day &middot; Lecture mode &middot; Journal &middot; Progress file &middot; Progress code &middot; Assignments &middot; Crosswalk &#9662;</span></summary>
         <div class="session-tools-inner">
 <section class="card" id="review-panel" aria-labelledby="review-h" style="margin-top:14px;">
         <span class="concept-tag">Review · spaced practice</span>
@@ -2375,6 +2418,26 @@ for (int i = 0; i < 3; i++) {
             <button class="btn ghost" type="button" id="progress-import-cancel">Cancel</button>
           </div>
         </div>
+      </section>
+<section class="card" id="tfp-section" style="margin-top:18px;" aria-labelledby="tfp-h">
+        <h3 id="tfp-h">Office-hours progress code</h3>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">A single code that carries a snapshot of your progress, made for a five-minute office-hours visit. There are no accounts and nothing is sent anywhere — the code is the only transfer.</p>
+        <h4 style="margin-top:16px;font-size:.95rem;">Students: make your code</h4>
+        <div class="journal-actions">
+          <button class="btn" type="button" id="tfp-create-btn">Create my progress code</button>
+          <span class="journal-status" id="tfp-create-status" role="status"></span>
+        </div>
+        <label style="font-weight:600;font-size:.92rem;display:block;margin-top:10px;" for="tfp-code-out">Your progress code</label>
+        <textarea class="digest-textarea" id="tfp-code-out" rows="3" readonly style="margin-top:6px;" placeholder="Your TFP1: code will appear here"></textarea>
+        <p style="font-size:.88rem;color:var(--ink-soft);margin-top:6px;">Show this code to your instructor — it contains your progress on this device, nothing else.</p>
+        <h4 style="margin-top:18px;font-size:.95rem;">Instructors: view a student's code</h4>
+        <label style="font-weight:600;font-size:.92rem;display:block;margin-top:8px;" for="tfp-paste">Paste a student's TFP1: code</label>
+        <textarea class="digest-textarea" id="tfp-paste" rows="3" placeholder="TFP1:…" aria-label="Paste a student's TFP1 progress code" style="margin-top:6px;"></textarea>
+        <div class="journal-actions">
+          <button class="btn" type="button" id="tfp-view-btn">View progress</button>
+          <span class="journal-status" id="tfp-view-status" role="status"></span>
+        </div>
+        <div class="tfp-view" id="tfp-view" hidden aria-live="polite"></div>
       </section>
 <section class="card" id="assign-section" style="margin-top:18px;" aria-labelledby="assign-h">
         <h3 id="assign-h">Assignments</h3>
@@ -6521,7 +6584,8 @@ int main() {
                modSelected: -1, modDone: false, modCorrect: null,
                pair: false, pairASelected: -1, pairALocked: false,
                pairBSelected: -1, pairBLocked: false, jointSelected: -1, jointLocked: false, rationale: "", muddy: 0,
-               confidence: "", followSel: -1, followLocked: false, followCorrect: null };
+               confidence: "", followSel: -1, followLocked: false, followCorrect: null,
+               teachBack: "", lastDuel: "" };
     }
     var state = {
       skin: "health",
@@ -7950,6 +8014,31 @@ int main() {
       });
     }
 
+    /* ---------------- Teach-back line (inside the verdict) ----------------
+       One quiet optional free-text line, shown only once the verdict is
+       showing. It never blocks anything: the student can ignore it and
+       move on. It is saved additively as `teachBack` on the exercise's
+       existing progress record; empty lines are never stored. */
+    function teachBackHtml(s) {
+      var val = (s.teachBack || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+      return '<div class="teachback-row"><label for="teachback-input">Teach-back <span>(optional — state the rule in your own words, one line)</span></label>' +
+        '<input class="teachback-input" type="text" id="teachback-input" maxlength="240" autocomplete="off" placeholder="In your own words: the loop stops because\u2026" value="' + val + '">' +
+        '<span class="teachback-note" id="teachback-note" role="status">' + (s.teachBack && s.teachBack.trim() ? "Saved with this exercise." : "") + "</span></div>";
+    }
+    function wireTeachBack() {
+      var inp = $("teachback-input");
+      if (!inp) return;
+      inp.addEventListener("input", function () {
+        var s = state.ex[state.current];
+        if (!s) return;
+        var v = inp.value.slice(0, 240);
+        s.teachBack = v.trim() ? v : "";
+        var note = $("teachback-note");
+        if (note) note.textContent = s.teachBack.trim() ? "Saved with this exercise." : "";
+        try { tfSave(); } catch (e) {}
+      });
+    }
+
     function renderInvestigate() {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
       var card = $("investigate-card");
@@ -7961,14 +8050,14 @@ int main() {
       if (s.correct) {
         v.innerHTML = '<div class="verdict good"><h3>Your model matched the machine.</h3>' +
           '<div class="vs"><div><span>You predicted</span>' + esc(mine) + '</div><div><span>The program printed</span>' + esc(actual) + "</div></div>" +
-          "<p>A correct prediction is evidence your mental model of this concept is sound — for these values. Stage 4 changes a value to check the model, not the memory.</p>" + ratEcho + "</div>";
+          "<p>A correct prediction is evidence your mental model of this concept is sound — for these values. Stage 4 changes a value to check the model, not the memory.</p>" + ratEcho + teachBackHtml(s) + "</div>";
       } else {
         var d = ex.diagnoses[s.selected];
         var confNote = s.confidence === "sure" ? '<p class="confident-note">You marked this prediction “Sure” — a confident miss, and the kind worth a second look: the model felt solid and still parted from the machine.</p>' : "";
         v.innerHTML = '<div class="verdict bad"><h3>Your model and the machine parted company.</h3>' +
           '<div class="vs"><div><span>You predicted</span>' + esc(mine) + '</div><div><span>The program printed</span>' + esc(actual) + "</div></div>" +
           "<p>" + d.text + "</p>" + confNote + ratEcho + '<button class="btn small ghost jump" id="jump-btn" type="button">Jump to the parting step</button>' +
-          '<div id="followup-box"></div><p class="suggest-next" id="suggest-next"></p></div>';
+          '<div id="followup-box"></div><p class="suggest-next" id="suggest-next"></p>' + teachBackHtml(s) + "</div>";
         $("jump-btn").addEventListener("click", function () {
           stopPlayback();
           state.ex[state.current].step = d.step;
@@ -7979,6 +8068,7 @@ int main() {
         renderFollowUp();
         renderSuggestNext();
       }
+      wireTeachBack();
       renderMuddy();
     }
 
@@ -16443,6 +16533,7 @@ int main() {
           var fuJ = (!s.correct && ex.diagnoses && ex.diagnoses[s.selected]) ? followFor(ex, ex.diagnoses[s.selected].text.replace(/<[^>]+>/g, "")) : null;
           lines.push("Follow-up: " + (s.followCorrect ? "Repair held" : "Still active" + (fuJ ? " — " + fuJ.fam.label : "")));
         }
+        if (s.teachBack && s.teachBack.trim()) lines.push("Teach-back: " + s.teachBack.trim());
         if (s.muddy > 0 && ex.code[s.muddy - 1]) lines.push("Muddiest line: Line " + s.muddy + ": " + ex.code[s.muddy - 1].trim());
         if (!s.correct) {
           var pi = partingInfo(ex, s);
@@ -16780,7 +16871,7 @@ int main() {
       function flush(){ /* entries counted on verdict/prediction capture below */ }
       var linesAll = raw.split(/\r?\n/);
       var cur = null;
-      function ensure(n){ if (!agg[n]) agg[n] = { attempts:0, wrong:0, wrongPred:{}, parting:{}, whyByPred:{}, muddy:{}, muddyTotal:0, cw:0, uw:0 }; return agg[n]; }
+      function ensure(n){ if (!agg[n]) agg[n] = { attempts:0, wrong:0, wrongPred:{}, parting:{}, whyByPred:{}, muddy:{}, muddyTotal:0, cw:0, uw:0, teachbacks:[] }; return agg[n]; }
       linesAll.forEach(function(line){
         var L = line.trim();
         if (!L) return;
@@ -16790,6 +16881,7 @@ int main() {
         var pm = L.match(/^Prediction\s*:\s*(.+)$/i); if (pm) { cur.prediction = pm[1].trim().replace(/\s*\(pair\)\s*$/i, "").trim(); return; }
         var cfm = L.match(/^Confidence\s*:\s*(.+)$/i); if (cfm) { cur.confidence = /^not sure/i.test(cfm[1].trim()) ? "unsure" : (/^sure/i.test(cfm[1].trim()) ? "sure" : ""); return; }
         var wm = L.match(/^Why\s*:\s*(.+)$/i); if (wm) { cur.why = wm[1].trim(); return; }
+        var tbm = L.match(/^Teach-back\s*:\s*(.+)$/i); if (tbm && tbm[1].trim()) { ensure(cur.num).teachbacks.push({ text: tbm[1].trim(), prediction: cur.prediction, correct: cur.correct }); return; }
         var cm = L.match(/^(?:Correct output|Correct)\s*:\s*(.+)$/i); if (cm) { cur.correct = cm[1].trim(); return; }
         var vm = L.match(/^Verdict\s*:\s*(.+)$/i);
         if (vm) {
@@ -16872,6 +16964,37 @@ int main() {
         });
       });
       if (whyBlocks) html += '<div class="digest-why"><h4>Why students predicted this — rationales from wrong attempts</h4>' + whyBlocks + "</div>";
+      // ---- Teach-backs: the students' own wording, grouped by exercise
+      // and, where a wrong attempt maps to a misconception family, by
+      // that family. Only exercises with at least one teach-back appear.
+      var tbNums = nums.filter(function (n) { return parsed.agg[n].teachbacks && parsed.agg[n].teachbacks.length; });
+      if (tbNums.length) {
+        var tbHtml = "";
+        tbNums.forEach(function (n) {
+          var aT = parsed.agg[n];
+          var exT = EXERCISES[n - 1] || null;
+          var tT = aT.title || (exT ? exT.title : "");
+          tbHtml += "<h4>Exercise " + n + (tT ? " \u2014 " + esc(tT) : "") + "</h4>";
+          var famGroups = {}, famOrder = [];
+          aT.teachbacks.forEach(function (tb) {
+            var famLabel = "";
+            if (exT && tb.prediction && tb.correct && tb.prediction !== tb.correct) {
+              var oi = exT.options.indexOf(tb.prediction);
+              var dg = (oi >= 0 && exT.diagnoses) ? exT.diagnoses[oi] : null;
+              if (dg) {
+                try { var fuT = followFor(exT, String(dg.text).replace(/<[^>]+>/g, "")); if (fuT) famLabel = fuT.fam.label; } catch (e) {}
+              }
+            }
+            if (!famGroups[famLabel]) { famGroups[famLabel] = []; famOrder.push(famLabel); }
+            famGroups[famLabel].push(tb.text);
+          });
+          famOrder.forEach(function (fl) {
+            if (fl) tbHtml += '<p class="digest-why-label">Misconception family: <strong>' + esc(fl) + "</strong></p>";
+            tbHtml += '<ul class="digest-why-list">' + famGroups[fl].map(function (w) { return "<li>&ldquo;" + esc(w) + "&rdquo;</li>"; }).join("") + "</ul>";
+          });
+        });
+        html += '<div class="digest-why"><h4>Teach-backs</h4>' + tbHtml + "</div>";
+      }
       // ---- Muddiest lines: ranked by flag count across all journals ----
       var muddyRows = [];
       nums.forEach(function (n) {
@@ -19119,7 +19242,9 @@ int main() {
           confidence: (s.confidence === "sure" || s.confidence === "unsure") ? s.confidence : "",
           followSel: (typeof s.followSel === "number" ? s.followSel : -1),
           followLocked: !!s.followLocked,
-          followCorrect: (s.followCorrect === true || s.followCorrect === false) ? s.followCorrect : null
+          followCorrect: (s.followCorrect === true || s.followCorrect === false) ? s.followCorrect : null,
+          teachBack: (typeof s.teachBack === "string" && s.teachBack.trim()) ? s.teachBack.trim().slice(0, 240) : "",
+          lastDuel: (s.lastDuel === "issued" || s.lastDuel === "challenged") ? s.lastDuel : ""
         });
       });
       try {
@@ -19259,6 +19384,8 @@ int main() {
           if (typeof sv.followSel === "number") s.followSel = sv.followSel;
           s.followLocked = !!sv.followLocked;
           s.followCorrect = (sv.followCorrect === true || sv.followCorrect === false) ? sv.followCorrect : null;
+          if (typeof sv.teachBack === "string" && sv.teachBack.trim()) s.teachBack = sv.teachBack.trim().slice(0, 240);
+          if (sv.lastDuel === "issued" || sv.lastDuel === "challenged") s.lastDuel = sv.lastDuel;
           s.jointLocked = !!sv.jointLocked;
           if (s.locked || s.modDone) state.ex[i] = s;
         });
@@ -19620,6 +19747,295 @@ int main() {
           announce("The offline download could not be prepared in this browser.");
         }
       });
+    })();
+
+    /* ================= Office-hours progress code (TFP1:) + prediction duels =================
+       Both features are server-free and account-free: the code / link is
+       the only transfer mechanism. TFP1: follows the TFA1:/TFR1:
+       conventions — base64url of a compact JSON snapshot, strict decode,
+       plain-language rejection. Duel links extend the share-a-prediction
+       hash scheme as #duel-N-<payload>; the payload carries only the
+       issuer's chosen option INDEX, base64url-encoded, so the prediction
+       is not readable as plain text in the link. The decoded issuer
+       prediction lives only in a JS variable (duelPending) until the
+       challenger locks — it is never written into the DOM before that. */
+    function tfpStrip(s) { return String(s == null ? "" : s).replace(/<[^>]+>/g, ""); }
+    function tfpB64e(str) { return btoa(unescape(encodeURIComponent(str))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+    function tfpB64d(seg) { var b = seg.replace(/-/g, "+").replace(/_/g, "/"); while (b.length % 4) b += "="; return decodeURIComponent(escape(atob(b))); }
+
+    /* ---------- TFP1: snapshot ---------- */
+    function tfpCounts() {
+      var c = {};
+      try { c.bolt = [bolt.done.filter(Boolean).length + bolt.challengeDone.filter(Boolean).length, BOLT_WORLDS.length + BOLT_CHALLENGES.length]; } catch (e) { c.bolt = [0, 0]; }
+      try { c.gym = [gym.rounds.filter(function (r) { return r && r.done; }).length, GYM_ROUNDS.length]; } catch (e) { c.gym = [0, 0]; }
+      try { c.refactor = [refactor.rounds.filter(function (r) { return r && r.done; }).length, REFACTOR_ROUNDS.length]; } catch (e) { c.refactor = [0, 0]; }
+      try { var fd = 0; Object.keys(fixitState).forEach(function (k) { if (fixitState[k] && fixitState[k].done) fd++; }); c.translator = [fd, TRANS.length]; } catch (e) { c.translator = [0, 0]; }
+      try {
+        var cd = 0, ct = 0;
+        Object.keys(CH_LEVELS).forEach(function (k) {
+          ct += CH_LEVELS[k].tasks.length;
+          var d = (typeof ch !== "undefined" && ch.data) ? ch.data[k] : null;
+          if (d && d.tasks) Object.keys(d.tasks).forEach(function (tk) { if (d.tasks[tk] && d.tasks[tk].done) cd++; });
+        });
+        c.challenges = [cd, ct];
+      } catch (e) { c.challenges = [0, 0]; }
+      try { c.bridge = [bridgeDoneCount(), BRIDGE_ACTIVITIES.length]; } catch (e) { c.bridge = [0, 0]; }
+      try { c.make = [makeDoneCount(), MAKE_PROMPTS.length]; } catch (e) { c.make = [0, 0]; }
+      return c;
+    }
+    function tfpTracerEntries() {
+      var out = [];
+      EXERCISES.forEach(function (ex, i) {
+        var s = state.ex[i];
+        if (!s || !s.locked) return;
+        var fam = "";
+        if (s.correct === false && ex.diagnoses && ex.diagnoses[s.selected]) {
+          try { var fu = followFor(ex, tfpStrip(ex.diagnoses[s.selected].text)); if (fu) fam = fu.fam.label; } catch (e) {}
+        }
+        out.push([i + 1, s.correct ? 1 : 0, fam, (typeof s.muddy === "number" ? s.muddy : 0),
+          (s.teachBack && s.teachBack.trim()) ? s.teachBack.trim() : "", ex.options[s.selected] || "", s.modDone ? 1 : 0]);
+      });
+      return out;
+    }
+    function tfpEncode() {
+      return "TFP1:" + tfpB64e(JSON.stringify({ v: 1, t: tfpTracerEntries(), c: tfpCounts() }));
+    }
+    function tfpDecode(text) {
+      var s = String(text == null ? "" : text).trim();
+      if (s.indexOf("TFP1:") !== 0) return null;
+      var seg = s.slice(5).trim().split(/\s/)[0];
+      if (!seg || !/^[A-Za-z0-9_-]+$/.test(seg)) return null;
+      var obj = null;
+      try { obj = JSON.parse(tfpB64d(seg)); } catch (e) { return null; }
+      if (!obj || obj.v !== 1 || !Array.isArray(obj.t) || !obj.c || typeof obj.c !== "object" || Array.isArray(obj.c)) return null;
+      // Strict shape: every rendered value is type-checked here, so a
+      // hand-crafted code cannot smuggle markup into the snapshot view.
+      var cleanT = [];
+      for (var i = 0; i < obj.t.length; i++) {
+        var e = obj.t[i];
+        if (!Array.isArray(e) || typeof e[0] !== "number" || e[0] < 1 || e[0] > EXERCISES.length) return null;
+        cleanT.push([e[0], e[1] === 1 ? 1 : 0,
+          typeof e[2] === "string" ? e[2].slice(0, 120) : "",
+          (typeof e[3] === "number" && e[3] > 0) ? Math.floor(e[3]) : 0,
+          typeof e[4] === "string" ? e[4].slice(0, 240) : "",
+          typeof e[5] === "string" ? e[5].slice(0, 120) : "",
+          e[6] === 1 ? 1 : 0]);
+      }
+      var cleanC = {};
+      Object.keys(obj.c).forEach(function (k) {
+        var v = obj.c[k];
+        if (Array.isArray(v) && typeof v[0] === "number" && isFinite(v[0]) && typeof v[1] === "number" && isFinite(v[1])) {
+          cleanC[k] = [Math.max(0, Math.floor(v[0])), Math.max(0, Math.floor(v[1]))];
+        }
+      });
+      return { v: 1, t: cleanT, c: cleanC };
+    }
+    var TFP_MODE_LABELS = [["bolt", "Bolt's World"], ["gym", "Debugging Gym"], ["refactor", "Refactor Gym"], ["translator", "Error Translator (fix-it rounds)"], ["challenges", "Challenges"], ["bridge", "Bridge"], ["make", "Make"]];
+    function tfpRenderView(obj) {
+      var box = $("tfp-view");
+      if (!box) return;
+      var entries = obj.t.slice().sort(function (a, b) { return a[0] - b[0]; });
+      var html = "<h4>One student's progress snapshot</h4>";
+      html += '<div class="tfp-counts"><span class="chip">Prediction Tracer: ' + entries.length + " of " + EXERCISES.length + " attempted</span>";
+      TFP_MODE_LABELS.forEach(function (pair) {
+        var v = obj.c[pair[0]];
+        if (Array.isArray(v)) html += '<span class="chip">' + pair[1] + ": " + (v[0] || 0) + " of " + (v[1] || 0) + "</span>";
+      });
+      html += "</div>";
+      html += "<h5>Completed tracer exercises</h5>";
+      if (!entries.length) html += "<p>No tracer predictions locked in yet.</p>";
+      else {
+        html += "<ul>" + entries.map(function (e) {
+          var ex = EXERCISES[e[0] - 1];
+          return "<li><strong>Exercise " + e[0] + (ex ? " \u2014 " + esc(ex.title) : "") + ":</strong> " +
+            (e[1] ? "correct" : "not correct") + (e[5] ? " \u2014 predicted \u201C" + esc(e[5]) + "\u201D" : "") + (e[6] ? " \u00b7 modify done" : "") + "</li>";
+        }).join("") + "</ul>";
+      }
+      var traps = {};
+      entries.forEach(function (e) { if (e[2]) { (traps[e[2]] = traps[e[2]] || []).push(e[0]); } });
+      html += "<h5>Traps, by misconception family</h5>";
+      var trapKeys = Object.keys(traps);
+      if (!trapKeys.length) html += "<p>No diagnosed traps in this snapshot.</p>";
+      else html += "<ul>" + trapKeys.map(function (k) { return "<li><strong>" + esc(k) + ":</strong> Exercise" + (traps[k].length === 1 ? " " : "s ") + traps[k].join(", ") + "</li>"; }).join("") + "</ul>";
+      var muddy = entries.filter(function (e) { return e[3] > 0; });
+      html += "<h5>Muddiest lines</h5>";
+      if (!muddy.length) html += "<p>No muddiest lines flagged.</p>";
+      else html += "<ul>" + muddy.map(function (e) {
+        var ex2 = EXERCISES[e[0] - 1];
+        var lineTxt = (ex2 && ex2.code[e[3] - 1]) ? ex2.code[e[3] - 1].trim() : "";
+        return "<li><strong>Exercise " + e[0] + ", Line " + e[3] + ":</strong> " + esc(lineTxt) + "</li>";
+      }).join("") + "</ul>";
+      var tbs = entries.filter(function (e) { return e[4]; });
+      html += "<h5>Teach-backs</h5>";
+      if (!tbs.length) html += "<p>No teach-backs written yet.</p>";
+      else html += "<ul>" + tbs.map(function (e) {
+        var ex3 = EXERCISES[e[0] - 1];
+        return "<li><strong>Exercise " + e[0] + (ex3 ? " \u2014 " + esc(ex3.title) : "") + ":</strong> &ldquo;" + esc(e[4]) + "&rdquo;</li>";
+      }).join("") + "</ul>";
+      box.innerHTML = html;
+      box.hidden = false;
+    }
+    (function wireTfp() {
+      var createBtn = $("tfp-create-btn"), viewBtn = $("tfp-view-btn");
+      if (createBtn) createBtn.addEventListener("click", function () {
+        var code = tfpEncode();
+        var out = $("tfp-code-out");
+        if (out) { out.value = code; out.select(); }
+        var st = $("tfp-create-status");
+        if (st) st.textContent = "Code created — it is in the box below, ready to copy or show.";
+        announce("Progress code created.");
+      });
+      if (viewBtn) viewBtn.addEventListener("click", function () {
+        var st = $("tfp-view-status");
+        var obj = tfpDecode($("tfp-paste") ? $("tfp-paste").value : "");
+        if (!obj) {
+          if (st) st.textContent = "That is not a TFP1 progress code, so nothing was shown.";
+          announce("That is not a TFP1 progress code, so nothing was shown.");
+          return;
+        }
+        tfpRenderView(obj);
+        if (st) st.textContent = "Snapshot shown below — it is separate from the class digest and changes nothing else.";
+        announce("Student progress snapshot shown.");
+      });
+    })();
+
+    /* ---------- Prediction duels ---------- */
+    var duelPending = null;      // { idx, sel } — sel stays in JS only until reveal
+    var duelRevealIdx = -1;
+    var duelRevealHtml = "";
+    var duelNoteText = "";
+    var duelNoteIdx = -1;
+    function tfSyncDuelUi() {
+      var banner = $("duel-banner"), note = $("duel-note"), reveal = $("duel-reveal");
+      var s = state.ex[state.current];
+      if (banner) banner.hidden = !(duelPending && duelPending.idx === state.current && !(s && s.locked));
+      if (note) {
+        if (duelNoteText && duelNoteIdx === state.current) { note.hidden = false; note.textContent = duelNoteText; }
+        else { note.hidden = true; note.textContent = ""; }
+      }
+      if (reveal) {
+        if (duelRevealIdx === state.current && duelRevealHtml) { reveal.hidden = false; reveal.innerHTML = duelRevealHtml; }
+        else { reveal.hidden = true; reveal.innerHTML = ""; }
+      }
+    }
+    var tfRenderAllOrig = renderAll;
+    renderAll = function () { tfRenderAllOrig(); tfSyncDuelUi(); };
+    function duelOpenExercise(idx, fresh) {
+      if (typeof stopPlayback === "function") stopPlayback();
+      if (typeof exitInstPlay === "function") exitInstPlay();
+      if (typeof setMode === "function") setMode("tracer");
+      if (fresh) state.ex[idx] = freshExState();
+      state.current = idx;
+      renderAll();
+      setTimeout(function () { var h = $("ex-title"); if (h) h.scrollIntoView({ block: "start" }); }, 90);
+    }
+    function openDuel(n, p) {
+      var idx = n - 1;
+      var ex = EXERCISES[idx];
+      if (!ex || typeof p !== "number" || p < 0 || p >= ex.options.length) { openDuelFallback(n); return; }
+      duelPending = { idx: idx, sel: p };
+      duelRevealIdx = -1; duelRevealHtml = ""; duelNoteText = ""; duelNoteIdx = -1;
+      duelOpenExercise(idx, true);
+      announce("Prediction duel opened for Exercise " + n + ". Someone has already locked their prediction — lock yours to reveal both.");
+    }
+    function openDuelFallback(n) {
+      duelPending = null; duelRevealIdx = -1; duelRevealHtml = "";
+      if (typeof n === "number" && n >= 1 && n <= EXERCISES.length) {
+        duelNoteText = "That duel link could not be read, so the plain exercise was opened instead.";
+        duelNoteIdx = n - 1;
+        duelOpenExercise(n - 1, false);
+        announce("That duel link could not be read, so the plain exercise was opened instead.");
+      } else {
+        duelNoteText = ""; duelNoteIdx = -1;
+      }
+    }
+    function duelDecodePayload(seg) {
+      if (!seg || !/^[A-Za-z0-9_-]+$/.test(seg)) return null;
+      try { var o = JSON.parse(tfpB64d(seg)); if (!o || typeof o.p !== "number") return null; return o; } catch (e) { return null; }
+    }
+    function duelDecodeAny(text) {
+      var s = String(text == null ? "" : text).trim();
+      if (!s) return null;
+      var hm = /#duel-(\d+)-([A-Za-z0-9_-]+)/.exec(s);
+      if (hm) { var o = duelDecodePayload(hm[2]); if (o) return { n: parseInt(hm[1], 10), p: o.p }; return { bad: true, n: parseInt(hm[1], 10) }; }
+      var ci = s.indexOf("TFD1:");
+      if (ci !== -1) {
+        var seg = s.slice(ci + 5).trim().split(/\s/)[0];
+        try { var o2 = JSON.parse(tfpB64d(seg)); if (o2 && typeof o2.e === "number" && typeof o2.p === "number") return { n: o2.e, p: o2.p }; } catch (e) {}
+        return { bad: true };
+      }
+      var mm = /duel-(\d+)/.exec(s);
+      if (mm) return { bad: true, n: parseInt(mm[1], 10) };
+      return { bad: true };
+    }
+    function maybeDuelReveal() {
+      if (!duelPending || duelPending.idx !== state.current) return;
+      var s = state.ex[state.current];
+      if (!s || !s.locked) return;
+      var ex = EXERCISES[state.current];
+      var theirText = ex.options[duelPending.sel];
+      var theirOk = duelPending.sel === ex.correct;
+      duelRevealHtml = "<h4>Prediction duel \u2014 the reveal</h4>" +
+        '<div class="pair-vs"><div><span>Their prediction</span>' + esc(theirText) + "<br><strong>" + (theirOk ? "Correct" : "Not correct") + "</strong></div>" +
+        '<div><span>Your prediction</span>' + esc(ex.options[s.selected]) + "<br><strong>" + (s.correct ? "Correct" : "Not correct") + "</strong></div></div>" +
+        "<p>The program printed <strong>" + esc(ex.options[ex.correct]) + "</strong>. From here the exercise continues as normal \u2014 step through the trace and work the Modify stage.</p>";
+      duelRevealIdx = state.current;
+      s.lastDuel = "challenged";
+      duelPending = null;
+      try { tfSave(); } catch (e) {}
+      tfSyncDuelUi();
+      announce("Duel reveal: their prediction was " + theirText + " (" + (theirOk ? "correct" : "not correct") + "); yours was " + ex.options[s.selected] + " (" + (s.correct ? "correct" : "not correct") + ").");
+    }
+    (function wireDuels() {
+      var btn = $("duel-btn");
+      if (btn) btn.addEventListener("click", function () {
+        var s = state.ex[state.current];
+        var status = $("duel-status");
+        if (!s || !s.locked) {
+          if (status) status.textContent = "Lock your prediction first \u2014 a duel carries the prediction you locked.";
+          announce("Lock your prediction first \u2014 a duel carries the prediction you locked.");
+          return;
+        }
+        var payload = tfpB64e(JSON.stringify({ p: s.selected }));
+        var link = location.href.split("#")[0] + "#duel-" + (state.current + 1) + "-" + payload;
+        var code = "TFD1:" + tfpB64e(JSON.stringify({ e: state.current + 1, p: s.selected }));
+        s.lastDuel = "issued";
+        try { tfSave(); } catch (e) {}
+        var out = $("duel-out");
+        if (out) out.hidden = false;
+        var lo = $("duel-link-out"); if (lo) lo.value = link;
+        var co = $("duel-code-out"); if (co) co.textContent = code;
+        function done(ok) {
+          if (status) status.textContent = ok ? "Duel link copied \u2014 the full link and code are also in the box below." : "Duel ready \u2014 copy the link or code from the box below.";
+          announce("Duel created for Exercise " + (state.current + 1) + ". Your locked prediction is encoded in the link, not readable in it.");
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(link).then(function () { done(true); }, function () { done(false); });
+        } else done(false);
+      });
+      var openBtn = $("duel-open-btn");
+      if (openBtn) openBtn.addEventListener("click", function () {
+        var st = $("duel-open-status");
+        var res = duelDecodeAny($("duel-open-input") ? $("duel-open-input").value : "");
+        if (res && !res.bad && typeof res.n === "number") { openDuel(res.n, res.p); if (st) st.textContent = ""; }
+        else if (res && typeof res.n === "number") { openDuelFallback(res.n); if (st) st.textContent = "That duel link could not be read, so the plain exercise was opened instead."; }
+        else if (st) st.textContent = "That is not a duel link or code, so nothing was opened.";
+      });
+      var lockBtn = $("lock-btn");
+      if (lockBtn) lockBtn.addEventListener("click", maybeDuelReveal);
+      ["pair-a-lock", "pair-b-lock", "joint-lock"].forEach(function (id) {
+        var b = $(id);
+        if (b) b.addEventListener("click", function () { setTimeout(maybeDuelReveal, 0); });
+      });
+      // Opening a duel link: #duel-N-<payload>. A malformed one opens the
+      // plain exercise with a short note \u2014 never an error state.
+      var hash = location.hash || "";
+      if (hash.indexOf("#duel-") === 0) {
+        var res2 = duelDecodeAny(hash);
+        if (res2 && !res2.bad && typeof res2.n === "number") openDuel(res2.n, res2.p);
+        else openDuelFallback(res2 && typeof res2.n === "number" ? res2.n : null);
+      }
+      tfSyncDuelUi();
     })();
 
     /* ================= My traps: the student's own misconception history =================
