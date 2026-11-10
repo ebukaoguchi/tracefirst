@@ -758,6 +758,9 @@
       @media(max-width:700px){.instructors-head{flex-wrap:wrap}}
       .journal-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;align-items:center}
       .journal-status{font-size:.92rem;color:var(--ink-soft);margin-top:10px;min-height:1.4em}
+      .progress-confirm{margin-top:12px;border:1.5px solid var(--amber);background:var(--amber-soft);border-radius:10px;padding:13px 15px;font-size:.93rem}
+      .progress-confirm[hidden]{display:none}
+      .progress-confirm .journal-actions{margin-top:10px}
       .digest-textarea{width:100%;box-sizing:border-box;min-height:140px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel-2);color:var(--ink);padding:12px 14px;font-family:"IBM Plex Mono",monospace;font-size:.85rem;line-height:1.5;resize:vertical}
       .digest-textarea:focus,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
       button:focus-visible,[tabindex]:focus-visible,a:focus-visible,.gline:focus-visible,.opt-btn:focus-visible,.ex-btn:focus-visible,.mode-btn:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
@@ -1368,8 +1371,23 @@
         padding:9px 11px;font-size:.92rem;font-weight:600;color:var(--ink);line-height:1.35;
       }
       .mode-menu-item:hover,.mode-menu-item:focus-visible{background:var(--accent-soft);color:var(--accent-strong)}
-      #bolt-worlds,#bolt-challenges,#bolt-program,#bolt-commands,#tracer-exercises,#review-panel,#mytraps-block,#potd-box,#lecture-entry,#crosswalk-section,#instructors-section,#gym-rounds,#gym-hunt,#gym-hypo-card,#gym-fix-card,#rawp-details,#translator-sample,#translator-search,#trans-list,#bridge-activities,#bridge-card,#make-prompts,#make-editor-card,#trace-panel,#make-ladders,.ch-collapse{scroll-margin-top:92px}
+      #bolt-worlds,#bolt-challenges,#bolt-program,#bolt-commands,#tracer-exercises,#review-panel,#mytraps-block,#potd-box,#lecture-entry,#crosswalk-section,#instructors-section,#gym-rounds,#gym-hunt,#gym-hypo-card,#gym-fix-card,#rawp-details,#refactor-rounds,#refactor-stage1,#refactor-stage2,#refactor-stage3,#translator-sample,#translator-search,#trans-list,#bridge-activities,#bridge-card,#make-prompts,#make-editor-card,#trace-panel,#make-ladders,.ch-collapse{scroll-margin-top:92px}
       .section-highlight{outline:3px solid var(--amber) !important;outline-offset:3px}
+      /* Refactor Gym */
+      #refnav .chip-btn{padding:6px 10px;font-size:.84rem}
+      #refactor-predict-options .opt-btn span:last-child{white-space:pre-wrap;font-family:"IBM Plex Mono",monospace;text-align:left}
+      .ref-choice{margin-top:18px}
+      .ref-choice-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+      .ref-choice-tag{font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--accent-strong)}
+      .ref-choice.picked-correct .codebox{outline:3px solid var(--accent);outline-offset:2px}
+      .ref-choice.picked-wrong{opacity:.75}
+      .ref-out{font-family:"IBM Plex Mono",monospace;white-space:pre-wrap;background:var(--code-bg);color:var(--code-ink);border-radius:8px;padding:8px 11px;margin-top:6px;font-size:.9rem}
+      .ref-out .ref-out-label{display:block;font-family:"IBM Plex Sans",sans-serif;font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--code-dim);font-weight:600;margin-bottom:3px}
+      .ref-summary{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
+      .ref-summary>div{border:1px solid var(--line);border-radius:10px;padding:13px 14px;background:var(--panel-2)}
+      .ref-summary h4{font-size:.95rem}
+      .ref-summary p{margin-top:6px;font-size:.94rem;color:var(--ink-soft)}
+      @media (max-width:720px){.ref-summary{grid-template-columns:1fr}}
       /* Drawer section sub-rows (mobile) */
       .drawer-subs{display:flex;flex-direction:column;background:var(--panel-2);border-bottom:1px solid var(--line);padding:4px 0}
       .drawer-sub-row{
@@ -1634,7 +1652,7 @@
             <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Order code, then write a line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find and fix faults.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 60</strong><span>The rest of the course.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 63</strong><span>The rest of the course.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write your own programs.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
             <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
@@ -1692,6 +1710,10 @@
         <button class="mode-btn" type="button" id="mode-gym" role="tab" aria-controls="gym-mode" aria-selected="false" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
           Debugging Gym
+        </button>
+        <button class="mode-btn" type="button" id="mode-refactor" role="tab" aria-controls="refactor-mode" aria-selected="false" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h13"/><path d="M13 3.5 16.5 7 13 10.5"/><path d="M21 17H8"/><path d="M11 13.5 7.5 17l3.5 3.5"/></svg>
+          Refactor Gym
         </button>
         <button class="mode-btn" type="button" id="mode-translator" role="tab" aria-controls="translator-mode" aria-selected="false" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h9M8.5 3v2c0 3-1.8 5.6-4 7M6 8c.6 2 2.3 4.2 4.5 5.5M13 21l4.5-10L22 21M14.8 17h5.4"/></svg>
@@ -1780,6 +1802,7 @@
           <button class="drawer-row" type="button" data-drawer-mode="bolt" aria-current="false"><span class="drawer-row-name">Bolt's World</span><span class="drawer-hint" data-hint="bolt"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="tracer" aria-current="true"><span class="drawer-row-name">Prediction Tracer</span><span class="drawer-hint" data-hint="tracer"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="gym" aria-current="false"><span class="drawer-row-name">Debugging Gym</span><span class="drawer-hint" data-hint="gym"></span></button>
+          <button class="drawer-row" type="button" data-drawer-mode="refactor" aria-current="false"><span class="drawer-row-name">Refactor Gym</span><span class="drawer-hint" data-hint="refactor"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="translator" aria-current="false"><span class="drawer-row-name">Error Translator</span><span class="drawer-hint" data-hint="translator"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="challenges" aria-current="false"><span class="drawer-row-name">Challenges</span><span class="drawer-hint" data-hint="challenges"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="bridge" aria-current="false"><span class="drawer-row-name">Bridge</span><span class="drawer-hint" data-hint="bridge"></span></button>
@@ -1949,7 +1972,7 @@ for (int i = 0; i < 3; i++) {
             <select class="lecture-select" id="lecture-ex-select" aria-label="Choose an exercise to project"></select>
             <button class="btn" type="button" id="lecture-project-btn">Project this exercise</button>
           </div>
-          <p class="lecture-pick-note">Any of the 60 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
+          <p class="lecture-pick-note">Any of the 63 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
         </div>
 
         <div id="lecture-project" hidden>
@@ -2294,7 +2317,7 @@ for (int i = 0; i < 3; i++) {
         </div>
       </section>
       <details class="session-tools" id="session-tools">
-        <summary><span class="session-tools-title">Session &amp; instructor tools</span><span class="gcount">Review &middot; Problem of the Day &middot; Lecture mode &middot; Journal &middot; Assignments &middot; Crosswalk &#9662;</span></summary>
+        <summary><span class="session-tools-title">Session &amp; instructor tools</span><span class="gcount">Review &middot; Problem of the Day &middot; Lecture mode &middot; Journal &middot; Progress file &middot; Assignments &middot; Crosswalk &#9662;</span></summary>
         <div class="session-tools-inner">
 <section class="card" id="review-panel" aria-labelledby="review-h" style="margin-top:14px;">
         <span class="concept-tag">Review · spaced practice</span>
@@ -2327,6 +2350,26 @@ for (int i = 0; i < 3; i++) {
           <span style="font-size:.88rem;color:var(--ink-soft);">Downloads <span style="font-family:'IBM Plex Mono',monospace;">tracefirst-journal.txt</span> · nothing leaves this page until you share the file.</span>
         </div>
         <p class="journal-status" id="journal-status" role="status"></p>
+      </section>
+<section class="card" style="margin-top:18px;" aria-labelledby="progress-file-h">
+        <h3 id="progress-file-h">Progress file — take your progress with you</h3>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">Your progress is saved in this browser. A progress file lets you carry that same record with you — this is entirely on-device, with no server and no accounts.</p>
+        <div class="journal-actions">
+          <button class="btn" type="button" id="export-progress-btn">Export my progress file</button>
+          <button class="btn ghost" type="button" id="import-progress-btn">Import a progress file</button>
+          <input type="file" id="import-progress-file" accept=".json,application/json" aria-label="Import a progress file" hidden>
+        </div>
+        <p style="font-size:.88rem;color:var(--ink-soft);margin-top:8px;">Save this file to move your progress to another browser or computer, or keep it as a backup.</p>
+        <p class="journal-status" id="progress-file-status" role="status"></p>
+        <div class="progress-confirm" id="progress-import-confirm" hidden>
+          <p><strong>This progress file looks good.</strong> Nothing has been changed yet. Choose how to use it:</p>
+          <p style="margin-top:6px;">If you merge, for each exercise, activity or section, if your current progress has a record, it stays; the file&rsquo;s record is used only where your current progress has nothing. Preferences stored in the file (theme, display settings) follow the same rule if you merge, and are replaced if you replace.</p>
+          <div class="journal-actions">
+            <button class="btn" type="button" id="progress-import-replace">Replace all my progress with the file</button>
+            <button class="btn ghost" type="button" id="progress-import-merge">Merge: keep what I have and add what is only in the file</button>
+            <button class="btn ghost" type="button" id="progress-import-cancel">Cancel</button>
+          </div>
+        </div>
       </section>
 <section class="card" id="assign-section" style="margin-top:18px;" aria-labelledby="assign-h">
         <h3 id="assign-h">Assignments</h3>
@@ -2497,6 +2540,83 @@ for (int i = 0; i < 3; i++) {
           </div>
         </details>
       </div><!-- /gym-mode -->
+
+      <div id="refactor-mode" role="tabpanel" tabindex="0" hidden>
+        <section class="gym-intro">
+          <h2>Same output. Better shape.</h2>
+          <p>Every program here <strong>works</strong> — it is just badly built: checks nested three deep, statements copied out by hand, a magic number typed three times, a flag variable doing a function's job. Refactoring means changing a program's shape without changing its behaviour, and that claim is testable: <strong>a rewrite is a true refactor only if it prints exactly what the original prints, on every input</strong> — not just the one in front of you.</p>
+          <p>Each round runs in three stages. <strong>Stage 1:</strong> predict the messy program's exact output and lock it in, the same discipline as the Prediction Tracer. <strong>Stage 2:</strong> three cleaner rewrites are offered; exactly one is behaviour-identical, and the other two are plausible cleanups that quietly move a boundary, flip a condition, or change a type. Pick a wrong one and you are shown the concrete input where its output parts from the original's. <strong>Stage 3:</strong> what changed, and the invariant that kept the behaviour the same.</p>
+        </section>
+
+        <section class="toolbar" id="refactor-rounds" aria-label="Choose a refactor round">
+          <div>
+            <div class="tlabel">Rounds — six working but messy programs, in order</div>
+            <div class="exnav" id="refnav"></div>
+          </div>
+          <div class="scorebar" id="refactor-scorebar" aria-label="Your Refactor Gym scoreboard"></div>
+        </section>
+
+        <section class="card" id="refactor-stage1" style="margin-top:18px;" aria-labelledby="refactor-title">
+          <span class="concept-tag" id="refactor-concept"></span>
+          <h2 id="refactor-title"></h2>
+          <p class="story" id="refactor-story"></p>
+          <div class="codebox">
+            <div class="codehead"><span id="refactor-filename">messy.cpp</span><span>C++</span></div>
+            <pre id="refactor-code" aria-label="The original program"></pre>
+          </div>
+          <h3 style="margin-top:18px; font-size:1.05rem;">Stage 1 — Predict</h3>
+          <p class="predict-q" id="refactor-predict-q" style="margin-top:6px;"></p>
+          <div class="options" id="refactor-predict-options"></div>
+          <div class="bits-toggle" id="refactor-confidence-row" style="border-top:none; margin-top:2px; padding-top:0;">
+            <span class="bits-label" id="refactor-confidence-label">How sure are you?</span>
+            <div class="bits-group" role="group" aria-labelledby="refactor-confidence-label">
+              <button type="button" class="bits-btn" id="refactor-conf-sure" aria-pressed="false">Sure</button>
+              <button type="button" class="bits-btn" id="refactor-conf-unsure" aria-pressed="false">Not sure</button>
+            </div>
+            <span class="bits-note">Optional — one tap, and locking works without it.</span>
+          </div>
+          <div class="lockrow">
+            <button class="btn" type="button" id="refactor-lock-btn" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+              Lock my prediction
+            </button>
+            <span class="locknote" id="refactor-lock-note">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+              Stage 2 stays locked until you commit. You cannot judge a rewrite until you know, exactly, what the original does.
+            </span>
+          </div>
+          <div class="locked-banner" id="refactor-locked-banner" role="status"></div>
+          <div class="feedback" id="refactor-predict-feedback" role="status"></div>
+        </section>
+
+        <section class="card" id="refactor-stage2" hidden aria-labelledby="refactor-stage2-h" style="margin-top:18px;">
+          <span class="gym-stage-tag">Stage 2 of 3 · Choose the rewrite</span>
+          <h3 id="refactor-stage2-h" style="font-size:1.1rem;">Which rewrite prints exactly what the original prints — on every input?</h3>
+          <p style="margin-top:6px; font-size:.95rem;">All three are cleaner than the original. Two of them quietly change the behaviour. Only the one that changes nothing but the shape is a refactor.</p>
+          <div id="refactor-choices"></div>
+          <div class="feedback" id="refactor-choice-feedback" role="status"></div>
+        </section>
+
+        <section class="card" id="refactor-stage3" hidden aria-labelledby="refactor-stage3-h" style="margin-top:18px;">
+          <span class="gym-stage-tag">Stage 3 of 3 · What changed, what did not</span>
+          <h3 id="refactor-stage3-h" style="font-size:1.1rem;">Round complete — same behaviour, better shape</h3>
+          <div class="ref-summary">
+            <div>
+              <h4>What changed</h4>
+              <p id="refactor-changed"></p>
+            </div>
+            <div>
+              <h4>What did not — the invariant</h4>
+              <p id="refactor-kept"></p>
+            </div>
+          </div>
+          <div class="sample-out"><div class="chead">The original program's output — the rewrite you picked matches it</div><div id="refactor-final-out"></div></div>
+          <div class="lockrow">
+            <button class="btn" type="button" id="refactor-next-btn" hidden>Next round</button>
+            <button class="btn ghost" type="button" id="refactor-restart-btn">Do this round again</button>
+          </div>
+        </section>
+      </div><!-- /refactor-mode -->
 
       <div id="translator-mode" role="tabpanel" tabindex="0" hidden>
         <section class="trans-intro">
@@ -2810,12 +2930,12 @@ int main() {
         <div id="instructors-body" hidden>
           <div class="lecture-inst-entry">
             <h4>Lecture mode — run a tracer exercise in front of the class</h4>
-            <p>A single projected screen: pick any of the 60 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
+            <p>A single projected screen: pick any of the 63 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
             <div class="journal-actions"><button class="btn small" type="button" id="lecture-open-btn-2">Open Lecture mode</button></div>
           </div>
                     <div class="studio" id="inst-studio">
             <h4>Instructor exercise studio</h4>
-            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 60 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
+            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 63 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
             <div class="authored-field">
               <label for="inst-title">Exercise title</label>
               <input class="authored-input" type="text" id="inst-title" maxlength="80" placeholder="e.g. The average that is not an average" autocomplete="off">
@@ -6185,6 +6305,203 @@ int main() {
           correct: 0,
           explain: "Each call runs <b>new int[1]</b> again, allocating a <em>fresh</em> heap box — heap #1, then heap #2 — and each call's temp dies on return. Two allocations, zero deletes, two orphaned boxes each holding 77, and the output is still just <b>done</b>. Nothing about a second call reuses or repairs the first leak."
         }
+      },
+      {
+        concept: "Recursion",
+        topic: "Recursion",
+        title: "Fibonacci, two branches",
+        goal: "Earlier recursive functions called themselves <b>once</b>, making a single chain. fib's return line calls itself <b>twice</b>, so the calls form a <b>tree</b>: the left child runs all the way down and back before the right child is even called, and two base cases anchor the tree — <b>fib(0) = 0</b> and <b>fib(1) = 1</b>.",
+        stories: {
+          health:   "A program computes a <strong>Fibonacci number</strong> — the sequence 0, 1, 1, 2, 3, 5, …, where each value is the sum of the two before it. A function answers fib(4) by calling itself for the two smaller values it needs. The program prints one number.",
+          psych:    "A program computes a <strong>Fibonacci number</strong> — the sequence 0, 1, 1, 2, 3, 5, …, where each value is the sum of the two before it. A function answers fib(4) by calling itself for the two smaller values it needs. The program prints one number.",
+          business: "A program computes a <strong>Fibonacci number</strong> — the sequence 0, 1, 1, 2, 3, 5, …, where each value is the sum of the two before it. A function answers fib(4) by calling itself for the two smaller values it needs. The program prints one number.",
+          arts:     "A program computes a <strong>Fibonacci number</strong> — the sequence 0, 1, 1, 2, 3, 5, …, where each value is the sum of the two before it. A function answers fib(4) by calling itself for the two smaller values it needs. The program prints one number."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int fib(int n) {",
+          "    if (n == 0) { return 0; }",
+          "    if (n == 1) { return 1; }",
+          "    return fib(n - 1) + fib(n - 2);",
+          "}",
+          "",
+          "int main() {",
+          "    cout << fib(4);",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["3", "4", "8", "5"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 4, text: "<b>Named misconception: the single chain.</b> 4 is what fib(n) = fib(n − 1) + 1 gives, marched down one line: 1, 2, 3, 4. But the parting step is the return line: it holds <b>two</b> calls, fib(n − 1) <b>+ fib(n − 2)</b>, so every call branches into two children and the returned values combine pairwise — fib(2) = 1 + 0 = 1, fib(3) = 1 + 1 = 2, fib(4) = 2 + 1 = <b>3</b>. There is no single chain to march down." },
+          2: { step: 10, text: "<b>Named misconception: the shifted ladder.</b> 8 is <b>fib(6)</b>'s value, not fib(4)'s — it comes from anchoring the sequence one rung too high, starting the ladder at 1, 2 instead of 0, 1. The parting step is the base case itself: fib(1) returns <b>1</b> and fib(0) returns <b>0</b>, exactly as written, so the ladder runs 0, 1, 1, 2, <b>3</b> — and fib(4) is 3." },
+          3: { step: 13, text: "<b>Named misconception: one base case is enough.</b> 5 is the ladder seeded 1, 1 — what you get when the second base case is forgotten and fib(0) is treated as 1: 1, 1, 2, 3, 5. The parting step is fib(0) itself: the program's second base case returns <b>0</b>, not 1, and that 0 pulls every value above it down — fib(2) = 1, fib(3) = 2, fib(4) = <b>3</b>." }
+        },
+        steps: [
+          { line: 10, vars: {}, frames: [{ name: "main", vars: {} }], out: "", note: "<b>main</b> reaches the print, but <b>fib(4)</b> must finish first. This recursion is new: the return line calls fib <b>twice</b>, so the calls form a branching <b>tree</b>, not the single chain of Factorial or Sum. Watch which child runs, which one is still pending, and how the two returned values combine." },
+          { line: 3, vars: { n: ["int", "4"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }], out: "", note: "Control enters <b>fib(4)</b>. Its frame sits on top of main's, holding its own <b>n = 4</b>." },
+          { line: 4, vars: { n: ["int", "4"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }], out: "", note: "First base-case test: is <b>4 == 0</b>? <b>False</b>." },
+          { line: 5, vars: { n: ["int", "4"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }], out: "", note: "Second base-case test: is <b>4 == 1</b>? <b>False</b>. Neither base case catches 4 — this call must recurse." },
+          { line: 6, vars: { n: ["int", "4"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }], out: "", note: "<b>The parting step.</b> The return line is <b>fib(n − 1) + fib(n − 2)</b> — two calls. The left child is evaluated first: fib(4) calls <b>fib(3)</b> and waits. The right child, <b>fib(2), is still pending</b> — it has not been called yet, and fib(4) cannot finish until both children have answered." },
+          { line: 3, vars: { n: ["int", "3"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }, { name: "fib", vars: { n: ["int", "3"] } }], out: "", note: "The left child enters: <b>fib(3)</b>, with its own n = 3." },
+          { line: 6, vars: { n: ["int", "3"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }, { name: "fib", vars: { n: ["int", "3"] } }], out: "", note: "fib(3) fails both base tests too, and its return line branches the same way: it calls its left child <b>fib(2)</b> first, while its own right child, <b>fib(1)</b>, stays pending." },
+          { line: 3, vars: { n: ["int", "2"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }, { name: "fib", vars: { n: ["int", "3"] } }, { name: "fib", vars: { n: ["int", "2"] } }], out: "", note: "<b>fib(2)</b> enters. The tree is three fib frames deep, and every frame above is waiting on this branch." },
+          { line: 6, vars: { n: ["int", "2"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }, { name: "fib", vars: { n: ["int", "3"] } }, { name: "fib", vars: { n: ["int", "2"] } }], out: "", note: "fib(2) calls its left child <b>fib(1)</b> first; its right child <b>fib(0)</b> is pending." },
+          { line: 3, vars: { n: ["int", "1"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }, { name: "fib", vars: { n: ["int", "3"] } }, { name: "fib", vars: { n: ["int", "2"] } }, { name: "fib", vars: { n: ["int", "1"] } }], out: "", note: "<b>fib(1)</b> enters — the deepest call on this branch. The stack is five frames tall." },
+          { line: 5, vars: { n: ["int", "1"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }, { name: "fib", vars: { n: ["int", "3"] } }, { name: "fib", vars: { n: ["int", "2"] } }, { name: "fib", vars: { n: ["int", "1"] } }], out: "", note: "<b>BASE CASE.</b> The second test catches it: <b>1 == 1 is true</b>, so fib(1) <b>returns 1</b> at once, without calling fib again. Its frame pops. A base case is a leaf of the tree: no children, an answer straight from the function." },
+          { line: 6, vars: { n: ["int", "2"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }, { name: "fib", vars: { n: ["int", "3"] } }, { name: "fib", vars: { n: ["int", "2"] } }], out: "", note: "Back in fib(2): the left child delivered <b>1</b>. Now the pending right child runs — fib(2) calls <b>fib(0)</b>." },
+          { line: 3, vars: { n: ["int", "0"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }, { name: "fib", vars: { n: ["int", "3"] } }, { name: "fib", vars: { n: ["int", "2"] } }, { name: "fib", vars: { n: ["int", "0"] } }], out: "", note: "<b>fib(0)</b> enters — the tree's other kind of leaf." },
+          { line: 4, vars: { n: ["int", "0"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }, { name: "fib", vars: { n: ["int", "3"] } }, { name: "fib", vars: { n: ["int", "2"] } }, { name: "fib", vars: { n: ["int", "0"] } }], out: "", note: "<b>BASE CASE.</b> The first test catches it: <b>0 == 0 is true</b>, so fib(0) <b>returns 0</b>. This is the second base case — forget it, seed the ladder 1, 1 instead of 0, 1, and every value above comes out too big." },
+          { line: 6, vars: { n: ["int", "2"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }, { name: "fib", vars: { n: ["int", "3"] } }, { name: "fib", vars: { n: ["int", "2"] } }], out: "", note: "Both of fib(2)'s children have answered, so it can finally combine them: <b>1 + 0 = 1</b>. fib(2) <b>returns 1</b> and its frame pops. The combine happens only now — after the <em>second</em> child returns." },
+          { line: 6, vars: { n: ["int", "3"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }, { name: "fib", vars: { n: ["int", "3"] } }], out: "", note: "Back in fib(3): its left child delivered <b>1</b>. Its pending right child runs at last — fib(3) calls <b>fib(1)</b>." },
+          { line: 3, vars: { n: ["int", "1"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }, { name: "fib", vars: { n: ["int", "3"] } }, { name: "fib", vars: { n: ["int", "1"] } }], out: "", note: "<b>fib(1)</b> enters again — a fresh frame. The tree asks for it anew: the answer computed in the other branch is not remembered or shared." },
+          { line: 5, vars: { n: ["int", "1"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }, { name: "fib", vars: { n: ["int", "3"] } }, { name: "fib", vars: { n: ["int", "1"] } }], out: "", note: "<b>BASE CASE.</b> 1 == 1 is true: fib(1) <b>returns 1</b> and its frame pops." },
+          { line: 6, vars: { n: ["int", "3"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }, { name: "fib", vars: { n: ["int", "3"] } }], out: "", note: "fib(3) combines its two children: <b>1 + 1 = 2</b>. It <b>returns 2</b> and pops — the whole left half of fib(4)'s tree is done." },
+          { line: 6, vars: { n: ["int", "4"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }], out: "", note: "Back in fib(4) at last: the left child delivered <b>2</b>. NOW the pending right child runs — fib(4) calls <b>fib(2)</b>. It has been waiting since the very first return line." },
+          { line: 3, vars: { n: ["int", "2"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }, { name: "fib", vars: { n: ["int", "2"] } }], out: "", note: "<b>fib(2)</b> enters a second time, as a fresh frame — the machine recomputes the subtree it already solved inside fib(3)." },
+          { line: 6, vars: { n: ["int", "2"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }, { name: "fib", vars: { n: ["int", "2"] } }], out: "", note: "Same shape as before: fib(2) calls its left child <b>fib(1)</b> first; its right child <b>fib(0)</b> is pending." },
+          { line: 5, vars: { n: ["int", "1"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }, { name: "fib", vars: { n: ["int", "2"] } }, { name: "fib", vars: { n: ["int", "1"] } }], out: "", note: "<b>BASE CASE.</b> fib(1) <b>returns 1</b> and its frame pops." },
+          { line: 4, vars: { n: ["int", "0"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }, { name: "fib", vars: { n: ["int", "2"] } }, { name: "fib", vars: { n: ["int", "0"] } }], out: "", note: "<b>BASE CASE.</b> fib(0) <b>returns 0</b> and its frame pops." },
+          { line: 6, vars: { n: ["int", "2"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }, { name: "fib", vars: { n: ["int", "2"] } }], out: "", note: "fib(2) combines its children: <b>1 + 0 = 1</b>, and <b>returns 1</b> to fib(4). Its frame pops." },
+          { line: 6, vars: { n: ["int", "4"] }, frames: [{ name: "main", vars: {} }, { name: "fib", vars: { n: ["int", "4"] } }], out: "", note: "fib(4) finally has both children: <b>2 + 1 = 3</b>. The root of the tree <b>returns 3</b> to main, and the last fib frame pops." },
+          { line: 10, vars: {}, frames: [{ name: "main", vars: {} }], out: "3", note: "Back in main, the call is replaced by its result and the print runs: <b>3</b>." },
+          { line: 11, vars: {}, frames: [{ name: "main", vars: {} }], out: "3", note: "The program ends. Final answer: <b>3</b> — fib(4) = fib(3) + fib(2) = 2 + 1, assembled leaf by leaf up the tree." }
+        ],
+        modify: {
+          prompt: "The call changes from fib(4) to fib(5). The function is untouched. What prints now?",
+          code: 'int fib(int n) {\n    if (n == 0) { return 0; }\n    if (n == 1) { return 1; }\n    return fib(n - 1) + fib(n - 2);\n}\ncout << fib(<mark>5</mark>);',
+          options: ["5", "3", "8", "4"],
+          correct: 0,
+          explain: "fib(5) = fib(4) + fib(3) — and you watched both children return in the trace: 3 + 2 = <b>5</b>. One more rung on the same ladder: the tree grows, the rule does not change."
+        }
+      },
+      {
+        concept: "Recursion",
+        topic: "Recursion",
+        title: "Counting a's, recursively",
+        goal: "Recursion can walk a string the way a loop walks an array — <b>one character per call</b>, with an <b>index</b> as the place-keeper. The base case is a <b>position</b>: the index reaching <b>s.length()</b>. Matching frames add their 1 as the calls return; non-matching frames pass the count up untouched.",
+        stories: {
+          health:   "A program counts how many times the letter <strong>a</strong> appears in the word <strong>banana</strong>. A function checks one character, then asks itself about the rest of the word, starting from the next index. The program prints one number.",
+          psych:    "A program counts how many times the letter <strong>a</strong> appears in the word <strong>banana</strong>. A function checks one character, then asks itself about the rest of the word, starting from the next index. The program prints one number.",
+          business: "A program counts how many times the letter <strong>a</strong> appears in the word <strong>banana</strong>. A function checks one character, then asks itself about the rest of the word, starting from the next index. The program prints one number.",
+          arts:     "A program counts how many times the letter <strong>a</strong> appears in the word <strong>banana</strong>. A function checks one character, then asks itself about the rest of the word, starting from the next index. The program prints one number."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "int countA(string s, int i) {",
+          "    if (i == s.length()) { return 0; }",
+          "    if (s[i] == 'a') { return 1 + countA(s, i + 1); }",
+          "    return countA(s, i + 1);",
+          "}",
+          "",
+          "int main() {",
+          "    cout << countA(\"banana\", 0);",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["3", "1", "2", "6"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 6, text: "<b>Named misconception: stop at the first match.</b> 1 is the count if the function ended at the first 'a' it found. But look at the parting step: the match line returns <b>1 + countA(s, i + 1)</b> — the 1 is banked, and the function <b>still recurses</b> on the rest of the word. Matching never stops the walk; only the end of the string does. Two more 'a's, at indexes 3 and 5, are counted on the way, for <b>3</b>." },
+          2: { step: 14, text: "<b>Named misconception: the last character is already counted.</b> 2 counts the 'a's at indexes 1 and 3 and stops — as if the walk ended at index 4. The parting step is the frame for <b>i = 5</b>: index 5 is a real character, the final 'a' of banana, and its frame runs the same match test and banks its 1. The base case is i == 6, one <em>past</em> the last index — so every index up to 5 gets its test, the last character included." },
+          3: { step: 3, text: "<b>Named misconception: every character counts.</b> 6 is the length of \"banana\" — the number of characters <em>examined</em>, not the number that matched. The parting step is the match test: only frames whose character passes <b>s[i] == 'a'</b> add a 1; the 'b' frame and the two 'n' frames pass the count through unchanged. Three characters pass the test, so the count is <b>3</b>." }
+        },
+        steps: [
+          { line: 11, vars: {}, frames: [{ name: "main", vars: {} }], out: "", note: "<b>main</b> calls <b>countA(\"banana\", 0)</b>: the word, and the index to start from. The function will examine <b>one character per call</b>, passing the rest of the word down by moving the index — the string itself is never cut." },
+          { line: 4, vars: { s: ["string", "\"banana\""], i: ["int", "0"] }, frames: [{ name: "main", vars: {} }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "0"] } }], out: "", note: "The first call: <b>i = 0</b>. Every frame holds its own copy of <b>s</b> (\"banana\") and its own <b>i</b> — only the index changes from call to call." },
+          { line: 5, vars: { s: ["string", "\"banana\""], i: ["int", "0"] }, frames: [{ name: "main", vars: {} }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "0"] } }], out: "", note: "The base-case test is a <b>position</b>, not a value: is <b>i == s.length()</b> — has the index reached 6, the end of \"banana\"? <b>0 == 6 is false</b>: a character remains at index 0." },
+          { line: 6, vars: { s: ["string", "\"banana\""], i: ["int", "0"] }, frames: [{ name: "main", vars: {} }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "0"] } }], out: "", note: "The match test: <b>s[0]</b> is <b>'b'</b>. Is 'b' == 'a'? <b>False</b>." },
+          { line: 7, vars: { s: ["string", "\"banana\""], i: ["int", "0"] }, frames: [{ name: "main", vars: {} }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "0"] } }], out: "", note: "No match, so this call contributes nothing itself: it returns <b>countA(s, 1)</b> unchanged — whatever the rest of the word counts to. It calls, and waits." },
+          { line: 4, vars: { s: ["string", "\"banana\""], i: ["int", "1"] }, frames: [{ name: "main", vars: {} }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "0"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "1"] } }], out: "", note: "The second call: <b>i = 1</b>. The base-case test (1 == 6) fails, so it reaches the match test." },
+          { line: 6, vars: { s: ["string", "\"banana\""], i: ["int", "1"] }, frames: [{ name: "main", vars: {} }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "0"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "1"] } }], out: "", note: "<b>s[1] is 'a' — a match.</b> This call will return <b>1 + countA(s, 2)</b>: its own 1 for this character, plus the count of everything after it. It calls the next index and waits — finding one 'a' does <em>not</em> end the count." },
+          { line: 4, vars: { s: ["string", "\"banana\""], i: ["int", "2"] }, frames: [{ name: "main", vars: {} }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "0"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "1"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "2"] } }], out: "", note: "The third call: <b>i = 2</b>." },
+          { line: 7, vars: { s: ["string", "\"banana\""], i: ["int", "2"] }, frames: [{ name: "main", vars: {} }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "0"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "1"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "2"] } }], out: "", note: "<b>s[2] is 'n'</b> — no match. Like the 'b' frame, this one adds nothing and passes the count on unchanged: it returns countA(s, 3), and waits." },
+          { line: 4, vars: { s: ["string", "\"banana\""], i: ["int", "3"] }, frames: [{ name: "main", vars: {} }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "0"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "1"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "2"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "3"] } }], out: "", note: "The fourth call: <b>i = 3</b>." },
+          { line: 6, vars: { s: ["string", "\"banana\""], i: ["int", "3"] }, frames: [{ name: "main", vars: {} }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "0"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "1"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "2"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "3"] } }], out: "", note: "<b>s[3] is 'a'</b> — the second match. This frame will return <b>1 + countA(s, 4)</b>. It calls on, and waits." },
+          { line: 4, vars: { s: ["string", "\"banana\""], i: ["int", "4"] }, frames: [{ name: "main", vars: {} }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "0"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "1"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "2"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "3"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "4"] } }], out: "", note: "The fifth call: <b>i = 4</b>." },
+          { line: 7, vars: { s: ["string", "\"banana\""], i: ["int", "4"] }, frames: [{ name: "main", vars: {} }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "0"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "1"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "2"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "3"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "4"] } }], out: "", note: "<b>s[4] is 'n'</b> — no match. Pass-through again: it returns countA(s, 5), and waits." },
+          { line: 4, vars: { s: ["string", "\"banana\""], i: ["int", "5"] }, frames: [{ name: "main", vars: {} }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "0"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "1"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "2"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "3"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "4"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "5"] } }], out: "", note: "The sixth call: <b>i = 5</b> — the <b>last character</b> of \"banana\" (its indexes run 0 to 5). One character still remains to be examined." },
+          { line: 6, vars: { s: ["string", "\"banana\""], i: ["int", "5"] }, frames: [{ name: "main", vars: {} }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "0"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "1"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "2"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "3"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "4"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "5"] } }], out: "", note: "<b>s[5] is 'a'</b> — the third match, on the very last character. It counts like any other: this frame returns <b>1 + countA(s, 6)</b>. Stopping the walk one index early, as if the string ended at index 4, would lose exactly this 'a'." },
+          { line: 4, vars: { s: ["string", "\"banana\""], i: ["int", "6"] }, frames: [{ name: "main", vars: {} }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "0"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "1"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "2"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "3"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "4"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "5"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "6"] } }], out: "", note: "The seventh call: <b>i = 6</b>. There is no s[6] — the index has walked off the end of the word." },
+          { line: 5, vars: { s: ["string", "\"banana\""], i: ["int", "6"] }, frames: [{ name: "main", vars: {} }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "0"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "1"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "2"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "3"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "4"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "5"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "6"] } }], out: "", note: "<b>BASE CASE.</b> <b>6 == s.length()</b> is true, so this call <b>returns 0</b>: no characters remain, so nothing more can be counted. The descent stops here — one step <em>past</em> the last character, not on it." },
+          { line: 6, vars: { s: ["string", "\"banana\""], i: ["int", "5"] }, frames: [{ name: "main", vars: {} }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "0"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "1"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "2"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "3"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "4"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "5"] } }], out: "", note: "The i = 5 frame completes: <b>1 + 0 = 1</b>. It returns <b>1</b> — its own last-character match, plus nothing beyond it." },
+          { line: 7, vars: { s: ["string", "\"banana\""], i: ["int", "4"] }, frames: [{ name: "main", vars: {} }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "0"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "1"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "2"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "3"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "4"] } }], out: "", note: "The i = 4 frame (the 'n', no match) passes the 1 up unchanged: it returns <b>1</b>." },
+          { line: 6, vars: { s: ["string", "\"banana\""], i: ["int", "3"] }, frames: [{ name: "main", vars: {} }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "0"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "1"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "2"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "3"] } }], out: "", note: "The i = 3 frame completes: <b>1 + 1 = 2</b>. It returns <b>2</b> — two 'a's counted from index 3 onward." },
+          { line: 7, vars: { s: ["string", "\"banana\""], i: ["int", "2"] }, frames: [{ name: "main", vars: {} }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "0"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "1"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "2"] } }], out: "", note: "The i = 2 frame passes the 2 up unchanged: it returns <b>2</b>." },
+          { line: 6, vars: { s: ["string", "\"banana\""], i: ["int", "1"] }, frames: [{ name: "main", vars: {} }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "0"] } }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "1"] } }], out: "", note: "The i = 1 frame completes: <b>1 + 2 = 3</b>. It returns <b>3</b>." },
+          { line: 7, vars: { s: ["string", "\"banana\""], i: ["int", "0"] }, frames: [{ name: "main", vars: {} }, { name: "countA", vars: { s: ["string", "\"banana\""], i: ["int", "0"] } }], out: "", note: "The first frame (i = 0, the 'b') passes the 3 up unchanged: <b>countA returns 3</b> to main." },
+          { line: 11, vars: {}, frames: [{ name: "main", vars: {} }], out: "3", note: "Back in main, the print runs: <b>3</b>." },
+          { line: 12, vars: {}, frames: [{ name: "main", vars: {} }], out: "3", note: "The program ends. Final answer: <b>3</b> — the 'a's sit at indexes 1, 3 and 5, and every one of them was visited, tested, and counted." }
+        ],
+        modify: {
+          prompt: "The word changes from \"banana\" to \"algebra\". The function is untouched. What prints now?",
+          code: 'int countA(string s, int i) {\n    if (i == s.length()) { return 0; }\n    if (s[i] == \'a\') { return 1 + countA(s, i + 1); }\n    return countA(s, i + 1);\n}\ncout << countA(<mark>"algebra"</mark>, 0);',
+          options: ["2", "3", "1", "4"],
+          correct: 0,
+          explain: "a-l-g-e-b-r-a: the 'a's sit at indexes <b>0 and 6</b> — the first character and the last. The walk visits all seven indexes, both matches bank their 1, and the count is <b>2</b>. Stop one character early, as if the string ended at index 5, and you would say 1."
+        }
+      },
+      {
+        concept: "Recursion",
+        topic: "Recursion",
+        title: "Sum of digits",
+        goal: "Nothing is computed on the way down. Each frame only <b>peels</b>: <b>n % 10</b> keeps the last digit, <b>n / 10</b> passes the rest down, and the frame waits. The value is assembled entirely on the <b>return path</b> — as each frame pops, it adds its peeled digit to the partial sum the deeper call handed it.",
+        stories: {
+          health:   "A program adds the digits of <strong>472</strong> — 4 + 7 + 2 — without a loop: a function keeps the number's last digit for itself and asks itself about what remains. The program prints one number.",
+          psych:    "A program adds the digits of <strong>472</strong> — 4 + 7 + 2 — without a loop: a function keeps the number's last digit for itself and asks itself about what remains. The program prints one number.",
+          business: "A program adds the digits of <strong>472</strong> — 4 + 7 + 2 — without a loop: a function keeps the number's last digit for itself and asks itself about what remains. The program prints one number.",
+          arts:     "A program adds the digits of <strong>472</strong> — 4 + 7 + 2 — without a loop: a function keeps the number's last digit for itself and asks itself about what remains. The program prints one number."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int sumDigits(int n) {",
+          "    if (n == 0) { return 0; }",
+          "    return n % 10 + sumDigits(n / 10);",
+          "}",
+          "",
+          "int main() {",
+          "    cout << sumDigits(472);",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["13", "11", "49", "9"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 11, text: "<b>Named misconception: a partial sum is the answer.</b> 11 is real — it is exactly what <b>sumDigits(47)</b> returns at the parting step: 7 + 4. But one frame is still waiting above it, holding the 2 it peeled from 472, and that frame's return line has not completed. A recursive result is final only when the <b>outermost</b> frame returns: 2 + 11 = <b>13</b>." },
+          2: { step: 3, text: "<b>Named misconception: % and / swapped.</b> 49 = 47 + 2 — the two pieces of 472, added in the wrong roles. At the parting step, the return line: <b>n % 10</b> peels the <b>last digit</b> (472 % 10 = 2 — the piece this frame <em>keeps</em>), and <b>n / 10</b> drops that digit (472 / 10 = 47 — the piece <em>passed down</em>). Swap them — keep 47 and pass 2 down — and the pieces sum to 49. In their proper roles, they assemble <b>13</b>." },
+          3: { step: 10, text: "<b>Named misconception: digits combine in peel order.</b> 9 is 2 + 7 — the first two digits in the order they were peeled, with the deepest digit never added. But the machine assembles <b>deepest first</b>: the parting step is the first frame to pop, sumDigits(4), whose return of 4 is inside every partial sum from here up — 4, then 7 + 4 = 11, then 2 + 11 = <b>13</b>. The 4 was peeled last, but it is added first; it cannot be skipped." }
+        },
+        steps: [
+          { line: 9, vars: {}, frames: [{ name: "main", vars: {} }], out: "", note: "<b>main</b> calls <b>sumDigits(472)</b>. Follow the return line closely: each call <b>peels</b> one digit and waits. Nothing is added on the way down — the total exists only as the frames <b>return</b>, one partial sum per pop." },
+          { line: 3, vars: { n: ["int", "472"] }, frames: [{ name: "main", vars: {} }, { name: "sumDigits", vars: { n: ["int", "472"] } }], out: "", note: "The first call: <b>n = 472</b>." },
+          { line: 4, vars: { n: ["int", "472"] }, frames: [{ name: "main", vars: {} }, { name: "sumDigits", vars: { n: ["int", "472"] } }], out: "", note: "Base-case test: is <b>472 == 0</b>? <b>False</b> — digits remain." },
+          { line: 5, vars: { n: ["int", "472"] }, frames: [{ name: "main", vars: {} }, { name: "sumDigits", vars: { n: ["int", "472"] } }], out: "", note: "<b>The parting step.</b> The return line splits 472 into two pieces: <b>472 % 10 = 2</b> — the last digit, which this frame <b>keeps</b> — and <b>472 / 10 = 47</b> — the rest, which goes <b>down</b> into the recursive call. The frame now waits, holding its 2: its answer will be 2 + whatever sumDigits(47) returns. Nothing has been added yet." },
+          { line: 3, vars: { n: ["int", "47"] }, frames: [{ name: "main", vars: {} }, { name: "sumDigits", vars: { n: ["int", "472"] } }, { name: "sumDigits", vars: { n: ["int", "47"] } }], out: "", note: "The second call: <b>n = 47</b>." },
+          { line: 5, vars: { n: ["int", "47"] }, frames: [{ name: "main", vars: {} }, { name: "sumDigits", vars: { n: ["int", "472"] } }, { name: "sumDigits", vars: { n: ["int", "47"] } }], out: "", note: "Its base-case test fails too. This frame keeps <b>47 % 10 = 7</b> and passes <b>47 / 10 = 4</b> down. It waits, holding its 7. Still no addition has happened anywhere in the program." },
+          { line: 3, vars: { n: ["int", "4"] }, frames: [{ name: "main", vars: {} }, { name: "sumDigits", vars: { n: ["int", "472"] } }, { name: "sumDigits", vars: { n: ["int", "47"] } }, { name: "sumDigits", vars: { n: ["int", "4"] } }], out: "", note: "The third call: <b>n = 4</b> — a single digit." },
+          { line: 5, vars: { n: ["int", "4"] }, frames: [{ name: "main", vars: {} }, { name: "sumDigits", vars: { n: ["int", "472"] } }, { name: "sumDigits", vars: { n: ["int", "47"] } }, { name: "sumDigits", vars: { n: ["int", "4"] } }], out: "", note: "It keeps <b>4 % 10 = 4</b> (a single digit is its own last digit) and passes <b>4 / 10 = 0</b> down — integer division drops what is left. It waits, holding its 4." },
+          { line: 3, vars: { n: ["int", "0"] }, frames: [{ name: "main", vars: {} }, { name: "sumDigits", vars: { n: ["int", "472"] } }, { name: "sumDigits", vars: { n: ["int", "47"] } }, { name: "sumDigits", vars: { n: ["int", "4"] } }, { name: "sumDigits", vars: { n: ["int", "0"] } }], out: "", note: "The fourth call: <b>n = 0</b>. The descent bottoms out. The stack is five frames tall, and every sumDigits frame above is holding one peeled digit: 2, 7, 4 — none of them added yet." },
+          { line: 4, vars: { n: ["int", "0"] }, frames: [{ name: "main", vars: {} }, { name: "sumDigits", vars: { n: ["int", "472"] } }, { name: "sumDigits", vars: { n: ["int", "47"] } }, { name: "sumDigits", vars: { n: ["int", "4"] } }, { name: "sumDigits", vars: { n: ["int", "0"] } }], out: "", note: "<b>BASE CASE.</b> <b>0 == 0 is true</b>, so sumDigits(0) <b>returns 0</b> — there are no digits left to add. Now, and only now, the waiting frames can finish, deepest first." },
+          { line: 5, vars: { n: ["int", "4"] }, frames: [{ name: "main", vars: {} }, { name: "sumDigits", vars: { n: ["int", "472"] } }, { name: "sumDigits", vars: { n: ["int", "47"] } }, { name: "sumDigits", vars: { n: ["int", "4"] } }], out: "", note: "<b>The return path opens.</b> sumDigits(4) receives the 0 and completes its return line: <b>4 + 0 = 4</b>. It <b>returns 4</b> as its frame pops — the first partial sum, and it appears only now, on the way up." },
+          { line: 5, vars: { n: ["int", "47"] }, frames: [{ name: "main", vars: {} }, { name: "sumDigits", vars: { n: ["int", "472"] } }, { name: "sumDigits", vars: { n: ["int", "47"] } }], out: "", note: "sumDigits(47) receives the 4 and completes: <b>7 + 4 = 11</b>. It <b>returns 11</b> as its frame pops. This is a <b>partial sum</b> — the digits 7 and 4 assembled — not the final answer: one frame above is still holding its peeled 2." },
+          { line: 5, vars: { n: ["int", "472"] }, frames: [{ name: "main", vars: {} }, { name: "sumDigits", vars: { n: ["int", "472"] } }], out: "", note: "sumDigits(472) receives the 11 and completes: <b>2 + 11 = 13</b>. It <b>returns 13</b> to main. Read in the order the frames popped, the partial sums were 4, then 11, then 13; read in the order the digits were peeled (2, 7, 4), the same total assembles as 2, then 9, then 13. Either reading ends at 13 — but the machine's sums only ever existed on the way up." },
+          { line: 9, vars: {}, frames: [{ name: "main", vars: {} }], out: "13", note: "Back in main, the print runs: <b>13</b>." },
+          { line: 10, vars: {}, frames: [{ name: "main", vars: {} }], out: "13", note: "The program ends. Final answer: <b>13</b> = 4 + 7 + 2, added frame by frame as the calls returned." }
+        ],
+        modify: {
+          prompt: "The call changes from sumDigits(472) to sumDigits(907). The function is untouched. What prints now?",
+          code: 'int sumDigits(int n) {\n    if (n == 0) { return 0; }\n    return n % 10 + sumDigits(n / 10);\n}\ncout << sumDigits(<mark>907</mark>);',
+          options: ["16", "13", "7", "9"],
+          correct: 0,
+          explain: "Same peel, new digits: 907 % 10 = <b>7</b> is kept and 90 goes down; 90 % 10 = <b>0</b> — the middle frame adds nothing, but it still has to run, passing 9 down. The returns assemble 9, then 0 + 9 = 9, then 7 + 9 = <b>16</b>. A zero digit changes the total by nothing — and changes the trace by one whole frame."
+        }
       }
     ];
 
@@ -6390,7 +6707,7 @@ int main() {
       { name: "Loops & Functions", list: [3, 4, 5, 6, 23, 24, 28, 44] },
       { name: "Arrays & Strings", list: [7, 8, 25, 26, 29, 45, 46, 52] },
       { name: "Pointers", list: [9, 10, 11, 12, 59] },
-      { name: "Recursion", list: [13, 14, 15] },
+      { name: "Recursion", list: [13, 14, 15, 60, 61, 62] },
       { name: "Searching & Sorting", list: [16, 17, 41, 42, 43] },
       { name: "Decisions & References", list: [18, 19, 27, 51] },
       { name: "Structured Data & Collections", list: [20, 21, 22] },
@@ -15906,11 +16223,12 @@ int main() {
       $("bolt-mode").hidden = mode !== "bolt";
       $("tracer-mode").hidden = mode !== "tracer";
       $("gym-mode").hidden = mode !== "gym";
+      $("refactor-mode").hidden = mode !== "refactor";
       $("translator-mode").hidden = mode !== "translator";
       $("challenges-mode").hidden = mode !== "challenges";
       $("bridge-mode").hidden = mode !== "bridge";
       $("make-mode").hidden = mode !== "make";
-      ["bolt","tracer","gym","translator","challenges","bridge","make"].forEach(function(m){
+      ["bolt","tracer","gym","refactor","translator","challenges","bridge","make"].forEach(function(m){
         var b = $("mode-" + m);
         b.setAttribute("aria-selected", mode === m ? "true" : "false");
         b.setAttribute("aria-pressed", mode === m ? "true" : "false");
@@ -15919,6 +16237,7 @@ int main() {
       if (typeof syncMobileNav === "function") syncMobileNav(mode);
       if (mode === "bolt") initBolt();
       if (mode === "gym") renderGym();
+      if (mode === "refactor") renderRefactor();
       if (mode === "challenges") renderChallenges();
       if (mode === "bridge") renderBridge();
       if (mode === "make") renderMake();
@@ -15928,6 +16247,7 @@ int main() {
     $("mode-bolt").addEventListener("click", function () { setMode("bolt"); });
     $("mode-tracer").addEventListener("click", function () { setMode("tracer"); });
     $("mode-gym").addEventListener("click", function () { setMode("gym"); });
+    $("mode-refactor").addEventListener("click", function () { setMode("refactor"); });
     $("mode-translator").addEventListener("click", function () { setMode("translator"); });
     $("mode-challenges").addEventListener("click", function () { setMode("challenges"); });
     $("mode-bridge").addEventListener("click", function () { setMode("bridge"); });
@@ -15936,7 +16256,7 @@ int main() {
 
     /* ---------------- Mode tabs: arrow-key navigation ---------------- */
     (function(){
-      var order = ["bolt","tracer","gym","translator","challenges","bridge","make"];
+      var order = ["bolt","tracer","gym","refactor","translator","challenges","bridge","make"];
       var tablist = document.getElementById("mode-tablist");
       if (tablist) tablist.addEventListener("keydown", function(e){
         if (!(e.target.classList && e.target.classList.contains("mode-btn"))) return;
@@ -15956,13 +16276,13 @@ int main() {
        state and persistence are identical. On wider screens it is display:none
        and the tab bar is untouched. */
     var MODE_NAMES = {
-      bolt: "Bolt's World", tracer: "Prediction Tracer", gym: "Debugging Gym",
+      bolt: "Bolt's World", tracer: "Prediction Tracer", gym: "Debugging Gym", refactor: "Refactor Gym",
       translator: "Error Translator", challenges: "Challenges", bridge: "Bridge", make: "Make"
     };
     var drawerIsOpen = false;
     var drawerHideTimer = null;
     function currentModeKey() {
-      var order = ["bolt","tracer","gym","translator","challenges","bridge","make"];
+      var order = ["bolt","tracer","gym","refactor","translator","challenges","bridge","make"];
       for (var i = 0; i < order.length; i++) {
         var b = $("mode-" + order[i]);
         if (b && b.getAttribute("aria-selected") === "true") return order[i];
@@ -15974,6 +16294,7 @@ int main() {
         if (mode === "bolt" && typeof bolt !== "undefined" && bolt && bolt.done) return bolt.done.filter(Boolean).length + " / " + BOLT_WORLDS.length;
         if (mode === "tracer" && typeof state !== "undefined" && state && state.ex) return state.ex.filter(function (s) { return s.locked; }).length + " / " + EXERCISES.length;
         if (mode === "gym" && typeof gym !== "undefined" && gym && gym.rounds) return gym.rounds.filter(function (r) { return r.done; }).length + " / " + GYM_ROUNDS.length;
+        if (mode === "refactor" && typeof refactor !== "undefined" && refactor && refactor.rounds) return refactor.rounds.filter(function (r) { return r.done; }).length + " / " + REFACTOR_ROUNDS.length;
         if (mode === "bridge" && typeof bridgeDoneCount === "function") return bridgeDoneCount() + " / " + BRIDGE_ACTIVITIES.length;
         if (mode === "make" && typeof makeDoneCount === "function") return makeDoneCount() + " / " + MAKE_PROMPTS.length;
       } catch (e) {}
@@ -16146,6 +16467,261 @@ int main() {
         : "Journal exported — " + attempted + " exercise" + (attempted===1?"":"s") + " included. The file is tracefirst-journal.txt in your downloads.";
       announce("Prediction journal exported with " + attempted + " exercises.");
     });
+
+    /* ---------------- Portable progress file (export / import) ----------------
+       Export downloads exactly what tfCollect() produces — the same object
+       stored under TF_KEY — as tracefirst-progress.json. Import validates
+       strictly before changing anything, asks Replace vs Merge, then writes
+       the resulting object to TF_KEY and reloads so the normal tfLoad /
+       tfHydrate path applies it field by field (unknown fields are ignored
+       by that hydration and dropped by the next tfCollect save; missing
+       optional sections default the same way an older save's would). */
+    var TF_PROGRESS_ARRAY_KEYS = ["tracer", "gym", "refactor", "bridge", "make", "authoredExercises", "instructorExercises", "assignments"];
+    var TF_PROGRESS_KNOWN_KEYS = ["v", "bitsFormat", "playbackSpeed", "bgTheme", "reduceMotionPref", "largeTextPref", "primerRead", "tracer", "bolt", "gym", "refactor", "bridge", "make", "challenges", "authoredExercises", "instructorExercises", "assignments", "gap", "lastTracer", "testOut"];
+    function tfIsPlainObj(x) { return !!x && typeof x === "object" && !Array.isArray(x); }
+    function tfCloneJson(x) { return JSON.parse(JSON.stringify(x)); }
+    function tfValidateProgressFile(d) {
+      if (!tfIsPlainObj(d)) return false;
+      if (d.v !== 1) return false;
+      if (!Array.isArray(d.tracer)) return false;
+      var arrayKeys = ["gym", "refactor", "bridge", "make", "authoredExercises", "instructorExercises", "assignments"];
+      for (var i = 0; i < arrayKeys.length; i++) {
+        if (d[arrayKeys[i]] !== undefined && !Array.isArray(d[arrayKeys[i]])) return false;
+      }
+      if (d.bolt !== undefined && d.bolt !== null && !tfIsPlainObj(d.bolt)) return false;
+      if (d.challenges !== undefined && d.challenges !== null && !tfIsPlainObj(d.challenges)) return false;
+      if (d.testOut !== undefined && !tfIsPlainObj(d.testOut)) return false;
+      if (d.gap !== undefined && !tfIsPlainObj(d.gap)) return false;
+      if (d.bitsFormat !== undefined && typeof d.bitsFormat !== "string") return false;
+      if (d.bgTheme !== undefined && typeof d.bgTheme !== "string") return false;
+      if (d.playbackSpeed !== undefined && typeof d.playbackSpeed !== "number") return false;
+      if (d.lastTracer !== undefined && typeof d.lastTracer !== "number") return false;
+      if (d.reduceMotionPref !== undefined && typeof d.reduceMotionPref !== "boolean") return false;
+      if (d.largeTextPref !== undefined && typeof d.largeTextPref !== "boolean") return false;
+      if (d.primerRead !== undefined && typeof d.primerRead !== "boolean") return false;
+      return true;
+    }
+    function tfSanitizeProgressFile(d) {
+      var out = {};
+      TF_PROGRESS_KNOWN_KEYS.forEach(function (k) { if (d[k] !== undefined) out[k] = d[k]; });
+      return out;
+    }
+    function tfItemHasRecord(section, item) {
+      if (item === null || item === undefined) return false;
+      if (section === "bridge") {
+        if (!tfIsPlainObj(item)) return false;
+        if (item.done) return true;
+        var hasVal = function (v) { return v !== null && v !== undefined && v !== ""; };
+        if (Array.isArray(item.answer) && item.answer.some(hasVal)) return true;
+        if (Array.isArray(item.slots) && item.slots.some(hasVal)) return true;
+        return false;
+      }
+      if (section === "make") {
+        if (!tfIsPlainObj(item)) return false;
+        return !!(item.done || (typeof item.code === "string" && item.code.trim() !== "") || item.results);
+      }
+      return true;
+    }
+    function tfMergeListSection(section, curArr, impArr) {
+      var cur = Array.isArray(curArr) ? curArr : [];
+      var imp = Array.isArray(impArr) ? impArr : [];
+      var len = Math.max(cur.length, imp.length);
+      var out = [];
+      for (var i = 0; i < len; i++) {
+        var c = i < cur.length ? cur[i] : undefined;
+        var f = i < imp.length ? imp[i] : undefined;
+        if (tfItemHasRecord(section, c)) out.push(c);
+        else if (f !== undefined) out.push(f);
+        else out.push(c === undefined ? null : c);
+      }
+      return out;
+    }
+    function tfMergeCollection(curArr, impArr, keyFn) {
+      var out = (Array.isArray(curArr) ? curArr : []).slice();
+      var seen = {};
+      out.forEach(function (it) { try { seen[keyFn(it)] = true; } catch (e) {} });
+      (Array.isArray(impArr) ? impArr : []).forEach(function (it) {
+        if (!tfIsPlainObj(it)) return;
+        var k = null;
+        try { k = keyFn(it); } catch (e) { k = null; }
+        if (k !== null && seen[k]) return;
+        if (k !== null) seen[k] = true;
+        out.push(it);
+      });
+      return out;
+    }
+    function tfMergeGeneric(cur, imp) {
+      if (cur === null || cur === undefined) return tfCloneJson(imp);
+      if (imp === null || imp === undefined) return cur;
+      if (Array.isArray(cur) && Array.isArray(imp)) {
+        if (!cur.length) return tfCloneJson(imp);
+        return cur;
+      }
+      if (tfIsPlainObj(cur) && tfIsPlainObj(imp)) {
+        if (!Object.keys(cur).length) return tfCloneJson(imp);
+        var out = tfCloneJson(cur);
+        Object.keys(imp).forEach(function (k) {
+          if (!Object.prototype.hasOwnProperty.call(out, k)) out[k] = tfCloneJson(imp[k]);
+          else out[k] = tfMergeGeneric(out[k], imp[k]);
+        });
+        return out;
+      }
+      if (typeof cur === "boolean" && typeof imp === "boolean") return cur || imp;
+      if (typeof cur === "number" && typeof imp === "number") return cur === 0 ? imp : cur;
+      if (typeof cur === "string" && typeof imp === "string") return cur === "" ? imp : cur;
+      return cur;
+    }
+    function tfMergeBolt(cur, imp) {
+      if (!tfIsPlainObj(cur)) return tfCloneJson(imp);
+      if (!tfIsPlainObj(imp)) return cur;
+      var out = tfCloneJson(cur);
+      var curDone = Array.isArray(cur.done) ? cur.done : [];
+      var impDone = Array.isArray(imp.done) ? imp.done : [];
+      var curChDone = Array.isArray(cur.challengeDone) ? cur.challengeDone : [];
+      var impChDone = Array.isArray(imp.challengeDone) ? imp.challengeDone : [];
+      ["done", "challengeDone", "challengeStar"].forEach(function (k) {
+        if (!Array.isArray(imp[k])) return;
+        var c = Array.isArray(out[k]) ? out[k] : [];
+        var len = Math.max(c.length, imp[k].length);
+        var merged = [];
+        for (var i = 0; i < len; i++) merged.push(!!c[i] || !!imp[k][i]);
+        out[k] = merged;
+      });
+      if (Array.isArray(imp.challengeBest)) {
+        var cb = Array.isArray(out.challengeBest) ? out.challengeBest : [];
+        imp.challengeBest.forEach(function (v, i) { if ((cb[i] === null || cb[i] === undefined) && typeof v === "number") cb[i] = v; });
+        out.challengeBest = cb;
+      }
+      [["code", curDone, impDone], ["challengeCode", curChDone, impChDone]].forEach(function (triple) {
+        var k = triple[0], cd = triple[1], id = triple[2];
+        if (!Array.isArray(imp[k])) return;
+        var c = Array.isArray(out[k]) ? out[k] : [];
+        imp[k].forEach(function (v, i) { if (!cd[i] && id[i] && typeof v === "string") c[i] = v; });
+        out[k] = c;
+      });
+      return out;
+    }
+    function tfMergeProgress(curRaw, impRaw) {
+      var cur = tfSanitizeProgressFile(tfIsPlainObj(curRaw) ? curRaw : {});
+      var imp = tfSanitizeProgressFile(impRaw);
+      var out = tfCloneJson(cur);
+      out.v = 1;
+      // Indexed activity lists: keep the current record per item; take the
+      // file's item only where the current progress has nothing there.
+      ["tracer", "gym", "refactor", "bridge", "make"].forEach(function (k) {
+        if (imp[k] !== undefined) out[k] = tfMergeListSection(k, cur[k], imp[k]);
+      });
+      // Free-standing collections: keep everything current, add file items
+      // that are not already present.
+      if (imp.authoredExercises !== undefined) out.authoredExercises = tfMergeCollection(cur.authoredExercises, imp.authoredExercises, function (it) { return String(it.id || "") + "|" + String(it.title || "") + "|" + String(it.code || ""); });
+      if (imp.instructorExercises !== undefined) out.instructorExercises = tfMergeCollection(cur.instructorExercises, imp.instructorExercises, function (it) { return String(it.id || "") + "|" + String(it.title || "") + "|" + String(it.code || ""); });
+      if (imp.assignments !== undefined) out.assignments = tfMergeCollection(cur.assignments, imp.assignments, function (it) { return String(it.title || "") + "|" + String(it.due || "") + "|" + (Array.isArray(it.exs) ? it.exs.join(",") : ""); });
+      // Object sections: same rule, applied inside the section.
+      if (imp.bolt !== undefined && imp.bolt !== null) out.bolt = tfMergeBolt(cur.bolt, imp.bolt);
+      if (imp.challenges !== undefined && imp.challenges !== null) out.challenges = tfMergeGeneric(cur.challenges, imp.challenges);
+      if (imp.gap !== undefined) out.gap = tfMergeGeneric(cur.gap, imp.gap);
+      if (imp.testOut !== undefined) {
+        if (!(cur.testOut && cur.testOut.passed) && imp.testOut) out.testOut = tfCloneJson(imp.testOut);
+      }
+      // Preferences (bitsFormat, playbackSpeed, bgTheme, reduceMotionPref,
+      // largeTextPref) stay as the current ones under merge — they are
+      // already in `out`. primerRead is a read record: keep it if either
+      // side has it.
+      out.primerRead = !!cur.primerRead || !!imp.primerRead;
+      if ((typeof cur.lastTracer !== "number" || cur.lastTracer < 0) && typeof imp.lastTracer === "number") out.lastTracer = imp.lastTracer;
+      return out;
+    }
+    function tfApplyProgressFile(obj) {
+      // Block the periodic/pagehide save paths before writing, or the
+      // unload flush would write the old in-memory state straight back
+      // over the imported one (the same guard the reset control uses).
+      tfResetting = true;
+      try { window.localStorage.setItem(TF_KEY, JSON.stringify(obj)); } catch (e) {}
+      tfLastSaved = null;
+      window.location.reload();
+    }
+    var progressPendingImport = null;
+    (function wireProgressFile() {
+      var exportBtn2 = $("export-progress-btn");
+      var importBtn = $("import-progress-btn");
+      var fileInput = $("import-progress-file");
+      var status = $("progress-file-status");
+      var confirmBox = $("progress-import-confirm");
+      function setStatus(msg) { if (status) status.textContent = msg; }
+      function showConfirm(show) { if (confirmBox) confirmBox.hidden = !show; }
+      if (exportBtn2) exportBtn2.addEventListener("click", function () {
+        try {
+          try { tfSave(); } catch (e) {}
+          var data = tfCollect();
+          var text = JSON.stringify(data);
+          var blob = new Blob([text], { type: "application/json;charset=utf-8" });
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement("a");
+          a.href = url; a.download = "tracefirst-progress.json";
+          document.body.appendChild(a); a.click();
+          setTimeout(function () { document.body.removeChild(a); URL.revokeObjectURL(url); }, 400);
+          setStatus("Progress file exported — the file is tracefirst-progress.json in your downloads.");
+          announce("Progress file exported as tracefirst-progress.json.");
+        } catch (e) {
+          setStatus("The progress file could not be prepared in this browser.");
+        }
+      });
+      if (importBtn && fileInput) importBtn.addEventListener("click", function () { fileInput.click(); });
+      if (fileInput) fileInput.addEventListener("change", function () {
+        var file = fileInput.files && fileInput.files[0];
+        fileInput.value = "";
+        if (!file) return;
+        function fail() {
+          progressPendingImport = null;
+          showConfirm(false);
+          setStatus("That file is not a TraceFirst progress file, so nothing was changed.");
+          announce("That file is not a TraceFirst progress file, so nothing was changed.");
+        }
+        function onText(text) {
+          var parsed = null;
+          try { parsed = JSON.parse(text); } catch (e) { fail(); return; }
+          if (!tfValidateProgressFile(parsed)) { fail(); return; }
+          progressPendingImport = tfSanitizeProgressFile(parsed);
+          setStatus("This progress file looks good. Choose Replace or Merge below — nothing has been changed yet.");
+          showConfirm(true);
+          var rep = $("progress-import-replace");
+          if (rep) rep.focus();
+        }
+        try {
+          if (typeof file.text === "function") {
+            file.text().then(onText, fail);
+          } else {
+            var reader = new FileReader();
+            reader.onload = function () { onText(String(reader.result || "")); };
+            reader.onerror = fail;
+            reader.readAsText(file);
+          }
+        } catch (e) { fail(); }
+      });
+      var replaceBtn = $("progress-import-replace");
+      var mergeBtn = $("progress-import-merge");
+      var cancelBtn = $("progress-import-cancel");
+      if (replaceBtn) replaceBtn.addEventListener("click", function () {
+        if (!progressPendingImport) return;
+        var obj = progressPendingImport;
+        progressPendingImport = null;
+        tfApplyProgressFile(obj);
+      });
+      if (mergeBtn) mergeBtn.addEventListener("click", function () {
+        if (!progressPendingImport) return;
+        var current = null;
+        try { current = tfCollect(); } catch (e) { current = null; }
+        var merged = tfMergeProgress(current, progressPendingImport);
+        progressPendingImport = null;
+        tfApplyProgressFile(merged);
+      });
+      if (cancelBtn) cancelBtn.addEventListener("click", function () {
+        progressPendingImport = null;
+        showConfirm(false);
+        setStatus("Import cancelled — nothing was changed.");
+        if (importBtn) importBtn.focus();
+      });
+    })();
 
     /* ---------------- Instructor digest ---------------- */
     var instructorsToggle = $("instructors-toggle");
@@ -17609,6 +18185,893 @@ int main() {
       renderCulm();
     }, 4000);
 
+    /* ================= Refactor Gym =================
+       Working-but-messy programs. Stage 1: predict the exact output and
+       lock it in (with confidence marking), the Prediction Tracer's
+       discipline. Stage 2: pick the one of three cleaner rewrites that
+       is behaviour-identical; a wrong pick is answered with the concrete
+       input where its output parts from the original's, computed live
+       through the platform interpreter (makeRunProgram). Stage 3: what
+       changed, and the invariant that kept the behaviour the same.
+       Every round below was verified in that interpreter before shipping:
+       the diff:null rewrite is byte-identical to the original on the
+       shown program and on each probing variant; each wrong rewrite
+       differs on the case its diff cites. diff.from/to swap one baked-in
+       value to build the probing variant; no from means the difference
+       already shows on the program as written. */
+    var REFACTOR_ROUNDS = [
+      {
+        title: "The club door",
+        concept: "Nested ifs \u2192 one combined condition",
+        story: "This door program works. A visitor gets in only when three things are all true at once: old enough, a member, and not banned. But the checks are buried three ifs deep, and the nesting makes the rule harder to read than it needs to be. First predict what it prints \u2014 then find the rewrite that states the same rule in one condition without changing who gets in.",
+        file: "clubDoor.cpp",
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "int main()",
+          "{",
+          "    int age = 20;",
+          "    bool member = true;",
+          "    bool banned = false;",
+          "    string result = \"Turned away\";",
+          "    if (age >= 18) {",
+          "        if (member) {",
+          "            if (!banned) {",
+          "                result = \"Welcome in\";",
+          "            }",
+          "        }",
+          "    }",
+          "    cout << result << endl;",
+          "    return 0;",
+          "}"
+        ],
+        predict: {
+          q: "The program runs exactly as written \u2014 the values are baked in. What does it print?",
+          options: ["Welcome in", "Turned away", "Welcome in\nTurned away", "(nothing prints)"],
+          correct: 0
+        },
+        options: [
+          {
+            code: [
+              "#include <iostream>",
+              "#include <string>",
+              "using namespace std;",
+              "",
+              "int main()",
+              "{",
+              "    int age = 20;",
+              "    bool member = true;",
+              "    bool banned = false;",
+              "    string result = \"Turned away\";",
+              "    if (age >= 18 || member || !banned) {",
+              "        result = \"Welcome in\";",
+              "    }",
+              "    cout << result << endl;",
+              "    return 0;",
+              "}"
+            ],
+            diff: {
+              from: "    int age = 20;",
+              to: "    int age = 15;",
+              input: "age = 15 (member, not banned)",
+              change: "the three checks were joined with || (or) instead of && (and), so any single check passing is enough to open the door"
+            }
+          },
+          {
+            code: [
+              "#include <iostream>",
+              "#include <string>",
+              "using namespace std;",
+              "",
+              "int main()",
+              "{",
+              "    int age = 20;",
+              "    bool member = true;",
+              "    bool banned = false;",
+              "    string result = \"Turned away\";",
+              "    if (age >= 18 && member && !banned) {",
+              "        result = \"Welcome in\";",
+              "    }",
+              "    cout << result << endl;",
+              "    return 0;",
+              "}"
+            ],
+            diff: null
+          },
+          {
+            code: [
+              "#include <iostream>",
+              "#include <string>",
+              "using namespace std;",
+              "",
+              "int main()",
+              "{",
+              "    int age = 20;",
+              "    bool member = true;",
+              "    bool banned = false;",
+              "    string result = \"Turned away\";",
+              "    if (age >= 18 && member && banned) {",
+              "        result = \"Welcome in\";",
+              "    }",
+              "    cout << result << endl;",
+              "    return 0;",
+              "}"
+            ],
+            diff: {
+              from: "    bool banned = false;",
+              to: "    bool banned = true;",
+              input: "banned = true (age 20, member)",
+              change: "the ! in front of banned was dropped, so the combined condition now demands the opposite of the original third check"
+            }
+          }
+        ],
+        changed: "Three nested ifs became one if whose condition joins the same three checks with &&. The default answer, \"Turned away\", still sits in result before the test, exactly as it did when the nested version left it untouched.",
+        kept: "A nested if runs its innermost line only when every enclosing condition is true \u2014 and && is true only when every part is true. Same tests, same order of outcomes: \"Welcome in\" exactly when age >= 18, member, and not banned all hold together."
+      },
+      {
+        title: "The times-table row",
+        concept: "Unrolled repetition \u2192 a counted loop",
+        story: "This program prints one row of the seven times table, written out as five separate cout statements that differ only in the multiplier. It works \u2014 but adding a sixth line means copying the pattern by hand again. Predict the output, then pick the loop that prints exactly the same lines.",
+        file: "timesRow.cpp",
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main()",
+          "{",
+          "    int base = 7;",
+          "    cout << base * 1 << endl;",
+          "    cout << base * 2 << endl;",
+          "    cout << base * 3 << endl;",
+          "    cout << base * 4 << endl;",
+          "    cout << base * 5 << endl;",
+          "    return 0;",
+          "}"
+        ],
+        predict: {
+          q: "The program runs exactly as written. What does it print?",
+          options: ["7\n14\n21\n28\n35", "7\n14\n21\n28", "0\n7\n14\n21\n28\n35", "35"],
+          correct: 0
+        },
+        options: [
+          {
+            code: [
+              "#include <iostream>",
+              "using namespace std;",
+              "",
+              "int main()",
+              "{",
+              "    int base = 7;",
+              "    for (int i = 1; i <= 5; i++) {",
+              "        cout << base * i << endl;",
+              "    }",
+              "    return 0;",
+              "}"
+            ],
+            diff: null
+          },
+          {
+            code: [
+              "#include <iostream>",
+              "using namespace std;",
+              "",
+              "int main()",
+              "{",
+              "    int base = 7;",
+              "    for (int i = 1; i < 5; i++) {",
+              "        cout << base * i << endl;",
+              "    }",
+              "    return 0;",
+              "}"
+            ],
+            diff: {
+              input: "the program exactly as shown (base = 7)",
+              change: "the loop test is i < 5 instead of i <= 5, so the loop stops one pass early and the last line, base * 5, never prints"
+            }
+          },
+          {
+            code: [
+              "#include <iostream>",
+              "using namespace std;",
+              "",
+              "int main()",
+              "{",
+              "    int base = 7;",
+              "    for (int i = 0; i <= 5; i++) {",
+              "        cout << base * i << endl;",
+              "    }",
+              "    return 0;",
+              "}"
+            ],
+            diff: {
+              input: "the program exactly as shown (base = 7)",
+              change: "the loop starts at i = 0 instead of i = 1, so it prints an extra first line, base * 0, that the original never prints"
+            }
+          }
+        ],
+        changed: "Five near-identical cout statements became one statement inside a for loop, with the multiplier promoted to the loop variable i running from 1 to 5.",
+        kept: "The unrolled lines multiply base by 1, 2, 3, 4, 5 in that order \u2014 and the loop visits i = 1, 2, 3, 4, 5 in that same order, printing base * i each pass. Same five products, same order, nothing added and nothing dropped."
+      },
+      {
+        title: "Warm or cool",
+        concept: "If/else assignment \u2192 default plus one override",
+        story: "A weather label: warm when the temperature reaches 25, cool otherwise. The if/else works, but both branches exist only to store a word in the same box. Predict the output, then find the rewrite that starts from the common answer and overrides it once \u2014 without moving the boundary or swapping the words.",
+        file: "warmOrCool.cpp",
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "int main()",
+          "{",
+          "    int temp = 30;",
+          "    string label;",
+          "    if (temp >= 25) {",
+          "        label = \"warm\";",
+          "    } else {",
+          "        label = \"cool\";",
+          "    }",
+          "    cout << label << endl;",
+          "    return 0;",
+          "}"
+        ],
+        predict: {
+          q: "The program runs exactly as written. What does it print?",
+          options: ["warm", "cool", "warm\ncool", "(nothing prints)"],
+          correct: 0
+        },
+        options: [
+          {
+            code: [
+              "#include <iostream>",
+              "#include <string>",
+              "using namespace std;",
+              "",
+              "int main()",
+              "{",
+              "    int temp = 30;",
+              "    string label = \"cool\";",
+              "    if (temp >= 25) {",
+              "        label = \"warm\";",
+              "    }",
+              "    cout << label << endl;",
+              "    return 0;",
+              "}"
+            ],
+            diff: null
+          },
+          {
+            code: [
+              "#include <iostream>",
+              "#include <string>",
+              "using namespace std;",
+              "",
+              "int main()",
+              "{",
+              "    int temp = 30;",
+              "    string label = \"warm\";",
+              "    if (temp >= 25) {",
+              "        label = \"cool\";",
+              "    }",
+              "    cout << label << endl;",
+              "    return 0;",
+              "}"
+            ],
+            diff: {
+              input: "the program exactly as shown (temp = 30)",
+              change: "the default and the override were swapped: this version starts at \"warm\" and switches to \"cool\" precisely when the original chooses \"warm\""
+            }
+          },
+          {
+            code: [
+              "#include <iostream>",
+              "#include <string>",
+              "using namespace std;",
+              "",
+              "int main()",
+              "{",
+              "    int temp = 30;",
+              "    string label = \"cool\";",
+              "    if (temp > 25) {",
+              "        label = \"warm\";",
+              "    }",
+              "    cout << label << endl;",
+              "    return 0;",
+              "}"
+            ],
+            diff: {
+              from: "    int temp = 30;",
+              to: "    int temp = 25;",
+              input: "temp = 25",
+              change: "the boundary moved from >= to >: at exactly 25 the original already says warm, but this rewrite still says cool"
+            }
+          }
+        ],
+        changed: "The else branch disappeared. label starts at \"cool\" \u2014 the answer the old else produced \u2014 and a single if overrides it with \"warm\" when the temperature qualifies.",
+        kept: "The condition itself never moved: temp >= 25 still decides, and 25 itself still counts as warm. Every temperature lands on the same word as before, because the override fires in exactly the cases the old if branch handled."
+      },
+      {
+        title: "Find the letter",
+        concept: "Flag variable \u2192 early return from a function",
+        story: "This program searches a word for a letter. It works, but the answer is carried through the whole loop in a flag variable that is set, never unset, and only read after the loop ends. Predict the output, then pick the rewrite that moves the search into a function which answers the moment it knows \u2014 without answering too early, and without missing the last letter.",
+        file: "findLetter.cpp",
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "int main()",
+          "{",
+          "    string word = \"banana\";",
+          "    char target = 'n';",
+          "    bool found = false;",
+          "    for (int i = 0; i < word.length(); i++) {",
+          "        if (word[i] == target) {",
+          "            found = true;",
+          "        }",
+          "    }",
+          "    if (found) {",
+          "        cout << \"Found\" << endl;",
+          "    } else {",
+          "        cout << \"Missing\" << endl;",
+          "    }",
+          "    return 0;",
+          "}"
+        ],
+        predict: {
+          q: "The program runs exactly as written. What does it print?",
+          options: ["Found", "Missing", "Found\nMissing", "1"],
+          correct: 0
+        },
+        options: [
+          {
+            code: [
+              "#include <iostream>",
+              "#include <string>",
+              "using namespace std;",
+              "",
+              "bool hasLetter(string s, char t)",
+              "{",
+              "    for (int i = 0; i < s.length(); i++) {",
+              "        if (s[i] == t) {",
+              "            return true;",
+              "        } else {",
+              "            return false;",
+              "        }",
+              "    }",
+              "    return false;",
+              "}",
+              "",
+              "int main()",
+              "{",
+              "    string word = \"banana\";",
+              "    char target = 'n';",
+              "    if (hasLetter(word, target)) {",
+              "        cout << \"Found\" << endl;",
+              "    } else {",
+              "        cout << \"Missing\" << endl;",
+              "    }",
+              "    return 0;",
+              "}"
+            ],
+            diff: {
+              input: "the program exactly as shown (word = \"banana\", target = 'n')",
+              change: "the else returns false on the very first character that does not match, so the search gives up before ever reaching the 'n' at position 2"
+            }
+          },
+          {
+            code: [
+              "#include <iostream>",
+              "#include <string>",
+              "using namespace std;",
+              "",
+              "bool hasLetter(string s, char t)",
+              "{",
+              "    for (int i = 0; i < s.length(); i++) {",
+              "        if (s[i] == t) {",
+              "            return true;",
+              "        }",
+              "    }",
+              "    return false;",
+              "}",
+              "",
+              "int main()",
+              "{",
+              "    string word = \"banana\";",
+              "    char target = 'n';",
+              "    if (hasLetter(word, target)) {",
+              "        cout << \"Found\" << endl;",
+              "    } else {",
+              "        cout << \"Missing\" << endl;",
+              "    }",
+              "    return 0;",
+              "}"
+            ],
+            diff: null
+          },
+          {
+            code: [
+              "#include <iostream>",
+              "#include <string>",
+              "using namespace std;",
+              "",
+              "bool hasLetter(string s, char t)",
+              "{",
+              "    for (int i = 0; i < s.length() - 1; i++) {",
+              "        if (s[i] == t) {",
+              "            return true;",
+              "        }",
+              "    }",
+              "    return false;",
+              "}",
+              "",
+              "int main()",
+              "{",
+              "    string word = \"banana\";",
+              "    char target = 'n';",
+              "    if (hasLetter(word, target)) {",
+              "        cout << \"Found\" << endl;",
+              "    } else {",
+              "        cout << \"Missing\" << endl;",
+              "    }",
+              "    return 0;",
+              "}"
+            ],
+            diff: {
+              from: "    string word = \"banana\";\n    char target = 'n';",
+              to: "    string word = \"fig\";\n    char target = 'g';",
+              input: "word = \"fig\", target = 'g'",
+              change: "the loop test stops at s.length() - 1, so the final character is never examined \u2014 and in \"fig\" the only 'g' sits in that final position"
+            }
+          }
+        ],
+        changed: "The flag variable is gone. The search moved into a function, hasLetter, which returns true the moment a character matches and returns false only after the loop has checked every character without one.",
+        kept: "The flag version also answered from the whole word: found ended true exactly when some position matched. The early return fires in exactly those cases and no others \u2014 returning early on a match changes when the answer is known, never what the answer is."
+      },
+      {
+        title: "The tax lines",
+        concept: "Magic numbers \u2192 one named value",
+        story: "A till program works out the tax on three items. It computes correctly, but the rate, 7, is typed out three times \u2014 change the rate and you must hunt down every copy. Predict the output, then pick the rewrite that names the rate once, keeping the arithmetic (and its integer division) exactly as it was.",
+        file: "taxLines.cpp",
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main()",
+          "{",
+          "    int item1 = 250;",
+          "    int item2 = 400;",
+          "    int item3 = 150;",
+          "    int tax1 = item1 * 7 / 100;",
+          "    int tax2 = item2 * 7 / 100;",
+          "    int tax3 = item3 * 7 / 100;",
+          "    cout << tax1 << endl;",
+          "    cout << tax2 << endl;",
+          "    cout << tax3 << endl;",
+          "    return 0;",
+          "}"
+        ],
+        predict: {
+          q: "The program runs exactly as written. What does it print?",
+          options: ["17\n28\n10", "17.5\n28\n10.5", "20\n32\n12", "55"],
+          correct: 0
+        },
+        options: [
+          {
+            code: [
+              "#include <iostream>",
+              "using namespace std;",
+              "",
+              "int main()",
+              "{",
+              "    int item1 = 250;",
+              "    int item2 = 400;",
+              "    int item3 = 150;",
+              "    double taxRate = 7.0;",
+              "    double tax1 = item1 * taxRate / 100;",
+              "    double tax2 = item2 * taxRate / 100;",
+              "    double tax3 = item3 * taxRate / 100;",
+              "    cout << tax1 << endl;",
+              "    cout << tax2 << endl;",
+              "    cout << tax3 << endl;",
+              "    return 0;",
+              "}"
+            ],
+            diff: {
+              input: "the program exactly as shown (items 250, 400, 150)",
+              change: "the named value was made a double, so the division keeps its fraction: 250 * 7.0 / 100 is 17.5, where the original's integer division discards the fraction and prints 17"
+            }
+          },
+          {
+            code: [
+              "#include <iostream>",
+              "using namespace std;",
+              "",
+              "int main()",
+              "{",
+              "    int item1 = 250;",
+              "    int item2 = 400;",
+              "    int item3 = 150;",
+              "    int taxRate = 8;",
+              "    int tax1 = item1 * taxRate / 100;",
+              "    int tax2 = item2 * taxRate / 100;",
+              "    int tax3 = item3 * taxRate / 100;",
+              "    cout << tax1 << endl;",
+              "    cout << tax2 << endl;",
+              "    cout << tax3 << endl;",
+              "    return 0;",
+              "}"
+            ],
+            diff: {
+              input: "the program exactly as shown (items 250, 400, 150)",
+              change: "the named value is 8, but the rate typed through the original was 7 \u2014 naming the number once is only safe if the name holds the same number"
+            }
+          },
+          {
+            code: [
+              "#include <iostream>",
+              "using namespace std;",
+              "",
+              "int main()",
+              "{",
+              "    int item1 = 250;",
+              "    int item2 = 400;",
+              "    int item3 = 150;",
+              "    int taxRate = 7;",
+              "    int tax1 = item1 * taxRate / 100;",
+              "    int tax2 = item2 * taxRate / 100;",
+              "    int tax3 = item3 * taxRate / 100;",
+              "    cout << tax1 << endl;",
+              "    cout << tax2 << endl;",
+              "    cout << tax3 << endl;",
+              "    return 0;",
+              "}"
+            ],
+            diff: null
+          }
+        ],
+        changed: "The rate is written once, in a variable named taxRate, and the three tax lines read it instead of repeating the literal 7. The expressions keep their shape: item * rate / 100, all in int.",
+        kept: "Every operand stayed an int, so every division still discards its fraction exactly where the original discarded it. A named value changes how a number is written, not what it is \u2014 taxRate holds 7, and 7 is what the original used in all three lines."
+      },
+      {
+        title: "Grade bands, turned around",
+        concept: "If/else-if chain \u2192 the same bands, tested from the bottom",
+        story: "A grade converter: five bands, tested from the top mark down. It works, but the bands can equally be tested from the bottom up \u2014 fail first, then climb. Predict the output, then pick the rewrite whose bands cover exactly the same scores, edge for edge.",
+        file: "gradeBands.cpp",
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "int main()",
+          "{",
+          "    int score = 85;",
+          "    string grade;",
+          "    if (score >= 90) {",
+          "        grade = \"A\";",
+          "    } else if (score >= 80) {",
+          "        grade = \"B\";",
+          "    } else if (score >= 70) {",
+          "        grade = \"C\";",
+          "    } else if (score >= 60) {",
+          "        grade = \"D\";",
+          "    } else {",
+          "        grade = \"F\";",
+          "    }",
+          "    cout << grade << endl;",
+          "    return 0;",
+          "}"
+        ],
+        predict: {
+          q: "The program runs exactly as written. What does it print?",
+          options: ["B", "A", "C", "D"],
+          correct: 0
+        },
+        options: [
+          {
+            code: [
+              "#include <iostream>",
+              "#include <string>",
+              "using namespace std;",
+              "",
+              "int main()",
+              "{",
+              "    int score = 85;",
+              "    string grade;",
+              "    if (score < 60) {",
+              "        grade = \"F\";",
+              "    } else if (score < 70) {",
+              "        grade = \"D\";",
+              "    } else if (score < 80) {",
+              "        grade = \"C\";",
+              "    } else if (score <= 90) {",
+              "        grade = \"B\";",
+              "    } else {",
+              "        grade = \"A\";",
+              "    }",
+              "    cout << grade << endl;",
+              "    return 0;",
+              "}"
+            ],
+            diff: {
+              from: "    int score = 85;",
+              to: "    int score = 90;",
+              input: "score = 90",
+              change: "the B band's top edge is <= 90 instead of < 90, so a score of exactly 90 \u2014 an A in the original \u2014 is captured by the B band first"
+            }
+          },
+          {
+            code: [
+              "#include <iostream>",
+              "#include <string>",
+              "using namespace std;",
+              "",
+              "int main()",
+              "{",
+              "    int score = 85;",
+              "    string grade;",
+              "    if (score <= 60) {",
+              "        grade = \"F\";",
+              "    } else if (score < 70) {",
+              "        grade = \"D\";",
+              "    } else if (score < 80) {",
+              "        grade = \"C\";",
+              "    } else if (score < 90) {",
+              "        grade = \"B\";",
+              "    } else {",
+              "        grade = \"A\";",
+              "    }",
+              "    cout << grade << endl;",
+              "    return 0;",
+              "}"
+            ],
+            diff: {
+              from: "    int score = 85;",
+              to: "    int score = 60;",
+              input: "score = 60",
+              change: "the F band's edge is <= 60 instead of < 60, so a score of exactly 60 \u2014 a D in the original \u2014 is failed by the first test"
+            }
+          },
+          {
+            code: [
+              "#include <iostream>",
+              "#include <string>",
+              "using namespace std;",
+              "",
+              "int main()",
+              "{",
+              "    int score = 85;",
+              "    string grade;",
+              "    if (score < 60) {",
+              "        grade = \"F\";",
+              "    } else if (score < 70) {",
+              "        grade = \"D\";",
+              "    } else if (score < 80) {",
+              "        grade = \"C\";",
+              "    } else if (score < 90) {",
+              "        grade = \"B\";",
+              "    } else {",
+              "        grade = \"A\";",
+              "    }",
+              "    cout << grade << endl;",
+              "    return 0;",
+              "}"
+            ],
+            diff: null
+          }
+        ],
+        changed: "The chain now tests from the bottom: score < 60 fails first, and each later test only sees the scores the earlier ones let through, so the bands are stated with < instead of >=",
+        kept: "Every edge sits where it sat: 60, 70, 80 and 90 each still belong to the higher band, because < 60 failing means 60 itself climbs to the D test, just as score >= 60 claimed it before. Reordering else-if tests is safe only when each test assumes the ones above it already failed \u2014 and these do."
+      }
+    ];
+
+    function refactorFreshRound() {
+      return { predSel: -1, locked: false, predCorrect: null, confidence: "", wrongPicks: {}, pickMsg: "", pickKind: "", done: false };
+    }
+    var refactor = { current: 0, rounds: REFACTOR_ROUNDS.map(refactorFreshRound) };
+    function refactorRun(src) {
+      try { var r = makeRunProgram(src, ""); return (r && r.ok) ? r.output : null; } catch (e) { return null; }
+    }
+    function refactorVariant(src, diff) {
+      if (!diff || !diff.from) return src;
+      return src.split(diff.from).join(diff.to);
+    }
+    function refactorTrueOut(idx) { return refactorRun(REFACTOR_ROUNDS[idx].code.join("\n")); }
+    function refactorCorrectPredIdx(idx) {
+      var out = refactorTrueOut(idx);
+      var opts = REFACTOR_ROUNDS[idx].predict.options;
+      if (out !== null) {
+        for (var i = 0; i < opts.length; i++) if (normMakeOut(opts[i]) === normMakeOut(out)) return i;
+      }
+      return REFACTOR_ROUNDS[idx].predict.correct;
+    }
+    function refactorOutHtml(label, out) {
+      return '<div class="ref-out"><span class="ref-out-label">' + label + "</span>" + esc(out.replace(/\n$/, "")) + "</div>";
+    }
+    function renderRefactorNav() {
+      var box = $("refnav"); box.innerHTML = ""; box.className = "chip-row";
+      REFACTOR_ROUNDS.forEach(function (r, i) {
+        var s = refactor.rounds[i];
+        var stText = s.done ? "complete" : s.locked ? "predicted \u2014 rewrite not yet chosen" : s.predSel >= 0 ? "prediction chosen, not locked" : "not started";
+        var b = document.createElement("button");
+        b.className = "chip-btn"; b.type = "button";
+        b.setAttribute("aria-current", refactor.current === i ? "true" : "false");
+        b.setAttribute("aria-label", "Round " + (i + 1) + ": " + r.title + " (" + stText + ")");
+        b.title = r.title + " \u2014 " + stText;
+        b.innerHTML = '<span class="chip-label">R' + (i + 1) + "</span>" + (s.done ? '<span class="chip-check" aria-hidden="true">\u2713</span>' : "");
+        b.addEventListener("click", function () { refactor.current = i; renderRefactor(); });
+        box.appendChild(b);
+      });
+      var hint = document.createElement("span"); hint.className = "chip-hint";
+      hint.textContent = "Rounds 1\u2013" + REFACTOR_ROUNDS.length + " \u00b7 " + REFACTOR_ROUNDS[refactor.current].title;
+      box.appendChild(hint);
+    }
+    function renderRefactorScore() {
+      var done = 0, predOk = 0, predLocked = 0, wrong = 0;
+      refactor.rounds.forEach(function (s) {
+        if (s.done) done++;
+        if (s.locked) { predLocked++; if (s.predCorrect) predOk++; }
+        wrong += Object.keys(s.wrongPicks).length;
+      });
+      $("refactor-scorebar").innerHTML =
+        '<span class="metric"><strong>' + done + " / " + REFACTOR_ROUNDS.length + "</strong> <span>rounds completed</span></span>" +
+        '<span class="metric"><strong>' + predOk + " / " + predLocked + "</strong> <span>predictions right at lock-in</span></span>" +
+        '<span class="metric"><strong>' + wrong + "</strong> <span>behaviour-changing rewrites picked</span></span>";
+    }
+    function renderRefactorChoices() {
+      var r = REFACTOR_ROUNDS[refactor.current], s = refactor.rounds[refactor.current];
+      var st2 = $("refactor-stage2");
+      st2.hidden = !s.locked;
+      var fb = $("refactor-choice-feedback");
+      var box = $("refactor-choices");
+      if (!s.locked) { box.innerHTML = ""; fb.className = "feedback"; fb.innerHTML = ""; return; }
+      box.innerHTML = "";
+      r.options.forEach(function (opt, i) {
+        var wrap = document.createElement("div");
+        wrap.className = "ref-choice" + (s.done && opt.diff === null ? " picked-correct" : "") + (s.wrongPicks[i] ? " picked-wrong" : "");
+        var head = document.createElement("div"); head.className = "ref-choice-head";
+        var tag = document.createElement("span"); tag.className = "ref-choice-tag"; tag.textContent = "Rewrite " + "ABC"[i];
+        var btn = document.createElement("button");
+        btn.className = "btn small"; btn.type = "button";
+        btn.textContent = s.done && opt.diff === null ? "This is the refactor \u2713" : s.wrongPicks[i] ? "Picked \u2014 it changes the behaviour" : "Choose rewrite " + "ABC"[i];
+        btn.disabled = !!s.done || !!s.wrongPicks[i];
+        btn.addEventListener("click", function () { refactorPick(i); });
+        head.appendChild(tag); head.appendChild(btn);
+        var cb = document.createElement("div"); cb.className = "codebox"; cb.style.marginTop = "0";
+        cb.innerHTML = '<div class="codehead"><span>' + esc(r.file) + " \u2014 rewrite " + "ABC"[i] + "</span><span>C++</span></div>";
+        var pre = document.createElement("pre"); pre.textContent = opt.code.join("\n");
+        cb.appendChild(pre);
+        wrap.appendChild(head); wrap.appendChild(cb);
+        box.appendChild(wrap);
+      });
+      if (s.pickMsg) { fb.className = "feedback show " + s.pickKind; fb.innerHTML = s.pickMsg; }
+      else { fb.className = "feedback"; fb.innerHTML = ""; }
+    }
+    function renderRefactor() {
+      renderRefactorNav();
+      renderRefactorScore();
+      var r = REFACTOR_ROUNDS[refactor.current], s = refactor.rounds[refactor.current];
+      $("refactor-concept").textContent = r.concept;
+      $("refactor-title").textContent = "Round " + (refactor.current + 1) + " \u2014 " + r.title;
+      $("refactor-story").textContent = r.story;
+      $("refactor-filename").textContent = r.file + " \u2014 the original: working, but messy";
+      $("refactor-code").textContent = r.code.join("\n");
+      $("refactor-predict-q").textContent = r.predict.q;
+      var trueIdx = refactorCorrectPredIdx(refactor.current);
+      var box = $("refactor-predict-options"); box.innerHTML = "";
+      r.predict.options.forEach(function (opt, i) {
+        var b = document.createElement("button");
+        b.className = "opt-btn"; b.type = "button";
+        b.setAttribute("aria-pressed", s.predSel === i ? "true" : "false");
+        b.innerHTML = '<span class="key">' + "ABCD"[i] + "</span><span>" + esc(opt) + "</span>";
+        if (s.locked) {
+          b.disabled = true;
+          if (i === trueIdx) b.classList.add("reveal-correct");
+          if (i === s.predSel && !s.predCorrect) b.classList.add("reveal-wrong");
+        } else {
+          b.addEventListener("click", function () { s.predSel = i; renderRefactor(); });
+        }
+        box.appendChild(b);
+      });
+      var cS = $("refactor-conf-sure"), cU = $("refactor-conf-unsure"), cRow = $("refactor-confidence-row");
+      cS.setAttribute("aria-pressed", s.confidence === "sure" ? "true" : "false");
+      cU.setAttribute("aria-pressed", s.confidence === "unsure" ? "true" : "false");
+      cS.disabled = !!s.locked; cU.disabled = !!s.locked;
+      if (cRow) cRow.style.display = s.locked && !s.confidence ? "none" : "";
+      var lb = $("refactor-lock-btn");
+      lb.disabled = s.locked || s.predSel < 0;
+      lb.style.display = s.locked ? "none" : "";
+      $("refactor-lock-note").style.display = s.locked ? "none" : "";
+      var banner = $("refactor-locked-banner");
+      if (s.locked) {
+        banner.classList.add("show");
+        banner.textContent = "Prediction locked in: \u201c" + r.predict.options[s.predSel].replace(/\n/g, " / ") + "\u201d. Stage 2 is open \u2014 judge every rewrite against this output.";
+      } else banner.classList.remove("show");
+      var fb = $("refactor-predict-feedback");
+      if (s.locked) {
+        var trueOut = refactorTrueOut(refactor.current);
+        var shown = trueOut !== null ? trueOut.replace(/\n$/, "") : r.predict.options[trueIdx];
+        fb.className = "feedback show " + (s.predCorrect ? "good" : "bad");
+        fb.innerHTML = s.predCorrect
+          ? "<b>Exactly right.</b> The program prints:" + refactorOutHtml("Actual output", shown) + (s.confidence === "unsure" ? '<div style="margin-top:8px;">You marked this \u201cNot sure\u201d \u2014 your reading was better than your confidence.</div>' : "")
+          : "<b>Not quite.</b> You predicted <b>" + esc(r.predict.options[s.predSel].replace(/\n/g, " / ")) + "</b>, but the program prints:" + refactorOutHtml("Actual output", shown) + (s.confidence === "sure"
+            ? '<div style="margin-top:8px;">You marked this \u201cSure\u201d \u2014 a confident miss, and the kind worth a second look. Either way, this output is now the standard: in Stage 2, the right rewrite is the one that reproduces it on every input.</div>'
+            : '<div style="margin-top:8px;">That output is now the standard: in Stage 2, the right rewrite is the one that reproduces it on every input.</div>');
+      } else { fb.className = "feedback"; fb.innerHTML = ""; }
+      renderRefactorChoices();
+      var st3 = $("refactor-stage3");
+      st3.hidden = !s.done;
+      if (s.done) {
+        $("refactor-changed").textContent = r.changed;
+        $("refactor-kept").textContent = r.kept;
+        var fo = refactorTrueOut(refactor.current);
+        $("refactor-final-out").textContent = fo !== null ? fo.replace(/\n$/, "") : r.predict.options[trueIdx];
+        $("refactor-next-btn").hidden = refactor.current >= REFACTOR_ROUNDS.length - 1;
+      }
+    }
+    function refactorPick(i) {
+      var r = REFACTOR_ROUNDS[refactor.current], s = refactor.rounds[refactor.current];
+      if (!s.locked || s.done || s.wrongPicks[i]) return;
+      var opt = r.options[i];
+      if (opt.diff === null) {
+        s.done = true; s.pickKind = "good";
+        s.pickMsg = "<b>That is the refactor.</b> It prints what the original prints on the program as shown \u2014 and on the boundary cases where the other two rewrites part from it. Stage 3 below names what changed, and what held the behaviour true.";
+        announce("Correct rewrite. Refactor Gym round " + (refactor.current + 1) + " complete.");
+      } else {
+        s.wrongPicks[i] = true; s.pickKind = "bad";
+        var oOut = refactorRun(refactorVariant(r.code.join("\n"), opt.diff));
+        var pOut = refactorRun(refactorVariant(opt.code.join("\n"), opt.diff));
+        var detail = "";
+        if (oOut !== null && pOut !== null) {
+          detail = refactorOutHtml("The original prints", oOut.replace(/\n$/, "")) + refactorOutHtml("This rewrite prints", pOut.replace(/\n$/, ""));
+        }
+        s.pickMsg = "<b>Cleaner, yes \u2014 but not the same program.</b> With <b>" + esc(opt.diff.input) + "</b>, the outputs part:" + detail + '<div style="margin-top:8px;">What changed: ' + esc(opt.diff.change) + ". Pick another rewrite.</div>";
+        announce("That rewrite changes the behaviour. The input where the outputs part is shown.");
+      }
+      renderRefactor();
+      if (typeof tfSave === "function") tfSave();
+      if (typeof syncMobileNav === "function") syncMobileNav();
+    }
+    $("refactor-lock-btn").addEventListener("click", function () {
+      var s = refactor.rounds[refactor.current];
+      if (!s || s.locked || s.predSel < 0) return;
+      s.locked = true;
+      s.predCorrect = s.predSel === refactorCorrectPredIdx(refactor.current);
+      announce(s.predCorrect ? "Prediction locked in: exactly right. Stage 2 is open." : "Prediction locked in. Stage 2 is open.");
+      renderRefactor();
+      if (typeof tfSave === "function") tfSave();
+    });
+    (function wireRefactorConfidence() {
+      function pick(v) {
+        var s = refactor.rounds[refactor.current];
+        if (!s || s.locked) return;
+        s.confidence = (s.confidence === v) ? "" : v;
+        renderRefactor();
+      }
+      $("refactor-conf-sure").addEventListener("click", function () { pick("sure"); });
+      $("refactor-conf-unsure").addEventListener("click", function () { pick("unsure"); });
+    })();
+    $("refactor-next-btn").addEventListener("click", function () {
+      if (refactor.current < REFACTOR_ROUNDS.length - 1) {
+        refactor.current++; renderRefactor();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    });
+    $("refactor-restart-btn").addEventListener("click", function () {
+      refactor.rounds[refactor.current] = refactorFreshRound();
+      renderRefactor();
+      if (typeof tfSave === "function") tfSave();
+      if (typeof syncMobileNav === "function") syncMobileNav();
+    });
+    // Refactor state is defined after the drawer's first hint sync (which
+    // runs earlier in this script), so refresh the drawer hints once here,
+    // with refactor defined: the Refactor Gym row shows its count like the
+    // other counted modes from first load, not only after a mode switch.
+    if (typeof syncMobileNav === "function") syncMobileNav();
+
+
     /* ---------------- Persistence: progress saved in this browser ----------------
        One key, local storage only, on the visitor's own machine. No account,
        nothing sent anywhere. Any storage failure (private mode, quota,
@@ -17627,7 +19090,7 @@ int main() {
       } catch (e) { tfStorageOk = false; return null; }
     }
     function tfCollect() {
-      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", playbackSpeed: playbackSpeed, bgTheme: bgTheme, reduceMotionPref: !!reduceMotionPref, largeTextPref: !!largeTextPref, primerRead: !!primerRead, tracer: [], bolt: null, gym: [], bridge: [], make: [], challenges: null, authoredExercises: [], instructorExercises: [],
+      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", playbackSpeed: playbackSpeed, bgTheme: bgTheme, reduceMotionPref: !!reduceMotionPref, largeTextPref: !!largeTextPref, primerRead: !!primerRead, tracer: [], bolt: null, gym: [], refactor: [], bridge: [], make: [], challenges: null, authoredExercises: [], instructorExercises: [],
         lastTracer: (typeof tfLastTracer === "number" ? tfLastTracer : -1),
         testOut: (typeof testOut !== "undefined" && testOut)
           ? { passed: !!testOut.passed, score: (typeof testOut.score === "number" ? testOut.score : 0), via: (Array.isArray(testOut.via) ? testOut.via.slice() : [false, false, false]) }
@@ -17660,6 +19123,13 @@ int main() {
       // restarts at Spot on the next visit.
       try {
         gym.rounds.forEach(function (r) { data.gym.push(r && r.done ? r : null); });
+      } catch (e) {}
+      // Refactor Gym: only completed rounds persist (additive field,
+      // sibling to gym/bridge/make; older saves simply lack it).
+      try {
+        refactor.rounds.forEach(function (r) {
+          data.refactor.push(r && r.done ? { done: true, predCorrect: r.predCorrect === true, confidence: (r.confidence === "sure" || r.confidence === "unsure") ? r.confidence : "" } : null);
+        });
       } catch (e) {}
       try {
         bridgeState.items.forEach(function (it) {
@@ -17706,6 +19176,7 @@ int main() {
       if ((d.tracer || []).some(function (x) { return !!x; })) return true;
       if (d.bolt && ((d.bolt.done || []).some(Boolean) || (d.bolt.challengeDone || []).some(Boolean))) return true;
       if ((d.gym || []).some(function (x) { return !!x; })) return true;
+      if ((d.refactor || []).some(function (x) { return !!x; })) return true;
       if ((d.bridge || []).some(function (x) { return x && x.done; })) return true;
       if ((d.make || []).some(function (x) { return x && (x.done || (typeof x.code === "string" && x.code.trim() !== "")); })) return true;
       if (d.challenges && d.challenges.data) {
@@ -17807,6 +19278,21 @@ int main() {
             Object.keys(r).forEach(function (k) { if (Object.prototype.hasOwnProperty.call(sv, k)) r[k] = sv[k]; });
             r.done = true; r.pending = null;
             gym.rounds[i] = r;
+          });
+        }
+      } catch (e) {}
+      // Refactor Gym: completed rounds only (additive field; absent in
+      // older saves, which then simply start every round fresh).
+      try {
+        if (Array.isArray(d.refactor)) {
+          d.refactor.forEach(function (sv, i) {
+            if (!sv || !REFACTOR_ROUNDS[i] || !sv.done) return;
+            var r = refactorFreshRound();
+            r.done = true; r.locked = true;
+            r.predSel = REFACTOR_ROUNDS[i].predict.correct;
+            r.predCorrect = sv.predCorrect === true;
+            if (sv.confidence === "sure" || sv.confidence === "unsure") r.confidence = sv.confidence;
+            refactor.rounds[i] = r;
           });
         }
       } catch (e) {}
@@ -18801,7 +20287,7 @@ int main() {
       "use strict";
       function byId(id) { return document.getElementById(id); }
       var MODE_LABELS = {
-        bolt: "Bolt's World", tracer: "Prediction Tracer", gym: "Debugging Gym",
+        bolt: "Bolt's World", tracer: "Prediction Tracer", gym: "Debugging Gym", refactor: "Refactor Gym",
         translator: "Error Translator", challenges: "Challenges", bridge: "Bridge", make: "Make"
       };
       /* Declutter: primary sections first in every dropdown; secondary
@@ -18832,6 +20318,12 @@ int main() {
           { label: "Fix the program yourself", target: "gym-fix-card", fallback: "gym-hunt" },
           { label: "What does each logic bug actually do?", target: "gym-hypo-card", fallback: "gym-hunt", more: true },
           { label: "Right answer, wrong program", target: "rawp-details", more: true }
+        ] },
+        { mode: "refactor", items: [
+          { label: "Rounds \u2014 six working but messy programs, in order", target: "refactor-rounds" },
+          { label: "Stage 1 \u2014 Predict the output", target: "refactor-stage1" },
+          { label: "Stage 2 \u2014 Pick the behaviour-identical rewrite", target: "refactor-stage2", fallback: "refactor-stage1", more: true },
+          { label: "Stage 3 \u2014 What changed, what did not", target: "refactor-stage3", fallback: "refactor-stage1", more: true }
         ] },
         { mode: "translator", items: [
           { label: "One broken program, three real errors", target: "translator-sample" },
@@ -18867,7 +20359,7 @@ int main() {
       try { reducedMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); } catch (e) {}
 
       function currentMode() {
-        var order = ["bolt", "tracer", "gym", "translator", "challenges", "bridge", "make"];
+        var order = ["bolt", "tracer", "gym", "refactor", "translator", "challenges", "bridge", "make"];
         for (var i = 0; i < order.length; i++) {
           var b = byId("mode-" + order[i]);
           if (b && b.getAttribute("aria-selected") === "true") return order[i];
