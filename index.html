@@ -554,6 +554,8 @@
       .trans-head .tnum { font-family: "IBM Plex Mono", monospace; font-size: .78rem; font-weight: 700; width: 28px; height: 28px; border-radius: 50%; background: var(--panel-2); border: 1px solid var(--line); display: grid; place-items: center; flex: none; }
       .trans-item.open .tnum { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-strong); }
       .trans-head .ttitle { font-weight: 700; font-size: 1rem; line-height: 1.25; }
+      .trans-stage { display: inline-block; font-family: "IBM Plex Mono", monospace; font-size: .66rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border-radius: 999px; padding: 2px 8px; margin-left: 8px; vertical-align: 2px; background: var(--panel-2); border: 1px solid var(--line); color: var(--ink-soft); white-space: nowrap; }
+      .trans-stage.link { background: var(--amber-soft); border-color: var(--amber); color: var(--amber); }
       .trans-head .traw-short { font-family: "IBM Plex Mono", monospace; font-size: .82rem; color: var(--rust); margin-top: 3px; word-break: break-word; }
       .trans-head .tchev { margin-left: auto; flex: none; color: var(--ink-soft); font-size: 1.1rem; line-height: 1; padding-top: 2px; }
       .trans-body { border-top: 1px dashed var(--line); padding: 16px; display: none; }
@@ -685,6 +687,28 @@
       .bolt-intro p strong { color: var(--ink); }
       .bolt-order { margin-top: 14px; background: var(--accent-soft); border: 1.5px solid var(--accent); border-radius: 12px; padding: 13px 15px; font-size: .95rem; }
       .bolt-order strong { color: var(--accent-strong); }
+      /* ---------- Bolt's World: first-visit guided tour ---------- */
+      .bolt-tour { margin-top: 18px; border: 1.5px solid var(--accent); }
+      .bolt-tour h3 { font-family: "Source Serif 4", Georgia, serif; font-size: 1.3rem; line-height: 1.2; }
+      .bolt-tour .tour-sub { margin-top: 7px; color: var(--ink-soft); font-size: .95rem; max-width: 640px; }
+      .bolt-tour .tour-sub strong { color: var(--ink); }
+      .tour-phases { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+      .tour-phase { font-family: "IBM Plex Mono", monospace; font-size: .74rem; font-weight: 700; letter-spacing: .04em; border: 1px solid var(--line); background: var(--panel-2); color: var(--ink-soft); border-radius: 999px; padding: 4px 11px; }
+      .tour-phase[aria-current="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-strong); }
+      .tour-phase.done { border-color: var(--accent); color: var(--accent-strong); }
+      .tour-board { display: flex; gap: 6px; margin-top: 14px; max-width: 430px; }
+      .tour-cell { flex: 1 1 0; aspect-ratio: 1 / 1; border: 1.5px solid var(--line); border-radius: 10px; background: var(--panel-2); display: grid; place-items: center; position: relative; min-width: 0; }
+      .tour-cell svg { width: 72%; height: 72%; }
+      .tour-cell .tour-sq { position: absolute; bottom: 2px; right: 6px; font-size: .68rem; color: var(--ink-soft); font-family: "IBM Plex Mono", monospace; }
+      .tour-celldot { width: 15px; height: 15px; border-radius: 50%; background: var(--amber); border: 2px solid var(--panel); box-shadow: 0 0 0 1px var(--line); }
+      .tour-bag { margin-top: 9px; font-size: .92rem; color: var(--ink-soft); }
+      .tour-bag strong { color: var(--ink); }
+      .tour-prog { margin-top: 12px; background: var(--code-bg); color: var(--code-ink); border-radius: 10px; padding: 12px 14px; font-family: "IBM Plex Mono", monospace; font-size: .92rem; line-height: 1.6; white-space: pre; overflow-x: auto; max-width: 430px; }
+      .bolt-tour .options { grid-template-columns: 1fr; max-width: 430px; }
+      .tour-caption { margin-top: 12px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px; padding: 11px 13px; font-size: .95rem; max-width: 560px; }
+      .tour-caption .mono { font-family: "IBM Plex Mono", monospace; font-weight: 600; }
+      .bolt-tour-foot { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 16px; border-top: 1px dashed var(--line); padding-top: 12px; }
+      .bolt-tour-note { font-size: .88rem; color: var(--ink-soft); }
       .bolt-board-wrap { margin-top: 14px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; padding: 10px; }
       .bolt-board { position: relative; display: grid; }
       .bolt-cell { border: 1.5px solid var(--line); border-radius: 7px; background: var(--panel); aspect-ratio: 1 / 1; display: grid; place-items: center; position: relative; margin: 2px; min-height: 0; }
@@ -1685,7 +1709,7 @@
             <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Order code, then write a line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find and fix faults.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 63</strong><span>The rest of the course.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 68</strong><span>The rest of the course.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write your own programs.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
             <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
@@ -1856,6 +1880,18 @@
           <div class="bolt-order"><strong>Start here.</strong> This mode comes first on purpose: finish these twenty-nine worlds and you already think in sequences, loops, decisions, and functions. Then predict and trace real code in the Prediction Tracer, where the same logic wears full C++ syntax.</div>
         </section>
 
+        <section class="card bolt-tour" id="bolt-tour" aria-labelledby="bolt-tour-h" hidden>
+          <span class="concept-tag">First visit · A two-minute warm-up</span>
+          <h3 id="bolt-tour-h">New here? Walk the loop once, with training wheels.</h3>
+          <p class="tour-sub">Every exercise on this page runs the same loop: <strong>predict, lock it in, step through, read the verdict</strong>. Try it once here, on a three-command program, before the real worlds below ask anything of you.</p>
+          <div class="tour-phases" id="bolt-tour-phases" role="group" aria-label="Warm-up progress"></div>
+          <div id="bolt-tour-body"></div>
+          <div class="bolt-tour-foot">
+            <button class="btn ghost small" type="button" id="bolt-tour-skip">Skip the warm-up</button>
+            <span class="bolt-tour-note">Takes about two minutes. Skip it — or finish it — and it will not come back.</span>
+          </div>
+        </section>
+
         <section class="toolbar" id="bolt-worlds" aria-label="Choose a world">
           <div>
             <div class="tlabel">Worlds — twenty-nine workshops, in order</div>
@@ -2005,7 +2041,7 @@ for (int i = 0; i < 3; i++) {
             <select class="lecture-select" id="lecture-ex-select" aria-label="Choose an exercise to project"></select>
             <button class="btn" type="button" id="lecture-project-btn">Project this exercise</button>
           </div>
-          <p class="lecture-pick-note">Any of the 63 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
+          <p class="lecture-pick-note">Any of the 68 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
         </div>
 
         <div id="lecture-project" hidden>
@@ -2689,7 +2725,7 @@ for (int i = 0; i < 3; i++) {
       <div id="translator-mode" role="tabpanel" tabindex="0" hidden>
         <section class="trans-intro">
           <h2>Read the error. It is telling you where to look.</h2>
-          <p>A compiler message is not a verdict. It is a note from the program that checks your code, written in shorthand. <strong>Pick the error you just hit, or search for a word in it,</strong> and TraceFirst will translate it into plain English: what it means, what in your code causes it, and how to fix it.</p>
+          <p>A compiler message is not a verdict. It is a note from the program that checks your code, written in shorthand. <strong>Pick the error you just hit, or search for a word in it,</strong> and TraceFirst will translate it into plain English: what it means, what in your code causes it, and how to fix it. Most entries are <strong>compiler errors</strong> — one file, checked on its own. A few, labelled <strong>Linker error</strong>, are different: every file compiled, but the pieces could not be assembled into one program.</p>
         </section>
 
         <section class="card" id="translator-sample" style="margin-top:18px;" aria-labelledby="sample-h">
@@ -2713,10 +2749,10 @@ for (int i = 0; i < 3; i++) {
             <label for="trans-search">Search the translator</label>
             <div class="trans-search-row" style="margin-top:8px;">
               <input type="search" id="trans-search" placeholder="Try: semicolon, cout, string, brace, include…" autocomplete="off">
-              <button class="btn ghost small" type="button" id="trans-clear">Show all 42</button>
+              <button class="btn ghost small" type="button" id="trans-clear">Show all 45</button>
             </div>
           </div>
-          <p class="trans-count" id="trans-count" role="status">Showing all 42 errors — ordered by how early beginners usually meet them.</p>
+          <p class="trans-count" id="trans-count" role="status">Showing all 45 errors — ordered by how early beginners usually meet them.</p>
         </div>
 
         <div class="trans-list" id="trans-list" aria-label="Compiler error catalogue"></div>
@@ -2724,7 +2760,7 @@ for (int i = 0; i < 3; i++) {
 
         <div class="trans-method"><strong>The method:</strong> an error message names the line where the compiler gave up, which is not always the line where the mistake is; read the first error first, fix it, compile again.</div>
 
-        <p class="foot"><strong>How to use this translator well:</strong> do not hunt through all 32. Copy two or three distinctive words from the message you actually got into the search box. The raw messages here use the wording of g++, the compiler in most introductory courses; other compilers phrase the same problems slightly differently, but the cause and the fix do not change.</p>
+        <p class="foot"><strong>How to use this translator well:</strong> do not hunt through all 45. Copy two or three distinctive words from the message you actually got into the search box. The raw messages here use the wording of g++, the compiler in most introductory courses; other compilers phrase the same problems slightly differently, but the cause and the fix do not change.</p>
       </div><!-- /translator-mode -->
 
       <div id="challenges-mode" role="tabpanel" tabindex="0" hidden>
@@ -2998,12 +3034,12 @@ int main() {
         <div id="instructors-body" hidden>
           <div class="lecture-inst-entry">
             <h4>Lecture mode — run a tracer exercise in front of the class</h4>
-            <p>A single projected screen: pick any of the 63 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
+            <p>A single projected screen: pick any of the 68 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
             <div class="journal-actions"><button class="btn small" type="button" id="lecture-open-btn-2">Open Lecture mode</button></div>
           </div>
                     <div class="studio" id="inst-studio">
             <h4>Instructor exercise studio</h4>
-            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 63 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
+            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 68 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
             <div class="authored-field">
               <label for="inst-title">Exercise title</label>
               <input class="authored-input" type="text" id="inst-title" maxlength="80" placeholder="e.g. The average that is not an average" autocomplete="off">
@@ -6575,7 +6611,274 @@ int main() {
           correct: 0,
           explain: "Same peel, new digits: 907 % 10 = <b>7</b> is kept and 90 goes down; 90 % 10 = <b>0</b> — the middle frame adds nothing, but it still has to run, passing 9 down. The returns assemble 9, then 0 + 9 = 9, then 7 + 9 = <b>16</b>. A zero digit changes the total by nothing — and changes the trace by one whole frame."
         }
+      }      ,
+      {
+        concept: "File Input · Stream State",
+        topic: "File input and output",
+        title: "The word that stopped the numbers",
+        goal: "A stream carries a <b>state</b> as well as a position. When an extraction cannot do its job — here, a word where a number belongs — the stream switches to <b>fail</b>, the loop test fails with it, and every value after the bad one is never even attempted.",
+        stories: {
+          health:   "A recovery app logs session scores in a file named <strong>readings.txt</strong>, whose whole contents are: <strong>12 7 ten 4</strong>. The third entry was typed as a word by mistake. The program adds up the numbers in the file, counts how many it read, and prints the total and the count.",
+          psych:    "A study app logs trial scores in a file named <strong>readings.txt</strong>, whose whole contents are: <strong>12 7 ten 4</strong>. The third entry was typed as a word by mistake. The program adds up the numbers in the file, counts how many it read, and prints the total and the count.",
+          business: "A till app logs sale amounts in a file named <strong>readings.txt</strong>, whose whole contents are: <strong>12 7 ten 4</strong>. The third entry was typed as a word by mistake. The program adds up the numbers in the file, counts how many it read, and prints the total and the count.",
+          arts:     "A venue app logs entry counts in a file named <strong>readings.txt</strong>, whose whole contents are: <strong>12 7 ten 4</strong>. The third entry was typed as a word by mistake. The program adds up the numbers in the file, counts how many it read, and prints the total and the count."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <fstream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    ifstream fin(\"readings.txt\");",
+          "    int value = 0;",
+          "    int total = 0;",
+          "    int count = 0;",
+          "    while (fin >> value) {",
+          "        total += value;",
+          "        count++;",
+          "    }",
+          "    cout << total << \" \" << count;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["19 2", "23 4", "19 3", "19 4"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 3, text: "<b>Named misconception: a bad token reads as zero.</b> “ten” does not quietly become 0, and reading does not carry on to the 4. The extraction <em>fails</em> outright: the stream switches to its fail state, the header test fails with it, and the loop ends. The 4 is never attempted — it is still sitting in the file, unread." },
+          2: { step: 3, text: "<b>Named misconception: the body runs once for the failure.</b> The extraction <em>is</em> the loop test, so when it fails the body is skipped entirely — count cannot rise for a value that never arrived. The two successful reads give total 19 and count 2; the failed read adds neither a value nor a pass." },
+          3: { step: 3, text: "<b>Named misconception: count counts what is in the file.</b> count rises only inside the body, once per <em>successful</em> read. Two reads succeeded, so count is 2. The word and the stranded 4 were never counted, because they were never read — the file holding four tokens is not the same as the program reading four values." }
+        },
+        steps: [
+          { line: 5, vars: { fin: ["ifstream", "readings.txt · next: 12 · good"], value: ["int", "0"], total: ["int", "0"], count: ["int", "0"] }, out: "", note: "The stream opens the simulated file <b>readings.txt</b> (contents: 12 7 ten 4). Its state is <b>good</b> and its next value is <b>12</b>. Nothing has been read yet." },
+          { line: 10, vars: { fin: ["ifstream", "readings.txt · next: 7 · good"], value: ["int", "12"], total: ["int", "12"], count: ["int", "1"] }, out: "", note: "Pass 1: the header reads <b>12</b> — a number, as the box demands. total = <b>12</b>, count = <b>1</b>. The stream stays good; the next value is 7." },
+          { line: 10, vars: { fin: ["ifstream", "readings.txt · next: ten · good"], value: ["int", "7"], total: ["int", "19"], count: ["int", "2"] }, out: "", note: "Pass 2: the header reads <b>7</b>. total = <b>19</b>, count = <b>2</b>. The stream is still good — but look at what is next in the file: the word <b>ten</b>." },
+          { line: 9, vars: { fin: ["ifstream", "readings.txt · next: ten (unread) · FAIL"], value: ["int", "7"], total: ["int", "19"], count: ["int", "2"] }, out: "", note: "<b>The parting step.</b> The header tries to read a number and meets <b>ten</b>. The extraction fails: <b>value keeps its last good contents, 7</b>, the word stays unread, and the stream switches to <b>FAIL</b>. Because the extraction is the test, the loop ends here — the body never runs for the failure, and the 4 behind the word is never reached." },
+          { line: 13, vars: { fin: ["ifstream", "readings.txt · next: ten (unread) · FAIL"], value: ["int", "7"], total: ["int", "19"], count: ["int", "2"] }, out: "19 2", note: "The program prints <b>19 2</b> — only the values read before the jam, and only those." },
+          { line: 14, vars: { fin: ["ifstream", "readings.txt · next: ten (unread) · FAIL"], value: ["int", "7"], total: ["int", "19"], count: ["int", "2"] }, out: "19 2", note: "The program ends. Final answer: <b>19 2</b>. One mistyped word did not just lose its own value — it ended the reading altogether." }
+        ],
+        modify: {
+          prompt: "The file is corrected: the word ten becomes the number 10, so readings.txt now holds 12 7 10 4. The program is untouched. What prints now?",
+          code: 'ifstream fin("readings.txt"); <mark>// file now: 12 7 10 4</mark>\nwhile (fin >> value) {\n    total += value;\n    count++;\n}\ncout << total << " " << count;',
+          options: ["33 4", "19 2", "29 4", "33 3"],
+          correct: 0,
+          explain: "With no bad token, every read succeeds: 12 + 7 + 10 + 4 = <b>33</b>, in <b>4</b> passes. The loop did not change at all — only the stream's luck did."
+        }
+      },
+      {
+        concept: "File Input · The EOF Trap",
+        topic: "File input and output",
+        title: "One line too many",
+        goal: "The eof() lag again, one level up: it applies to <b>lines</b> exactly as it applied to values. Testing <b>eof()</b> before reading counts one line that does not exist, because eof is still false after the last real line is read — it turns true only when a read tries to go <em>past</em> the end.",
+        stories: {
+          health:   "A clinic app keeps a list of patient first names in a file named <strong>names.txt</strong>, one per line — the whole file is three lines: <strong>Ana</strong>, <strong>Bo</strong>, <strong>Cy</strong>, and the file ends with a newline after Cy. The program counts the lines by reading them one at a time and prints the count.",
+          psych:    "A study app keeps a list of participant first names in a file named <strong>names.txt</strong>, one per line — the whole file is three lines: <strong>Ana</strong>, <strong>Bo</strong>, <strong>Cy</strong>, and the file ends with a newline after Cy. The program counts the lines by reading them one at a time and prints the count.",
+          business: "A shop app keeps a list of staff first names in a file named <strong>names.txt</strong>, one per line — the whole file is three lines: <strong>Ana</strong>, <strong>Bo</strong>, <strong>Cy</strong>, and the file ends with a newline after Cy. The program counts the lines by reading them one at a time and prints the count.",
+          arts:     "A venue app keeps a list of performer first names in a file named <strong>names.txt</strong>, one per line — the whole file is three lines: <strong>Ana</strong>, <strong>Bo</strong>, <strong>Cy</strong>, and the file ends with a newline after Cy. The program counts the lines by reading them one at a time and prints the count."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <fstream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    ifstream fin(\"names.txt\");",
+          "    string line;",
+          "    int count = 0;",
+          "    while (!fin.eof()) {",
+          "        getline(fin, line);",
+          "        count++;",
+          "    }",
+          "    cout << count;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["4", "3", "2", "0"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 4, text: "<b>Named misconception: eof means “the last thing was just read.”</b> eof reports the <em>last read's failure</em>, not the last value's arrival. After Cy is read, no read has failed yet — Cy's line ended with a newline, and reading it stopped there, happily. So the header passes once more, getline finds nothing, and count rises for a line that was never there. 3 is what the corrected loop — while (getline(fin, line)) — prints." },
+          2: { step: 2, text: "<b>Named misconception: the trailing newline swallows the last line.</b> You lost one of the real lines on the way. Three genuine reads happen before the phantom: Ana takes count to 1, Bo to 2, Cy to 3. The file's final newline <em>ends</em> Cy's line — it does not erase it. And the loop then adds its extra pass on top of the full three." },
+          3: { step: 1, text: "<b>Named misconception: eof starts out true.</b> The loop is not stillborn: eof() starts out <b>false</b> — no read has failed, because no read has happened. The header passes, the first getline takes Ana, and the counting begins. The problem with this loop is not that it never runs; it is that it runs once too often." }
+        },
+        steps: [
+          { line: 6, vars: { fin: ["ifstream", "names.txt · next line: Ana · good"], line: ["string", "\"\""], count: ["int", "0"] }, out: "", note: "The stream opens the simulated file <b>names.txt</b> (three lines: Ana, Bo, Cy — with a newline after Cy). State: <b>good</b>; eof is false. Nothing read yet." },
+          { line: 11, vars: { fin: ["ifstream", "names.txt · next line: Bo · good"], line: ["string", "\"Ana\""], count: ["int", "1"] }, out: "", note: "Pass 1: the header passes (eof is false), getline reads <b>Ana</b>, count = <b>1</b>." },
+          { line: 11, vars: { fin: ["ifstream", "names.txt · next line: Cy · good"], line: ["string", "\"Bo\""], count: ["int", "2"] }, out: "", note: "Pass 2: getline reads <b>Bo</b>, count = <b>2</b>." },
+          { line: 11, vars: { fin: ["ifstream", "names.txt · next line: (end) · good — eof not yet set"], line: ["string", "\"Cy\""], count: ["int", "3"] }, out: "", note: "Pass 3: getline reads <b>Cy</b> and stops at her newline — a completely successful read. count = <b>3</b>, the true number of lines. But watch the state: the position sits at the end, yet <b>eof is still false</b>, because no read has <em>tried</em> to go past the end. The trap is set." },
+          { line: 11, vars: { fin: ["ifstream", "names.txt · next line: (none) · EOF + FAIL"], line: ["string", "\"\""], count: ["int", "4"] }, out: "", note: "<b>The parting step.</b> Pass 4: the header still passes, so the body runs. getline tries to read past the end and extracts <b>nothing</b> — line is emptied, and only now do eof and fail switch on. But the damage is already done: <b>count++ runs anyway</b>, counting a fourth line that does not exist." },
+          { line: 13, vars: { fin: ["ifstream", "names.txt · next line: (none) · EOF + FAIL"], line: ["string", "\"\""], count: ["int", "4"] }, out: "4", note: "The program prints <b>4</b> — three real lines, plus one phantom counted after the read that found nothing." },
+          { line: 14, vars: { fin: ["ifstream", "names.txt · next line: (none) · EOF + FAIL"], line: ["string", "\"\""], count: ["int", "4"] }, out: "4", note: "The program ends. Final answer: <b>4</b>. The fix is the same as for values: test the read itself — while (getline(fin, line))." }
+        ],
+        modify: {
+          prompt: "The header is fixed: it becomes while (getline(fin, line)), and the getline line leaves the body — count++ is all that remains inside. Same file. What prints now?",
+          code: 'while (<mark>getline(fin, line)</mark>) {\n    count++;\n}\ncout << count;',
+          options: ["3", "4", "2", "0"],
+          correct: 0,
+          explain: "Testing the read itself stops the loop the moment a read extracts nothing — before count++ can run for it. Three successful reads, three counts: <b>3</b>. The phantom pass never starts."
+        }
+      },
+      {
+        concept: "File Input · Stream State",
+        topic: "File input and output",
+        title: "Clearing the jam",
+        goal: "A failed stream refuses <b>every</b> read — numbers, words, all of them — until <b>clear()</b> resets its state. But clear() does not move the reading position: the token that caused the jam is still there, waiting to be read another way.",
+        stories: {
+          health:   "An intake file named <strong>data.txt</strong> holds three entries: <strong>5 six 7</strong> — a count, a word typed where the second count belongs, and another count. The program reads the first count into a, the second into b (which starts at 99), then clears the stream, reads the word as text, reads the last count into c, and prints all four values.",
+          psych:    "A responses file named <strong>data.txt</strong> holds three entries: <strong>5 six 7</strong> — a count, a word typed where the second count belongs, and another count. The program reads the first count into a, the second into b (which starts at 99), then clears the stream, reads the word as text, reads the last count into c, and prints all four values.",
+          business: "A stock file named <strong>data.txt</strong> holds three entries: <strong>5 six 7</strong> — a count, a word typed where the second count belongs, and another count. The program reads the first count into a, the second into b (which starts at 99), then clears the stream, reads the word as text, reads the last count into c, and prints all four values.",
+          arts:     "A bookings file named <strong>data.txt</strong> holds three entries: <strong>5 six 7</strong> — a count, a word typed where the second count belongs, and another count. The program reads the first count into a, the second into b (which starts at 99), then clears the stream, reads the word as text, reads the last count into c, and prints all four values."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <fstream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    ifstream fin(\"data.txt\");",
+          "    int a = 0;",
+          "    int b = 99;",
+          "    int c = 0;",
+          "    string word;",
+          "    fin >> a;",
+          "    fin >> b;",
+          "    fin.clear();",
+          "    fin >> word;",
+          "    fin >> c;",
+          "    cout << a << \" \" << b << \" \" << word << \" \" << c;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["5 99 six 7", "5 0 six 7", "5 99 7 0", "5 6 7 0"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "<b>Named misconception: a failed read zeroes the box.</b> The read into b failed, and a failed read writes <em>nothing</em> — b keeps the value it already held, <b>99</b>. Watch the parting step: the extraction is refused, the box is untouched, and only the stream's state changes." },
+          2: { step: 3, text: "<b>Named misconception: clear() skips the bad token.</b> clear() resets the stream's <em>state</em> only — the reading position never moves, so “six” is still the next thing in the file, and the very next read takes it, as text, into word. Had clear() also skipped it, word would have taken the 7 and c's read would have failed at the end — the output you chose. It does not: position and state are separate things." },
+          3: { step: 2, text: "<b>Named misconception: the stream converts the word to a number.</b> “six” is never converted — not to 6, not to anything. Asking a number-box to read it fails outright, b keeps 99, and the word is still in the file afterwards, to be read as the text it always was." }
+        },
+        steps: [
+          { line: 6, vars: { fin: ["ifstream", "data.txt · next: 5 · good"], a: ["int", "0"], b: ["int", "99"], c: ["int", "0"], word: ["string", "\"\""] }, out: "", note: "The stream opens the simulated file <b>data.txt</b> (contents: 5 six 7), state <b>good</b>. Note b's starting value: <b>99</b> — it will matter." },
+          { line: 11, vars: { fin: ["ifstream", "data.txt · next: six · good"], a: ["int", "5"], b: ["int", "99"], c: ["int", "0"], word: ["string", "\"\""] }, out: "", note: "<b>fin &gt;&gt; a</b> reads <b>5</b>. a = 5, and the next thing in the file is the word <b>six</b>." },
+          { line: 12, vars: { fin: ["ifstream", "data.txt · next: six (unread) · FAIL"], a: ["int", "5"], b: ["int", "99"], c: ["int", "0"], word: ["string", "\"\""] }, out: "", note: "<b>The parting step.</b> <b>fin &gt;&gt; b</b> asks a number-box to read “six” — and fails. Nothing is written: <b>b keeps 99</b>, the word stays unread, and the stream switches to <b>FAIL</b>. From here, every read is refused until the state is cleared." },
+          { line: 13, vars: { fin: ["ifstream", "data.txt · next: six · good (cleared)"], a: ["int", "5"], b: ["int", "99"], c: ["int", "0"], word: ["string", "\"\""] }, out: "", note: "<b>fin.clear()</b> resets the state to good. Look at what did <em>not</em> change: the position. “six” is still next — clear() heals the stream, it does not skip anything." },
+          { line: 14, vars: { fin: ["ifstream", "data.txt · next: 7 · good"], a: ["int", "5"], b: ["int", "99"], c: ["int", "0"], word: ["string", "\"six\""] }, out: "", note: "<b>fin &gt;&gt; word</b> reads the same token the other way — as text — and succeeds: word = <b>six</b>. The jam is cleared because the word was finally read the way it was written." },
+          { line: 15, vars: { fin: ["ifstream", "data.txt · next: (none) · at end"], a: ["int", "5"], b: ["int", "99"], c: ["int", "7"], word: ["string", "\"six\""] }, out: "", note: "<b>fin &gt;&gt; c</b> reads <b>7</b>. Every value is now accounted for: the two counts that parsed, the count that never landed, and the word read as a word." },
+          { line: 16, vars: { fin: ["ifstream", "data.txt · next: (none) · at end"], a: ["int", "5"], b: ["int", "99"], c: ["int", "7"], word: ["string", "\"six\""] }, out: "5 99 six 7", note: "The program prints <b>5 99 six 7</b> — b's untouched 99 is the receipt proving its read never happened." },
+          { line: 17, vars: { fin: ["ifstream", "data.txt · next: (none) · at end"], a: ["int", "5"], b: ["int", "99"], c: ["int", "7"], word: ["string", "\"six\""] }, out: "5 99 six 7", note: "The program ends. Final answer: <b>5 99 six 7</b>." }
+        ],
+        modify: {
+          prompt: "The file's entries are reordered: data.txt now holds 5 6 six — two good counts, then the word last. The program is untouched. What prints now?",
+          code: 'ifstream fin("data.txt"); <mark>// file now: 5 6 six</mark>\nfin >> a;\nfin >> b;\nfin.clear();\nfin >> word;\nfin >> c;\ncout << a << " " << b << " " << word << " " << c;',
+          options: ["5 6 six 0", "5 6 six 7", "5 99 six 0", "5 6 0 0"],
+          correct: 0,
+          explain: "This time nothing jams: a takes 5, b takes 6, clear() has nothing to heal, and word takes six. The casualty is c — its read finds the file empty and fails, leaving c at its starting <b>0</b>: <b>5 6 six 0</b>. A failed read at the end is silent; the box simply keeps what it had."
+        }
+      },
+      {
+        concept: "File Input · Mixing Reads",
+        topic: "File input and output",
+        title: "The line that was already over",
+        goal: "<b>&gt;&gt;</b> stops <em>at</em> the whitespace after a value — it does not consume it. A <b>getline</b> that follows therefore reads the rest of the <em>current</em> line (often nothing at all), not the next line down.",
+        stories: {
+          health:   "A booking file named <strong>form.txt</strong> has a count on its own first line and a session title on the second — the whole file is: line one <strong>3</strong>, line two <strong>Red Kite</strong>. The program reads the count, then reads the title with getline, and prints the count and the title in brackets.",
+          psych:    "A study file named <strong>form.txt</strong> has a count on its own first line and a study title on the second — the whole file is: line one <strong>3</strong>, line two <strong>Red Kite</strong>. The program reads the count, then reads the title with getline, and prints the count and the title in brackets.",
+          business: "A project file named <strong>form.txt</strong> has a count on its own first line and a project name on the second — the whole file is: line one <strong>3</strong>, line two <strong>Red Kite</strong>. The program reads the count, then reads the name with getline, and prints the count and the name in brackets.",
+          arts:     "A programme file named <strong>form.txt</strong> has a count on its own first line and a piece title on the second — the whole file is: line one <strong>3</strong>, line two <strong>Red Kite</strong>. The program reads the count, then reads the title with getline, and prints the count and the title in brackets."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <fstream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    ifstream fin(\"form.txt\");",
+          "    int n = 0;",
+          "    string title;",
+          "    fin >> n;",
+          "    getline(fin, title);",
+          "    cout << n << \" [\" << title << \"]\";",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["3 []", "3 [Red Kite]", "0 [Red Kite]", "3 [Kite]"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "<b>Named misconception: getline always reads the next line.</b> getline reads from <em>where the stream is standing</em> to the end of that line — and after fin &gt;&gt; n, the stream is standing at the end of line one, with only that line's newline ahead of it. So getline returns the rest of line one: nothing. Red Kite is still in the file, unread, on line two." },
+          2: { step: 1, text: "<b>Named misconception: the reads stand or fall together.</b> The count read is fine — fin &gt;&gt; n takes the <b>3</b> cleanly; n is not the problem. The failure is the very next read: getline finds only the remainder of the count's own line, which is empty, so the title never arrives either. Both halves of your answer give one read more credit than it earned." },
+          3: { step: 2, text: "<b>Named misconception: getline hunts for the next word.</b> getline does not skip ahead to a later word. It takes everything from the current position to the line's end — and the current position is the end of line one, so it takes <em>nothing</em>, not the second word of line two. Kite was never within this read's reach." }
+        },
+        steps: [
+          { line: 6, vars: { fin: ["ifstream", "form.txt · next: 3 · good"], n: ["int", "0"], title: ["string", "\"\""] }, out: "", note: "The stream opens the simulated file <b>form.txt</b> (line one: 3; line two: Red Kite). State: <b>good</b>." },
+          { line: 9, vars: { fin: ["ifstream", "form.txt · rest of line 1: (just the newline) · good"], n: ["int", "3"], title: ["string", "\"\""] }, out: "", note: "<b>fin &gt;&gt; n</b> reads <b>3</b> — and stops <em>at</em> the newline that ends line one. The value is taken; the line's ending is left exactly where it was. Remember this position: it decides the next step." },
+          { line: 10, vars: { fin: ["ifstream", "form.txt · next line: Red Kite · good"], n: ["int", "3"], title: ["string", "\"\""] }, out: "", note: "<b>The parting step.</b> <b>getline(fin, title)</b> reads from the current position to the end of <em>this</em> line — which is no distance at all. title receives <b>\"\"</b>, the empty remainder of line one, and the newline is consumed. Red Kite, on line two, is never read." },
+          { line: 11, vars: { fin: ["ifstream", "form.txt · next line: Red Kite · good"], n: ["int", "3"], title: ["string", "\"\""] }, out: "3 []", note: "The program prints <b>3 []</b> — the right count, and an empty title, with the real title still sitting in the file." },
+          { line: 12, vars: { fin: ["ifstream", "form.txt · next line: Red Kite · good"], n: ["int", "3"], title: ["string", "\"\""] }, out: "3 []", note: "The program ends. Final answer: <b>3 []</b>. The standard fix is one line — fin.ignore(); after the &gt;&gt; read — to throw away the rest of the count's line before getline starts." }
+        ],
+        modify: {
+          prompt: "One line is added after fin >> n;: fin.ignore(); — which discards everything up to and including the end of the count's line. Everything else is unchanged. What prints now?",
+          code: 'fin >> n;\n<mark>fin.ignore();</mark>\ngetline(fin, title);\ncout << n << " [" << title << "]";',
+          options: ["3 [Red Kite]", "3 []", "3 [Red]", "0 [Red Kite]"],
+          correct: 0,
+          explain: "ignore() throws away the leftover newline, so getline starts at the top of line two and takes the whole line: <b>3 [Red Kite]</b>. One discarded newline was the entire bug."
+        }
+      },
+      {
+        concept: "File Input · Sentinel Values",
+        topic: "File input and output",
+        title: "The number that means stop",
+        goal: "Files do not always end at the end: a <b>sentinel</b> value — here, -1 — can mark the <em>logical</em> end, with more data stored after it for other purposes. The loop must test <b>both</b> the read and the value, read first, because the value test needs the value the read just delivered.",
+        stories: {
+          health:   "A quiz file named <strong>scores.txt</strong> holds two scores, then an end marker, then a value that belongs to a later section — its whole contents are: <strong>4 9 -1 100</strong>. The program adds up the scores before the marker and prints the total.",
+          psych:    "A responses file named <strong>scores.txt</strong> holds two scores, then an end marker, then a value that belongs to a later section — its whole contents are: <strong>4 9 -1 100</strong>. The program adds up the scores before the marker and prints the total.",
+          business: "A sales file named <strong>scores.txt</strong> holds two figures, then an end marker, then a value that belongs to a later section — its whole contents are: <strong>4 9 -1 100</strong>. The program adds up the figures before the marker and prints the total.",
+          arts:     "A judging file named <strong>scores.txt</strong> holds two scores, then an end marker, then a value that belongs to a later section — its whole contents are: <strong>4 9 -1 100</strong>. The program adds up the scores before the marker and prints the total."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <fstream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    ifstream fin(\"scores.txt\");",
+          "    int value = 0;",
+          "    int total = 0;",
+          "    while (fin >> value && value != -1) {",
+          "        total += value;",
+          "    }",
+          "    cout << total;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["13", "112", "113", "4"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 3, text: "<b>Named misconception: the file's end is the only end.</b> Your total reads straight through the marker to the physical end: 4 + 9 − 1 + 100 = 112. But -1 is not data here — it is punctuation, the program's agreed stop sign. The value test in the header exists precisely to stop the loop there, three values early." },
+          2: { step: 3, text: "<b>Named misconception: skipping the sentinel is enough.</b> Your total leaves the -1 itself out but keeps reading past it to take the 100. The test does not say “do not add the marker” — it says <em>stop</em>: when the header fails, the loop ends, and everything stored after the marker is never read at all." },
+          3: { step: 2, text: "<b>Named misconception: the header runs once.</b> The loop does not stop after one pass. The first pass banks 4, but the header runs again: the read of 9 succeeds and 9 is not the marker, so a second pass banks it too. The loop ends on the <em>third</em> header run — the one that reads the -1 — not the first." }
+        },
+        steps: [
+          { line: 5, vars: { fin: ["ifstream", "scores.txt · next: 4 · good"], value: ["int", "0"], total: ["int", "0"] }, out: "", note: "The stream opens the simulated file <b>scores.txt</b> (contents: 4 9 -1 100). State: <b>good</b>. The -1 is the agreed stop marker; the 100 behind it belongs to a later section." },
+          { line: 9, vars: { fin: ["ifstream", "scores.txt · next: 9 · good"], value: ["int", "4"], total: ["int", "4"] }, out: "", note: "Pass 1: the header's read delivers <b>4</b>, and 4 != -1, so both halves of the test pass. total = <b>4</b>." },
+          { line: 9, vars: { fin: ["ifstream", "scores.txt · next: -1 · good"], value: ["int", "9"], total: ["int", "13"] }, out: "", note: "Pass 2: the read delivers <b>9</b>, which is not the marker. total = <b>13</b>. Next in the file: the marker itself." },
+          { line: 8, vars: { fin: ["ifstream", "scores.txt · next: 100 (unread) · good"], value: ["int", "-1"], total: ["int", "13"] }, out: "", note: "<b>The parting step.</b> The header runs a third time: the read <em>succeeds</em> — it delivers <b>-1</b> into value — but the second half of the test, value != -1, is now <b>false</b>, so the loop ends before the body. The marker is read but never added, and the 100 behind it is never read at all. The stream is still good: nothing failed; the program simply stopped on purpose." },
+          { line: 11, vars: { fin: ["ifstream", "scores.txt · next: 100 (unread) · good"], value: ["int", "-1"], total: ["int", "13"] }, out: "13", note: "The program prints <b>13</b> — exactly the values before the marker." },
+          { line: 12, vars: { fin: ["ifstream", "scores.txt · next: 100 (unread) · good"], value: ["int", "-1"], total: ["int", "13"] }, out: "13", note: "The program ends. Final answer: <b>13</b>. Two tests guarded the loop: the read (is there a value?) and the value (is it the marker?) — and this loop needed both." }
+        ],
+        modify: {
+          prompt: "The file gains one more score before the marker: scores.txt now holds 4 9 6 -1 100. The program is untouched. What prints now?",
+          code: 'ifstream fin("scores.txt"); <mark>// file now: 4 9 6 -1 100</mark>\nwhile (fin >> value && value != -1) {\n    total += value;\n}\ncout << total;',
+          options: ["19", "13", "118", "119"],
+          correct: 0,
+          explain: "One more genuine score is banked before the marker stops the loop: 4 + 9 + 6 = <b>19</b>. The marker and everything after it are treated exactly as before."
+        }
       }
+
     ];
 
     /* ---------------- State (persisted in this browser — see persistence block at the end) ---------------- */
@@ -6786,7 +7089,7 @@ int main() {
       { name: "Decisions & References", list: [18, 19, 27, 51] },
       { name: "Structured Data & Collections", list: [20, 21, 22] },
       { name: "Classes & Objects", list: [30, 31, 32] },
-      { name: "File Input & Output", list: [33, 34] },
+      { name: "File Input & Output", list: [33, 34, 63, 64, 65, 66, 67] },
       { name: "Maps & Sets", list: [35, 36] },
       { name: "Scope & Lifetime", list: [37, 38, 39, 40] },
       { name: "Bits & Shifts", list: [47, 48] },
@@ -11759,7 +12062,7 @@ int main() {
       { id:13, title:"Unterminated string — missing closing quote", raw:"error: missing terminating \" character", meaning:"A string opened with \" and never closed. Everything after the opening quote — semicolons, code, new lines — is swallowed as text until the compiler gives up.", cause:"One double quote is missing at the end of the text. Check any cout line where the colour/syntax in your editor runs on past where the text should end: that run-on is the symptom.", before:"cout << \"Your score is << endl;", after:"cout << \"Your score is \" << endl;", keys:"unterminated string missing terminating quote character closing" },
       { id:14, title:"Misspelled include header", raw:"fatal error: iostrem: No such file or directory", meaning:"Fatal means the compiler stopped before it even read your code: it went looking for a header file with that exact name and there is none. Every later error is a consequence of this one.", cause:"The header name is misspelled — a dropped or swapped letter. Header names are file names, spelled exactly: iostream, iomanip, string, cmath. Fix the spelling and most of the cascade disappears.", before:"#include <iostrem>", after:"#include <iostream>", keys:"fatal iostrem no such file directory include misspelled header spelling compilation terminated" },
       { id:15, title:"main returning the wrong type", raw:"error: '::main' must return 'int'", meaning:"main is not an ordinary function whose return type you choose. The operating system expects main to hand back an int status code, and the language enforces it.", cause:"main was declared with the wrong type — double main(), void main(), and friends. This is the Debugging Gym's double main() case in compiler wording. The declaration is int main(), always.", before:"double main() {\n    // ...\n    return 0;\n}", after:"int main() {\n    // ...\n    return 0;\n}", keys:"main must return int double main wrong type gym" },
-      { id:16, title:"No main at all — a linker error", raw:"undefined reference to `main'\ncollect2: error: ld returned 1 exit status", meaning:"Your code compiled — every file was legal — but there is no starting point to run. The linker, the program that assembles compiled code into an executable, reports this; the compiler itself found nothing wrong.", cause:"There is no int main() anywhere: it was omitted, misnamed (e.g. mian, Main), or the file with main in it was not included. Compiler vs linker in one line: the compiler checks each file's language; the linker checks that the pieces, including main, are all present.", before:"// a helper with no entry point\nint add(int a, int b) {\n    return a + b;\n}", after:"int add(int a, int b) {\n    return a + b;\n}\nint main() {\n    cout << add(2, 3);\n    return 0;\n}", keys:"undefined reference main linker link ld undefined no main collect2" },
+      { id:16, stage:"link", title:"No main at all — a linker error", raw:"undefined reference to `main'\ncollect2: error: ld returned 1 exit status", meaning:"Your code compiled — every file was legal — but there is no starting point to run. The linker, the program that assembles compiled code into an executable, reports this; the compiler itself found nothing wrong.", cause:"There is no int main() anywhere: it was omitted, misnamed (e.g. mian, Main), or the file with main in it was not included. Compiler vs linker in one line: the compiler checks each file's language; the linker checks that the pieces, including main, are all present.", before:"// a helper with no entry point\nint add(int a, int b) {\n    return a + b;\n}", after:"int add(int a, int b) {\n    return a + b;\n}\nint main() {\n    cout << add(2, 3);\n    return 0;\n}", keys:"undefined reference main linker link ld undefined no main collect2" },
       { id:17, title:"Keyword used as a variable name", raw:"error: expected unqualified-id before 'int'\n  — same family: expected unqualified-id before 'class'", meaning:"You tried to name a variable with a word the language has already reserved. int, class, return, for, while and their kin are the language's own vocabulary and cannot be reused as names.", cause:"A declaration like int class = 3; or int int = 3; puts a keyword where a name belongs. Choose a name that describes the value instead: score, classSize, intValue.", before:"int class = 3;\ncout << class;", after:"int classSize = 3;\ncout << classSize;", keys:"keyword unqualified-id expected before int class reserved word variable name" },
       { id:18, title:"Case sensitivity — Cout is not cout", raw:"error: 'Cout' was not declared in this scope", meaning:"Cout and cout are two different names as far as C++ is concerned. C++ is case-sensitive: capitals are not decoration, they change the name.", cause:"A capital letter crept in — Cout, Cin, Endl, Int, String. Every standard name in an introductory program is lowercase: cout, cin, endl, int, string. Match the case exactly.", before:"Cout << \"Hi\" << Endl;", after:"cout << \"Hi\" << endl;", keys:"case Cout capital sensitive not declared scope uppercase lowercase" },
       { id:19, title:"Missing > on an include", raw:"error: missing terminating > character", meaning:"The include's angle brackets work like quotes: < opens a header name and > must close it. Without the >, the compiler reads past the end of the line looking for the close.", cause:"The include line is short its closing >. While you are there, check its partner too: #include lines take angle brackets and no semicolon — see the next entry.", before:"#include <iostream\nusing namespace std;", after:"#include <iostream>\nusing namespace std;", keys:"missing terminating > include angle bracket character header" },
@@ -11771,7 +12074,7 @@ int main() {
       { id:25, title:"Using the result of a void function", raw:"error: void value not ignored as it ought to be", meaning:"The function is declared void: it does its job and hands nothing back. Your code tried to store or use the nothing it returned, and the compiler is objecting to the attempt.", cause:"A void function is called for what it does — printing a menu, say — not for a value. Call it on its own line. If you genuinely need a value back, the function must be declared with a return type and must return something.", before:"void printMenu() {\n    cout << \"1. Play  2. Quit\";\n}\nint choice = printMenu();", after:"void printMenu() {\n    cout << \"1. Play  2. Quit\";\n}\nprintMenu(); // call it; there is no value to store", keys:"void value not ignored ought return nothing function result store printMenu" },
       { id:26, title:"Two main functions", raw:"error: redefinition of 'int main()'", meaning:"The compiler found main defined twice in one program. A program has exactly one entry point, and the compiler will not choose between two candidates for the job.", cause:"Usually a pasted copy: a second version of the whole program, or just of main, was left in the file. Delete the duplicate, or merge the two versions into a single main. Other names may repeat across overloads; main may not.", before:"int main() {\n    cout << \"Version one\";\n    return 0;\n}\nint main() {\n    cout << \"Version two\";\n    return 0;\n}", after:"int main() {\n    cout << \"Version two\";\n    return 0;\n}", keys:"redefinition main two duplicate entry point pasted copy redefined" },
       { id:27, title:"Missing header for string / vector", raw:"error: 'string' does not name a type\n  — the vector version reads: error: 'vector' does not name a type", meaning:"The compiler has never been introduced to the name string (or vector). Those types do not live in the language itself — they are defined in a header, and the header was never included, so as far as this file is concerned the type does not exist.", cause:"The file uses string or vector without its #include line. iostream brings in cout and cin, but string lives in <string> and vector in <vector>; each family of tools has its own header, and the type only exists once its header is included.", before:"#include <iostream>\nusing namespace std;\nint main() {\n    string name;\n    vector<int> scores;\n}", after:"#include <iostream>\n#include <string>\n#include <vector>\nusing namespace std;\nint main() {\n    string name;\n    vector<int> scores;\n}", keys:"string vector does not name a type header include missing type" },
-      { id:28, title:"Main instead of main — a linker error", raw:"undefined reference to 'main'\ncollect2: error: ld returned 1 exit status", meaning:"This is a link error, not a compile error: every file compiled successfully, but when the linker went to assemble the program it could not find the starting point. The entry function must be spelled exactly main, all lowercase — a function called Main is a different function that nothing ever calls.", cause:"The entry point was written as Main with a capital M (or otherwise misspelled). Compilation seems to succeed because Main is a legal function name; the failure only appears afterwards, at link time, when the system looks for main and finds none.", before:"int Main() {\n    cout << \"Hi\";\n    return 0;\n}", after:"int main() {\n    cout << \"Hi\";\n    return 0;\n}", keys:"Main main undefined reference linker link collect2 ld returned capital entry point" },
+      { id:28, stage:"link", title:"Main instead of main — a linker error", raw:"undefined reference to 'main'\ncollect2: error: ld returned 1 exit status", meaning:"This is a link error, not a compile error: every file compiled successfully, but when the linker went to assemble the program it could not find the starting point. The entry function must be spelled exactly main, all lowercase — a function called Main is a different function that nothing ever calls.", cause:"The entry point was written as Main with a capital M (or otherwise misspelled). Compilation seems to succeed because Main is a legal function name; the failure only appears afterwards, at link time, when the system looks for main and finds none.", before:"int Main() {\n    cout << \"Hi\";\n    return 0;\n}", after:"int main() {\n    cout << \"Hi\";\n    return 0;\n}", keys:"Main main undefined reference linker link collect2 ld returned capital entry point" },
       { id:29, title:"Missing value after <<", raw:"error: expected primary-expression before ';' token", meaning:"The statement ends where a value should be. After << the compiler waits for something to print — a value, a variable, a piece of text — and instead it met the semicolon that ends the statement.", cause:"An operand was left out of the output statement: cout << ; prints nothing because nothing was ever named. The value the line meant to print was deleted or never written.", before:"cout << ;", after:"cout << x;", keys:"expected primary-expression before token missing value operand cout << empty" },
       { id:30, title:"String literal assigned to a char", raw:"error: invalid conversion from 'const char*' to 'char'", meaning:"Double quotes make a string — a whole sequence of characters — not a single character. A char holds exactly one character, and the compiler will not squeeze a string into a one-character box.", cause:"The value was written with double quotes: char c = \"A\"; makes \"A\" a string (the letter plus an invisible end marker). Single characters take single quotes: 'A'.", before:"char c = \"A\";", after:"char c = 'A';", keys:"invalid conversion const char* char string literal double quotes single character" },
       { id:31, title:"Smart quotes and stray characters from pasted code", raw:"error: extended character \" is not valid in an identifier\n  — also seen as: error: stray '\\342' in program", meaning:"The code contains a typographic character — usually a curly (“smart”) quote copied from a word processor, a web page, or a PDF. The compiler only accepts plain ASCII characters in code, and it reports the foreign character's byte codes (like \\342) instead of the character itself.", cause:"The program was pasted from somewhere that autocorrects quotes: word processors and many web pages silently replace straight quotes with curly ones. The fix is mechanical: delete each curly quote in the file and retype it on the keyboard as a straight ' or \".", before:"cout << “Hello”;", after:"cout << \"Hello\";", keys:"smart quotes curly stray 342 extended character pasted word processor non-ascii identifier" },
@@ -11782,10 +12085,13 @@ int main() {
       { id:36, title:"Comparing a pointer with an integer", raw:"error: ISO C++ forbids comparison between pointer and integer", meaning:"The two sides of the comparison are different kinds of thing: one side is an address (where a value lives) and the other is a number (a value). Asking whether an address equals a count is a category error, and C++ forbids it outright rather than guessing what you meant.", cause:"A pointer variable was compared with a plain value — if (p == 5) or while (p > 0) — when the code meant to compare the value the pointer points at. Dereference first: if (*p == 5) compares the pointed-at value. (Comparing a pointer with another pointer, or testing it against nullptr, is legal and means something else: same address, or no address.)", before:"int x = 5;\nint* p = &x;\nif (p == 5) { ... }", after:"int x = 5;\nint* p = &x;\nif (*p == 5) { ... }", keys:"ISO C++ forbids comparison between pointer and integer address dereference *p == category" },
       { id:37, title:"The expression that trails off", raw:"error: expected primary-expression before '}' token", meaning:"The compiler reached a closing brace while it was still mid-expression — something it was in the middle of reading (a value, a name, the next piece of a cout chain) never arrived, and the } turned up where that missing piece belonged.", cause:"A statement trails off unfinished just above the brace: a cout chain ending in << with nothing after it, an assignment with no value after the =, or an arithmetic expression missing its last operand. The compiler reports the brace because that is where the gap becomes undeniable; the unfinished line is the one above it.", before:"if (score >= 50) {\n    cout << \"Pass\" <<\n}", after:"if (score >= 50) {\n    cout << \"Pass\" << endl;\n}", keys:"primary-expression before } token unfinished expression trails off missing operand cout chain dangling" },
       { id:38, title:"string not declared — header present, namespace missing", raw:"error: 'string' was not declared in this scope", meaning:"The compiler knows the type string exists somewhere, but not under the bare name string in this file. The name lives inside the std namespace, and nothing has brought it into scope — so as far as this scope is concerned, it was never declared.", cause:"This is the near-twin of entry 7 with the opposite gap. Entry 7 (\"does not name a type\") means #include <string> itself is missing. This message means the header IS included, but using namespace std; is missing and the code does not write std::string. One of the two bridges — the using line, or std:: on every use — has to be built.", before:"#include <iostream>\n#include <string>\n// no using namespace std;\nint main() {\n    string name;\n}", after:"#include <iostream>\n#include <string>\nusing namespace std;\nint main() {\n    string name;\n}", keys:"string was not declared in this scope namespace std using include header present scope" },
-      { id:39, title:"Called but never defined — a linker error", raw:"error: undefined reference to 'twice(int)'\n  — also seen as: collect2: error: ld returned 1 exit status", meaning:"Your program compiles — every file is individually legal — but at link time the machine went looking for the body of a function you called and found only its promise. The call has nothing to jump to, so no program can be built.", cause:"The function was declared (a prototype line like int twice(int n);) and called, but its definition was never written — or was written with a different signature, which makes it a different function entirely: int twice(int) promised, int twice(double) defined does not settle the debt. Compare entry 16: there the missing function is main itself. Here main exists; it is one of your own helpers that is missing.", before:"int twice(int n);\nint main() {\n    cout << twice(5);\n}\n// the definition of twice was never written", after:"int twice(int n) {\n    return n * 2;\n}\nint main() {\n    cout << twice(5);\n}", keys:"undefined reference linker collect2 function declared prototype never defined missing body signature" },
+      { id:39, stage:"link", title:"Called but never defined — a linker error", raw:"error: undefined reference to 'twice(int)'\n  — also seen as: collect2: error: ld returned 1 exit status", meaning:"Your program compiles — every file is individually legal — but at link time the machine went looking for the body of a function you called and found only its promise. The call has nothing to jump to, so no program can be built.", cause:"The function was declared (a prototype line like int twice(int n);) and called, but its definition was never written — or was written with a different signature, which makes it a different function entirely: int twice(int) promised, int twice(double) defined does not settle the debt. Compare entry 16: there the missing function is main itself. Here main exists; it is one of your own helpers that is missing.", before:"int twice(int n);\nint main() {\n    cout << twice(5);\n}\n// the definition of twice was never written", after:"int twice(int n) {\n    return n * 2;\n}\nint main() {\n    cout << twice(5);\n}", keys:"undefined reference linker collect2 function declared prototype never defined missing body signature" },
       { id:40, title:"break with nothing to break out of", raw:"error: break statement not within loop or switch", meaning:"break is an instruction to leave the nearest loop or switch — and the compiler cannot find one around this break. An if block is not a loop and not a switch, so a break inside an if that sits outside any loop has nothing to leave.", cause:"A break was placed inside an if (or directly in a function body) without an enclosing loop or switch — often left behind when a loop was removed during editing, or written by someone expecting break to mean 'stop the program' or 'leave the if'. Leaving an if needs no instruction: the block simply ends. Leaving a function early is return's job.", before:"int x = 5;\nif (x > 0) {\n    break;\n}", after:"int x = 5;\nif (x > 0) {\n    cout << x;\n}", keys:"break statement not within loop or switch leave if block nothing enclosing stray" },
       { id:41, title:"Subscripting a number — int[int]", raw:"error: invalid types 'int[int]' for array subscript", meaning:"Square brackets were used with a plain int on BOTH sides — the thing being subscripted is an int, and the subscript is an int too. The compiler reads the types off your expression and reports them back at you: int[int] is its way of saying 'neither of these is an array'.", cause:"A single-value variable was subscripted as if it were an array — often because two variables traded roles: the code meant to index an array (value first, like a[i]) but the name in front of the brackets is an ordinary int holding one value. Compare entry 24, the same family with a literal subscript: there the compiler's wording is 'subscripted value is neither array nor pointer'. If you truly have a collection, declare it as an array; if you have one value, print it without brackets.", before:"int total = 5;\nint i = 1;\ncout << total[i];", after:"int total = 5;\nint i = 1;\ncout << total;", keys:"invalid types int[int] array subscript neither side brackets index single value swapped" },
-      { id:42, title:"A name that starts with a number", raw:"error: expected unqualified-id before numeric constant", meaning:"The compiler was reading a declaration and expecting a name (an unqualified-id) — and instead it met a number. A name was written that begins with a digit, so the compiler reads the leading digits as a numeric constant sitting exactly where the name belongs.", cause:"An identifier starts with a digit: int 1stScore, double 2ndTry. C++ names must begin with a letter or an underscore; digits are allowed only after the first character. The error is reported at the number, and the fix is in the name: move the digit later (firstScore, score1) everywhere the variable is used.", before:"int 1stScore = 90;\ncout << 1stScore;", after:"int firstScore = 90;\ncout << firstScore;", keys:"expected unqualified-id before numeric constant name starts with digit identifier 1st variable naming" }
+      { id:42, title:"A name that starts with a number", raw:"error: expected unqualified-id before numeric constant", meaning:"The compiler was reading a declaration and expecting a name (an unqualified-id) — and instead it met a number. A name was written that begins with a digit, so the compiler reads the leading digits as a numeric constant sitting exactly where the name belongs.", cause:"An identifier starts with a digit: int 1stScore, double 2ndTry. C++ names must begin with a letter or an underscore; digits are allowed only after the first character. The error is reported at the number, and the fix is in the name: move the digit later (firstScore, score1) everywhere the variable is used.", before:"int 1stScore = 90;\ncout << 1stScore;", after:"int firstScore = 90;\ncout << firstScore;", keys:"expected unqualified-id before numeric constant name starts with digit identifier 1st variable naming" },
+      { id:43, stage:"link", title:"Multiple definition — the same function defined twice (a linker error)", raw:"multiple definition of 'totalScore()'\n  — also seen as: first defined here / collect2: error: ld returned 1 exit status", meaning:"No compiler error anywhere: every file compiled on its own. This is a link error. The same function was defined — written out in full, body and all — in two places, and when the linker tried to assemble one program it found two bodies competing for one name. The rule the linker enforces is: one name, one definition.", cause:"The definition was pasted into two files, or written in a header that two files include (entry 45 is the variable version of the same accident). A declaration — the prototype line ending in a semicolon — may be repeated in as many files as need it; the definition, the one with the body, may exist exactly once in the whole program.", before:"// in main.cpp\nint totalScore() { return 42; }\n// in helpers.cpp — the same definition again\nint totalScore() { return 42; }", after:"// helpers.h — declare it (a promise, no body)\nint totalScore();\n// helpers.cpp — define it, once\nint totalScore() { return 42; }\n// main.cpp — just call it", keys:"multiple definition linker first defined here duplicate defined twice two files ld collect2" },
+      { id:44, stage:"link", title:"Defined in another file — but that file was never linked (a linker error)", raw:"error: undefined reference to 'areaOf(int, int)'\ncollect2: error: ld returned 1 exit status", meaning:"Compile succeeded; link failed. And unlike entry 39, the function genuinely exists — it is defined in another file of the project. But that file was left out of the build, so when the linker went looking for the body, the piece of the program containing it was simply not on the table.", cause:"The call and the definition live in different files, and only the caller's file was compiled: a project that never added the second file, or a command like g++ main.cpp that forgets helpers.cpp. The fix is to the build, not to the code — no line of either file is wrong. Compile and link every file of the program together.", before:"// what was built: g++ main.cpp\n// main.cpp calls areaOf(3, 4)\n// helpers.cpp defines areaOf — and was never compiled", after:"// build every file of the program together:\n// g++ main.cpp helpers.cpp\n// now the linker finds areaOf's body", keys:"undefined reference linker other file not compiled linked object helpers collect2 ld g++ project" },
+      { id:45, stage:"link", title:"A variable defined in a header — duplicated wherever the header is included (a linker error)", raw:"error: multiple definition of 'score'\ncollect2: error: ld returned 1 exit status", meaning:"This is a link error, and every file compiled cleanly — because the header did not just describe the variable, it created it. Each file that includes the header therefore defines its own copy of the variable, and the linker, assembling the program, finds the same variable defined several times over and refuses to choose between the copies.", cause:"A definition like int score; was written in a header (score.h) that two or more .cpp files include. Headers are for declarations — promises, not things. The header should promise the variable with extern, and exactly one .cpp file should keep the promise with the single real definition.", before:"// score.h — included by main.cpp AND helpers.cpp\nint score;\n// two files include it, so score is defined twice", after:"// score.h — a promise only\nextern int score;\n// helpers.cpp — the one real definition\nint score;", keys:"multiple definition header variable extern duplicate symbol included twice linker ld collect2" }
 
     ];
     /* ================= Error Translator: fix-it rounds =================
@@ -11888,7 +12194,10 @@ int main() {
                     "Print the variable itself: <span class=\"mono\">cout &lt;&lt; total;</span> — brackets are only for reaching into an array or a string."] },
       42: { code: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int 1stScore = 90;\n    cout << 1stScore;\n    return 0;\n}",
             hints: ["Look at <b>line 5</b> — the variable's name. It begins with a digit, and C++ reads a leading digit as the start of a number, not of a name.",
-                    "Rename it so a letter comes first, in both places: <span class=\"mono\">int firstScore = 90;</span> and <span class=\"mono\">cout &lt;&lt; firstScore;</span>"] }
+                    "Rename it so a letter comes first, in both places: <span class=\"mono\">int firstScore = 90;</span> and <span class=\"mono\">cout &lt;&lt; firstScore;</span>"] },
+      44: { code: "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << areaOf(3, 4);\n    return 0;\n}",
+            hints: ["There is no faulty line to rewrite — the call on <b>line 5</b> is fine. What is missing is the function itself: in the full project it lives in another file that was never compiled in, so this page's machine has never seen it. That is exactly what the linker reports.",
+                    "Give the machine the definition it is missing, above main: <span class=\"mono\">int areaOf(int w, int h) { return w * h; }</span> — on a real command line you would instead compile the other file in, with g++ main.cpp helpers.cpp."] }
 
     };
     var fixitState = {};
@@ -12007,7 +12316,7 @@ int main() {
         var head = document.createElement("button");
         head.type = "button"; head.className = "trans-head";
         head.setAttribute("aria-expanded", transOpen[e.id] ? "true" : "false");
-        head.innerHTML = '<span class="tnum">' + e.id + '</span><span style="flex:1 1 auto;min-width:0;"><span class="ttitle">' + e.title + '</span><span class="tsummary">' + esc(e.meaning.split(". ")[0] + ".") + '</span></span><span class="tchev" aria-hidden="true">' + (transOpen[e.id] ? "−" : "+") + "</span>";
+        head.innerHTML = '<span class="tnum">' + e.id + '</span><span style="flex:1 1 auto;min-width:0;"><span class="ttitle">' + e.title + '</span>' + (e.stage === "link" ? '<span class="trans-stage link">Linker error</span>' : '<span class="trans-stage">Compiler error</span>') + '<span class="tsummary">' + esc(e.meaning.split(". ")[0] + ".") + '</span></span><span class="tchev" aria-hidden="true">' + (transOpen[e.id] ? "−" : "+") + "</span>";
         head.addEventListener("click", function () {
           var willOpen = !transOpen[e.id]; transOpen = {}; if (willOpen) transOpen[e.id] = true; renderTrans($("trans-search").value);
           if (transOpen[e.id]) announce("Opened: " + e.title);
@@ -13710,7 +14019,117 @@ int main() {
       if (bolt.inited) return;
       bolt.inited = true;
       renderBoltWorld();
+      maybeShowBoltTour();
     }
+    /* ---------------- Bolt's World: first-visit guided tour ----------------
+       Shown only when this browser had NO saved TraceFirst record at load
+       (a true first visit) and the tour has never been skipped or finished.
+       Skipping or finishing writes boltTourSeen into tracefirst-progress-v1
+       (additive field), so it never reappears for a returning user. The tour
+       lives entirely inside Bolt's World: no overlay, no other mode is
+       touched, nothing is blocked while it is on screen, and once it is
+       gone it leaves no trace on the page. It teaches the core loop —
+       predict, lock, step, verdict — on one three-command program. */
+    var boltTourSeen = false;
+    var boltTourEligible = false;
+    try { boltTourEligible = !window.localStorage.getItem("tracefirst-progress-v1"); } catch (e) { boltTourEligible = false; }
+    var boltTour = { step: 0, picked: -1, walk: 0, shown: false };
+    var TOUR_OPTIONS = ["Square 3, holding 1 cell", "Square 2, holding 1 cell", "Square 3, holding no cells"];
+    var TOUR_WALK = [
+      { pos: 1, bag: 0, cap: "<span class=\"mono\">move();</span> — Bolt steps one square east, onto square 2. Nothing has been picked up; he is just standing somewhere new." },
+      { pos: 2, bag: 0, cap: "<span class=\"mono\">move();</span> — one more square east, onto square 3, where the cell sits. Standing on a cell is not picking it up: the bag is still empty." },
+      { pos: 2, bag: 1, cap: "<span class=\"mono\">pickCell();</span> — Bolt lifts the cell from his square into his bag. He ends on square 3, holding 1 cell." }
+    ];
+    function tourBoardHtml(pos, bag) {
+      var h = '<div class="tour-board" role="img" aria-label="A row of five squares. Bolt is on square ' + (pos + 1) + (bag ? ", holding one cell." : (pos === 2 ? ", where one cell sits." : ".")) + '">';
+      for (var i = 0; i < 5; i++) {
+        h += '<div class="tour-cell">';
+        if (i === pos) h += BOLT_SVG;
+        else if (i === 2 && !bag) h += '<span class="tour-celldot" aria-hidden="true"></span>';
+        h += '<span class="tour-sq">' + (i + 1) + "</span></div>";
+      }
+      return h + "</div>" + '<p class="tour-bag">Bolt\'s bag: <strong>' + bag + (bag === 1 ? " cell" : " cells") + "</strong> · Facing: <strong>east</strong></p>";
+    }
+    function tourPhasesHtml() {
+      var names = ["1 · Predict", "2 · Lock it in", "3 · Step through", "4 · Verdict"];
+      return names.map(function (n, i) {
+        return '<span class="tour-phase' + (i < boltTour.step ? " done" : "") + '"' + (i === boltTour.step ? ' aria-current="true"' : "") + ">" + n + "</span>";
+      }).join("");
+    }
+    function renderBoltTour() {
+      var panel = $("bolt-tour"); if (!panel) return;
+      $("bolt-tour-phases").innerHTML = tourPhasesHtml();
+      var body = $("bolt-tour-body"), h = "";
+      if (boltTour.step === 0) {
+        h = tourBoardHtml(0, 0) +
+          '<div class="tour-prog">move();\nmove();\npickCell();</div>' +
+          '<p class="predict-q" style="margin-top:14px;">Bolt starts on square 1, facing east, with one cell sitting on square 3. He runs the three commands above, in order. Where does he end up?</p>' +
+          '<div class="options" role="group" aria-label="Your prediction">' +
+          TOUR_OPTIONS.map(function (o, i) {
+            return '<button type="button" class="opt-btn" data-tour-pick="' + i + '" aria-pressed="' + (boltTour.picked === i ? "true" : "false") + '"><span class="key">' + "ABC".charAt(i) + '</span><span style="font-family:\'IBM Plex Sans\',sans-serif;font-size:.95rem;">' + o + "</span></button>";
+          }).join("") + "</div>" +
+          '<div class="lockrow"><button type="button" class="btn" id="bolt-tour-next" ' + (boltTour.picked < 0 ? "disabled" : "") + ">That is my prediction</button>" +
+          '<span class="locknote">Pick the answer you actually believe — the next step locks it in.</span></div>';
+      } else if (boltTour.step === 1) {
+        h = '<div class="locked-banner show">Your prediction is locked: <strong>' + TOUR_OPTIONS[boltTour.picked] + '</strong>. It cannot be edited now — that is the point. A locked prediction turns the run that follows into evidence about your model, because there is no quietly rewriting it afterwards.</div>' +
+          '<p style="margin-top:12px;font-size:.95rem;">In the real worlds and the Prediction Tracer, locking works exactly like this: the Run and Step controls stay shut until a prediction is locked. Now run Bolt, one command at a time, and watch where the run and your prediction agree — or part.</p>' +
+          '<div class="lockrow"><button type="button" class="btn" id="bolt-tour-next">Step through it</button></div>';
+      } else if (boltTour.step === 2) {
+        var w = boltTour.walk;
+        var cur = w === 0 ? { pos: 0, bag: 0 } : TOUR_WALK[w - 1];
+        h = tourBoardHtml(cur.pos, cur.bag) +
+          '<div class="tour-prog">move();\nmove();\npickCell();</div>' +
+          (w === 0
+            ? '<div class="tour-caption">Bolt is at the start: square 1, bag empty. Press <strong>Step</strong> to run the first command.</div>'
+            : '<div class="tour-caption">' + TOUR_WALK[w - 1].cap + "</div>") +
+          '<div class="lockrow">' + (w < 3
+            ? '<button type="button" class="btn" id="bolt-tour-step">Step — run one command</button><span class="locknote">Command ' + (w + 1) + " of 3 next.</span>"
+            : '<button type="button" class="btn" id="bolt-tour-next">See the verdict</button><span class="locknote">The run is finished. Time to compare it with your locked prediction.</span>') + "</div>";
+      } else {
+        var ok = boltTour.picked === 0;
+        var why = ok
+          ? "Your locked prediction matches the run exactly — square, and bag. That is the whole loop working: a model stated before the run, confirmed by it."
+          : boltTour.picked === 1
+            ? "Your prediction had Bolt one square short. Each <b>move();</b> is a whole square: two moves from square 1 land on <b>square 3</b>, not square 2. The step-through shows the exact command where your model and Bolt parted — the second move. That parting point, not the wrong answer itself, is what a verdict is for."
+            : "The square was right; the bag was not. Standing on the cell did nothing by itself — <b>pickCell();</b> is what lifts it. Bolt ends <b>holding the cell</b>, so “holding no cells” parts from the run at the third command.";
+        h = '<div class="verdict ' + (ok ? "good" : "bad") + '"><h3>' + (ok ? "Prediction confirmed." : "Prediction and run part company.") + '</h3><div class="vs"><div><span>You predicted</span>' + TOUR_OPTIONS[boltTour.picked] + '</div><div><span>Bolt actually did</span>Square 3, holding 1 cell</div></div><p>' + why + "</p></div>" +
+          '<p style="margin-top:12px;font-size:.95rem;">That is the loop — predict, lock, step, verdict — and every world below runs on it. World 1 is waiting whenever you are ready.</p>' +
+          '<div class="lockrow"><button type="button" class="btn" id="bolt-tour-finish">Start Bolt\'s World</button></div>';
+      }
+      body.innerHTML = h;
+      var pickBtns = body.querySelectorAll("[data-tour-pick]");
+      for (var i = 0; i < pickBtns.length; i++) pickBtns[i].addEventListener("click", function () {
+        boltTour.picked = parseInt(this.getAttribute("data-tour-pick"), 10);
+        renderBoltTour();
+      });
+      var next = $("bolt-tour-next");
+      if (next) next.addEventListener("click", function () { boltTour.step++; renderBoltTour(); });
+      var stepBtn = $("bolt-tour-step");
+      if (stepBtn) stepBtn.addEventListener("click", function () { boltTour.walk++; renderBoltTour(); });
+      var fin = $("bolt-tour-finish");
+      if (fin) fin.addEventListener("click", function () {
+        finishBoltTour(true);
+        var ed = $("bolt-editor"); if (ed) ed.focus();
+      });
+    }
+    function finishBoltTour(completed) {
+      boltTourSeen = true;
+      var panel = $("bolt-tour"); if (panel) panel.hidden = true;
+      try { tfSave(); } catch (e) {}
+      announce(completed ? "Warm-up complete. Bolt's World is below — pick World 1 whenever you are ready." : "Warm-up skipped. It will not appear again.");
+    }
+    function maybeShowBoltTour() {
+      if (boltTour.shown || boltTourSeen || !boltTourEligible) return;
+      var panel = $("bolt-tour"); if (!panel) return;
+      boltTour.shown = true;
+      panel.hidden = false;
+      renderBoltTour();
+    }
+    (function wireBoltTourSkip() {
+      var b = $("bolt-tour-skip");
+      if (b) b.addEventListener("click", function () { finishBoltTour(false); });
+    })();
+
 
     /* ----- Bolt language: lexer ----- */
     function boltLex(src) {
@@ -14663,27 +15082,58 @@ int main() {
       function fileState(name) {
         if (!ctx.fileStates[name]) {
           if (!Object.prototype.hasOwnProperty.call(ctx.vfiles, name)) return null;
-          ctx.fileStates[name] = { content: String(ctx.vfiles[name]), pos: 0, fail: false };
+          ctx.fileStates[name] = { content: String(ctx.vfiles[name]), pos: 0, fail: false, eofHit: false };
         }
         return ctx.fileStates[name];
       }
       function fsSkipWs(fs) { while (fs.pos < fs.content.length && /\s/.test(fs.content.charAt(fs.pos))) fs.pos++; }
-      function fsReadToken(fs) {
+      /* Stream state, modelled on a real ifstream. eofHit is a flag, set
+         only when a read reaches or tries to pass the end — never merely
+         because the position sits at the end after a read that stopped at
+         a delimiter (that lag is the whole eof() trap). Once a stream has
+         failed, every further read is refused until clear(). A numeric
+         read whose next token is not a number fails WITHOUT consuming the
+         token and without touching the target box — the same "a failed
+         read changes nothing" rule the EOF exercises teach for >>. */
+      function fsPeekToken(fs) {
         fsSkipWs(fs);
-        if (fs.pos >= fs.content.length) { fs.fail = true; return null; }
-        var st = fs.pos;
-        while (fs.pos < fs.content.length && !/\s/.test(fs.content.charAt(fs.pos))) fs.pos++;
-        return fs.content.slice(st, fs.pos);
+        if (fs.pos >= fs.content.length) return null;
+        var en = fs.pos;
+        while (en < fs.content.length && !/\s/.test(fs.content.charAt(en))) en++;
+        return { tok: fs.content.slice(fs.pos, en), end: en };
+      }
+      function fsReadToken(fs) {
+        if (fs.fail) return null;
+        var pk = fsPeekToken(fs);
+        if (!pk) { fs.fail = true; fs.eofHit = true; return null; }
+        fs.pos = pk.end;
+        if (fs.pos >= fs.content.length) fs.eofHit = true;
+        return pk.tok;
+      }
+      function fsReadNumber(fs) {
+        if (fs.fail) return null;
+        var pk = fsPeekToken(fs);
+        if (!pk) { fs.fail = true; fs.eofHit = true; return null; }
+        if (!/^[+-]?(\d+\.?\d*|\.\d+)$/.test(pk.tok)) { fs.fail = true; return null; }
+        fs.pos = pk.end;
+        if (fs.pos >= fs.content.length) fs.eofHit = true;
+        return pk.tok;
       }
       function fsReadLine(fs) {
-        if (fs.pos >= fs.content.length) { fs.fail = true; return ""; }
+        if (fs.fail) return null;
+        if (fs.pos >= fs.content.length) { fs.fail = true; fs.eofHit = true; return null; }
         var nl = fs.content.indexOf("\n", fs.pos), out;
-        if (nl === -1) { out = fs.content.slice(fs.pos); fs.pos = fs.content.length; }
+        if (nl === -1) { out = fs.content.slice(fs.pos); fs.pos = fs.content.length; fs.eofHit = true; }
         else { out = fs.content.slice(fs.pos, nl); fs.pos = nl + 1; }
         if (out.charAt(out.length - 1) === "\r") out = out.slice(0, -1);
         return out;
       }
-      function fsEof(fs) { return fs.pos >= fs.content.length; }
+      function fsIgnoreLine(fs) {
+        var nl = fs.content.indexOf("\n", fs.pos);
+        if (nl === -1) { fs.pos = fs.content.length; fs.eofHit = true; }
+        else fs.pos = nl + 1;
+      }
+      function fsEof(fs) { return !!fs.eofHit; }
       function keyRepr(v) { return v.t === "string" ? "s:" + v.v : "n:" + String(v.v); }
       function keyVal(cell, repr) {
         var raw = repr.slice(2);
@@ -14938,7 +15388,10 @@ int main() {
             if (xcell && !xfs) fail(node.line, "the virtual file '" + xcell.val.name + "' is not provided on this page, so the program cannot open it.");
             node.targets.forEach(function (tg) {
               var ref = targetRef(env, tg);
-              var tok = node.name === "cin" ? inReadToken() : fsReadToken(xfs);
+              var tok;
+              if (node.name === "cin") tok = inReadToken();
+              else if (ref.type === "string") tok = fsReadToken(xfs);
+              else tok = fsReadNumber(xfs);
               if (tok === null) { xok = false; return; }
               var val;
               if (ref.type === "string") val = { t: "string", v: tok };
@@ -14960,8 +15413,13 @@ int main() {
                 if (!gcell.isFileIn) fail(node.line, "'" + node.args[0].name + "' is not an input stream.");
                 var gfs = fileState(gcell.val.name);
                 if (!gfs) fail(node.line, "the virtual file '" + gcell.val.name + "' is not provided on this page.");
-                if (fsEof(gfs)) return { t: "int", v: 0 };
                 gval = fsReadLine(gfs);
+                if (gval === null) {
+                  // Nothing could be read: getline empties its box, sets
+                  // the stream's fail state, and reports failure.
+                  gref.set(makeConv({ t: "string", v: "" }, gref.type, node.line, "the box"));
+                  return { t: "int", v: 0 };
+                }
               }
               gref.set(makeConv({ t: "string", v: gval }, gref.type, node.line, "the box"));
               return { t: "int", v: 1 };
@@ -15036,9 +15494,12 @@ int main() {
                   return { t: "void", v: null };
                 }
                 if (node.name === "eof") { var efs = fileState(oc.val.name); return { t: "int", v: (!efs || fsEof(efs)) ? 1 : 0 }; }
-                if (node.name === "good") { var gfs2 = fileState(oc.val.name); return { t: "int", v: (gfs2 && !gfs2.fail) ? 1 : 0 }; }
+                if (node.name === "fail") { var ffs = fileState(oc.val.name); return { t: "int", v: (ffs && ffs.fail) ? 1 : 0 }; }
+                if (node.name === "good") { var gfs2 = fileState(oc.val.name); return { t: "int", v: (gfs2 && !gfs2.fail && !fsEof(gfs2)) ? 1 : 0 }; }
+                if (node.name === "clear") { var cfs = fileState(oc.val.name); if (cfs) { cfs.fail = false; cfs.eofHit = false; } return { t: "void", v: null }; }
+                if (node.name === "ignore") { var igfs = fileState(oc.val.name); if (igfs && !igfs.fail) fsIgnoreLine(igfs); return { t: "void", v: null }; }
                 if (node.name === "close") return { t: "void", v: null };
-                fail(node.line, "the input-file tools here are open, eof, good and close, plus >> and getline — '." + node.name + "()' is not one of them.");
+                fail(node.line, "the input-file tools here are open, eof, fail, good, clear, ignore and close, plus >> and getline — '." + node.name + "()' is not one of them.");
               }
               if (oc.isFileOut) {
                 if (node.name === "open") {
@@ -15210,7 +15671,7 @@ int main() {
             if (!ifs) fail(node.line, "the virtual file '" + ic9.val.name + "' is not provided on this page, so the program cannot open it.");
             node.targets.forEach(function (tg) {
               var ref = targetRef(env, tg);
-              var tok = fsReadToken(ifs);
+              var tok = ref.type === "string" ? fsReadToken(ifs) : fsReadNumber(ifs);
               if (tok === null) return;
               var val;
               if (ref.type === "string") val = { t: "string", v: tok };
@@ -16578,7 +17039,7 @@ int main() {
        by that hydration and dropped by the next tfCollect save; missing
        optional sections default the same way an older save's would). */
     var TF_PROGRESS_ARRAY_KEYS = ["tracer", "gym", "refactor", "bridge", "make", "authoredExercises", "instructorExercises", "assignments"];
-    var TF_PROGRESS_KNOWN_KEYS = ["v", "bitsFormat", "playbackSpeed", "bgTheme", "reduceMotionPref", "largeTextPref", "primerRead", "tracer", "bolt", "gym", "refactor", "bridge", "make", "challenges", "authoredExercises", "instructorExercises", "assignments", "gap", "lastTracer", "testOut"];
+    var TF_PROGRESS_KNOWN_KEYS = ["v", "bitsFormat", "playbackSpeed", "bgTheme", "reduceMotionPref", "largeTextPref", "primerRead", "boltTourSeen", "tracer", "bolt", "gym", "refactor", "bridge", "make", "challenges", "authoredExercises", "instructorExercises", "assignments", "gap", "lastTracer", "testOut"];
     function tfIsPlainObj(x) { return !!x && typeof x === "object" && !Array.isArray(x); }
     function tfCloneJson(x) { return JSON.parse(JSON.stringify(x)); }
     function tfValidateProgressFile(d) {
@@ -16600,6 +17061,7 @@ int main() {
       if (d.reduceMotionPref !== undefined && typeof d.reduceMotionPref !== "boolean") return false;
       if (d.largeTextPref !== undefined && typeof d.largeTextPref !== "boolean") return false;
       if (d.primerRead !== undefined && typeof d.primerRead !== "boolean") return false;
+      if (d.boltTourSeen !== undefined && typeof d.boltTourSeen !== "boolean") return false;
       return true;
     }
     function tfSanitizeProgressFile(d) {
@@ -16729,6 +17191,7 @@ int main() {
       // already in `out`. primerRead is a read record: keep it if either
       // side has it.
       out.primerRead = !!cur.primerRead || !!imp.primerRead;
+      out.boltTourSeen = !!cur.boltTourSeen || !!imp.boltTourSeen;
       if ((typeof cur.lastTracer !== "number" || cur.lastTracer < 0) && typeof imp.lastTracer === "number") out.lastTracer = imp.lastTracer;
       return out;
     }
@@ -17432,12 +17895,14 @@ int main() {
         ],
         drag: { q: "Complete the statement that creates a slot for a dentist appointment at hour 9:", pre: "AppointmentSlot slot(\"Dentist\", 9)", slot: "", post: "", tokens: [";", ",", ":"], correct: ";", why: "A declaration is a statement, and statements end with a semicolon." } },
       "File Input & Output": { title: "Briefing: File Input & Output",
-        body: "Programs meet data through <b>streams</b>. An <code>ifstream</code> reads a file one value (or line) at a time, keeping a reading position that advances as it goes. The reliable loop tests <b>the read itself</b> — <code>while (fin &gt;&gt; value)</code> — because <code>eof()</code> only reports <em>after</em> a read has already failed, which is how the classic extra-iteration trap happens. On this page, files are <b>simulated</b>: the file panels show exactly the contents your program can read.",
+        body: "Programs meet data through <b>streams</b>. An <code>ifstream</code> reads a file one value (or line) at a time, keeping a reading position that advances as it goes. The reliable loop tests <b>the read itself</b> — <code>while (fin &gt;&gt; value)</code> — because <code>eof()</code> only reports <em>after</em> a read has already failed, which is how the classic extra-iteration trap happens. On this page, files are <b>simulated</b>: the file panels show exactly the contents your program can read. Every stream also carries a <b>state</b>: when a read cannot be done — the file has run out, or the next token is the wrong kind of thing — the stream switches to <b>fail</b> and refuses every further read until <code>clear()</code> resets it; clear() does not move the reading position, so the token that caused the jam is still there to be read another way. Mixing reads has its own trap: <code>&gt;&gt;</code> stops <em>at</em> the whitespace after a value, so a <code>getline</code> that follows reads the rest of the current line, not the next one.",
         example: ["ifstream fin(\"steps.txt\");", "int value;", "int total = 0;", "while (fin >> value) {", "    total += value;", "}"], note: "With steps.txt holding 1200 850 2300, total ends at 4350: the loop runs once per successful read and stops at the first failed one.",
         checks: [
           { q: "while (fin >> value) stops when…", options: ["A read fails because the file has run out", "The counter reaches the file size", "eof() is called"], correct: 0, why: "The header's extraction is the test: no value, no pass, no body." },
           { q: "eof() becomes true…", options: ["Only after a read has tried to go past the end", "As soon as the last value is read", "When the file is opened"], correct: 0, why: "eof reports the past, not the future — that lag is the whole trap." },
-          { q: "An ofstream is used to…", options: ["Write output into a file", "Read a file faster", "Sort a file's contents"], correct: 0, why: "ofstream is the output stream: what you send with << lands in the file." }
+          { q: "An ofstream is used to…", options: ["Write output into a file", "Read a file faster", "Sort a file's contents"], correct: 0, why: "ofstream is the output stream: what you send with << lands in the file." },
+          { q: "A read fails because the next token is a word and the box holds numbers. Until clear() is called, the stream…", options: ["Refuses every further read", "Skips the word and carries on by itself", "Restarts the file from the beginning"], correct: 0, why: "A failed stream stays failed: reads are refused, boxes keep their last good contents, and only clear() — which leaves the reading position where it was — lets reading resume." },
+          { q: "Right after fin >> n; reads a number from its own line, getline(fin, title) reads…", options: ["The rest of that same line — often nothing", "The next full line", "The whole rest of the file"], correct: 0, why: ">> stops at the whitespace after the value and leaves it in place; getline reads from exactly there to that line's end." }
         ],
         drag: { q: "Complete the line that opens the simulated file for reading:", pre: "ifstream fin", slot: "", post: "\"steps.txt\");", tokens: ["(", ")", "["], correct: "(", why: "The filename is handed to the stream's constructor in parentheses." } },
       "Maps & Sets": { title: "Briefing: Maps & Sets",
@@ -19223,7 +19688,7 @@ int main() {
       } catch (e) { tfStorageOk = false; return null; }
     }
     function tfCollect() {
-      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", playbackSpeed: playbackSpeed, bgTheme: bgTheme, reduceMotionPref: !!reduceMotionPref, largeTextPref: !!largeTextPref, primerRead: !!primerRead, tracer: [], bolt: null, gym: [], refactor: [], bridge: [], make: [], challenges: null, authoredExercises: [], instructorExercises: [],
+      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", playbackSpeed: playbackSpeed, bgTheme: bgTheme, reduceMotionPref: !!reduceMotionPref, largeTextPref: !!largeTextPref, primerRead: !!primerRead, boltTourSeen: (typeof boltTourSeen !== "undefined" && !!boltTourSeen), tracer: [], bolt: null, gym: [], refactor: [], bridge: [], make: [], challenges: null, authoredExercises: [], instructorExercises: [],
         lastTracer: (typeof tfLastTracer === "number" ? tfLastTracer : -1),
         testOut: (typeof testOut !== "undefined" && testOut)
           ? { passed: !!testOut.passed, score: (typeof testOut.score === "number" ? testOut.score : 0), via: (Array.isArray(testOut.via) ? testOut.via.slice() : [false, false, false]) }
@@ -19510,6 +19975,7 @@ int main() {
       if (typeof applyComfort === "function") applyComfort();
       // Primer
       if (d.primerRead) { primerRead = true; primerOpened = true; }
+      if (d.boltTourSeen) boltTourSeen = true;
       // Bits view preference (additive field; absent in older saves)
       if (d.bitsFormat === "dec" || d.bitsFormat === "bin" || d.bitsFormat === "hex") bitsFormat = d.bitsFormat;
       if (d.playbackSpeed === 0.5 || d.playbackSpeed === 1 || d.playbackSpeed === 2) playbackSpeed = d.playbackSpeed;
