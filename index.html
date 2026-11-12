@@ -4,6 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#0e6b4f" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="TraceFirst" />
+    <link rel="manifest" href="manifest.webmanifest" />
     <link rel="icon" href="data:," />
     <title>TraceFirst Prediction Tracer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -1635,6 +1641,34 @@
       .tfp-view p { font-size: .93rem; margin-top: 6px; }
       .tfp-counts { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
       .tfp-counts .chip { font-family: "IBM Plex Mono", monospace; font-size: .82rem; font-weight: 600; border: 1px solid var(--line); background: var(--panel-2); border-radius: 999px; padding: 4px 11px; }
+
+      /* ---------- Order the Lines ---------- */
+      .otl-list { display: grid; gap: 8px; margin-top: 12px; }
+      .otl-row {
+        display: flex; align-items: stretch; gap: 10px;
+        border: 1.5px solid var(--line); border-radius: 10px; background: var(--panel-2);
+        padding: 8px 10px;
+      }
+      .otl-row code {
+        flex: 1 1 auto; min-width: 0; font-family: "IBM Plex Mono", monospace; font-size: .92rem;
+        white-space: pre-wrap; overflow-wrap: anywhere; align-self: center; color: var(--ink);
+      }
+      .otl-moves { display: flex; flex-direction: column; gap: 4px; flex: none; }
+      .otl-move {
+        border: 1.5px solid var(--line); background: var(--panel); color: var(--ink);
+        border-radius: 7px; width: 34px; height: 26px; line-height: 1; font-size: .8rem; padding: 0;
+      }
+      .otl-move:disabled { opacity: .35; cursor: default; }
+      .otl-row.otl-locked { border-color: var(--accent); background: var(--accent-soft); }
+      .otl-stage-tag {
+        font-family: "IBM Plex Mono", monospace; font-size: .72rem; font-weight: 600;
+        letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft);
+      }
+      .otl-options .opt-btn span:last-child { white-space: pre-wrap; text-align: left; }
+      .otl-verdict { margin-top: 14px; border-radius: 10px; padding: 13px 15px; font-size: .95rem; }
+      .otl-verdict.good { border: 1.5px solid var(--accent); background: var(--accent-soft); }
+      .otl-verdict.bad { border: 1.5px solid var(--rust); background: var(--rust-soft); }
+      .otl-verdict p { margin-top: 6px; }
     </style>
   </head>
   <body>
@@ -1657,6 +1691,11 @@
               <button type="button" class="bg-btn comfort-btn" id="textsize-toggle" aria-pressed="false"><span class="cdot" aria-hidden="true"></span>Larger text</button>
             </div>
             <p class="display-note">Display choices are saved in this browser, on this device.</p>
+            <div class="display-clear">
+              <span class="bgbar-label">TraceFirst as an app</span>
+              <button type="button" class="btn ghost small" id="install-app-btn">Install app</button>
+              <p class="display-note" id="install-app-note" hidden></p>
+            </div>
             <div class="display-clear">
               <span class="bgbar-label">Your data on this device</span>
               <button type="button" class="btn ghost small" id="clear-data-btn">Clear my data</button>
@@ -1709,7 +1748,7 @@
             <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Order code, then write a line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find and fix faults.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 68</strong><span>The rest of the course.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 73</strong><span>The rest of the course.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write your own programs.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
             <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
@@ -1783,6 +1822,10 @@
         <button class="mode-btn" type="button" id="mode-bridge" role="tab" aria-controls="bridge-mode" aria-selected="false" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18c5-7 13-7 18 0"/><path d="M3 18h18"/><path d="M7.5 15.5V21M12 13.5V21M16.5 15.5V21"/></svg>
           Bridge
+        </button>
+        <button class="mode-btn" type="button" id="mode-order" role="tab" aria-controls="order-mode" aria-selected="false" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>
+          Order the Lines
         </button>
         <button class="mode-btn" type="button" id="mode-make" role="tab" aria-controls="make-mode" aria-selected="false" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -1863,6 +1906,7 @@
           <button class="drawer-row" type="button" data-drawer-mode="translator" aria-current="false"><span class="drawer-row-name">Error Translator</span><span class="drawer-hint" data-hint="translator"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="challenges" aria-current="false"><span class="drawer-row-name">Challenges</span><span class="drawer-hint" data-hint="challenges"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="bridge" aria-current="false"><span class="drawer-row-name">Bridge</span><span class="drawer-hint" data-hint="bridge"></span></button>
+          <button class="drawer-row" type="button" data-drawer-mode="order" aria-current="false"><span class="drawer-row-name">Order the Lines</span><span class="drawer-hint" data-hint="order"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="make" aria-current="false"><span class="drawer-row-name">Make</span><span class="drawer-hint" data-hint="make"></span></button>
         </nav>
         <hr class="drawer-divider" />
@@ -2041,7 +2085,7 @@ for (int i = 0; i < 3; i++) {
             <select class="lecture-select" id="lecture-ex-select" aria-label="Choose an exercise to project"></select>
             <button class="btn" type="button" id="lecture-project-btn">Project this exercise</button>
           </div>
-          <p class="lecture-pick-note">Any of the 68 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
+          <p class="lecture-pick-note">Any of the 73 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
         </div>
 
         <div id="lecture-project" hidden>
@@ -2946,6 +2990,28 @@ int main() {
         <p class="foot"><strong>How Bridge fits:</strong> the tracer taught you to read programs other people wrote; Make asks you to write whole programs from a blank editor. Bridge is the rung between them — first ordering lines, then supplying them — and it judges by behaviour: any arrangement or line that makes the program print the right thing passes.</p>
       </div><!-- /bridge-mode -->
 
+      <div id="order-mode" role="tabpanel" tabindex="0" hidden>
+        <section class="bridge-intro">
+          <h2>Order the Lines: build it, predict it, watch it run.</h2>
+          <p>Each round hands you a whole program with its lines shuffled. Put the lines in working order — then, before anything runs, <strong>lock a prediction</strong> of what it prints, and step through the trace of the program you assembled. Ordering alone is not the finish line here; the prediction is.</p>
+        </section>
+        <section class="toolbar" id="order-rounds" aria-label="Choose an Order the Lines round">
+          <div>
+            <div class="tlabel">Rounds — ten programs, in order</div>
+            <div class="exnav" id="ordernav"></div>
+          </div>
+          <div class="scorebar" id="order-scorebar" aria-label="Your Order the Lines progress"></div>
+        </section>
+        <section class="card" id="order-card" style="margin-top:18px;" aria-labelledby="order-title">
+          <span class="concept-tag" id="order-tag"></span>
+          <h2 id="order-title" style="font-size:1.25rem;"></h2>
+          <p class="ch-prompt" id="order-task"></p>
+          <div id="order-body"></div>
+          <div class="make-msg info show" id="order-msg" role="status">Arrange the lines into a working program, then press Check my order.</div>
+        </section>
+        <p class="foot"><strong>How Order the Lines fits:</strong> Bridge asks you to order lines and judges the arrangement on its own. This mode keeps the full TraceFirst loop: the arrangement is only stage one — you then commit to a prediction of the output <em>before</em> the machine runs, and the trace shows you where your model of the program and the machine part. An arrangement passes when the program it builds runs and prints what the round asks for, so more than one order can be right.</p>
+      </div><!-- /order-mode -->
+
       <div id="make-mode" role="tabpanel" tabindex="0" hidden>
         <section class="make-intro">
           <h2>Make: write and run your own C++</h2>
@@ -3034,7 +3100,7 @@ int main() {
         <div id="instructors-body" hidden>
           <div class="lecture-inst-entry">
             <h4>Lecture mode — run a tracer exercise in front of the class</h4>
-            <p>A single projected screen: pick any of the 68 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
+            <p>A single projected screen: pick any of the 73 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
             <div class="journal-actions"><button class="btn small" type="button" id="lecture-open-btn-2">Open Lecture mode</button></div>
           </div>
                     <div class="studio" id="inst-studio">
@@ -6877,6 +6943,248 @@ int main() {
           correct: 0,
           explain: "One more genuine score is banked before the marker stops the loop: 4 + 9 + 6 = <b>19</b>. The marker and everything after it are treated exactly as before."
         }
+      },
+      {
+        concept: "Console Input · Words and Lines",
+        topic: "Console input",
+        title: "One word, then the rest of the line",
+        goal: "<b>cin &gt;&gt;</b> and <b>getline</b> are two different tools sharing one stream: <b>&gt;&gt;</b> skips any leading whitespace and takes exactly <em>one word</em>, stopping at the next space; <b>getline</b> takes <em>everything from where the stream is standing</em> to the end of the line — spaces included, exactly as typed.",
+        stories: {
+          health:   "A clinic check-in program asks who is being registered. The receptionist types one line: <strong>Ada Byron King</strong>, and presses Enter. The program reads the first name with <strong>cin &gt;&gt;</strong>, reads the rest of the line with <strong>getline</strong>, and prints the two boxes separated by a bar.",
+          psych:    "A study sign-up program records a participant's name. The participant types one line: <strong>Ada Byron King</strong>, and presses Enter. The program reads the first name with <strong>cin &gt;&gt;</strong>, reads the rest of the line with <strong>getline</strong>, and prints the two boxes separated by a bar.",
+          business: "A loyalty program records a customer's name. The customer types one line: <strong>Ada Byron King</strong>, and presses Enter. The program reads the first name with <strong>cin &gt;&gt;</strong>, reads the rest of the line with <strong>getline</strong>, and prints the two boxes separated by a bar.",
+          arts:     "A box-office program records a patron's name. The patron types one line: <strong>Ada Byron King</strong>, and presses Enter. The program reads the first name with <strong>cin &gt;&gt;</strong>, reads the rest of the line with <strong>getline</strong>, and prints the two boxes separated by a bar."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    string first;",
+          "    string rest;",
+          "    cin >> first;",
+          "    getline(cin, rest);",
+          "    cout << first << \"|\" << rest;",
+          "    return 0;",
+          "}"
+        ],
+        question: "The user types: Ada Byron King (then Enter). What will this program print?",
+        options: ["Ada| Byron King", "Ada|Byron King", "Ada Byron King|", "AdaByronKing|"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "<b>Named misconception: getline tidies the line up.</b> getline trims nothing. <b>&gt;&gt;</b> stopped <em>before</em> the space after Ada — it did not consume it — so the rest of the line genuinely begins with that space, and getline copies it into the box along with everything else: <b>\" Byron King\"</b>, leading space and all." },
+          2: { step: 1, text: "<b>Named misconception: &gt;&gt; reads the whole line.</b> The first read took only <b>Ada</b>: <b>&gt;&gt;</b> stops at the first space it meets, always. Everything after that first word was still waiting in the stream for the getline — first never held the whole line, so there was nothing for it to print before the bar." },
+          3: { step: 2, text: "<b>Named misconception: the spaces are just spacing and vanish.</b> To the stream, the spaces inside a line are characters like any others. &gt;&gt; steps over them when hunting for the next word, but getline copies its stretch of line <em>verbatim</em> — spaces, capitals, everything. That is why the printed rest keeps both of its spaces." }
+        },
+        steps: [
+          { line: 6, vars: { cin: ["istream", "keyboard · unread: \"Ada Byron King\" · good"], first: ["string", "\"\""], rest: ["string", "\"\""] }, out: "", note: "Two empty string boxes. The user has typed <b>Ada Byron King</b> and pressed Enter; everything they typed is waiting in the stream, unread. Stream state: <b>good</b>." },
+          { line: 7, vars: { cin: ["istream", "keyboard · unread: \" Byron King\" · good"], first: ["string", "\"Ada\""], rest: ["string", "\"\""] }, out: "", note: "<b>cin &gt;&gt; first</b> hunts for a word: it takes characters until the next space and stops <em>at</em> that space without consuming it. first = <b>\"Ada\"</b>. The stream is now standing in the middle of the line, with <b>\" Byron King\"</b> still ahead of it." },
+          { line: 8, vars: { cin: ["istream", "keyboard · unread: (nothing) · good"], first: ["string", "\"Ada\""], rest: ["string", "\" Byron King\""] }, out: "", note: "<b>The parting step.</b> <b>getline(cin, rest)</b> reads from exactly where the stream is standing to the end of the line — it does not skip ahead to the next line, and it skips nothing. What stands between here and the end of the line is <b>\" Byron King\"</b>, <em>starting with the space</em> the &gt;&gt; read stopped at. rest receives it whole." },
+          { line: 9, vars: { cin: ["istream", "keyboard · unread: (nothing) · good"], first: ["string", "\"Ada\""], rest: ["string", "\" Byron King\""] }, out: "Ada| Byron King", note: "The print shows the seam between the two reads: <b>Ada</b>, the bar, then the rest of the line <em>with its leading space</em> — <b>Ada| Byron King</b>." },
+          { line: 10, vars: { cin: ["istream", "keyboard · unread: (nothing) · good"], first: ["string", "\"Ada\""], rest: ["string", "\" Byron King\""] }, out: "Ada| Byron King", note: "The program ends. Final answer: <b>Ada| Byron King</b>. One stream, two reading tools: &gt;&gt; takes a word and stops at whitespace; getline takes the rest of the line exactly as it stands." }
+        ],
+        modify: {
+          prompt: "The first read changes: cin >> first becomes getline(cin, first). The second getline stays exactly as it is, and the user types the same one line. What prints now?",
+          code: 'string first;\nstring rest;\n<mark>getline(cin, first);</mark>\ngetline(cin, rest);\ncout << first << "|" << rest;',
+          options: ["Ada Byron King|", "Ada| Byron King", "Ada Byron|King", "Ada Byron King|Byron King"],
+          correct: 0,
+          explain: "The first getline takes the <b>whole line</b> — Ada Byron King — because a line is all it ever takes. The second getline then finds the typed input exhausted: there is no second line, so rest stays <b>empty</b> and the print is <b>Ada Byron King|</b>."
+        }
+      },
+      {
+        concept: "Console Input · The Leftover Newline",
+        topic: "Console input",
+        title: "The name that came back empty",
+        goal: "After <b>cin &gt;&gt; age</b> reads a number typed on its own line, the stream is standing <em>at</em> that line's Enter — <b>&gt;&gt;</b> stops at whitespace and does not consume it. A <b>getline</b> that follows therefore reads the rest of the <em>current</em> line — which is nothing at all — instead of the next line down. The one-line repair is <b>cin.ignore()</b>, which throws the rest of the current line away first.",
+        stories: {
+          health:   "A clinic intake program asks for an age, then a full name. The patient types <strong>19</strong> and presses Enter, then types <strong>Maya Chen</strong> and presses Enter. The program reads the age with <strong>cin &gt;&gt;</strong>, reads the name with <strong>getline</strong>, and prints the age and the name in brackets.",
+          psych:    "A study intake program asks for an age, then a full name. The participant types <strong>19</strong> and presses Enter, then types <strong>Maya Chen</strong> and presses Enter. The program reads the age with <strong>cin &gt;&gt;</strong>, reads the name with <strong>getline</strong>, and prints the age and the name in brackets.",
+          business: "An account-opening program asks for an age, then a full name. The customer types <strong>19</strong> and presses Enter, then types <strong>Maya Chen</strong> and presses Enter. The program reads the age with <strong>cin &gt;&gt;</strong>, reads the name with <strong>getline</strong>, and prints the age and the name in brackets.",
+          arts:     "A workshop sign-up program asks for an age, then a full name. The attendee types <strong>19</strong> and presses Enter, then types <strong>Maya Chen</strong> and presses Enter. The program reads the age with <strong>cin &gt;&gt;</strong>, reads the name with <strong>getline</strong>, and prints the age and the name in brackets."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int age = 0;",
+          "    string name;",
+          "    cin >> age;",
+          "    getline(cin, name);",
+          "    cout << age << \" [\" << name << \"]\";",
+          "    return 0;",
+          "}"
+        ],
+        question: "The user types 19 (Enter), then Maya Chen (Enter). What will this program print?",
+        options: ["19 []", "19 [Maya Chen]", "19 [Maya]", "0 []"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "<b>Named misconception: getline always reads the next line.</b> getline reads from <em>where the stream is standing</em> to the end of <em>that</em> line — and after cin &gt;&gt; age, the stream is standing at the end of line one, with only that line's Enter ahead of it. So getline returns the rest of line one: nothing. Maya Chen is still in the stream, unread, on line two." },
+          2: { step: 2, text: "<b>Named misconception: getline hunts for the next word.</b> getline does not skip ahead to a later word and it never reached line two at all. It took everything from the current position to the end of line one — and the current position was the end of line one, so it took <em>nothing</em>, not the first word of line two. Maya was never within this read's reach." },
+          3: { step: 1, text: "<b>Named misconception: the reads stand or fall together.</b> The age read is fine — cin &gt;&gt; age takes the <b>19</b> cleanly; age is not the problem. The failure is the very next read: getline finds only the remainder of the age's own line, which is empty, so the name never arrives either. Both halves of your answer give the getline more success than it had." }
+        },
+        steps: [
+          { line: 6, vars: { cin: ["istream", "keyboard · next: 19 · good"], age: ["int", "0"], name: ["string", "\"\""] }, out: "", note: "The user has typed two lines: <b>19</b> (Enter) then <b>Maya Chen</b> (Enter). Both lines are waiting in the stream in order. age starts at 0, name starts empty. Stream state: <b>good</b>." },
+          { line: 7, vars: { cin: ["istream", "keyboard · unread: rest of line 1 (just the Enter) · good"], age: ["int", "19"], name: ["string", "\"\""] }, out: "", note: "<b>cin &gt;&gt; age</b> takes the <b>19</b> and stops <em>at</em> the whitespace after it — the Enter the user pressed. It does <b>not</b> consume that Enter. The stream is left standing at the very end of line one." },
+          { line: 8, vars: { cin: ["istream", "keyboard · unread: \"Maya Chen\" · good"], age: ["int", "19"], name: ["string", "\"\""] }, out: "", note: "<b>The parting step.</b> <b>getline(cin, name)</b> reads from the current position to the end of <em>this</em> line — which is no distance at all. name receives <b>\"\"</b>, the empty remainder of line one, and the Enter is consumed. Maya Chen, on line two, is never read." },
+          { line: 9, vars: { cin: ["istream", "keyboard · unread: \"Maya Chen\" · good"], age: ["int", "19"], name: ["string", "\"\""] }, out: "19 []", note: "The program prints <b>19 []</b> — the age is right, the brackets are empty, and the name is still sitting unread in the stream as the program ends." },
+          { line: 10, vars: { cin: ["istream", "keyboard · unread: \"Maya Chen\" · good"], age: ["int", "19"], name: ["string", "\"\""] }, out: "19 []", note: "The program ends. Final answer: <b>19 []</b>. Nothing malfunctioned: each read did exactly what it is defined to do. The bug is the <em>pairing</em> — a &gt;&gt; read leaves its line's Enter behind, and the getline that follows collects it." }
+        ],
+        modify: {
+          prompt: "One line is added after cin >> age;: cin.ignore(); — which discards everything up to and including the end of the age's line. Everything else is unchanged, and the user types the same two lines. What prints now?",
+          code: 'cin >> age;\n<mark>cin.ignore();</mark>\ngetline(cin, name);\ncout << age << " [" << name << "]";',
+          options: ["19 [Maya Chen]", "19 []", "19 [Maya]", "19 [Chen]"],
+          correct: 0,
+          explain: "ignore() throws away the leftover Enter, so getline starts at the top of line two and takes the whole line: <b>19 [Maya Chen]</b>. One discarded newline was the entire bug."
+        }
+      },
+      {
+        concept: "Console Input · Failed Extraction",
+        topic: "Console input",
+        title: "The read that jammed the stream",
+        goal: "When <b>&gt;&gt;</b> is asked for a number and the next input is not one, the extraction <b>fails</b>: the target box is handed <b>0</b>, the offending input is <b>left in place</b>, and the stream switches to its <b>fail</b> state. From that moment every further read is <b>refused</b> — boxes keep whatever they already hold — until the program calls <b>cin.clear()</b>.",
+        stories: {
+          health:   "A pharmacy program reads a medication <strong>code</strong> and a <strong>quantity</strong>, both whole numbers, and prints them. The person at the counter mis-types: they enter <strong>xyz 5</strong> — letters where the code should be, then the quantity.",
+          psych:    "A lab program reads a <strong>condition code</strong> and a <strong>participant count</strong>, both whole numbers, and prints them. The research assistant mis-types: they enter <strong>xyz 5</strong> — letters where the code should be, then the count.",
+          business: "A stock program reads a product <strong>code</strong> and a <strong>quantity</strong>, both whole numbers, and prints them. The clerk mis-types: they enter <strong>xyz 5</strong> — letters where the code should be, then the quantity.",
+          arts:     "A ticketing program reads a <strong>section code</strong> and a <strong>seat count</strong>, both whole numbers, and prints them. The patron mis-types: they enter <strong>xyz 5</strong> — letters where the code should be, then the count."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int code = 1;",
+          "    int qty = 2;",
+          "    cin >> code;",
+          "    cin >> qty;",
+          "    cout << code << \" \" << qty;",
+          "    return 0;",
+          "}"
+        ],
+        question: "The user types: xyz 5 (then Enter). What will this program print?",
+        options: ["0 2", "0 5", "1 5", "1 2"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "<b>Named misconception: only the bad read fails.</b> The first failure does not stay in its own statement. The moment the code read fails, the stream is <b>jammed</b>: it refuses every later read on principle, without even looking at the input. The 5 was typed, and it sat there untouched — qty's read was never actually performed, so qty keeps its starting value, 2." },
+          2: { step: 1, text: "<b>Named misconception: a failed read changes nothing and the program carries on.</b> Almost everything in that picture is wrong. The failed read <em>does</em> change its target — code is handed <b>0</b> — and the program does <em>not</em> carry on reading: the jam blocks qty's read too, so the 5 is never taken and qty stays 2. Neither half of your answer survived the failure." },
+          3: { step: 1, text: "<b>Named misconception: a failed read leaves its box alone.</b> Your qty is right — it does keep 2 — but for the second read's reason, not the first's: qty kept its value because its read was <em>refused</em>. The read that actually failed is not so gentle: an extraction that cannot do its job hands its box <b>0</b>. code ends at 0, not at its starting 1." }
+        },
+        steps: [
+          { line: 5, vars: { cin: ["istream", "keyboard · unread: \"xyz 5\" · good"], code: ["int", "1"], qty: ["int", "2"] }, out: "", note: "code starts at <b>1</b> and qty at <b>2</b> — keep both starting values in mind; they are how you will be able to tell which reads really happened. The user has typed <b>xyz 5</b>. Stream state: <b>good</b>." },
+          { line: 6, vars: { cin: ["istream", "keyboard · unread: \"xyz 5\" · FAIL"], code: ["int", "0"], qty: ["int", "2"] }, out: "", note: "<b>The parting step.</b> <b>cin &gt;&gt; code</b> needs a number and finds <b>xyz</b>. The extraction fails three ways at once: code is handed <b>0</b>, the xyz is <b>not consumed</b> — it is still the next thing in the stream — and the stream switches to <b>FAIL</b>. Nothing about the input moved; everything about the stream changed." },
+          { line: 7, vars: { cin: ["istream", "keyboard · unread: \"xyz 5\" · FAIL"], code: ["int", "0"], qty: ["int", "2"] }, out: "", note: "<b>cin &gt;&gt; qty</b> is never really performed. A stream in its fail state refuses every read until it is cleared, so this statement changes nothing at all: qty keeps <b>2</b>, and the 5 — typed, waiting, perfectly good — is never reached, because xyz is still standing in front of it." },
+          { line: 8, vars: { cin: ["istream", "keyboard · unread: \"xyz 5\" · FAIL"], code: ["int", "0"], qty: ["int", "2"] }, out: "0 2", note: "The program prints <b>0 2</b>: the 0 the failed read handed code, and the 2 qty started with and was never allowed to replace." },
+          { line: 9, vars: { cin: ["istream", "keyboard · unread: \"xyz 5\" · FAIL"], code: ["int", "0"], qty: ["int", "2"] }, out: "0 2", note: "The program ends. Final answer: <b>0 2</b>. One mistyped word poisoned the whole stream: the target got 0, the bad input stayed put, and every later read was refused. The next exercise is about the two-line recovery." }
+        ],
+        modify: {
+          prompt: "One line is added between the two reads: cin.clear(); — which resets the stream's fail state. Nothing else changes, and the user types the same xyz 5. What prints now?",
+          code: 'cin >> code;\n<mark>cin.clear();</mark>\ncin >> qty;\ncout << code << " " << qty;',
+          options: ["0 0", "0 5", "0 2", "1 2"],
+          correct: 0,
+          explain: "clear() unjams the stream — but it moves nothing, so <b>xyz is still next in line</b>. qty's read meets the same letters, fails the same way, and hands qty <b>0</b> as it jams the stream again: <b>0 0</b>. Clearing is only half the recovery; the bad input also has to be thrown away, which is what ignore() is for."
+        }
+      },
+      {
+        concept: "Console Input · Clearing and Ignoring",
+        topic: "Console input",
+        title: "Clear, throw the line away, read again",
+        goal: "Recovering from a failed read takes <b>both</b> repair lines, in this order: <b>cin.clear()</b> resets the stream's fail state (but moves nothing in the input), and <b>cin.ignore()</b> discards everything up to and including the end of the current line (but cannot run while the stream is jammed). Only then can the next read meet fresh input.",
+        stories: {
+          health:   "A self-check-in kiosk reads a whole-number <strong>appointment code</strong>. First attempts are mistyped so often that the program plans for it: it reads once, then — whether the read worked or not — clears any jam, throws the rest of the line away, and reads once more, printing the final value. The patient types <strong>abc</strong> (Enter), then <strong>42</strong> (Enter).",
+          psych:    "A lab sign-in terminal reads a whole-number <strong>participant number</strong>. First attempts are mistyped so often that the program plans for it: it reads once, then — whether the read worked or not — clears any jam, throws the rest of the line away, and reads once more, printing the final value. The participant types <strong>abc</strong> (Enter), then <strong>42</strong> (Enter).",
+          business: "A returns-desk terminal reads a whole-number <strong>receipt number</strong>. First attempts are mistyped so often that the program plans for it: it reads once, then — whether the read worked or not — clears any jam, throws the rest of the line away, and reads once more, printing the final value. The customer types <strong>abc</strong> (Enter), then <strong>42</strong> (Enter).",
+          arts:     "A box-office terminal reads a whole-number <strong>booking number</strong>. First attempts are mistyped so often that the program plans for it: it reads once, then — whether the read worked or not — clears any jam, throws the rest of the line away, and reads once more, printing the final value. The patron types <strong>abc</strong> (Enter), then <strong>42</strong> (Enter)."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int n = 0;",
+          "    cin >> n;",
+          "    cin.clear();",
+          "    cin.ignore();",
+          "    cin >> n;",
+          "    cout << n;",
+          "    return 0;",
+          "}"
+        ],
+        question: "The user types abc (Enter), then 42 (Enter). What will this program print?",
+        options: ["42", "0", "abc", "4242"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "<b>Named misconception: the first value a box holds is the one that prints.</b> The failed first read did hand n a <b>0</b> — but n is read <em>again</em> at the end of the program, after the recovery lines, and that second read succeeds. Printing reads the box as it stands at the end: the second read overwrote the 0 with <b>42</b>." },
+          2: { step: 1, text: "<b>Named misconception: a failed read stores the bad input.</b> n is an <b>int</b> box — letters can never be stored in it. The failed read handed n <b>0</b> and left abc sitting in the <em>stream</em>, not in the variable; then ignore() threw the abc away entirely. No box in this program ever holds the letters." },
+          3: { step: 4, text: "<b>Named misconception: two reads into one box add up or join.</b> The second read does not append to the first — assignment <em>replaces</em>. n held 0 after the failed read; the successful read overwrote it with 42. The box holds one value at a time, and the last write wins: <b>42</b>, once." }
+        },
+        steps: [
+          { line: 4, vars: { cin: ["istream", "keyboard · unread: \"abc\", then \"42\" · good"], n: ["int", "0"] }, out: "", note: "n starts at <b>0</b>. The user will type two lines: <b>abc</b> (Enter), then <b>42</b> (Enter). Stream state: <b>good</b>." },
+          { line: 5, vars: { cin: ["istream", "keyboard · unread: \"abc\", then \"42\" · FAIL"], n: ["int", "0"] }, out: "", note: "The first read meets <b>abc</b>, which is not a number: it fails, n is handed <b>0</b> (the value it already held, as it happens), the abc stays in the stream, and the stream jams — <b>FAIL</b>. This is exactly the jam the previous exercise ended in." },
+          { line: 6, vars: { cin: ["istream", "keyboard · unread: \"abc\", then \"42\" · good"], n: ["int", "0"] }, out: "", note: "<b>cin.clear()</b> resets the stream's state to <b>good</b>. Look at what did <em>not</em> change: the unread input. clear() repairs the stream, not the input — abc is still standing at the front of the queue." },
+          { line: 7, vars: { cin: ["istream", "keyboard · unread: \"42\" · good"], n: ["int", "0"] }, out: "", note: "<b>The parting step.</b> <b>cin.ignore()</b> discards everything up to and including the end of the current line: the abc <em>and</em> its Enter are thrown away. (It could not have run one line earlier — a jammed stream refuses even ignore(), which is why clear() had to come first.) The 42 is now next in line." },
+          { line: 8, vars: { cin: ["istream", "keyboard · unread: (nothing) · good"], n: ["int", "42"] }, out: "", note: "The second read meets a clean number at last: <b>n = 42</b>, replacing the 0 from the failed read." },
+          { line: 9, vars: { cin: ["istream", "keyboard · unread: (nothing) · good"], n: ["int", "42"] }, out: "42", note: "The program prints <b>42</b>." },
+          { line: 10, vars: { cin: ["istream", "keyboard · unread: (nothing) · good"], n: ["int", "42"] }, out: "42", note: "The program ends. Final answer: <b>42</b>. The recovery is a pair, in order: <b>clear()</b> unjams the stream, <b>ignore()</b> removes the bad input — either one alone leaves the program stuck, as the Modify stage now shows." }
+        ],
+        modify: {
+          prompt: "The cin.ignore(); line is deleted. cin.clear(); stays, everything else is unchanged, and the user types the same abc (Enter), then 42 (Enter). What prints now?",
+          code: 'cin >> n;\ncin.clear();\n<mark>cin.ignore();   // this line is removed</mark>\ncin >> n;\ncout << n;',
+          options: ["0", "42", "abc", "420"],
+          correct: 0,
+          explain: "clear() unjams the stream, but with no ignore() the <b>abc is still next in line</b> — so the second read meets the same letters, fails the same way, hands n <b>0</b>, and jams the stream again. Unjamming without removing the bad input just re-runs the accident: <b>0</b>."
+        }
+      },
+      {
+        concept: "Console Input · Reading in a Loop",
+        topic: "Console input",
+        title: "The letter that stopped the adding",
+        goal: "In <b>while (cin &gt;&gt; value)</b> the loop's test <em>is</em> the read — the same pattern as reading a file to its end. The loop therefore stops at the <b>first read that fails</b>, whatever the cause: input running out, or a token of the wrong kind. A bad token does not get skipped; it ends the loop, and anything typed after it is never read.",
+        stories: {
+          health:   "A step-count program adds up whole numbers typed on one line until the input gives out, then prints the total. The user types: <strong>4 9 x 100</strong> — two counts, a stray letter, and one more count.",
+          psych:    "A survey program adds up whole-number responses typed on one line until the input gives out, then prints the total. The assistant types: <strong>4 9 x 100</strong> — two responses, a stray letter, and one more response.",
+          business: "A till program adds up whole-number amounts typed on one line until the input gives out, then prints the total. The clerk types: <strong>4 9 x 100</strong> — two amounts, a stray letter, and one more amount.",
+          arts:     "A judging program adds up whole-number scores typed on one line until the input gives out, then prints the total. The steward types: <strong>4 9 x 100</strong> — two scores, a stray letter, and one more score."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int value = 0;",
+          "    int total = 0;",
+          "    while (cin >> value) {",
+          "        total += value;",
+          "    }",
+          "    cout << total;",
+          "    return 0;",
+          "}"
+        ],
+        question: "The user types: 4 9 x 100 (then Enter). What will this program print?",
+        options: ["13", "113", "112", "22"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 3, text: "<b>Named misconception: a bad token is skipped and reading carries on.</b> Nothing here skips anything. The loop's test <em>is</em> the read: when the read meets the x, it fails, the test is false, and the loop ends on the spot. The 100 was typed, but it sits behind the x in a jammed stream — no pass ever reaches it. 113 is the total of a world where the x was never typed." },
+          2: { step: 3, text: "<b>Named misconception: the loop reads to the end of the line whatever happens.</b> Your total banks the 100, which means your loop survived the x. It cannot: the read that meets the x <em>fails</em>, and a failed read in the header ends the loop before the body — there is no pass in which the 100 is even attempted. The loop's finish line is the first failed read, not the end of the input." },
+          3: { step: 3, text: "<b>Named misconception: when a read fails, the last good value is added once more.</b> A failed read runs the body <em>zero</em> additional times — the header's failure means the body is skipped entirely, not repeated. The 9 was banked once, when its own read succeeded. After that, the x read fails and the adding simply stops at <b>13</b>." }
+        },
+        steps: [
+          { line: 5, vars: { cin: ["istream", "keyboard · unread: \"4 9 x 100\" · good"], value: ["int", "0"], total: ["int", "0"] }, out: "", note: "value and total both start at <b>0</b>. The user has typed <b>4 9 x 100</b> on one line. There is no count of how many numbers are coming — the loop will read until a read fails. Stream state: <b>good</b>." },
+          { line: 7, vars: { cin: ["istream", "keyboard · unread: \"9 x 100\" · good"], value: ["int", "4"], total: ["int", "4"] }, out: "", note: "Pass 1: the header's read delivers <b>4</b>, which makes the test true, so the body runs: total = <b>4</b>." },
+          { line: 7, vars: { cin: ["istream", "keyboard · unread: \"x 100\" · good"], value: ["int", "9"], total: ["int", "13"] }, out: "", note: "Pass 2: the read delivers <b>9</b>. total = <b>13</b>. Next in the stream: the letter x." },
+          { line: 6, vars: { cin: ["istream", "keyboard · unread: \"x 100\" · FAIL"], value: ["int", "0"], total: ["int", "13"] }, out: "", note: "<b>The parting step.</b> The header runs a third time and its read meets <b>x</b> — not a number. The read fails: value is handed <b>0</b>, the x stays in the stream, the stream jams. Because the header's test <em>is</em> the read, a failed read is a false test: the loop ends here, with the 100 unread behind the x." },
+          { line: 9, vars: { cin: ["istream", "keyboard · unread: \"x 100\" · FAIL"], value: ["int", "0"], total: ["int", "13"] }, out: "13", note: "The program prints <b>13</b> — the two numbers that were read successfully, and nothing else." },
+          { line: 10, vars: { cin: ["istream", "keyboard · unread: \"x 100\" · FAIL"], value: ["int", "0"], total: ["int", "13"] }, out: "13", note: "The program ends. Final answer: <b>13</b>. Testing the read itself makes the loop stop cleanly at bad input as well as at the end of input — but stop is all it does: the x and everything behind it are simply abandoned." }
+        ],
+        modify: {
+          prompt: "The typist catches the mistake: the input is now 4 9 100 — no letter. The program is untouched. What prints now?",
+          code: 'while (cin >> value) {\n    total += value;\n}\ncout << total;  <mark>// typed input is now: 4 9 100</mark>',
+          options: ["113", "13", "112", "100"],
+          correct: 0,
+          explain: "With nothing to trip over, every read succeeds: 4, then 9, then 100 are banked, and the loop ends only when a fourth read finds the input exhausted. 4 + 9 + 100 = <b>113</b>. The letter was the whole difference."
+        }
       }
 
     ];
@@ -7090,6 +7398,7 @@ int main() {
       { name: "Structured Data & Collections", list: [20, 21, 22] },
       { name: "Classes & Objects", list: [30, 31, 32] },
       { name: "File Input & Output", list: [33, 34, 63, 64, 65, 66, 67] },
+      { name: "Console Input", list: [68, 69, 70, 71, 72] },
       { name: "Maps & Sets", list: [35, 36] },
       { name: "Scope & Lifetime", list: [37, 38, 39, 40] },
       { name: "Bits & Shifts", list: [47, 48] },
@@ -13199,7 +13508,7 @@ int main() {
     /* ================= Topic crosswalk =================
        Topics only — no section numbers anywhere: numbering varies by textbook
        title and course configuration, so exercises are matched by topic. */
-    var TOPIC_ORDER = ["Variables and assignments", "Branches", "Loops", "Functions", "Scope", "Arrays and vectors", "Strings and characters", "Structs", "Pointers", "Recursion", "Searching and sorting", "Classes and objects", "File input and output", "Maps, sets and hashing", "Bits and bitwise operations"];
+    var TOPIC_ORDER = ["Variables and assignments", "Branches", "Loops", "Functions", "Scope", "Arrays and vectors", "Strings and characters", "Structs", "Pointers", "Recursion", "Searching and sorting", "Classes and objects", "File input and output", "Console input", "Maps, sets and hashing", "Bits and bitwise operations"];
     function renderCrosswalk() {
       var box = $("crosswalk-list"); if (!box) return;
       box.innerHTML = "";
@@ -15074,7 +15383,7 @@ int main() {
       var ctx = {
         funcs: funcs, classes: parsedAll.classes || {}, out: "", steps: 0, depth: 0,
         rawInput: inputStr === null || inputStr === undefined ? "" : String(inputStr),
-        inChar: 0,
+        inChar: 0, cinFail: false,
         fmtFixed: false, fmtPrec: 2,
         vfiles: opts.files || {}, fileStates: {}, filesOut: {},
         trace: !!opts.trace, traceSteps: []
@@ -15194,6 +15503,14 @@ int main() {
         else { s = ctx.rawInput.slice(ctx.inChar, nl); ctx.inChar = nl + 1; }
         if (s.charAt(s.length - 1) === "\r") s = s.slice(0, -1);
         return s;
+      }
+      function inNumPrefix(wantDouble) {
+        inSkipWs();
+        if (ctx.inChar >= ctx.rawInput.length) return null;
+        var rest = ctx.rawInput.slice(ctx.inChar);
+        var m = (wantDouble ? /^[+-]?(\d+\.?\d*|\.\d+)/ : /^[+-]?\d+/).exec(rest);
+        if (!m) return null;
+        return { text: m[0], end: ctx.inChar + m[0].length };
       }
       function inIgnore() {
         var nl = ctx.rawInput.indexOf("\n", ctx.inChar);
@@ -15389,8 +15706,36 @@ int main() {
             node.targets.forEach(function (tg) {
               var ref = targetRef(env, tg);
               var tok;
-              if (node.name === "cin") tok = inReadToken();
-              else if (ref.type === "string") tok = fsReadToken(xfs);
+              if (node.name === "cin") {
+                // Console input, modelled on a real stream: a jammed
+                // (failed) stream refuses every read until clear(); a
+                // numeric read whose next input is not a number stores 0,
+                // sets the fail state, and leaves the offending input
+                // unconsumed; a numeric read consumes exactly the number.
+                if (ctx.cinFail) { xok = false; return; }
+                if (ref.type === "string") {
+                  tok = inReadToken();
+                  if (tok === null) { ctx.cinFail = true; xok = false; return; }
+                  ref.set(makeConv({ t: "string", v: tok }, ref.type, node.line, "the box"));
+                } else if (ref.type === "char") {
+                  inSkipWs();
+                  if (ctx.inChar >= ctx.rawInput.length) { ctx.cinFail = true; xok = false; return; }
+                  var chc = ctx.rawInput.charAt(ctx.inChar); ctx.inChar++;
+                  ref.set(makeConv({ t: "string", v: chc }, ref.type, node.line, "the box"));
+                } else {
+                  var np = inNumPrefix(ref.type === "double");
+                  if (!np) {
+                    ctx.cinFail = true; xok = false;
+                    ref.set(makeConv({ t: ref.type === "double" ? "double" : "int", v: 0 }, ref.type, node.line, "the box"));
+                    return;
+                  }
+                  ctx.inChar = np.end;
+                  var nvf = parseFloat(np.text);
+                  ref.set(makeConv({ t: ref.type === "double" ? "double" : "int", v: ref.type === "double" ? nvf : Math.trunc(nvf) }, ref.type, node.line, "the box"));
+                }
+                return;
+              }
+              if (ref.type === "string") tok = fsReadToken(xfs);
               else tok = fsReadNumber(xfs);
               if (tok === null) { xok = false; return; }
               var val;
@@ -15407,7 +15752,14 @@ int main() {
                 fail(node.line, "getline is used as getline(cin, name) — or getline(file, name) for a virtual file — and reads one whole line into a string variable.");
               var gref = targetRef(env, node.args[1]);
               var gval;
-              if (node.args[0].name === "cin") gval = inReadLine();
+              if (node.args[0].name === "cin") {
+                if (ctx.cinFail || ctx.inChar >= ctx.rawInput.length) {
+                  ctx.cinFail = true;
+                  gref.set(makeConv({ t: "string", v: "" }, gref.type, node.line, "the box"));
+                  return { t: "int", v: 0 };
+                }
+                gval = inReadLine();
+              }
               else {
                 var gcell = lookupCell(env, node.args[0].name, node.line);
                 if (!gcell.isFileIn) fail(node.line, "'" + node.args[0].name + "' is not an input stream.");
@@ -15444,7 +15796,11 @@ int main() {
           }
           case "method": {
             if (node.obj.kind === "var" && node.obj.name === "cin" && node.name === "ignore") {
-              inIgnore();
+              if (!ctx.cinFail) inIgnore();
+              return { t: "int", v: 0 };
+            }
+            if (node.obj.kind === "var" && node.obj.name === "cin" && node.name === "clear") {
+              ctx.cinFail = false;
               return { t: "int", v: 0 };
             }
             if (node.obj.kind === "var") {
@@ -15682,14 +16038,34 @@ int main() {
             return;
           }
           case "cin": {
+            // Same stream model as the expression-path extraction: a
+            // failed (jammed) stream refuses reads until clear(); a
+            // numeric read facing non-numeric input stores 0, jams the
+            // stream, and leaves the offending input in place.
             node.targets.forEach(function (tg) {
               var ref = targetRef(env, tg);
-              var tok = inReadToken();
+              if (ctx.cinFail) return;
               var val;
-              if (ref.type === "string") val = { t: "string", v: tok === null ? "" : tok };
-              else if (ref.type === "char") val = { t: "string", v: tok === null ? "" : tok.charAt(0) };
-              else if (ref.type === "double") { var pf = tok === null ? NaN : parseFloat(tok); val = { t: "double", v: isNaN(pf) ? 0 : pf }; }
-              else { var pi = tok === null ? NaN : parseInt(tok, 10); val = { t: "int", v: isNaN(pi) ? 0 : pi }; }
+              if (ref.type === "string") {
+                var tok = inReadToken();
+                if (tok === null) { ctx.cinFail = true; val = { t: "string", v: "" }; }
+                else val = { t: "string", v: tok };
+              }
+              else if (ref.type === "char") {
+                inSkipWs();
+                if (ctx.inChar >= ctx.rawInput.length) { ctx.cinFail = true; val = { t: "string", v: "" }; }
+                else { val = { t: "string", v: ctx.rawInput.charAt(ctx.inChar) }; ctx.inChar++; }
+              }
+              else if (ref.type === "double" || ref.type === "int") {
+                var np2 = inNumPrefix(ref.type === "double");
+                if (!np2) { ctx.cinFail = true; val = { t: ref.type, v: 0 }; }
+                else {
+                  ctx.inChar = np2.end;
+                  var nv2 = parseFloat(np2.text);
+                  val = { t: ref.type, v: ref.type === "double" ? nv2 : Math.trunc(nv2) };
+                }
+              }
+              else { var tok3 = inReadToken(); val = { t: "string", v: tok3 === null ? "" : tok3 }; }
               ref.set(val);
             });
             return;
@@ -16788,8 +17164,9 @@ int main() {
       $("translator-mode").hidden = mode !== "translator";
       $("challenges-mode").hidden = mode !== "challenges";
       $("bridge-mode").hidden = mode !== "bridge";
+      $("order-mode").hidden = mode !== "order";
       $("make-mode").hidden = mode !== "make";
-      ["bolt","tracer","gym","refactor","translator","challenges","bridge","make"].forEach(function(m){
+      ["bolt","tracer","gym","refactor","translator","challenges","bridge","order","make"].forEach(function(m){
         var b = $("mode-" + m);
         b.setAttribute("aria-selected", mode === m ? "true" : "false");
         b.setAttribute("aria-pressed", mode === m ? "true" : "false");
@@ -16801,6 +17178,7 @@ int main() {
       if (mode === "refactor") renderRefactor();
       if (mode === "challenges") renderChallenges();
       if (mode === "bridge") renderBridge();
+      if (mode === "order") renderOrder();
       if (mode === "make") renderMake();
       if (typeof renderRoute === "function") { routeLastSig = ""; renderRoute(); }
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -16812,12 +17190,13 @@ int main() {
     $("mode-translator").addEventListener("click", function () { setMode("translator"); });
     $("mode-challenges").addEventListener("click", function () { setMode("challenges"); });
     $("mode-bridge").addEventListener("click", function () { setMode("bridge"); });
+    $("mode-order").addEventListener("click", function () { setMode("order"); });
     $("mode-make").addEventListener("click", function () { setMode("make"); });
 
 
     /* ---------------- Mode tabs: arrow-key navigation ---------------- */
     (function(){
-      var order = ["bolt","tracer","gym","refactor","translator","challenges","bridge","make"];
+      var order = ["bolt","tracer","gym","refactor","translator","challenges","bridge","order","make"];
       var tablist = document.getElementById("mode-tablist");
       if (tablist) tablist.addEventListener("keydown", function(e){
         if (!(e.target.classList && e.target.classList.contains("mode-btn"))) return;
@@ -16838,12 +17217,12 @@ int main() {
        and the tab bar is untouched. */
     var MODE_NAMES = {
       bolt: "Bolt's World", tracer: "Prediction Tracer", gym: "Debugging Gym", refactor: "Refactor Gym",
-      translator: "Error Translator", challenges: "Challenges", bridge: "Bridge", make: "Make"
+      translator: "Error Translator", challenges: "Challenges", bridge: "Bridge", order: "Order the Lines", make: "Make"
     };
     var drawerIsOpen = false;
     var drawerHideTimer = null;
     function currentModeKey() {
-      var order = ["bolt","tracer","gym","refactor","translator","challenges","bridge","make"];
+      var order = ["bolt","tracer","gym","refactor","translator","challenges","bridge","order","make"];
       for (var i = 0; i < order.length; i++) {
         var b = $("mode-" + order[i]);
         if (b && b.getAttribute("aria-selected") === "true") return order[i];
@@ -16857,6 +17236,7 @@ int main() {
         if (mode === "gym" && typeof gym !== "undefined" && gym && gym.rounds) return gym.rounds.filter(function (r) { return r.done; }).length + " / " + GYM_ROUNDS.length;
         if (mode === "refactor" && typeof refactor !== "undefined" && refactor && refactor.rounds) return refactor.rounds.filter(function (r) { return r.done; }).length + " / " + REFACTOR_ROUNDS.length;
         if (mode === "bridge" && typeof bridgeDoneCount === "function") return bridgeDoneCount() + " / " + BRIDGE_ACTIVITIES.length;
+        if (mode === "order" && typeof orderDoneCount === "function") return orderDoneCount() + " / " + ORDER_ROUNDS.length;
         if (mode === "make" && typeof makeDoneCount === "function") return makeDoneCount() + " / " + MAKE_PROMPTS.length;
       } catch (e) {}
       return "";
@@ -17038,15 +17418,15 @@ int main() {
        tfHydrate path applies it field by field (unknown fields are ignored
        by that hydration and dropped by the next tfCollect save; missing
        optional sections default the same way an older save's would). */
-    var TF_PROGRESS_ARRAY_KEYS = ["tracer", "gym", "refactor", "bridge", "make", "authoredExercises", "instructorExercises", "assignments"];
-    var TF_PROGRESS_KNOWN_KEYS = ["v", "bitsFormat", "playbackSpeed", "bgTheme", "reduceMotionPref", "largeTextPref", "primerRead", "boltTourSeen", "tracer", "bolt", "gym", "refactor", "bridge", "make", "challenges", "authoredExercises", "instructorExercises", "assignments", "gap", "lastTracer", "testOut"];
+    var TF_PROGRESS_ARRAY_KEYS = ["tracer", "gym", "refactor", "bridge", "order", "make", "authoredExercises", "instructorExercises", "assignments"];
+    var TF_PROGRESS_KNOWN_KEYS = ["v", "bitsFormat", "playbackSpeed", "bgTheme", "reduceMotionPref", "largeTextPref", "primerRead", "boltTourSeen", "tracer", "bolt", "gym", "refactor", "bridge", "order", "make", "challenges", "authoredExercises", "instructorExercises", "assignments", "gap", "lastTracer", "testOut"];
     function tfIsPlainObj(x) { return !!x && typeof x === "object" && !Array.isArray(x); }
     function tfCloneJson(x) { return JSON.parse(JSON.stringify(x)); }
     function tfValidateProgressFile(d) {
       if (!tfIsPlainObj(d)) return false;
       if (d.v !== 1) return false;
       if (!Array.isArray(d.tracer)) return false;
-      var arrayKeys = ["gym", "refactor", "bridge", "make", "authoredExercises", "instructorExercises", "assignments"];
+      var arrayKeys = ["gym", "refactor", "bridge", "order", "make", "authoredExercises", "instructorExercises", "assignments"];
       for (var i = 0; i < arrayKeys.length; i++) {
         if (d[arrayKeys[i]] !== undefined && !Array.isArray(d[arrayKeys[i]])) return false;
       }
@@ -17171,7 +17551,7 @@ int main() {
       out.v = 1;
       // Indexed activity lists: keep the current record per item; take the
       // file's item only where the current progress has nothing there.
-      ["tracer", "gym", "refactor", "bridge", "make"].forEach(function (k) {
+      ["tracer", "gym", "refactor", "bridge", "order", "make"].forEach(function (k) {
         if (imp[k] !== undefined) out[k] = tfMergeListSection(k, cur[k], imp[k]);
       });
       // Free-standing collections: keep everything current, add file items
@@ -17905,6 +18285,17 @@ int main() {
           { q: "Right after fin >> n; reads a number from its own line, getline(fin, title) reads…", options: ["The rest of that same line — often nothing", "The next full line", "The whole rest of the file"], correct: 0, why: ">> stops at the whitespace after the value and leaves it in place; getline reads from exactly there to that line's end." }
         ],
         drag: { q: "Complete the line that opens the simulated file for reading:", pre: "ifstream fin", slot: "", post: "\"steps.txt\");", tokens: ["(", ")", "["], correct: "(", why: "The filename is handed to the stream's constructor in parentheses." } },
+      "Console Input": { title: "Briefing: Console Input — the keyboard stream",
+        body: "Everything typed at the keyboard waits in one stream, <code>cin</code>, in the order it was typed — and the two reading tools treat that stream differently. <code>cin &gt;&gt; x</code> skips any leading whitespace, takes <b>one token</b> (one word, or one number), and stops <em>at</em> the whitespace after it without consuming it. <code>getline(cin, s)</code> takes <b>everything from where the stream is standing</b> to the end of the current line, spaces included — which is why a getline right after a <code>&gt;&gt;</code> read so often comes back empty: it collects the rest of the <em>previous</em> line, and the repair is <code>cin.ignore()</code>, which discards the rest of the current line first. The stream also carries a <b>state</b>: if a numeric read meets input that is not a number, the extraction <b>fails</b> — the box is handed 0, the bad input stays where it was, and the stream <b>jams</b>, refusing every further read. Recovery is a pair: <code>cin.clear()</code> resets the state (but moves no input), then <code>cin.ignore()</code> throws the bad line away. And because a read can fail, a loop can test the read itself — <code>while (cin &gt;&gt; value)</code> runs until the first failed read, at bad input or at the end of input, exactly like the file loop.",
+        example: ["int age = 0;", "string name;", "cin >> age;", "cin.ignore();", "getline(cin, name);"], note: "If the user types <b>19</b> (Enter) then <b>Maya Chen</b> (Enter): age gets <b>19</b>, ignore() discards the leftover Enter, and name gets <b>Maya Chen</b>. Without the ignore() line, name would be the empty rest of the age's line.",
+        checks: [
+          { q: "The user types one line: Ada Byron King. After cin >> first; — what does first hold?", options: ["Ada", "Ada Byron King", "Ada Byron"], correct: 0, why: ">> takes exactly one token: it stops at the first space. Byron King is still waiting in the stream." },
+          { q: "After cin >> age; reads 19 from its own line, getline(cin, name) reads…", options: ["The rest of the age's line — usually nothing", "The next full line", "The whole remaining input"], correct: 0, why: ">> stops at the Enter after 19 and leaves it; getline reads from there to that line's end, which is no distance at all." },
+          { q: "cin >> n; meets the word xyz, where n is an int. What happens?", options: ["The read fails: n is handed 0, xyz stays in the stream, and the stream jams", "n stores the word xyz", "The word is skipped and the next number is read"], correct: 0, why: "A failed extraction hands its box 0, consumes nothing, and sets the fail state — every later read is refused until clear()." },
+          { q: "A stream has jammed on bad input. Which pair, in order, recovers it?", options: ["cin.clear(); then cin.ignore();", "cin.ignore(); then cin.clear();", "cin.clear(); alone"], correct: 0, why: "clear() must come first — a jammed stream refuses even ignore(). clear() resets the state but leaves the bad input, so ignore() then throws that line away." },
+          { q: "while (cin >> value) stops when…", options: ["A read fails — bad input, or the input running out", "The counter reaches the number of values typed", "value reads 0"], correct: 0, why: "The header's extraction is the test: no value delivered, no pass. Reading a genuine 0 succeeds and the loop continues." }
+        ],
+        drag: { q: "Complete the repair line that discards the rest of the current line after a >> read, so the getline after it starts fresh:", pre: "cin.", slot: "", post: "();", tokens: ["ignore", "clear", "getline"], correct: "ignore", why: "ignore() is the discard: it throws away everything up to and including the end of the current line. clear() only resets the stream's state; getline is a read, not a repair." } },
       "Maps & Sets": { title: "Briefing: Maps & Sets",
         body: "A <b>map</b> stores one value per <b>key</b>: <code>counts[\"fig\"]</code> is fig's own slot, created at 0 the first time the key is used — which is why <code>counts[word]++</code> is the whole frequency-counting pattern. A map's size counts <b>distinct keys</b>, and it keeps them in key order. A <b>set</b> is simpler still: each value present at most once, kept sorted, so duplicates vanish on insertion and a walk visits values in order.",
         example: ["map<string, int> counts;", "counts[\"fig\"]++;", "counts[\"pear\"]++;", "counts[\"fig\"]++;", "cout << counts[\"fig\"] << \" \" << counts.size();"], note: "Prints <b>2 2</b>: fig was sighted twice, and the map holds two distinct keys.",
@@ -19674,6 +20065,95 @@ int main() {
        One key, local storage only, on the visitor's own machine. No account,
        nothing sent anywhere. Any storage failure (private mode, quota,
        blocked storage) degrades silently to session-only behaviour. */
+    /* ================= Order the Lines: rounds and state =================
+       Defined here, ahead of the persistence block below, so tfCollect /
+       tfHydrate can record the mode like the others. The mode's rendering
+       and wiring live at the end of this script. Each round's lines are in
+       correct order; `scramble` is the fixed display order (a permutation
+       of line indexes) the student starts from. Every round's output was
+       verified by running the correctly ordered program through the
+       platform interpreter (makeRunProgram), and every scramble was
+       verified NOT to pass the order check as dealt. */
+    var ORDER_ROUNDS = [
+      { concept: "Loops · Accumulation", title: "Add them up",
+        task: "The program adds 1 + 2 + 3 + 4 into a total and prints the total.",
+        lines: ["#include <iostream>", "using namespace std;", "int main() {", "    int total = 0;", "    for (int i = 1; i <= 4; i++) {", "        total += i;", "    }", "    cout << total;", "    return 0;", "}"],
+        scramble: [3, 7, 1, 5, 0, 9, 4, 2, 8, 6], input: "", output: "10",
+        options: ["10", "4", "0", "20"], correct: 0,
+        hint: "A box must exist before a loop can add into it, and the printing line can only show the total after the loop has finished. Find the line that creates total, and the line that prints it — everything else hangs between them.",
+        explain: "The loop runs with i = 1, 2, 3, 4, adding each one to total: 0 + 1 + 2 + 3 + 4 = <b>10</b>." },
+      { concept: "Loops · Counting down", title: "The countdown",
+        task: "The program counts down from 3, printing each number, then prints Go.",
+        lines: ["#include <iostream>", "using namespace std;", "int main() {", "    int n = 3;", "    while (n > 0) {", "        cout << n << \" \";", "        n--;", "    }", "    cout << \"Go\";", "    return 0;", "}"],
+        scramble: [5, 2, 8, 0, 6, 3, 10, 1, 7, 4, 9], input: "", output: "3 2 1 Go",
+        options: ["3 2 1", "3 2 1 Go", "1 2 3 Go", "0 Go"], correct: 1,
+        hint: "The loop's test and its step both work on n. Ask what has to be true before the first test can even be asked — and which single line is not part of the loop at all, but waits for it to end.",
+        explain: "n starts at 3; each pass prints n and subtracts 1, until n reaches 0 and the condition fails. Go prints once, after the loop: <b>3 2 1 Go</b>." },
+      { concept: "Decisions · if / else", title: "The bigger one",
+        task: "The program compares two numbers and prints the bigger of them.",
+        lines: ["#include <iostream>", "using namespace std;", "int main() {", "    int a = 7;", "    int b = 12;", "    if (a > b) {", "        cout << a;", "    } else {", "        cout << b;", "    }", "    return 0;", "}"],
+        scramble: [4, 9, 1, 6, 11, 3, 8, 0, 10, 5, 2, 7], input: "", output: "12",
+        options: ["7", "7 12", "12", "19"], correct: 2,
+        hint: "Both numbers must exist before they can be compared, and each cout belongs to exactly one side of the fork. The else has to stay attached to its if.",
+        explain: "a &gt; b is 7 &gt; 12 — false — so the else branch runs and prints b: <b>12</b>." },
+      { concept: "Functions · Return values", title: "Square it",
+        task: "The program uses a helper function to square 6 and prints the answer.",
+        lines: ["#include <iostream>", "using namespace std;", "int square(int n) {", "    return n * n;", "}", "int main() {", "    int answer = square(6);", "    cout << answer;", "    return 0;", "}"],
+        scramble: [6, 1, 8, 3, 0, 9, 5, 2, 7, 4], input: "", output: "36",
+        options: ["12", "36", "6", "0"], correct: 1,
+        hint: "A helper must be fully defined before main can call it — definitions sit above the main that uses them. Inside the helper, the return line is its last act.",
+        explain: "square(6) hands back 6 * 6 = 36; the call stores it in answer, and the print shows <b>36</b>." },
+      { concept: "Arrays · Walking an array", title: "The array total",
+        task: "The program adds up every value in the array {4, 8, 15} and prints the total.",
+        lines: ["#include <iostream>", "using namespace std;", "int main() {", "    int scores[3] = {4, 8, 15};", "    int total = 0;", "    for (int i = 0; i < 3; i++) {", "        total += scores[i];", "    }", "    cout << total;", "    return 0;", "}"],
+        scramble: [5, 9, 2, 7, 0, 10, 4, 1, 8, 3, 6], input: "", output: "27",
+        options: ["15", "12", "3", "27"], correct: 3,
+        hint: "The array and the total both have to exist before the loop walks, and the loop's header creates the counter it tests. The printing belongs after the walking is done.",
+        explain: "The loop visits every index exactly once: 4 + 8 + 15 = <b>27</b>." },
+      { concept: "Arrays · Loops and decisions", title: "Count the evens",
+        task: "The program counts how many values in {3, 8, 5, 10, 7} are even and prints the count.",
+        lines: ["#include <iostream>", "using namespace std;", "int main() {", "    int nums[5] = {3, 8, 5, 10, 7};", "    int evens = 0;", "    for (int i = 0; i < 5; i++) {", "        if (nums[i] % 2 == 0) {", "            evens++;", "        }", "    }", "    cout << evens;", "    return 0;", "}"],
+        scramble: [6, 10, 3, 8, 1, 12, 5, 0, 9, 4, 11, 2, 7], input: "", output: "2",
+        options: ["2", "3", "5", "0"], correct: 0,
+        hint: "Two decisions are nested here: the if lives inside the for. Lines that open a block and lines that close it have to pair up — count the opening braces and match each closing brace to its owner.",
+        explain: "Of {3, 8, 5, 10, 7}, only 8 and 10 divide by 2 with no remainder: the count is <b>2</b>." },
+      { concept: "Functions · Loops inside functions", title: "Factorial",
+        task: "The program computes 4 factorial (4 \u00d7 3 \u00d7 2 \u00d7 1) with a helper function and prints it.",
+        lines: ["#include <iostream>", "using namespace std;", "int fact(int n) {", "    int result = 1;", "    for (int i = 1; i <= n; i++) {", "        result *= i;", "    }", "    return result;", "}", "int main() {", "    cout << fact(4);", "    return 0;", "}"],
+        scramble: [7, 2, 10, 4, 12, 0, 8, 5, 1, 11, 3, 9, 6], input: "", output: "24",
+        options: ["12", "4", "24", "6"], correct: 2,
+        hint: "result starts at 1, and the return can only happen after the loop has done its multiplying — one wrong order to watch for is the loop being cut off from the value it builds. And the helper as a whole must sit above the main that calls it.",
+        explain: "fact(4) multiplies 1 \u00d7 1 \u00d7 2 \u00d7 3 \u00d7 4 = <b>24</b> and returns it; main prints the returned value." },
+      { concept: "Sequence · Swapping", title: "The swap",
+        task: "The program swaps the values in x and y (x starts at 3, y at 8) and prints them, x first.",
+        lines: ["#include <iostream>", "using namespace std;", "int main() {", "    int x = 3;", "    int y = 8;", "    int temp = x;", "    x = y;", "    y = temp;", "    cout << x << \" \" << y;", "    return 0;", "}"],
+        scramble: [5, 8, 1, 6, 3, 10, 0, 7, 4, 9, 2], input: "", output: "8 3",
+        options: ["3 8", "8 3", "8 8", "3 3"], correct: 1,
+        hint: "A swap needs a third box because the first overwriting assignment destroys a value that a later line still needs. For each line ask: does anything after it still need the value it is about to overwrite?",
+        explain: "temp saves x's 3 before x is overwritten with y's 8; then y takes the saved 3. Printed x first: <b>8 3</b>." },
+      { concept: "Console Input · Two reads", title: "Two numbers in",
+        task: "The user types: 7 5. The program reads the two numbers and prints their sum.",
+        lines: ["#include <iostream>", "using namespace std;", "int main() {", "    int a = 0;", "    int b = 0;", "    cin >> a;", "    cin >> b;", "    cout << a + b;", "    return 0;", "}"],
+        scramble: [4, 8, 1, 6, 9, 2, 7, 0, 3, 5], input: "7 5", output: "12",
+        options: ["12", "75", "2", "0"], correct: 0,
+        hint: "Both boxes are created empty, then filled in the order the user typed. The sum can only be printed after both reads have happened.",
+        explain: "The reads take the typed numbers in order — a gets 7, b gets 5 — and 7 + 5 = <b>12</b>." },
+      { concept: "Decisions · else if chains", title: "The grade",
+        task: "The program turns a score of 85 into a letter grade and prints it. 90 and above earns an A; 80 and above earns a B; anything else earns a C.",
+        lines: ["#include <iostream>", "using namespace std;", "int main() {", "    int score = 85;", "    if (score >= 90) {", "        cout << \"A\";", "    } else if (score >= 80) {", "        cout << \"B\";", "    } else {", "        cout << \"C\";", "    }", "    return 0;", "}"],
+        scramble: [5, 11, 2, 8, 12, 4, 9, 1, 6, 0, 10, 3, 7], input: "", output: "B",
+        options: ["A", "C", "B", "85"], correct: 2,
+        hint: "An else-if chain is one fork with several doors, tested top to bottom — the chain's lines must keep their sequence relative to each other, because 85 has to fail the first door before it can be offered the second.",
+        explain: "85 &gt;= 90 is false, so the A branch is skipped; 85 &gt;= 80 is true, so the second branch prints <b>B</b> and the rest of the chain never runs." }
+    ];
+    function orderFreshRound() {
+      return { phase: "arrange", arranged: null, sel: -1, locked: false, step: 0,
+               done: false, predCorrect: null, acceptedSrc: "", traceSteps: null, traceOut: "",
+               msg: "", msgKind: "info", hintShown: false };
+    }
+    var orderState = { current: 0, rounds: ORDER_ROUNDS.map(function () { return orderFreshRound(); }) };
+    function orderDoneCount() { return orderState.rounds.filter(function (r) { return r && r.done; }).length; }
+
     var TF_KEY = "tracefirst-progress-v1";
     var tfLastSaved = null;
     var tfLastTracer = -1;
@@ -19688,7 +20168,7 @@ int main() {
       } catch (e) { tfStorageOk = false; return null; }
     }
     function tfCollect() {
-      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", playbackSpeed: playbackSpeed, bgTheme: bgTheme, reduceMotionPref: !!reduceMotionPref, largeTextPref: !!largeTextPref, primerRead: !!primerRead, boltTourSeen: (typeof boltTourSeen !== "undefined" && !!boltTourSeen), tracer: [], bolt: null, gym: [], refactor: [], bridge: [], make: [], challenges: null, authoredExercises: [], instructorExercises: [],
+      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", playbackSpeed: playbackSpeed, bgTheme: bgTheme, reduceMotionPref: !!reduceMotionPref, largeTextPref: !!largeTextPref, primerRead: !!primerRead, boltTourSeen: (typeof boltTourSeen !== "undefined" && !!boltTourSeen), tracer: [], bolt: null, gym: [], refactor: [], bridge: [], order: [], make: [], challenges: null, authoredExercises: [], instructorExercises: [],
         lastTracer: (typeof tfLastTracer === "number" ? tfLastTracer : -1),
         testOut: (typeof testOut !== "undefined" && testOut)
           ? { passed: !!testOut.passed, score: (typeof testOut.score === "number" ? testOut.score : 0), via: (Array.isArray(testOut.via) ? testOut.via.slice() : [false, false, false]) }
@@ -19736,6 +20216,13 @@ int main() {
           data.bridge.push({ done: !!it.done, answer: (it.answer || []).slice(), slots: (it.slots || []).slice() });
         });
       } catch (e) {}
+      // Order the Lines: only completed rounds persist (additive field,
+      // sibling to gym/refactor/bridge; older saves simply lack it).
+      try {
+        orderState.rounds.forEach(function (r) {
+          data.order.push(r && r.done ? { done: true, predCorrect: r.predCorrect === true } : null);
+        });
+      } catch (e) {}
       try {
         makeState.items.forEach(function (it) {
           data.make.push({ code: it.code, done: !!it.done, results: it.results || null, hiddenPassed: (typeof it.hiddenPassed === "number" ? it.hiddenPassed : null) });
@@ -19778,6 +20265,7 @@ int main() {
       if ((d.gym || []).some(function (x) { return !!x; })) return true;
       if ((d.refactor || []).some(function (x) { return !!x; })) return true;
       if ((d.bridge || []).some(function (x) { return x && x.done; })) return true;
+      if ((d.order || []).some(function (x) { return x && x.done; })) return true;
       if ((d.make || []).some(function (x) { return x && (x.done || (typeof x.code === "string" && x.code.trim() !== "")); })) return true;
       if (d.challenges && d.challenges.data) {
         var cd = d.challenges.data, found = false;
@@ -19906,6 +20394,19 @@ int main() {
             bridgeState.items[i].done = !!sv.done;
             if (Array.isArray(sv.answer)) bridgeState.items[i].answer = sv.answer.slice();
             if (Array.isArray(sv.slots)) bridgeState.items[i].slots = sv.slots.slice();
+          });
+        }
+      } catch (e) {}
+      // Order the Lines: completed rounds only (additive field; absent
+      // in older saves, which then simply start every round fresh).
+      try {
+        if (Array.isArray(d.order)) {
+          d.order.forEach(function (sv, i) {
+            if (!sv || !ORDER_ROUNDS[i] || !sv.done) return;
+            var r = orderFreshRound();
+            r.done = true;
+            r.predCorrect = sv.predCorrect === true;
+            orderState.rounds[i] = r;
           });
         }
       } catch (e) {}
@@ -20246,6 +20747,7 @@ int main() {
         c.challenges = [cd, ct];
       } catch (e) { c.challenges = [0, 0]; }
       try { c.bridge = [bridgeDoneCount(), BRIDGE_ACTIVITIES.length]; } catch (e) { c.bridge = [0, 0]; }
+      try { c.order = [orderDoneCount(), ORDER_ROUNDS.length]; } catch (e) { c.order = [0, 0]; }
       try { c.make = [makeDoneCount(), MAKE_PROMPTS.length]; } catch (e) { c.make = [0, 0]; }
       return c;
     }
@@ -20296,7 +20798,7 @@ int main() {
       });
       return { v: 1, t: cleanT, c: cleanC };
     }
-    var TFP_MODE_LABELS = [["bolt", "Bolt's World"], ["gym", "Debugging Gym"], ["refactor", "Refactor Gym"], ["translator", "Error Translator (fix-it rounds)"], ["challenges", "Challenges"], ["bridge", "Bridge"], ["make", "Make"]];
+    var TFP_MODE_LABELS = [["bolt", "Bolt's World"], ["gym", "Debugging Gym"], ["refactor", "Refactor Gym"], ["translator", "Error Translator (fix-it rounds)"], ["challenges", "Challenges"], ["bridge", "Bridge"], ["order", "Order the Lines"], ["make", "Make"]];
     function tfpRenderView(obj) {
       var box = $("tfp-view");
       if (!box) return;
@@ -21168,6 +21670,289 @@ int main() {
       _peerPrevSelect(i);
     };
     try { renderMakeExtras(); } catch (e) {}
+
+    /* ================= Order the Lines: rendering and play =================
+       Stage 1 arrange -> order check (the student's own arrangement is run
+       through the platform interpreter; it passes when it runs and prints
+       the round's target output, so more than one order can be right) ->
+       Stage 2 prediction lock -> Stage 3 trace of the accepted arrangement
+       (interpreter trace steps) -> verdict. Completion is recorded in the
+       additive `order` section of tracefirst-progress-v1 (see tfCollect /
+       tfHydrate); an unfinished round restarts at Arrange on the next
+       visit, like the Gym. */
+    function orderRoundDef() { return ORDER_ROUNDS[orderState.current]; }
+    function orderRt() {
+      var r = orderState.rounds[orderState.current];
+      if (!r.arranged) r.arranged = orderRoundDef().scramble.slice();
+      return r;
+    }
+    function orderNormOut(s) { return String(s == null ? "" : s).replace(/\s+$/, ""); }
+    function orderArrangedLines() {
+      var d = orderRoundDef(), r = orderRt();
+      return r.arranged.map(function (li) { return d.lines[li]; });
+    }
+    function orderSetMsg(r) {
+      var m = $("order-msg"); if (!m) return;
+      if (r.msg) { m.className = "make-msg show " + (r.msgKind || "info"); m.innerHTML = r.msg; }
+    }
+    function orderCodeHtml(lines, activeLine) {
+      return lines.map(function (l, li) {
+        return '<div class="cline' + (activeLine === li + 1 ? " active" : "") + '"><span class="ln">' + (li + 1) + "</span><span>" + (esc(l) || " ") + "</span></div>";
+      }).join("");
+    }
+    function orderMemHtml(step) {
+      if (!step || !step.order || !step.order.length) return '<div class="mem-empty">No boxes yet — the program has not created any variables at this point.</div>';
+      return step.order.map(function (nm) {
+        var v = step.vars[nm]; if (!v) return "";
+        var val = v.uninit ? "?" : v.display;
+        return '<div class="membox"><div class="vname"><span>' + esc(nm) + '</span><span class="vtype">' + esc(v.type) + '</span></div><div class="vval">' + esc(val) + "</div></div>";
+      }).join("");
+    }
+    function renderOrderNav() {
+      var box = $("ordernav"); if (!box) return;
+      box.innerHTML = "";
+      ORDER_ROUNDS.forEach(function (rd, i) {
+        var r = orderState.rounds[i];
+        var st = r.done ? (r.predCorrect ? "complete · prediction \u2713" : "complete · prediction \u2717") : "not started";
+        var b = document.createElement("button");
+        b.className = "ex-btn ex-row"; b.type = "button";
+        b.setAttribute("aria-current", orderState.current === i ? "true" : "false");
+        b.setAttribute("aria-label", "Round " + (i + 1) + ": " + rd.title + " (" + st + ")");
+        b.innerHTML = '<span class="n">' + (i + 1) + '</span><span class="ex-row-title">' + esc(rd.title) + " · " + esc(rd.concept) + '</span><span class="status' + (r.done ? " good" : "") + '">' + esc(st) + "</span>";
+        b.addEventListener("click", function () { orderState.current = i; renderOrder(); });
+        box.appendChild(b);
+      });
+      var sb = $("order-scorebar");
+      if (sb) {
+        var doneN = orderDoneCount();
+        var predN = orderState.rounds.filter(function (r) { return r && r.done && r.predCorrect; }).length;
+        sb.innerHTML = '<span class="metric"><strong>' + doneN + " / " + ORDER_ROUNDS.length + '</strong> <span>rounds complete</span></span>' +
+          '<span class="metric"><strong>' + predN + " / " + doneN + '</strong> <span>predictions correct</span></span>';
+      }
+    }
+    function renderOrder() {
+      var panel = $("order-mode"); if (!panel) return;
+      var d = orderRoundDef();
+      renderOrderNav();
+      $("order-tag").textContent = "Round " + (orderState.current + 1) + " of " + ORDER_ROUNDS.length + " · " + d.concept;
+      $("order-title").textContent = d.title;
+      $("order-task").textContent = d.task;
+      renderOrderBody();
+    }
+    function renderOrderBody() {
+      var body = $("order-body"); if (!body) return;
+      var d = orderRoundDef();
+      // A completed round revisited fresh shows its summary first.
+      var raw = orderState.rounds[orderState.current];
+      if (raw.done && !raw.arranged) { renderOrderSummary(body, d, raw); orderSetMsg(raw); return; }
+      var r = orderRt();
+      if (r.phase === "predict") renderOrderPredict(body, d, r);
+      else if (r.phase === "trace") renderOrderTrace(body, d, r);
+      else renderOrderArrange(body, d, r);
+      orderSetMsg(r);
+    }
+    function renderOrderSummary(body, d, r) {
+      body.innerHTML =
+        '<p class="otl-stage-tag">Round complete</p>' +
+        '<div class="otl-verdict ' + (r.predCorrect ? "good" : "bad") + '" style="margin-top:10px;">' +
+        (r.predCorrect
+          ? "<strong>You completed this round, and your prediction was right.</strong>"
+          : "<strong>You completed this round; your prediction missed.</strong>") +
+        "<p>The program prints <strong>" + esc(d.output) + "</strong>. " + d.explain + "</p></div>" +
+        '<div class="lockrow" style="margin-top:14px;">' +
+        '<button class="btn ghost" type="button" id="order-again">Do this round again</button>' +
+        (orderState.current < ORDER_ROUNDS.length - 1 ? '<button class="btn" type="button" id="order-next">Next round \u2192</button>' : "") +
+        "</div>";
+      var again = $("order-again");
+      if (again) again.addEventListener("click", function () {
+        var keep = { done: r.done, predCorrect: r.predCorrect };
+        orderState.rounds[orderState.current] = orderFreshRound();
+        orderState.rounds[orderState.current].done = keep.done;
+        orderState.rounds[orderState.current].predCorrect = keep.predCorrect;
+        orderRt();
+        r = orderState.rounds[orderState.current];
+        r.msg = "Round reset to its shuffled lines. Your earlier completion stays recorded until you finish the round again.";
+        r.msgKind = "info";
+        renderOrder();
+        announce("Round " + (orderState.current + 1) + " reset to its shuffled lines.");
+      });
+      var next = $("order-next");
+      if (next) next.addEventListener("click", function () { orderState.current++; renderOrder(); });
+    }
+    function renderOrderArrange(body, d, r) {
+      var lines = orderArrangedLines();
+      var html = '<p class="otl-stage-tag">Stage 1 \u2014 Arrange the lines</p>';
+      html += '<div class="otl-list" role="group" aria-label="Program lines in their current order">';
+      lines.forEach(function (l, i) {
+        html += '<div class="otl-row"><code>' + (esc(l) || " ") + '</code><span class="otl-moves">' +
+          '<button class="otl-move" type="button" data-move="-1" data-row="' + i + '" aria-label="Move line ' + (i + 1) + ' up: ' + esc(l.trim()) + '"' + (i === 0 ? " disabled" : "") + ">\u25b2</button>" +
+          '<button class="otl-move" type="button" data-move="1" data-row="' + i + '" aria-label="Move line ' + (i + 1) + ' down: ' + esc(l.trim()) + '"' + (i === lines.length - 1 ? " disabled" : "") + ">\u25bc</button>" +
+          "</span></div>";
+      });
+      html += "</div>";
+      html += '<div class="lockrow" style="margin-top:14px;">' +
+        '<button class="btn" type="button" id="order-check">Check my order</button>' +
+        '<button class="btn ghost small" type="button" id="order-shuffle">Start over</button>' +
+        '<button class="btn ghost small" type="button" id="order-hint" aria-expanded="' + (r.hintShown ? "true" : "false") + '">' + (r.hintShown ? "Hide the hint" : "Show a hint") + "</button></div>";
+      if (r.hintShown) html += '<div class="hintbox" style="margin-top:10px;">' + d.hint + "</div>";
+      body.innerHTML = html;
+      body.querySelectorAll(".otl-move").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var i = parseInt(btn.getAttribute("data-row"), 10);
+          var dir = parseInt(btn.getAttribute("data-move"), 10);
+          var j = i + dir;
+          if (j < 0 || j >= r.arranged.length) return;
+          var tmp = r.arranged[i]; r.arranged[i] = r.arranged[j]; r.arranged[j] = tmp;
+          renderOrderBody();
+          var again = body.querySelector('.otl-move[data-row="' + j + '"][data-move="' + dir + '"]');
+          if (again && !again.disabled) again.focus();
+          announce("Line moved to position " + (j + 1) + " of " + r.arranged.length + ".");
+        });
+      });
+      $("order-check").addEventListener("click", orderCheck);
+      $("order-shuffle").addEventListener("click", function () {
+        r.arranged = d.scramble.slice();
+        r.msg = "Lines back to their shuffled order.";
+        r.msgKind = "info";
+        renderOrderBody();
+        announce("Lines shuffled back to the starting order.");
+      });
+      $("order-hint").addEventListener("click", function () {
+        r.hintShown = !r.hintShown;
+        renderOrderBody();
+      });
+    }
+    function orderCheck() {
+      var d = orderRoundDef(), r = orderRt();
+      var src = orderArrangedLines().join("\n");
+      var res = null;
+      try { res = makeRunProgram(src, d.input || "", {}); } catch (e) { res = null; }
+      if (!res || !res.ok) {
+        r.msg = "That arrangement does not run yet. The machine says: <b>" + esc(res && res.error ? res.error : "the program could not be run.") + "</b> Use that to find the line that is out of place" + (r.hintShown ? "." : " \u2014 or open the hint.");
+        r.msgKind = "bad";
+        renderOrderBody();
+        announce("That arrangement does not run yet.");
+        return;
+      }
+      if (orderNormOut(res.output) !== orderNormOut(d.output)) {
+        r.msg = "That arrangement runs \u2014 but it prints <b>\u201c" + esc(orderNormOut(res.output) || "(nothing)") + "\u201d</b>, and this round's program must print <b>\u201c" + esc(d.output) + "\u201d</b>. It runs, so the pieces are close; the order is still changing what the program does.";
+        r.msgKind = "bad";
+        renderOrderBody();
+        announce("That arrangement runs, but prints the wrong thing.");
+        return;
+      }
+      r.phase = "predict";
+      r.acceptedSrc = src;
+      r.sel = -1;
+      r.msg = "That order works \u2014 the machine ran <em>your</em> arrangement and it printed what the round asks for. Now the part that matters: predict exactly what it prints, and lock it in before the trace runs.";
+      r.msgKind = "good";
+      renderOrderBody();
+      announce("Order accepted. Stage 2: choose a prediction and lock it in.");
+    }
+    function renderOrderPredict(body, d, r) {
+      var html = '<p class="otl-stage-tag">Stage 2 \u2014 Predict and lock</p>';
+      html += '<div class="codebox" style="margin-top:10px;"><div class="codehead"><span>program.cpp \u2014 your arrangement</span><span>C++</span></div><pre aria-label="Your arranged program">' + orderCodeHtml(orderArrangedLines(), -1) + "</pre></div>";
+      html += '<p class="predict-q" style="margin-top:14px;">What will this program print?</p>';
+      html += '<div class="options otl-options" role="group" aria-label="Prediction options">';
+      d.options.forEach(function (opt, i) {
+        html += '<button class="opt-btn" type="button" data-opt="' + i + '" aria-pressed="' + (r.sel === i ? "true" : "false") + '"><span class="key">' + "ABCD"[i] + "</span><span>" + esc(opt) + "</span></button>";
+      });
+      html += "</div>";
+      html += '<div class="lockrow" style="margin-top:14px;"><button class="btn" type="button" id="order-lock"' + (r.sel < 0 ? " disabled" : "") + ">Lock my prediction</button>" +
+        '<span class="locknote">The trace stays locked until you commit. Guessing is the point: a wrong prediction you own teaches more than a right answer you copied.</span></div>';
+      html += '<div class="lockrow" style="margin-top:8px;"><button class="btn ghost small" type="button" id="order-back-arrange">\u2190 Back to arranging</button></div>';
+      body.innerHTML = html;
+      body.querySelectorAll(".opt-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          r.sel = parseInt(btn.getAttribute("data-opt"), 10);
+          renderOrderBody();
+        });
+      });
+      $("order-lock").addEventListener("click", orderLock);
+      $("order-back-arrange").addEventListener("click", function () {
+        r.phase = "arrange"; r.msg = ""; r.msgKind = "info"; renderOrderBody();
+      });
+    }
+    function orderLock() {
+      var d = orderRoundDef(), r = orderRt();
+      if (r.sel < 0) return;
+      r.locked = true;
+      var res = null;
+      try { res = makeRunProgram(r.acceptedSrc, d.input || "", { trace: true }); } catch (e) { res = null; }
+      r.traceSteps = (res && res.steps && res.steps.length) ? res.steps : [{ line: 1, vars: {}, order: [], out: res ? res.output : "" }];
+      r.traceOut = res ? res.output : "";
+      r.step = 0;
+      r.phase = "trace";
+      r.msg = "Prediction locked in: \u201c" + d.options[r.sel] + "\u201d. Step through your program and hold the machine to your answer.";
+      r.msgKind = "info";
+      renderOrderBody();
+      announce("Prediction locked. Stage 3: step through the trace.");
+    }
+    function renderOrderTrace(body, d, r) {
+      var steps = r.traceSteps || [];
+      var idx = Math.min(r.step, steps.length - 1);
+      var st = steps[idx] || { line: 1, vars: {}, order: [], out: "" };
+      var atEnd = idx >= steps.length - 1;
+      var html = '<p class="otl-stage-tag">Stage 3 \u2014 Step through the trace</p>';
+      html += '<p style="font-size:.93rem;color:var(--ink-soft);margin-top:6px;">Your locked prediction: <strong>\u201c' + esc(d.options[r.sel]) + "\u201d</strong></p>";
+      html += '<div class="trace-controls" style="margin-top:10px;">' +
+        '<button class="btn small ghost" type="button" id="order-step-back"' + (idx === 0 ? " disabled" : "") + ">\u2190 Back</button>" +
+        '<button class="btn small" type="button" id="order-step-next"' + (atEnd ? " disabled" : "") + ">Step \u2192</button>" +
+        '<button class="btn small ghost" type="button" id="order-run-end"' + (atEnd ? " disabled" : "") + ">Run to end</button>" +
+        '<button class="btn small ghost" type="button" id="order-trace-restart">Restart</button></div>';
+      html += '<div class="stepmeta" style="margin-top:8px;">Step ' + (idx + 1) + " of " + steps.length + "</div>";
+      html += '<div class="codebox" style="margin-top:8px;"><div class="codehead"><span>program.cpp \u2014 your arrangement</span><span>C++</span></div><pre aria-label="Your arranged program, current line highlighted">' + orderCodeHtml(orderArrangedLines(), st.line) + "</pre></div>";
+      html += '<h4 style="margin-top:16px; font-size:.85rem; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-soft); font-family:\'IBM Plex Mono\',monospace;">Memory</h4>';
+      html += '<div class="memory" style="margin-top:8px;">' + orderMemHtml(st) + "</div>";
+      html += '<div class="console"><div class="chead">Program output</div><div class="cout">' + esc(atEnd ? r.traceOut : st.out) + "</div></div>";
+      if (atEnd) {
+        var wasRight = r.sel === d.correct;
+        html += '<div class="otl-verdict ' + (wasRight ? "good" : "bad") + '">' +
+          (wasRight
+            ? "<strong>Your prediction was right.</strong> The program printed \u201c" + esc(d.output) + "\u201d, exactly as you called it."
+            : "<strong>Your prediction missed.</strong> You predicted \u201c" + esc(d.options[r.sel]) + "\u201d; the program printed \u201c" + esc(d.output) + "\u201d.") +
+          "<p>" + d.explain + "</p></div>";
+        html += '<div class="lockrow" style="margin-top:14px;">' +
+          '<button class="btn ghost" type="button" id="order-again2">Do this round again</button>' +
+          (orderState.current < ORDER_ROUNDS.length - 1 ? '<button class="btn" type="button" id="order-next2">Next round \u2192</button>' : "") +
+          "</div>";
+      }
+      body.innerHTML = html;
+      var back = $("order-step-back"), next = $("order-step-next"), end = $("order-run-end"), rst = $("order-trace-restart");
+      if (back) back.addEventListener("click", function () { if (r.step > 0) { r.step--; renderOrderBody(); } });
+      if (next) next.addEventListener("click", function () { orderTraceAdvance(1); });
+      if (end) end.addEventListener("click", function () { orderTraceAdvance(steps.length); });
+      if (rst) rst.addEventListener("click", function () { r.step = 0; renderOrderBody(); announce("Trace restarted."); });
+      var ag = $("order-again2");
+      if (ag) ag.addEventListener("click", function () {
+        var keep = { done: r.done, predCorrect: r.predCorrect };
+        orderState.rounds[orderState.current] = orderFreshRound();
+        orderState.rounds[orderState.current].done = keep.done;
+        orderState.rounds[orderState.current].predCorrect = keep.predCorrect;
+        orderRt();
+        renderOrder();
+        announce("Round " + (orderState.current + 1) + " reset to its shuffled lines.");
+      });
+      var nx = $("order-next2");
+      if (nx) nx.addEventListener("click", function () { orderState.current++; renderOrder(); });
+    }
+    function orderTraceAdvance(n) {
+      var d = orderRoundDef(), r = orderRt();
+      var steps = r.traceSteps || [];
+      r.step = Math.min(r.step + n, steps.length - 1);
+      if (r.step >= steps.length - 1) {
+        // Reaching the end of the trace completes the round.
+        var pc = r.sel === d.correct;
+        if (!r.done || r.predCorrect !== pc) {
+          r.done = true;
+          r.predCorrect = pc;
+          if (typeof tfSave === "function") tfSave();
+        }
+        renderOrderNav();
+        announce(pc ? "Trace finished. Your prediction was right." : "Trace finished. Your prediction missed; the verdict explains the program's actual output.");
+      }
+      renderOrderBody();
+    }
     </script>
     <script>
     /* ---------------- Mode tab dropdowns ----------------
@@ -21180,7 +21965,7 @@ int main() {
       function byId(id) { return document.getElementById(id); }
       var MODE_LABELS = {
         bolt: "Bolt's World", tracer: "Prediction Tracer", gym: "Debugging Gym", refactor: "Refactor Gym",
-        translator: "Error Translator", challenges: "Challenges", bridge: "Bridge", make: "Make"
+        translator: "Error Translator", challenges: "Challenges", bridge: "Bridge", order: "Order the Lines", make: "Make"
       };
       /* Declutter: primary sections first in every dropdown; secondary
          entries carry more:true and fold behind one "More sections"
@@ -21234,6 +22019,10 @@ int main() {
           { label: "Activities \u2014 Parsons and faded, in order", target: "bridge-activities" },
           { label: "Parsons problems", target: "bridge-card", bridgeKind: "parsons" },
           { label: "Faded completion", target: "bridge-card", bridgeKind: "faded" }
+        ] },
+        { mode: "order", items: [
+          { label: "Rounds \u2014 ten programs, in order", target: "order-rounds" },
+          { label: "Arrange, predict, trace", target: "order-card" }
         ] },
         { mode: "make", items: [
           { label: "Prompts \u2014 thirty programs to write, in order", target: "make-prompts" },
@@ -21589,6 +22378,72 @@ int main() {
           wrap.hidden = !open;
           toggle.setAttribute("aria-expanded", open ? "true" : "false");
           toggle.textContent = open ? "Collapse briefing" : "Expand briefing";
+        });
+      })();
+    </script>
+    <script>
+      /* Installable app (PWA): the manifest (manifest.webmanifest), the
+         service worker (sw.js), and the icon live beside this file on the
+         published site — they are NOT part of this single-file page, so in
+         the preview sandbox and in the offline single-file download they
+         are simply absent. Every part of this block is guarded so their
+         absence produces no console error and no visible defect: the
+         registration's rejection is caught, and the Install control falls
+         back to plain browser-menu instructions. The service worker caches
+         the site root and index.html for offline use; it never touches
+         this page's own offline single-file download, which keeps working
+         exactly as before. */
+      (function () {
+        if ("serviceWorker" in navigator) {
+          window.addEventListener("load", function () {
+            try {
+              var reg = navigator.serviceWorker.register("sw.js");
+              if (reg && typeof reg.catch === "function") reg.catch(function () {});
+            } catch (e) {}
+          });
+        }
+        var deferredPrompt = null;
+        window.addEventListener("beforeinstallprompt", function (ev) {
+          ev.preventDefault();
+          deferredPrompt = ev;
+        });
+        window.addEventListener("appinstalled", function () {
+          deferredPrompt = null;
+          var note = document.getElementById("install-app-note");
+          if (note) { note.hidden = false; note.textContent = "TraceFirst is installed. It now opens from your home screen or app list, and works offline."; }
+        });
+        var btn = document.getElementById("install-app-btn");
+        if (!btn) return;
+        function standalone() {
+          try {
+            return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone === true;
+          } catch (e) { return false; }
+        }
+        if (standalone()) {
+          btn.disabled = true;
+          btn.textContent = "App installed";
+        }
+        btn.addEventListener("click", function () {
+          var note = document.getElementById("install-app-note");
+          function say(text) { if (note) { note.hidden = false; note.textContent = text; } }
+          if (standalone()) { say("TraceFirst is already installed on this device — it opens from your home screen or app list."); return; }
+          if (deferredPrompt) {
+            var p = deferredPrompt;
+            deferredPrompt = null;
+            try {
+              p.prompt();
+              if (p.userChoice && typeof p.userChoice.then === "function") {
+                p.userChoice.then(function (choice) {
+                  if (choice && choice.outcome === "accepted") say("Installing — TraceFirst will appear on your home screen or in your app list, and will work offline.");
+                  else say("Not installed. You can install any time from your browser menu: look for “Install app” or “Add to Home Screen”.");
+                }, function () {});
+              }
+            } catch (e) {
+              say("To install TraceFirst, open your browser menu and choose “Install app” or “Add to Home Screen”.");
+            }
+            return;
+          }
+          say("To install TraceFirst, open your browser menu and choose “Install app” or “Add to Home Screen”. On iPhone or iPad: tap Share, then “Add to Home Screen”.");
         });
       })();
     </script>
