@@ -1748,7 +1748,7 @@
             <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Order code, then write a line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find and fix faults.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 73</strong><span>The rest of the course.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 81</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write your own programs.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
             <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
@@ -2085,7 +2085,7 @@ for (int i = 0; i < 3; i++) {
             <select class="lecture-select" id="lecture-ex-select" aria-label="Choose an exercise to project"></select>
             <button class="btn" type="button" id="lecture-project-btn">Project this exercise</button>
           </div>
-          <p class="lecture-pick-note">Any of the 73 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
+          <p class="lecture-pick-note">Any of the 81 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
         </div>
 
         <div id="lecture-project" hidden>
@@ -3100,12 +3100,12 @@ int main() {
         <div id="instructors-body" hidden>
           <div class="lecture-inst-entry">
             <h4>Lecture mode — run a tracer exercise in front of the class</h4>
-            <p>A single projected screen: pick any of the 73 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
+            <p>A single projected screen: pick any of the 81 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
             <div class="journal-actions"><button class="btn small" type="button" id="lecture-open-btn-2">Open Lecture mode</button></div>
           </div>
                     <div class="studio" id="inst-studio">
             <h4>Instructor exercise studio</h4>
-            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 68 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
+            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 81 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
             <div class="authored-field">
               <label for="inst-title">Exercise title</label>
               <input class="authored-input" type="text" id="inst-title" maxlength="80" placeholder="e.g. The average that is not an average" autocomplete="off">
@@ -7185,8 +7185,1401 @@ int main() {
           correct: 0,
           explain: "With nothing to trip over, every read succeeds: 4, then 9, then 100 are banked, and the loop ends only when a fourth read finds the input exhausted. 4 + 9 + 100 = <b>113</b>. The letter was the whole difference."
         }
-      }
+      },
 
+      {
+            "concept": "Unordered Maps · Lookups, Count and Erase",
+            "topic": "Going further (beyond the first course)",
+            "title": "The same counts, no order promised",
+            "goal": "An <b>unordered_map</b> stores key→value pairs like a <b>map</b> — <b>counts[word]++</b>, <b>count(key)</b> and <b>erase(key)</b> all work the same way. What it does <em>not</em> keep is key order: pairs sit in hash <b>buckets</b>, so lookups stay fast and nothing is sorted. This exercise only asks about lookups, counts and size — things with one right answer.",
+            "stories": {
+                  "health": "A clinic note-taker counts repeated words in a short note: <strong>fig, pear, fig</strong>. The program counts them in an <strong>unordered_map</strong>, removes the <strong>pear</strong> entry entirely, then prints fig's count, whether pear is still present, and how many entries the map holds.",
+                  "psych": "A survey tool counts repeated responses: <strong>fig, pear, fig</strong>. The program counts them in an <strong>unordered_map</strong>, removes the <strong>pear</strong> entry entirely, then prints fig's count, whether pear is still present, and how many entries the map holds.",
+                  "business": "A stock tool counts repeated items on a list: <strong>fig, pear, fig</strong>. The program counts them in an <strong>unordered_map</strong>, removes the <strong>pear</strong> entry entirely, then prints fig's count, whether pear is still present, and how many entries the map holds.",
+                  "arts": "A setlist tool counts repeated songs: <strong>fig, pear, fig</strong>. The program counts them in an <strong>unordered_map</strong>, removes the <strong>pear</strong> entry entirely, then prints fig's count, whether pear is still present, and how many entries the map holds."
+            },
+            "code": [
+                  "#include <iostream>",
+                  "#include <string>",
+                  "#include <unordered_map>",
+                  "using namespace std;",
+                  "",
+                  "int main() {",
+                  "    unordered_map<string, int> counts;",
+                  "    counts[\"fig\"]++;",
+                  "    counts[\"pear\"]++;",
+                  "    counts[\"fig\"]++;",
+                  "    counts.erase(\"pear\");",
+                  "    cout << counts[\"fig\"] << \" \" << counts.count(\"pear\") << \" \" << counts.size();",
+                  "    return 0;",
+                  "}"
+            ],
+            "question": "What will this program print?",
+            "options": [
+                  "2 0 1",
+                  "2 1 2",
+                  "3 0 1",
+                  "2 0 2"
+            ],
+            "correct": 0,
+            "diagnoses": {
+                  "1": {
+                        "step": 4,
+                        "text": "<b>Named misconception: erase only hides a key.</b> <b>erase(\"pear\")</b> removes pear's whole pair — key and count together. So <b>count(\"pear\")</b> afterwards is <b>0</b> (count answers 1 or 0: present or not), and the size has dropped too. Nothing about pear survives the erase."
+                  },
+                  "2": {
+                        "step": 2,
+                        "text": "3 would be fig's count if fig had been sighted three times — count the <b>counts[\"fig\"]++</b> lines: there are two, with the pear line between them. fig's own tally is <b>2</b>; the third ++ in the program belongs to pear."
+                  },
+                  "3": {
+                        "step": 4,
+                        "text": "Your fig and pear answers are right, but the size is one too many: after the erase, the map holds only the fig pair. Size counts <b>pairs currently stored</b>, and the erased pair is no longer stored: the size is <b>1</b>."
+                  }
+            },
+            "steps": [
+                  {
+                        "line": 6,
+                        "vars": {
+                              "counts": [
+                                    "unordered_map<string, int>",
+                                    "{} (size 0)"
+                              ]
+                        },
+                        "boxes": [
+                              {
+                                    "name": "counts",
+                                    "type": "unordered_map<string, int>",
+                                    "wide": true,
+                                    "fields": []
+                              }
+                        ],
+                        "out": "",
+                        "note": "The <b>unordered_map</b> <b>counts</b> is created empty. Like a map, it will hold one value per key — but it stores pairs in hash buckets, <em>not</em> in key order."
+                  },
+                  {
+                        "line": 7,
+                        "vars": {
+                              "counts": [
+                                    "unordered_map<string, int>",
+                                    "{fig: 1}"
+                              ]
+                        },
+                        "boxes": [
+                              {
+                                    "name": "counts",
+                                    "type": "unordered_map<string, int>",
+                                    "wide": true,
+                                    "fields": [
+                                          [
+                                                "fig",
+                                                "1"
+                                          ]
+                                    ]
+                              }
+                        ],
+                        "out": "",
+                        "note": "<b>counts[\"fig\"]++</b>: fig has no slot yet, so one is created at 0 and the ++ makes it <b>1</b> — the same pattern the map exercises taught."
+                  },
+                  {
+                        "line": 8,
+                        "vars": {
+                              "counts": [
+                                    "unordered_map<string, int>",
+                                    "{fig: 1, pear: 1}"
+                              ]
+                        },
+                        "boxes": [
+                              {
+                                    "name": "counts",
+                                    "type": "unordered_map<string, int>",
+                                    "wide": true,
+                                    "fields": [
+                                          [
+                                                "fig",
+                                                "1"
+                                          ],
+                                          [
+                                                "pear",
+                                                "1"
+                                          ]
+                                    ]
+                              }
+                        ],
+                        "out": "",
+                        "note": "<b>pear</b> gets its own slot at <b>1</b>. (The pairs are listed here just so you can read them — the container itself promises no listing order.)"
+                  },
+                  {
+                        "line": 9,
+                        "vars": {
+                              "counts": [
+                                    "unordered_map<string, int>",
+                                    "{fig: 2, pear: 1}"
+                              ]
+                        },
+                        "boxes": [
+                              {
+                                    "name": "counts",
+                                    "type": "unordered_map<string, int>",
+                                    "wide": true,
+                                    "fields": [
+                                          [
+                                                "fig",
+                                                "2"
+                                          ],
+                                          [
+                                                "pear",
+                                                "1"
+                                          ]
+                                    ]
+                              }
+                        ],
+                        "out": "",
+                        "note": "fig again: the existing slot rises to <b>2</b>. Repeat sightings grow the count, never the key list."
+                  },
+                  {
+                        "line": 10,
+                        "vars": {
+                              "counts": [
+                                    "unordered_map<string, int>",
+                                    "{fig: 2}"
+                              ]
+                        },
+                        "boxes": [
+                              {
+                                    "name": "counts",
+                                    "type": "unordered_map<string, int>",
+                                    "wide": true,
+                                    "fields": [
+                                          [
+                                                "fig",
+                                                "2"
+                                          ]
+                                    ]
+                              }
+                        ],
+                        "out": "",
+                        "note": "<b>The parting step.</b> <b>counts.erase(\"pear\")</b> removes pear's pair entirely and returns 1 (one pair erased). The map now holds exactly one entry."
+                  },
+                  {
+                        "line": 11,
+                        "vars": {
+                              "counts": [
+                                    "unordered_map<string, int>",
+                                    "{fig: 2}"
+                              ]
+                        },
+                        "boxes": [
+                              {
+                                    "name": "counts",
+                                    "type": "unordered_map<string, int>",
+                                    "wide": true,
+                                    "fields": [
+                                          [
+                                                "fig",
+                                                "2"
+                                          ]
+                                    ]
+                              }
+                        ],
+                        "out": "2 0 1",
+                        "note": "The print: fig's count is <b>2</b>; <b>count(\"pear\")</b> is <b>0</b> — count reports presence, and pear is gone; the size is <b>1</b>. Output: <b>2 0 1</b>."
+                  },
+                  {
+                        "line": 12,
+                        "vars": {
+                              "counts": [
+                                    "unordered_map<string, int>",
+                                    "{fig: 2}"
+                              ]
+                        },
+                        "boxes": [
+                              {
+                                    "name": "counts",
+                                    "type": "unordered_map<string, int>",
+                                    "wide": true,
+                                    "fields": [
+                                          [
+                                                "fig",
+                                                "2"
+                                          ]
+                                    ]
+                              }
+                        ],
+                        "out": "2 0 1",
+                        "note": "The program ends. Final answer: <b>2 0 1</b>. Lookups, count and erase behave exactly as they do in a map — only the storage order differs, and this program never asked about order."
+                  }
+            ],
+            "modify": {
+                  "prompt": "The erase line changes: counts.erase(\"pear\") becomes counts.erase(\"plum\") — a key that was never inserted. Everything else is untouched. What prints now?",
+                  "code": "counts[\"fig\"]++;\ncounts[\"pear\"]++;\ncounts[\"fig\"]++;\ncounts.erase(<mark>\"plum\"</mark>);\ncout << counts[\"fig\"] << \" \" << counts.count(\"pear\") << \" \" << counts.size();",
+                  "options": [
+                        "2 1 2",
+                        "2 0 1",
+                        "2 1 1",
+                        "0 1 2"
+                  ],
+                  "correct": 0,
+                  "explain": "Erasing a key that is not there removes nothing and returns 0 — no error, no change. Both pairs survive: fig is <b>2</b>, <b>count(\"pear\")</b> is <b>1</b>, and the size is <b>2</b>: <b>2 1 2</b>."
+            }
+      },
+      {
+            "concept": "Unordered Maps · The Reading Trap",
+            "topic": "Going further (beyond the first course)",
+            "title": "The lookup that plants a key",
+            "goal": "Reading <b>counts[key]</b> is not a pure lookup: if the key is missing, <b>operator[]</b> first <b>inserts it with a default value</b> (0 for int) and hands back that new slot. So a program can grow its own map just by <em>asking</em> questions. The pure checks are <b>count(key)</b> and <b>find(key)</b> — they report presence and plant nothing. (This trap exists in <b>map</b> too; it is shown here because unordered_map is where frequency code usually lives.)",
+            "stories": {
+                  "health": "A clinic program stores one lab count: <strong>fig: 3</strong>. It prints the number of entries, then — meaning only to <em>check</em> — prints the count for <strong>plum</strong>, a word that was never counted. Then it prints the number of entries again, and finally how many plum entries are present.",
+                  "psych": "A survey program stores one response count: <strong>fig: 3</strong>. It prints the number of entries, then — meaning only to <em>check</em> — prints the count for <strong>plum</strong>, a response that was never given. Then it prints the number of entries again, and finally how many plum entries are present.",
+                  "business": "A stock program stores one item count: <strong>fig: 3</strong>. It prints the number of entries, then — meaning only to <em>check</em> — prints the count for <strong>plum</strong>, an item that was never stocked. Then it prints the number of entries again, and finally how many plum entries are present.",
+                  "arts": "A setlist program stores one song count: <strong>fig: 3</strong>. It prints the number of entries, then — meaning only to <em>check</em> — prints the count for <strong>plum</strong>, a song that was never played. Then it prints the number of entries again, and finally how many plum entries are present."
+            },
+            "code": [
+                  "#include <iostream>",
+                  "#include <string>",
+                  "#include <unordered_map>",
+                  "using namespace std;",
+                  "",
+                  "int main() {",
+                  "    unordered_map<string, int> counts;",
+                  "    counts[\"fig\"] = 3;",
+                  "    cout << counts.size() << \" \";",
+                  "    cout << counts[\"plum\"] << \" \";",
+                  "    cout << counts.size() << \" \";",
+                  "    cout << counts.count(\"plum\");",
+                  "    return 0;",
+                  "}"
+            ],
+            "question": "What will this program print?",
+            "options": [
+                  "1 0 2 1",
+                  "1 0 1 0",
+                  "1 3 1 1",
+                  "0 0 2 1"
+            ],
+            "correct": 0,
+            "diagnoses": {
+                  "1": {
+                        "step": 3,
+                        "text": "<b>Named misconception: a lookup is harmless.</b> That is true of <b>count()</b> — but the middle print uses <b>counts[\"plum\"]</b>, and operator[] does not know you only meant to look. Plum was missing, so [] <b>planted it at 0</b> before printing: the size grew to 2, and the final count(\"plum\") honestly finds it — because the lookup put it there."
+                  },
+                  "2": {
+                        "step": 3,
+                        "text": "Plum does not inherit anything from fig. A key planted by operator[] starts at the value type's <b>default</b> — for int counts, <b>0</b> — whatever its neighbours hold. Fig's 3 stays fig's alone."
+                  },
+                  "3": {
+                        "step": 2,
+                        "text": "The first size is wrong before the trap even springs: <b>counts[\"fig\"] = 3</b> is a real insertion, so the map holds one entry and the first print is <b>1</b>, not 0. The program plants <em>two</em> keys in total, but only one of them was intended."
+                  }
+            },
+            "steps": [
+                  {
+                        "line": 6,
+                        "vars": {
+                              "counts": [
+                                    "unordered_map<string, int>",
+                                    "{} (size 0)"
+                              ]
+                        },
+                        "boxes": [
+                              {
+                                    "name": "counts",
+                                    "type": "unordered_map<string, int>",
+                                    "wide": true,
+                                    "fields": []
+                              }
+                        ],
+                        "out": "",
+                        "note": "The unordered_map <b>counts</b> starts empty."
+                  },
+                  {
+                        "line": 7,
+                        "vars": {
+                              "counts": [
+                                    "unordered_map<string, int>",
+                                    "{fig: 3}"
+                              ]
+                        },
+                        "boxes": [
+                              {
+                                    "name": "counts",
+                                    "type": "unordered_map<string, int>",
+                                    "wide": true,
+                                    "fields": [
+                                          [
+                                                "fig",
+                                                "3"
+                                          ]
+                                    ]
+                              }
+                        ],
+                        "out": "",
+                        "note": "<b>counts[\"fig\"] = 3</b> stores the one intended entry: fig → 3."
+                  },
+                  {
+                        "line": 8,
+                        "vars": {
+                              "counts": [
+                                    "unordered_map<string, int>",
+                                    "{fig: 3}"
+                              ]
+                        },
+                        "boxes": [
+                              {
+                                    "name": "counts",
+                                    "type": "unordered_map<string, int>",
+                                    "wide": true,
+                                    "fields": [
+                                          [
+                                                "fig",
+                                                "3"
+                                          ]
+                                    ]
+                              }
+                        ],
+                        "out": "1 ",
+                        "note": "The first print: the size is <b>1</b> — one entry, as intended."
+                  },
+                  {
+                        "line": 9,
+                        "vars": {
+                              "counts": [
+                                    "unordered_map<string, int>",
+                                    "{fig: 3, plum: 0}"
+                              ]
+                        },
+                        "boxes": [
+                              {
+                                    "name": "counts",
+                                    "type": "unordered_map<string, int>",
+                                    "wide": true,
+                                    "fields": [
+                                          [
+                                                "fig",
+                                                "3"
+                                          ],
+                                          [
+                                                "plum",
+                                                "0"
+                                          ]
+                                    ]
+                              }
+                        ],
+                        "out": "1 0 ",
+                        "note": "<b>The parting step.</b> <b>cout &lt;&lt; counts[\"plum\"]</b> looks like a question, but operator[] must hand back a slot — and plum has none. So it <b>creates one, holding the default 0</b>, and prints that 0. The map has been <em>changed by a read</em>: it now holds plum → 0."
+                  },
+                  {
+                        "line": 10,
+                        "vars": {
+                              "counts": [
+                                    "unordered_map<string, int>",
+                                    "{fig: 3, plum: 0}"
+                              ]
+                        },
+                        "boxes": [
+                              {
+                                    "name": "counts",
+                                    "type": "unordered_map<string, int>",
+                                    "wide": true,
+                                    "fields": [
+                                          [
+                                                "fig",
+                                                "3"
+                                          ],
+                                          [
+                                                "plum",
+                                                "0"
+                                          ]
+                                    ]
+                              }
+                        ],
+                        "out": "1 0 2 ",
+                        "note": "The second size print proves it: <b>2</b>. Nothing was ever assigned to plum, yet plum is in the map."
+                  },
+                  {
+                        "line": 11,
+                        "vars": {
+                              "counts": [
+                                    "unordered_map<string, int>",
+                                    "{fig: 3, plum: 0}"
+                              ]
+                        },
+                        "boxes": [
+                              {
+                                    "name": "counts",
+                                    "type": "unordered_map<string, int>",
+                                    "wide": true,
+                                    "fields": [
+                                          [
+                                                "fig",
+                                                "3"
+                                          ],
+                                          [
+                                                "plum",
+                                                "0"
+                                          ]
+                                    ]
+                              }
+                        ],
+                        "out": "1 0 2 1",
+                        "note": "And <b>count(\"plum\")</b> — which plants nothing itself — reports <b>1</b>, because plum <em>is</em> present now. Final output: <b>1 0 2 1</b>."
+                  },
+                  {
+                        "line": 12,
+                        "vars": {
+                              "counts": [
+                                    "unordered_map<string, int>",
+                                    "{fig: 3, plum: 0}"
+                              ]
+                        },
+                        "boxes": [
+                              {
+                                    "name": "counts",
+                                    "type": "unordered_map<string, int>",
+                                    "wide": true,
+                                    "fields": [
+                                          [
+                                                "fig",
+                                                "3"
+                                          ],
+                                          [
+                                                "plum",
+                                                "0"
+                                          ]
+                                    ]
+                              }
+                        ],
+                        "out": "1 0 2 1",
+                        "note": "The program ends. The rule: use <b>[]</b> when you mean to write (or to count with ++), and <b>count()</b> or <b>find()</b> when you only mean to ask."
+                  }
+            ],
+            "modify": {
+                  "prompt": "The middle print changes: cout << counts[\"plum\"] becomes cout << counts.count(\"plum\") — the pure check. Everything else is untouched. What prints now?",
+                  "code": "counts[\"fig\"] = 3;\ncout << counts.size() << \" \";\ncout << <mark>counts.count(\"plum\")</mark> << \" \";\ncout << counts.size() << \" \";\ncout << counts.count(\"plum\");",
+                  "options": [
+                        "1 0 1 0",
+                        "1 0 2 1",
+                        "1 1 1 0",
+                        "1 0 1 1"
+                  ],
+                  "correct": 0,
+                  "explain": "count() asks without planting: it prints <b>0</b> (plum is absent), the size stays <b>1</b>, and the final count is still <b>0</b>: <b>1 0 1 0</b>. Same questions asked, nothing planted — the whole difference is [] versus count()."
+            }
+      },
+      {
+            "concept": "Unordered Maps · Iteration Order",
+            "topic": "Going further (beyond the first course)",
+            "title": "The walk with no promised order",
+            "goal": "Walking a <b>map</b> visits keys in <b>sorted order</b> — that is guaranteed. Walking an <b>unordered_map</b> visits every pair exactly once, but the <b>order is not specified</b>: it depends on hashing and the implementation, and code that relies on it is broken even when it happens to print what you expected. If the order matters, the container you want is <b>map</b>.",
+            "stories": {
+                  "health": "A clinic program stores the same three word counts — <strong>pear: 1, fig: 3, plum: 2</strong>, inserted in that order — in <em>both</em> a map and an unordered_map. It walks the map printing each word, prints a bar, then walks the unordered_map printing each word.",
+                  "psych": "A survey program stores the same three response counts — <strong>pear: 1, fig: 3, plum: 2</strong>, inserted in that order — in <em>both</em> a map and an unordered_map. It walks the map printing each word, prints a bar, then walks the unordered_map printing each word.",
+                  "business": "A stock program stores the same three item counts — <strong>pear: 1, fig: 3, plum: 2</strong>, inserted in that order — in <em>both</em> a map and an unordered_map. It walks the map printing each item, prints a bar, then walks the unordered_map printing each item.",
+                  "arts": "A setlist program stores the same three song counts — <strong>pear: 1, fig: 3, plum: 2</strong>, inserted in that order — in <em>both</em> a map and an unordered_map. It walks the map printing each song, prints a bar, then walks the unordered_map printing each song."
+            },
+            "code": [
+                  "#include <iostream>",
+                  "#include <string>",
+                  "#include <map>",
+                  "#include <unordered_map>",
+                  "using namespace std;",
+                  "",
+                  "int main() {",
+                  "    map<string, int> ordered;",
+                  "    unordered_map<string, int> hashed;",
+                  "    ordered[\"pear\"] = 1;",
+                  "    hashed[\"pear\"] = 1;",
+                  "    ordered[\"fig\"] = 3;",
+                  "    hashed[\"fig\"] = 3;",
+                  "    ordered[\"plum\"] = 2;",
+                  "    hashed[\"plum\"] = 2;",
+                  "    for (auto p : ordered) {",
+                  "        cout << p.first << \" \";",
+                  "    }",
+                  "    cout << \"| \";",
+                  "    for (auto p : hashed) {",
+                  "        cout << p.first << \" \";",
+                  "    }",
+                  "    return 0;",
+                  "}"
+            ],
+            "question": "Which of these is guaranteed about what this program prints?",
+            "options": [
+                  "fig pear plum | then the same three words in some order — the unordered walk's order is not guaranteed",
+                  "fig pear plum | fig pear plum — both walks print in key order",
+                  "fig pear plum | plum fig pear — the unordered walk prints in reverse insertion order",
+                  "pear fig plum | pear fig plum — both walks print in insertion order"
+            ],
+            "correct": 0,
+            "diagnoses": {
+                  "1": {
+                        "step": 5,
+                        "text": "<b>Named misconception: unordered_map is just a faster map, output included.</b> It keeps the same <em>pairs</em>, not the same <em>order</em>. The map walk is guaranteed sorted — fig, pear, plum. The unordered_map walk is guaranteed only to visit each pair once; if it printed fig pear plum on your machine, that was the hash buckets' accident, not a promise, and another implementation may differ."
+                  },
+                  "2": {
+                        "step": 5,
+                        "text": "Reverse insertion order is a guess dressed as a rule. Bucket order is not arrival order forwards <em>or</em> backwards — it is wherever the hash function scattered the keys. Nothing about plum fig pear is guaranteed; the honest answer is that the second walk's order is <b>not guaranteed at all</b>."
+                  },
+                  "3": {
+                        "step": 3,
+                        "text": "Neither walk prints in insertion order. The <b>map</b> sorts its keys, so its walk is <b>fig pear plum</b>, not the pear fig plum arrival order — and the unordered_map does not preserve arrival either. Insertion order is something <em>neither</em> container promises."
+                  }
+            },
+            "steps": [
+                  {
+                        "line": 8,
+                        "vars": {
+                              "ordered": [
+                                    "map<string,int>",
+                                    "{} (size 0)"
+                              ],
+                              "hashed": [
+                                    "unordered_map<string, int>",
+                                    "{} (size 0)"
+                              ]
+                        },
+                        "out": "",
+                        "note": "Two containers, both empty: a <b>map</b> named ordered and an <b>unordered_map</b> named hashed. The same three pairs are about to go into both."
+                  },
+                  {
+                        "line": 10,
+                        "vars": {
+                              "ordered": [
+                                    "map<string,int>",
+                                    "{pear: 1}"
+                              ],
+                              "hashed": [
+                                    "unordered_map<string, int>",
+                                    "{pear: 1}"
+                              ]
+                        },
+                        "out": "",
+                        "note": "Both receive <b>pear: 1</b> first."
+                  },
+                  {
+                        "line": 12,
+                        "vars": {
+                              "ordered": [
+                                    "map<string,int>",
+                                    "{fig: 3, pear: 1}"
+                              ],
+                              "hashed": [
+                                    "unordered_map<string, int>",
+                                    "{fig: 3, pear: 1} (pairs; no order promised)"
+                              ]
+                        },
+                        "out": "",
+                        "note": "Both receive <b>fig: 3</b>. Notice the map's listing is already sorted — fig before pear — because a map <em>keeps</em> its keys sorted. The unordered_map holds the same two pairs in buckets; the listing here is only a way to show the pairs, not an order the container keeps."
+                  },
+                  {
+                        "line": 14,
+                        "vars": {
+                              "ordered": [
+                                    "map<string,int>",
+                                    "{fig: 3, pear: 1, plum: 2}"
+                              ],
+                              "hashed": [
+                                    "unordered_map<string, int>",
+                                    "{fig: 3, pear: 1, plum: 2} (pairs; no order promised)"
+                              ]
+                        },
+                        "out": "",
+                        "note": "Both receive <b>plum: 2</b>. The contents are now identical: three pairs, same keys, same counts. Only the walking order can differ."
+                  },
+                  {
+                        "line": 16,
+                        "vars": {
+                              "ordered": [
+                                    "map<string,int>",
+                                    "{fig: 3, pear: 1, plum: 2}"
+                              ],
+                              "hashed": [
+                                    "unordered_map<string, int>",
+                                    "{fig: 3, pear: 1, plum: 2} (pairs; no order promised)"
+                              ]
+                        },
+                        "out": "fig pear plum ",
+                        "note": "The map walk prints <b>fig pear plum</b> — sorted, guaranteed, every time, on every machine. That is what a map is for."
+                  },
+                  {
+                        "line": 20,
+                        "vars": {
+                              "ordered": [
+                                    "map<string,int>",
+                                    "{fig: 3, pear: 1, plum: 2}"
+                              ],
+                              "hashed": [
+                                    "unordered_map<string, int>",
+                                    "{fig: 3, pear: 1, plum: 2} (pairs; no order promised)"
+                              ]
+                        },
+                        "out": "fig pear plum | (the three words, in an order that is not guaranteed)",
+                        "note": "<b>The parting step.</b> The unordered walk visits fig, pear and plum exactly once each — but <b>in an order nothing guarantees</b>. This page's machine may show them in one order; another compiler or library may show another, and both are correct. The only honest prediction for the second half is: <em>the same three words, in some order</em>."
+                  },
+                  {
+                        "line": 21,
+                        "vars": {
+                              "ordered": [
+                                    "map<string,int>",
+                                    "{fig: 3, pear: 1, plum: 2}"
+                              ],
+                              "hashed": [
+                                    "unordered_map<string, int>",
+                                    "{fig: 3, pear: 1, plum: 2} (pairs; no order promised)"
+                              ]
+                        },
+                        "out": "fig pear plum | (the three words, in an order that is not guaranteed)",
+                        "note": "The program ends. Rule of thumb: if a walk's order is part of your answer, use <b>map</b>; if only the lookups matter, unordered_map's speed is free — but never grade, compare or print-depend on its order."
+                  }
+            ],
+            "modify": {
+                  "prompt": "A fourth pair is added to both containers before the walks: ordered[\"date\"] = 4; and hashed[\"date\"] = 4;. Which statement is now guaranteed?",
+                  "code": "ordered[\"plum\"] = 2;\nhashed[\"plum\"] = 2;\n<mark>ordered[\"date\"] = 4;</mark>\n<mark>hashed[\"date\"] = 4;</mark>\nfor (auto p : ordered) { cout << p.first << \" \"; }",
+                  "options": [
+                        "date fig pear plum from the map walk; the unordered walk prints the same four words in some order — still not guaranteed",
+                        "date fig pear plum from both walks — with four entries the orders settle",
+                        "The unordered walk now prints in insertion order, because date was added last to both",
+                        "Nothing can be said about either walk once there are four entries"
+                  ],
+                  "correct": 0,
+                  "explain": "Adding a pair changes nothing about the guarantees. The map walk is still sorted — <b>date fig pear plum</b> — and the unordered walk still promises only the <em>set</em> of words, in <b>some order that is not guaranteed</b>. Container promises do not appear or vanish with size."
+            }
+      },
+      {
+            "concept": "Inheritance · Virtual Functions",
+            "topic": "Going further (beyond the first course)",
+            "title": "The call that asks the object",
+            "goal": "A <b>Dog</b> <em>is an</em> <b>Animal</b> (inheritance), so an <b>Animal&amp;</b> can refer to a Dog. When the base function is marked <b>virtual</b>, a call through that reference is answered by the <b>object itself</b> — the derived override runs. Programmers call this <b>polymorphism</b>: one call, many possible answers, decided by what the object really is.",
+            "stories": {
+                  "health": "A wildlife clinic's check-in program models animals with a class <strong>Animal</strong> and two derived classes, <strong>Dog</strong> and <strong>Cat</strong>, each with its own version of a <strong>speak()</strong> function. The base version is marked <strong>virtual</strong>. The program creates one Dog, one Cat and one plain Animal, looks at the Dog and Cat through Animal references, and prints what each of the three calls answers.",
+                  "psych": "A perception study's stimulus program models animals with a class <strong>Animal</strong> and two derived classes, <strong>Dog</strong> and <strong>Cat</strong>, each with its own version of a <strong>speak()</strong> function. The base version is marked <strong>virtual</strong>. The program creates one Dog, one Cat and one plain Animal, looks at the Dog and Cat through Animal references, and prints what each of the three calls answers.",
+                  "business": "A pet shop's stock program models animals with a class <strong>Animal</strong> and two derived classes, <strong>Dog</strong> and <strong>Cat</strong>, each with its own version of a <strong>speak()</strong> function. The base version is marked <strong>virtual</strong>. The program creates one Dog, one Cat and one plain Animal, looks at the Dog and Cat through Animal references, and prints what each of the three calls answers.",
+                  "arts": "A cartoon studio's sound program models animals with a class <strong>Animal</strong> and two derived classes, <strong>Dog</strong> and <strong>Cat</strong>, each with its own version of a <strong>speak()</strong> function. The base version is marked <strong>virtual</strong>. The program creates one Dog, one Cat and one plain Animal, looks at the Dog and Cat through Animal references, and prints what each of the three calls answers."
+            },
+            "code": [
+                  "#include <iostream>",
+                  "#include <string>",
+                  "using namespace std;",
+                  "",
+                  "class Animal {",
+                  "public:",
+                  "    virtual string speak() { return \"some sound\"; }",
+                  "};",
+                  "class Dog : public Animal {",
+                  "public:",
+                  "    string speak() { return \"Woof\"; }",
+                  "};",
+                  "class Cat : public Animal {",
+                  "public:",
+                  "    string speak() { return \"Meow\"; }",
+                  "};",
+                  "",
+                  "int main() {",
+                  "    Dog d;",
+                  "    Cat c;",
+                  "    Animal plain;",
+                  "    Animal& first = d;",
+                  "    Animal& second = c;",
+                  "    cout << first.speak() << \" \" << second.speak() << \" \" << plain.speak();",
+                  "    return 0;",
+                  "}"
+            ],
+            "question": "What will this program print?",
+            "options": [
+                  "Woof Meow some sound",
+                  "some sound some sound some sound",
+                  "Woof Meow Woof",
+                  "Meow Woof some sound"
+            ],
+            "correct": 0,
+            "diagnoses": {
+                  "1": {
+                        "step": 4,
+                        "text": "<b>Named misconception: the reference's type always decides.</b> It would — if speak() were an ordinary function. But the base declares it <b>virtual</b>, which changes the contract: a call through a base reference asks the <em>object</em> which version to run. first refers to a real Dog, so Dog's version answers: <b>Woof</b>. The declared type decides only where virtual is absent — that is the next exercise."
+                  },
+                  "2": {
+                        "step": 5,
+                        "text": "The two reference calls are right — but <b>plain</b> is not a reference to anything. It is a genuine Animal object, so its speak() is the base version: <b>some sound</b>. Virtual dispatch gives each object its own class's answer, and plain's class is Animal."
+                  },
+                  "3": {
+                        "step": 4,
+                        "text": "The answers are swapped. <b>first</b> was bound to <b>d</b> — the Dog — so the first call answers <b>Woof</b>; <b>second</b> was bound to c, the Cat, and answers Meow. A reference keeps referring to the object it was bound to at its declaration."
+                  }
+            },
+            "steps": [
+                  {
+                        "line": 17,
+                        "vars": {
+                              "d": [
+                                    "Dog",
+                                    "a Dog object"
+                              ]
+                        },
+                        "out": "",
+                        "note": "A <b>Dog</b> object, d, is created. Because Dog inherits from Animal, every Dog also carries an Animal part — which is what makes the references below legal."
+                  },
+                  {
+                        "line": 18,
+                        "vars": {
+                              "d": [
+                                    "Dog",
+                                    "a Dog object"
+                              ],
+                              "c": [
+                                    "Cat",
+                                    "a Cat object"
+                              ]
+                        },
+                        "out": "",
+                        "note": "A <b>Cat</b> object, c, is created — its own speak() answers \"Meow\"."
+                  },
+                  {
+                        "line": 19,
+                        "vars": {
+                              "d": [
+                                    "Dog",
+                                    "a Dog object"
+                              ],
+                              "c": [
+                                    "Cat",
+                                    "a Cat object"
+                              ],
+                              "plain": [
+                                    "Animal",
+                                    "an Animal object"
+                              ],
+                              "first": [
+                                    "Animal&",
+                                    "refers to d (the Dog)"
+                              ],
+                              "second": [
+                                    "Animal&",
+                                    "refers to c (the Cat)"
+                              ]
+                        },
+                        "out": "",
+                        "note": "<b>plain</b> is a straightforward Animal — not a reference, not anything derived. Keep it in mind for the last call."
+                  },
+                  {
+                        "line": 20,
+                        "vars": {
+                              "d": [
+                                    "Dog",
+                                    "a Dog object"
+                              ],
+                              "c": [
+                                    "Cat",
+                                    "a Cat object"
+                              ],
+                              "plain": [
+                                    "Animal",
+                                    "an Animal object"
+                              ],
+                              "first": [
+                                    "Animal&",
+                                    "refers to d (the Dog)"
+                              ],
+                              "second": [
+                                    "Animal&",
+                                    "refers to c (the Cat)"
+                              ]
+                        },
+                        "out": "",
+                        "note": "<b>Animal&amp; first = d;</b> makes first another name for d itself, seen through Animal glasses. No copy is made — first <em>is</em> the Dog, under a base-class label."
+                  },
+                  {
+                        "line": 21,
+                        "vars": {
+                              "d": [
+                                    "Dog",
+                                    "a Dog object"
+                              ],
+                              "c": [
+                                    "Cat",
+                                    "a Cat object"
+                              ],
+                              "plain": [
+                                    "Animal",
+                                    "an Animal object"
+                              ],
+                              "first": [
+                                    "Animal&",
+                                    "refers to d (the Dog)"
+                              ],
+                              "second": [
+                                    "Animal&",
+                                    "refers to c (the Cat)"
+                              ]
+                        },
+                        "out": "",
+                        "note": "<b>Animal&amp; second = c;</b> — second is the Cat, under the same kind of label. Two objects, two base references: the stage for the one question that matters — whose speak() runs?"
+                  },
+                  {
+                        "line": 22,
+                        "vars": {
+                              "d": [
+                                    "Dog",
+                                    "a Dog object"
+                              ],
+                              "c": [
+                                    "Cat",
+                                    "a Cat object"
+                              ],
+                              "plain": [
+                                    "Animal",
+                                    "an Animal object"
+                              ],
+                              "first": [
+                                    "Animal&",
+                                    "refers to d (the Dog)"
+                              ],
+                              "second": [
+                                    "Animal&",
+                                    "refers to c (the Cat)"
+                              ]
+                        },
+                        "out": "Woof Meow some sound",
+                        "note": "<b>The parting step.</b> speak() is <b>virtual</b>, so each call asks the object, not the label: first.speak() runs <b>Dog's</b> version (<b>Woof</b>), second.speak() runs <b>Cat's</b> (<b>Meow</b>), and plain — a real Animal — runs the base version (<b>some sound</b>). Output: <b>Woof Meow some sound</b>."
+                  },
+                  {
+                        "line": 23,
+                        "vars": {
+                              "d": [
+                                    "Dog",
+                                    "a Dog object"
+                              ],
+                              "c": [
+                                    "Cat",
+                                    "a Cat object"
+                              ],
+                              "plain": [
+                                    "Animal",
+                                    "an Animal object"
+                              ],
+                              "first": [
+                                    "Animal&",
+                                    "refers to d (the Dog)"
+                              ],
+                              "second": [
+                                    "Animal&",
+                                    "refers to c (the Cat)"
+                              ]
+                        },
+                        "out": "Woof Meow some sound",
+                        "note": "The program ends. Final answer: <b>Woof Meow some sound</b>. <b>virtual</b> is the one word that hands the decision to the object."
+                  }
+            ],
+            "modify": {
+                  "prompt": "The second reference changes: Animal& second = c; becomes Animal& second = d; — both references now refer to the Dog. Everything else is untouched. What prints now?",
+                  "code": "Animal& first = d;\nAnimal& second = <mark>d</mark>;\ncout << first.speak() << \" \" << second.speak() << \" \" << plain.speak();",
+                  "options": [
+                        "Woof Woof some sound",
+                        "Woof Meow some sound",
+                        "Woof Woof Woof",
+                        "some sound Woof some sound"
+                  ],
+                  "correct": 0,
+                  "explain": "Both references now name the same Dog, and virtual dispatch asks the object each time: <b>Woof</b>, <b>Woof</b>. plain is still a plain Animal: <b>some sound</b>. The Cat object still exists — nothing refers to it, so it never speaks: <b>Woof Woof some sound</b>."
+            }
+      },
+      {
+            "concept": "Inheritance · Without virtual",
+            "topic": "Going further (beyond the first course)",
+            "title": "The glasses decide",
+            "goal": "Remove <b>virtual</b> and the rules flip: a call through a base reference is bound <b>by the declared type</b> — the base version runs, whatever the object really is. And a base <b>object</b> initialised from a derived one keeps only the base part: the derived part is <b>sliced off</b>. Same classes, same calls as the previous exercise — one word missing.",
+            "stories": {
+                  "health": "A wildlife clinic's program uses the same animal classes — <strong>Animal</strong>, and <strong>Dog</strong> derived from it, each with a <strong>speak()</strong> — but this time the base function is <em>not</em> marked virtual. The program creates a Dog, an Animal reference to it, and an Animal object copied from it, then calls speak() on all three.",
+                  "psych": "A perception study's program uses the same animal classes — <strong>Animal</strong>, and <strong>Dog</strong> derived from it, each with a <strong>speak()</strong> — but this time the base function is <em>not</em> marked virtual. The program creates a Dog, an Animal reference to it, and an Animal object copied from it, then calls speak() on all three.",
+                  "business": "A pet shop's program uses the same animal classes — <strong>Animal</strong>, and <strong>Dog</strong> derived from it, each with a <strong>speak()</strong> — but this time the base function is <em>not</em> marked virtual. The program creates a Dog, an Animal reference to it, and an Animal object copied from it, then calls speak() on all three.",
+                  "arts": "A cartoon studio's program uses the same animal classes — <strong>Animal</strong>, and <strong>Dog</strong> derived from it, each with a <strong>speak()</strong> — but this time the base function is <em>not</em> marked virtual. The program creates a Dog, an Animal reference to it, and an Animal object copied from it, then calls speak() on all three."
+            },
+            "code": [
+                  "#include <iostream>",
+                  "#include <string>",
+                  "using namespace std;",
+                  "",
+                  "class Animal {",
+                  "public:",
+                  "    string speak() { return \"some sound\"; }",
+                  "};",
+                  "class Dog : public Animal {",
+                  "public:",
+                  "    string speak() { return \"Woof\"; }",
+                  "};",
+                  "",
+                  "int main() {",
+                  "    Dog d;",
+                  "    Animal& ref = d;",
+                  "    Animal copy = d;",
+                  "    cout << d.speak() << \" \" << ref.speak() << \" \" << copy.speak();",
+                  "    return 0;",
+                  "}"
+            ],
+            "question": "What will this program print?",
+            "options": [
+                  "Woof some sound some sound",
+                  "Woof Woof Woof",
+                  "Woof Woof some sound",
+                  "some sound some sound some sound"
+            ],
+            "correct": 0,
+            "diagnoses": {
+                  "1": {
+                        "step": 3,
+                        "text": "<b>Named misconception: the object always decides.</b> It decides only when the function is <b>virtual</b> — and here it is not. Dog's speak() merely <em>hides</em> Animal's for Dog-typed calls; through an Animal reference or an Animal object, the Animal version is the only one the call can see. Two of the three calls never reach the Dog version."
+                  },
+                  "2": {
+                        "step": 3,
+                        "text": "You spotted the slicing — copy is a genuine Animal, so its call gives the base answer. But <b>ref makes no copy</b>: ref is the Dog itself. Its call gives the base answer for a different reason: without <b>virtual</b>, a call through an Animal&amp; is bound to the <b>declared type</b>, Animal, at compile time. Slicing explains copy; static binding explains ref."
+                  },
+                  "3": {
+                        "step": 2,
+                        "text": "The first call is the giveaway: <b>d.speak()</b> is called on a Dog through a Dog variable, so Dog's own speak() runs and answers <b>Woof</b> — hiding works in the derived class's favour when the declared type is the derived class. Only the calls made <em>as an Animal</em> lose the Woof."
+                  }
+            },
+            "steps": [
+                  {
+                        "line": 13,
+                        "vars": {
+                              "d": [
+                                    "Dog",
+                                    "a Dog object"
+                              ]
+                        },
+                        "out": "",
+                        "note": "A <b>Dog</b> object. Its speak() answers \"Woof\" — when the call is made as a Dog."
+                  },
+                  {
+                        "line": 14,
+                        "vars": {
+                              "d": [
+                                    "Dog",
+                                    "a Dog object"
+                              ],
+                              "ref": [
+                                    "Animal&",
+                                    "refers to d (the Dog)"
+                              ],
+                              "copy": [
+                                    "Animal",
+                                    "an Animal object (the sliced copy)"
+                              ]
+                        },
+                        "out": "",
+                        "note": "<b>Animal&amp; ref = d;</b> — a reference, so <b>no copy</b>: ref is d itself, viewed as an Animal. Whatever happens next, slicing is not the explanation for ref."
+                  },
+                  {
+                        "line": 15,
+                        "vars": {
+                              "d": [
+                                    "Dog",
+                                    "a Dog object"
+                              ],
+                              "ref": [
+                                    "Animal&",
+                                    "refers to d (the Dog)"
+                              ],
+                              "copy": [
+                                    "Animal",
+                                    "an Animal object (the sliced copy)"
+                              ]
+                        },
+                        "out": "",
+                        "note": "<b>Animal copy = d;</b> — this one <em>is</em> a copy, and a partial one: the new Animal object keeps only d's Animal part. The Dog part is <b>sliced off</b>; copy is not a Dog in any sense."
+                  },
+                  {
+                        "line": 16,
+                        "vars": {
+                              "d": [
+                                    "Dog",
+                                    "a Dog object"
+                              ],
+                              "ref": [
+                                    "Animal&",
+                                    "refers to d (the Dog)"
+                              ],
+                              "copy": [
+                                    "Animal",
+                                    "an Animal object (the sliced copy)"
+                              ]
+                        },
+                        "out": "Woof some sound some sound",
+                        "note": "<b>The parting step.</b> Three calls, no virtual anywhere: <b>d.speak()</b> — declared type Dog — runs Dog's version: <b>Woof</b>. <b>ref.speak()</b> — declared type Animal&amp;, bound statically — runs Animal's version: <b>some sound</b>, even though the object is the Dog. <b>copy.speak()</b> — a sliced Animal — <b>some sound</b>. Output: <b>Woof some sound some sound</b>."
+                  },
+                  {
+                        "line": 17,
+                        "vars": {
+                              "d": [
+                                    "Dog",
+                                    "a Dog object"
+                              ],
+                              "ref": [
+                                    "Animal&",
+                                    "refers to d (the Dog)"
+                              ],
+                              "copy": [
+                                    "Animal",
+                                    "an Animal object (the sliced copy)"
+                              ]
+                        },
+                        "out": "Woof some sound some sound",
+                        "note": "The program ends. Compare the previous exercise: <b>virtual</b> is exactly the difference between the object deciding and the glasses deciding."
+                  }
+            ],
+            "modify": {
+                  "prompt": "One word is added: the base function becomes virtual string speak(). The derived class and main are untouched. What prints now?",
+                  "code": "class Animal {\npublic:\n    <mark>virtual</mark> string speak() { return \"some sound\"; }\n};",
+                  "options": [
+                        "Woof Woof some sound",
+                        "Woof Woof Woof",
+                        "Woof some sound some sound",
+                        "some sound Woof Woof"
+                  ],
+                  "correct": 0,
+                  "explain": "virtual restores object-decided dispatch for the <em>reference</em>: ref.speak() now runs Dog's version, <b>Woof</b>. But virtual cannot un-slice copy — copy is a genuine Animal object, so its call still answers <b>some sound</b>: <b>Woof Woof some sound</b>. Two different traps, two different repairs."
+            }
+      },
+      {
+            "concept": "Inheritance · Construction Order",
+            "topic": "Going further (beyond the first course)",
+            "title": "Built from the base up",
+            "goal": "Creating a derived object constructs it <b>base part first</b>: the base class's constructor runs <em>before</em> the derived constructor's body — always, whether or not main ever mentions the base. A derived object cannot exist until its base part does.",
+            "stories": {
+                  "health": "A clinic device program has a class <strong>Device</strong> whose constructor sets its name and prints <strong>Device</strong>, and a class <strong>Sensor</strong> derived from Device whose constructor sets a level and prints <strong>Sensor</strong>. main creates one Sensor and prints its name and level.",
+                  "psych": "A lab device program has a class <strong>Device</strong> whose constructor sets its name and prints <strong>Device</strong>, and a class <strong>Sensor</strong> derived from Device whose constructor sets a level and prints <strong>Sensor</strong>. main creates one Sensor and prints its name and level.",
+                  "business": "A till device program has a class <strong>Device</strong> whose constructor sets its name and prints <strong>Device</strong>, and a class <strong>Sensor</strong> derived from Device whose constructor sets a level and prints <strong>Sensor</strong>. main creates one Sensor and prints its name and level.",
+                  "arts": "A stage device program has a class <strong>Device</strong> whose constructor sets its name and prints <strong>Device</strong>, and a class <strong>Sensor</strong> derived from Device whose constructor sets a level and prints <strong>Sensor</strong>. main creates one Sensor and prints its name and level."
+            },
+            "code": [
+                  "#include <iostream>",
+                  "#include <string>",
+                  "using namespace std;",
+                  "",
+                  "class Device {",
+                  "public:",
+                  "    string name;",
+                  "    Device() { name = \"device\"; cout << \"Device \"; }",
+                  "};",
+                  "class Sensor : public Device {",
+                  "public:",
+                  "    int level;",
+                  "    Sensor() { level = 5; cout << \"Sensor \"; }",
+                  "};",
+                  "",
+                  "int main() {",
+                  "    Sensor s;",
+                  "    cout << s.name << \" \" << s.level;",
+                  "    return 0;",
+                  "}"
+            ],
+            "question": "What will this program print?",
+            "options": [
+                  "Device Sensor device 5",
+                  "Sensor Device device 5",
+                  "Device Sensor 5 device",
+                  "Sensor device 5"
+            ],
+            "correct": 0,
+            "diagnoses": {
+                  "1": {
+                        "step": 0,
+                        "text": "<b>Named misconception: the class you name is built first.</b> Construction runs the other way: a Sensor <em>contains</em> a Device part, and that part is built <b>first</b> — Device's constructor runs, prints and sets the name, and only then does Sensor's constructor body run. Base up, never derived down."
+                  },
+                  "2": {
+                        "step": 2,
+                        "text": "The construction order is right, but the final print reads the fields in the order the cout names them: <b>s.name first</b> — the inherited field, holding \"device\" — then s.level, 5. <b>device 5</b>, not 5 device."
+                  },
+                  "3": {
+                        "step": 0,
+                        "text": "main never writes the word Device — but creating a Sensor runs <b>both</b> constructors, because a Sensor is built on top of its Device part. The base constructor's print is half the output: <b>Device</b> appears whether main asks for it or not."
+                  }
+            },
+            "steps": [
+                  {
+                        "line": 15,
+                        "vars": {
+                              "s": [
+                                    "Sensor",
+                                    "being built — Device part first"
+                              ]
+                        },
+                        "out": "Device ",
+                        "note": "<b>The parting step comes first here.</b> <b>Sensor s;</b> begins by building s's <b>Device part</b>: Device's constructor runs before anything of Sensor's — it sets name to \"device\" (an inherited field, living in the base part) and prints <b>Device</b>. Only now can the rest be built."
+                  },
+                  {
+                        "line": 15,
+                        "vars": {
+                              "s": [
+                                    "Sensor",
+                                    "Sensor object (name = \"device\", level = 5)"
+                              ]
+                        },
+                        "out": "Device Sensor ",
+                        "note": "Then Sensor's own constructor body runs: level becomes <b>5</b> and it prints <b>Sensor</b>. The object is now complete — base part first, derived part second, in that order every time."
+                  },
+                  {
+                        "line": 16,
+                        "vars": {
+                              "s": [
+                                    "Sensor",
+                                    "Sensor object (name = \"device\", level = 5)"
+                              ]
+                        },
+                        "out": "Device Sensor device 5",
+                        "note": "The final print reads <b>s.name</b> — the field the <em>base</em> constructor set, reached through the derived object — then <b>s.level</b>: <b>Device Sensor device 5</b>."
+                  },
+                  {
+                        "line": 17,
+                        "vars": {
+                              "s": [
+                                    "Sensor",
+                                    "Sensor object (name = \"device\", level = 5)"
+                              ]
+                        },
+                        "out": "Device Sensor device 5",
+                        "note": "The program ends. Final answer: <b>Device Sensor device 5</b>. Inheritance order to remember: constructors build base-first (and, for the record, destructors run in the reverse order)."
+                  }
+            ],
+            "modify": {
+                  "prompt": "The base constructor loses its print: Device() { name = \"device\"; cout << \"Device \"; } becomes Device() { name = \"device\"; }. Everything else is untouched. What prints now?",
+                  "code": "Device() { name = \"device\"; <mark>/* the cout is removed */</mark> }",
+                  "options": [
+                        "Sensor device 5",
+                        "Device Sensor device 5",
+                        "device 5",
+                        "Sensor 5 device"
+                  ],
+                  "correct": 0,
+                  "explain": "The base constructor still <b>runs</b> — silently. name is still set to \"device\" before Sensor's constructor prints <b>Sensor</b>, so the output is <b>Sensor device 5</b>. A constructor that prints nothing has not been skipped; silence is not absence."
+            }
+      },
+      {
+            "concept": "Exceptions · Catch and Continue",
+            "topic": "Going further (beyond the first course)",
+            "title": "The thrown code that was caught",
+            "goal": "<b>throw</b> packages a value and jumps out of the <b>try</b> block on the spot — the rest of the block never runs. A <b>catch</b> whose declared type matches the thrown value receives it, runs its handler, and the program then <b>continues after the whole try/catch</b>. An exception is a detour with a return address, not the end of the program.",
+            "stories": {
+                  "health": "A clinic program prints <strong>start</strong>, then, inside a try block, throws the whole-number code <strong>7</strong> to report a problem — with a print statement sitting after the throw. A catch for whole numbers stores the code and prints <strong>caught</strong>. After the try/catch, the program prints the stored code and the word <strong>after</strong>.",
+                  "psych": "A study program prints <strong>start</strong>, then, inside a try block, throws the whole-number code <strong>7</strong> to report a problem — with a print statement sitting after the throw. A catch for whole numbers stores the code and prints <strong>caught</strong>. After the try/catch, the program prints the stored code and the word <strong>after</strong>.",
+                  "business": "A till program prints <strong>start</strong>, then, inside a try block, throws the whole-number code <strong>7</strong> to report a problem — with a print statement sitting after the throw. A catch for whole numbers stores the code and prints <strong>caught</strong>. After the try/catch, the program prints the stored code and the word <strong>after</strong>.",
+                  "arts": "A box-office program prints <strong>start</strong>, then, inside a try block, throws the whole-number code <strong>7</strong> to report a problem — with a print statement sitting after the throw. A catch for whole numbers stores the code and prints <strong>caught</strong>. After the try/catch, the program prints the stored code and the word <strong>after</strong>."
+            },
+            "code": [
+                  "#include <iostream>",
+                  "using namespace std;",
+                  "",
+                  "int main() {",
+                  "    int code = 0;",
+                  "    cout << \"start \";",
+                  "    try {",
+                  "        throw 7;",
+                  "        cout << \"never \";",
+                  "    } catch (int caught) {",
+                  "        code = caught;",
+                  "        cout << \"caught \";",
+                  "    }",
+                  "    cout << code << \" after\";",
+                  "    return 0;",
+                  "}"
+            ],
+            "question": "What will this program print?",
+            "options": [
+                  "start caught 7 after",
+                  "start never caught 7 after",
+                  "start caught 7",
+                  "start 7 after"
+            ],
+            "correct": 0,
+            "diagnoses": {
+                  "1": {
+                        "step": 1,
+                        "text": "<b>Named misconception: throw is a note the program reads later.</b> A throw is a <b>jump</b>, executed the moment it is reached: control leaves the try block immediately, and the cout on the next line — the one that would print \"never\" — is never executed. Its name in this program is the spoiler."
+                  },
+                  "2": {
+                        "step": 4,
+                        "text": "Everything up to the handler is right, but the program does not end in the catch. A handled exception is finished business: execution <b>continues with the statement after the whole try/catch</b>, which prints the stored code and \" after\". Catching is how a program survives a problem, not where it stops."
+                  },
+                  "3": {
+                        "step": 2,
+                        "text": "The throw, the stored code and the continuation are all right — but the handler's own print is missing. The catch block runs like any block: it stores the caught value <em>and</em> prints <b>caught</b> on its second line. Skipping the handler's output loses a word the machine does print."
+                  }
+            },
+            "steps": [
+                  {
+                        "line": 5,
+                        "vars": {
+                              "code": [
+                                    "int",
+                                    "0"
+                              ]
+                        },
+                        "out": "start ",
+                        "note": "<b>code</b> starts at 0, and the first print puts <b>start</b> on the screen. The program now enters the try block."
+                  },
+                  {
+                        "line": 7,
+                        "vars": {
+                              "code": [
+                                    "int",
+                                    "0"
+                              ]
+                        },
+                        "out": "start ",
+                        "note": "<b>The parting step.</b> <b>throw 7;</b> fires: the value 7 is packaged as an exception and control jumps out of the try block <em>immediately</em>. The next line — cout &lt;&lt; \"never\" — is inside the block but after the throw, so it <b>never runs</b>."
+                  },
+                  {
+                        "line": 10,
+                        "vars": {
+                              "code": [
+                                    "int",
+                                    "7"
+                              ],
+                              "caught": [
+                                    "int",
+                                    "7"
+                              ]
+                        },
+                        "out": "start ",
+                        "note": "The <b>catch (int caught)</b> matches — the thrown value is an int — so the handler runs with caught holding <b>7</b>, and stores it: <b>code becomes 7</b>."
+                  },
+                  {
+                        "line": 11,
+                        "vars": {
+                              "code": [
+                                    "int",
+                                    "7"
+                              ],
+                              "caught": [
+                                    "int",
+                                    "7"
+                              ]
+                        },
+                        "out": "start caught ",
+                        "note": "The handler prints <b>caught</b>. The problem has been dealt with; the exception is over."
+                  },
+                  {
+                        "line": 13,
+                        "vars": {
+                              "code": [
+                                    "int",
+                                    "7"
+                              ]
+                        },
+                        "out": "start caught 7 after",
+                        "note": "Execution continues <b>after the try/catch</b>, as if the detour were part of the plan: the print reads code — now 7 — and adds \" after\". Output: <b>start caught 7 after</b>."
+                  },
+                  {
+                        "line": 14,
+                        "vars": {
+                              "code": [
+                                    "int",
+                                    "7"
+                              ]
+                        },
+                        "out": "start caught 7 after",
+                        "note": "The program ends normally. Final answer: <b>start caught 7 after</b> — the throw skipped one statement, the catch absorbed the value, and the program carried on."
+                  }
+            ],
+            "modify": {
+                  "prompt": "The thrown value changes: throw 7; becomes throw 9;. Everything else is untouched. What prints now?",
+                  "code": "try {\n    throw <mark>9</mark>;\n    cout << \"never \";\n} catch (int caught) {\n    code = caught;",
+                  "options": [
+                        "start caught 9 after",
+                        "start caught 7 after",
+                        "start 9 after",
+                        "start never caught 9 after"
+                  ],
+                  "correct": 0,
+                  "explain": "The thrown value travels with the exception: the catch binds <b>caught = 9</b>, stores it in code, and the final print shows it: <b>start caught 9 after</b>. The skipped \"never\" line stays skipped — a bigger code changes the cargo, not the route."
+            }
+      },
+      {
+            "concept": "Exceptions · The Catch That Misses",
+            "topic": "Going further (beyond the first course)",
+            "title": "A net woven for the wrong fish",
+            "goal": "A <b>catch</b> only receives thrown values of <b>its declared type</b>. Throw a <b>string</b> at a <b>catch (int)</b> and the handler is skipped entirely; with no matching catch anywhere, the exception is <b>uncaught</b> and the program <b>terminates</b> at that point — statements after the try/catch never run.",
+            "stories": {
+                  "health": "A clinic program prints <strong>start</strong>, then, inside a try block, throws a text message, <strong>\"jammed\"</strong>. The only handler is a catch for whole numbers, which would print <strong>caught</strong>. After the try/catch, a final print would add the word <strong>after</strong>.",
+                  "psych": "A study program prints <strong>start</strong>, then, inside a try block, throws a text message, <strong>\"jammed\"</strong>. The only handler is a catch for whole numbers, which would print <strong>caught</strong>. After the try/catch, a final print would add the word <strong>after</strong>.",
+                  "business": "A till program prints <strong>start</strong>, then, inside a try block, throws a text message, <strong>\"jammed\"</strong>. The only handler is a catch for whole numbers, which would print <strong>caught</strong>. After the try/catch, a final print would add the word <strong>after</strong>.",
+                  "arts": "A box-office program prints <strong>start</strong>, then, inside a try block, throws a text message, <strong>\"jammed\"</strong>. The only handler is a catch for whole numbers, which would print <strong>caught</strong>. After the try/catch, a final print would add the word <strong>after</strong>."
+            },
+            "code": [
+                  "#include <iostream>",
+                  "#include <string>",
+                  "using namespace std;",
+                  "",
+                  "int main() {",
+                  "    cout << \"start \";",
+                  "    try {",
+                  "        throw string(\"jammed\");",
+                  "    } catch (int code) {",
+                  "        cout << \"caught \";",
+                  "    }",
+                  "    cout << \"after\";",
+                  "    return 0;",
+                  "}"
+            ],
+            "question": "What happens when this program runs?",
+            "options": [
+                  "It prints \"start \" and then terminates — \"after\" never prints",
+                  "start caught after — a catch takes any thrown value",
+                  "start after — the throw is skipped and the program carries on",
+                  "start caught — the handler runs, then the program ends"
+            ],
+            "correct": 0,
+            "diagnoses": {
+                  "1": {
+                        "step": 2,
+                        "text": "<b>Named misconception: catch catches anything.</b> A catch is typed like a parameter: <b>catch (int code)</b> can only receive an int, and the thrown value here is a <b>string</b>. The handler is not a safety net for everything — it is a net woven for one kind of fish, and this fish is another kind."
+                  },
+                  "2": {
+                        "step": 1,
+                        "text": "A throw is never skipped or stepped over: reaching <b>throw</b> leaves the try block at once, and if no handler anywhere matches, the program ends there. There is no path on which this program calmly continues to the \"after\" print."
+                  },
+                  "3": {
+                        "step": 2,
+                        "text": "The handler's print gives this answer away: for \"caught\" to print, <b>catch (int code)</b> would have to receive the value — but it cannot bind a string. The handler is not run and <em>then</em> the program ends; it is simply never run, and the uncaught string ends the program by itself."
+                  }
+            },
+            "steps": [
+                  {
+                        "line": 5,
+                        "vars": {},
+                        "out": "start ",
+                        "note": "The first print runs: <b>start</b> is on the screen. The program enters the try block."
+                  },
+                  {
+                        "line": 7,
+                        "vars": {},
+                        "out": "start ",
+                        "note": "<b>throw string(\"jammed\");</b> fires: a <b>text</b> value is packaged as an exception, and control leaves the try block looking for a matching catch."
+                  },
+                  {
+                        "line": 8,
+                        "vars": {},
+                        "out": "start ",
+                        "note": "<b>The parting step.</b> The only handler is <b>catch (int code)</b> — it accepts whole numbers. The thrown value is a string, the types do not match, and the handler is <b>skipped without running</b>. No other catch exists."
+                  },
+                  {
+                        "line": 11,
+                        "vars": {},
+                        "out": "start ",
+                        "note": "An exception with no matching catch is <b>uncaught</b>: the program <b>terminates</b> as the exception leaves main. The \"after\" print — one line past the try/catch — is never reached, and the program's own printed output stays exactly <b>start </b>. (A real runtime also reports the uncaught exception on its error channel; that report is not something this program prints.)"
+                  }
+            ],
+            "modify": {
+                  "prompt": "The handler changes to match: catch (int code) becomes catch (string msg), and its print becomes cout << \"caught \" << msg << \" \";. Everything else is untouched. What happens now?",
+                  "code": "} catch (<mark>string msg</mark>) {\n    cout << \"caught \" << <mark>msg</mark> << \" \";\n}",
+                  "options": [
+                        "start caught jammed after",
+                        "It prints \"start \" and then terminates",
+                        "start caught after",
+                        "start jammed after"
+                  ],
+                  "correct": 0,
+                  "explain": "The types now match, so the handler runs and receives the thrown text: it prints <b>caught jammed</b>, and — the exception handled — execution continues after the try/catch to print <b>after</b>: <b>start caught jammed after</b>. One type in one line is the difference between a recovery and a termination."
+            }
+      }
     ];
 
     /* ---------------- State (persisted in this browser — see persistence block at the end) ---------------- */
@@ -7403,7 +8796,8 @@ int main() {
       { name: "Scope & Lifetime", list: [37, 38, 39, 40] },
       { name: "Bits & Shifts", list: [47, 48] },
       { name: "Stacks & Queues", list: [49, 50] },
-      { name: "Sorting & cost", list: [53, 54, 55, 56, 57, 58] }
+      { name: "Sorting & cost", list: [53, 54, 55, 56, 57, 58] },
+      { name: "Going Further \u2014 beyond the first course", list: [73, 74, 75, 76, 77, 78, 79, 80] }
     ];
     function renderExNav() {
       var box = $("exnav"); box.innerHTML = ""; box.className = "ex-groups";
@@ -13508,7 +14902,7 @@ int main() {
     /* ================= Topic crosswalk =================
        Topics only — no section numbers anywhere: numbering varies by textbook
        title and course configuration, so exercises are matched by topic. */
-    var TOPIC_ORDER = ["Variables and assignments", "Branches", "Loops", "Functions", "Scope", "Arrays and vectors", "Strings and characters", "Structs", "Pointers", "Recursion", "Searching and sorting", "Classes and objects", "File input and output", "Console input", "Maps, sets and hashing", "Bits and bitwise operations"];
+    var TOPIC_ORDER = ["Variables and assignments", "Branches", "Loops", "Functions", "Scope", "Arrays and vectors", "Strings and characters", "Structs", "Pointers", "Recursion", "Searching and sorting", "Classes and objects", "File input and output", "Console input", "Maps, sets and hashing", "Bits and bitwise operations", "Going further (beyond the first course)"];
     function renderCrosswalk() {
       var box = $("crosswalk-list"); if (!box) return;
       box.innerHTML = "";
@@ -14935,7 +16329,7 @@ int main() {
         }
         var two = src.substr(i, 2);
         if (["<<", ">>", "==", "!=", "<=", ">=", "&&", "||", "++", "--", "+=", "-=", "*=", "/=", "%=", "::"].indexOf(two) >= 0) { toks.push({ t: "op", v: two, line: line }); i += 2; continue; }
-        if ("+-*/%<>=!(){}[];,.:".indexOf(c) >= 0) { toks.push({ t: "op", v: c, line: line }); i++; continue; }
+        if ("+-*/%<>=!(){}[];,.:&|^~".indexOf(c) >= 0) { toks.push({ t: "op", v: c, line: line }); i++; continue; }
         terr("the machine does not use the character '" + c + "' in C++ programs like these.");
       }
       toks.push({ t: "eof", v: "", line: line });
@@ -14953,7 +16347,7 @@ int main() {
       function isOp(v) { var t = toks[p]; return t.t === "op" && t.v === v; }
       function isId(v) { var t = toks[p]; return t.t === "id" && t.v === v; }
       function isType() { var t = toks[p]; return t.t === "id" && !!TYPES[t.v]; }
-      function isCompositeStart() { var t = toks[p]; return t.t === "id" && (t.v === "vector" || t.v === "map" || t.v === "set") && toks[p + 1] && toks[p + 1].t === "op" && toks[p + 1].v === "<"; }
+      function isCompositeStart() { var t = toks[p]; return t.t === "id" && (t.v === "vector" || t.v === "map" || t.v === "set" || t.v === "unordered_map" || t.v === "unordered_set") && toks[p + 1] && toks[p + 1].t === "op" && toks[p + 1].v === "<"; }
       function isTypeStart() { var t = toks[p]; return isType() || isCompositeStart() || (t.t === "id" && !!MAKE_CLASS_NAMES[t.v]); }
       function parseTypeName() {
         var t = peek();
@@ -14997,14 +16391,24 @@ int main() {
         var nm = expectId();
         var name = nm.v;
         MAKE_CLASS_NAMES[name] = 1;
+        var baseName = null;
+        if (isOp(":")) {
+          next();
+          if (isId("public") || isId("private") || isId("protected")) next();
+          baseName = expectId().v;
+          while (isOp(",")) { next(); if (isId("public") || isId("private") || isId("protected")) next(); expectId(); }
+        }
         expectOp("{");
-        var def = { name: name, fields: [], methods: {}, ctor: null, line: ct.line };
+        var def = { name: name, base: baseName, fields: [], methods: {}, ctor: null, line: ct.line };
         while (!isOp("}")) {
           if (peek().t === "eof") fail(peek(), "the class '" + name + "' was never closed with a '}'.");
           if ((isId("public") || isId("private") || isId("protected")) && toks[p + 1] && toks[p + 1].t === "op" && toks[p + 1].v === ":") { next(); next(); continue; }
+          var virt = false;
+          if (isId("virtual")) { next(); virt = true; }
           if (peek().t === "id" && peek().v === name && toks[p + 1] && toks[p + 1].t === "op" && toks[p + 1].v === "(") {
             next();
             var cp = parseParams();
+            if (isOp(":")) { while (!isOp("{")) { if (peek().t === "eof") fail(peek(), "the constructor of '" + name + "' was never given a body."); next(); } }
             var cbody = parseBlock();
             def.ctor = { params: cp, body: cbody, line: ct.line };
             continue;
@@ -15013,8 +16417,9 @@ int main() {
           var mn = expectId();
           if (isOp("(")) {
             var mp = parseParams();
+            if (isId("override")) next();
             var mbody = parseBlock();
-            def.methods[mn.v] = { name: mn.v, ret: rt, params: mp, body: mbody, line: mn.line };
+            def.methods[mn.v] = { name: mn.v, ret: rt, params: mp, body: mbody, line: mn.line, virtual: virt };
             continue;
           }
           var finit = null;
@@ -15076,8 +16481,11 @@ int main() {
         var vtype0 = parseTypeName();
         var decls = [];
         for (;;) {
+          var dRef = false, dPtr = false;
+          if (isOp("&")) { next(); dRef = true; }
+          else if (isOp("*")) { next(); dPtr = true; }
           var nm = expectId();
-          var d = { name: nm.v, size: null, sizeExpr: null, init: null, initList: null, initArgs: null };
+          var d = { name: nm.v, size: null, sizeExpr: null, init: null, initList: null, initArgs: null, ref: dRef, ptr: dPtr };
           if (isOp("[")) {
             next();
             if (!isOp("]")) {
@@ -15169,6 +16577,32 @@ int main() {
             expectOp(";");
             return { kind: "return", expr: rv, line: t.line };
           }
+          if (t.v === "throw") {
+            next();
+            var tv = null;
+            if (!isOp(";")) tv = parseExpr();
+            expectOp(";");
+            return { kind: "throw", expr: tv, line: t.line };
+          }
+          if (t.v === "try") {
+            next();
+            var tbody = parseBlock();
+            var catches = [];
+            while (isId("catch")) {
+              next(); expectOp("(");
+              var ctype, cname = null;
+              if (isOp(".") && toks[p + 1] && toks[p + 1].t === "op" && toks[p + 1].v === "." && toks[p + 2] && toks[p + 2].t === "op" && toks[p + 2].v === ".") { next(); next(); next(); ctype = "..."; }
+              else {
+                ctype = parseTypeName();
+                if (peek().t === "id") cname = next().v;
+              }
+              expectOp(")");
+              var cbody2 = parseBlock();
+              catches.push({ type: ctype, name: cname, body: cbody2, line: t.line });
+            }
+            if (!catches.length) fail(t, "a try block needs at least one catch block after it — the catch is where a thrown value lands.");
+            return { kind: "try", body: tbody, catches: catches, line: t.line };
+          }
           if (toks[p + 1] && toks[p + 1].t === "op" && toks[p + 1].v === "<<") {
             next();
             var items = [];
@@ -15216,7 +16650,10 @@ int main() {
       var parseAdd = binLevel(parseMul, ["+", "-"]);
       var parseRel = binLevel(parseAdd, ["<", "<=", ">", ">="]);
       var parseEq = binLevel(parseRel, ["==", "!="]);
-      var parseAnd = binLevel(parseEq, ["&&"]);
+      var parseBitAnd = binLevel(parseEq, ["&"]);
+      var parseBitXor = binLevel(parseBitAnd, ["^"]);
+      var parseBitOr = binLevel(parseBitXor, ["|"]);
+      var parseAnd = binLevel(parseBitOr, ["&&"]);
       var parseOr = binLevel(parseAnd, ["||"]);
       function parseUnary() {
         var t = peek();
@@ -15269,6 +16706,11 @@ int main() {
             var args = [];
             if (!isOp(")")) { for (;;) { args.push(parseExpr()); if (isOp(",")) { next(); continue; } break; } }
             expectOp(")");
+            if (TYPES[node.name] && node.name !== "void") {
+              if (args.length !== 1) fail(t, "building a " + node.name + " value this way takes exactly one value inside the parentheses.");
+              node = { kind: "conv", type: node.name, expr: args[0], line: t.line };
+              continue;
+            }
             node = { kind: "call", name: node.name, args: args, line: t.line };
             continue;
           }
@@ -15583,6 +17025,7 @@ int main() {
       function evalExpr(env, node) {
         switch (node.kind) {
           case "num": case "str": return node.val;
+          case "conv": return makeConv(evalExpr(env, node.expr), node.type, node.line, "the value");
           case "endl": return { t: "endl", v: "\n" };
           case "var": {
             var c = lookupCell(env, node.name, node.line);
@@ -15640,6 +17083,12 @@ int main() {
               return { t: "int", v: makeTruthy(evalExpr(env, node.r), node.line) ? 1 : 0 };
             }
             var lv = evalExpr(env, node.l), rw = evalExpr(env, node.r);
+            if (lv.t === "iter" || rw.t === "iter") {
+              var sameIt = lv.t === "iter" && rw.t === "iter" && lv.found === rw.found && (!lv.found || lv.key === rw.key);
+              if (node.op === "==") return { t: "int", v: sameIt ? 1 : 0 };
+              if (node.op === "!=") return { t: "int", v: sameIt ? 0 : 1 };
+              fail(node.line, "an iterator here can only be compared with == or != — usually against end().");
+            }
             if (["+", "-", "*", "/", "%"].indexOf(node.op) >= 0) return arith(node.op, lv, rw, node.line);
             if (lv.t === "string" && rw.t === "string") {
               switch (node.op) {
@@ -15660,6 +17109,9 @@ int main() {
               case "<=": return { t: "int", v: x <= y ? 1 : 0 };
               case ">": return { t: "int", v: x > y ? 1 : 0 };
               case ">=": return { t: "int", v: x >= y ? 1 : 0 };
+              case "&": return { t: "int", v: (Math.trunc(x) & Math.trunc(y)) };
+              case "|": return { t: "int", v: (Math.trunc(x) | Math.trunc(y)) };
+              case "^": return { t: "int", v: (Math.trunc(x) ^ Math.trunc(y)) };
             }
             fail(node.line, "the machine does not know the operator '" + node.op + "'.");
             break;
@@ -15786,7 +17238,12 @@ int main() {
                 if (ac0.isObj) { args.push({ t: "objRef", cell: ac0 }); continue; }
                 if ((ac0.isVec || ac0.isMap || ac0.isSet) && prm && !prm.isArr) { args.push({ t: "collRef", cell: ac0 }); continue; }
               }
-              if (prm && prm.isArr && an.kind === "var") {
+              if (prm && prm.ref && an.kind === "var") {
+                var rcell = lookupCell(env, an.name, an.line);
+                if (!rcell.isObj && !rcell.isArr && !rcell.isMap && !rcell.isSet && !rcell.isVec) { args.push({ t: "varRef", cell: rcell }); continue; }
+                args.push(evalExpr(env, an));
+              }
+              else if (prm && prm.isArr && an.kind === "var") {
                 var acell = lookupCell(env, an.name, an.line);
                 if (!acell.isArr) fail(an.line, "'" + an.name + "' is not an array, so it cannot be handed to an array parameter.");
                 args.push({ t: "arrayRef", cell: acell });
@@ -15823,7 +17280,20 @@ int main() {
                 }
                 if (node.name === "size") return { t: "int", v: Object.keys(oc.val.entries).length };
                 if (node.name === "empty") return { t: "int", v: Object.keys(oc.val.entries).length === 0 ? 1 : 0 };
-                fail(node.line, "the map tools here are count, size and empty, plus [key] access — '." + node.name + "()' is not one of them.");
+                if (node.name === "erase") {
+                  if (node.args.length !== 1) fail(node.line, "erase takes exactly one key.");
+                  var ekr = keyRepr(evalExpr(env, node.args[0]));
+                  if (Object.prototype.hasOwnProperty.call(oc.val.entries, ekr)) { delete oc.val.entries[ekr]; return { t: "int", v: 1 }; }
+                  return { t: "int", v: 0 };
+                }
+                if (node.name === "find") {
+                  if (node.args.length !== 1) fail(node.line, "find takes exactly one key.");
+                  var fkr = keyRepr(evalExpr(env, node.args[0]));
+                  return { t: "iter", found: Object.prototype.hasOwnProperty.call(oc.val.entries, fkr), key: fkr };
+                }
+                if (node.name === "end") return { t: "iter", found: false, key: null };
+                if (node.name === "clear") { oc.val.entries = {}; return { t: "void", v: null }; }
+                fail(node.line, "the map tools here are count, size, empty, erase, find and clear, plus [key] access — '." + node.name + "()' is not one of them.");
               }
               if (oc.isSet) {
                 if (node.name === "insert") {
@@ -15869,13 +17339,19 @@ int main() {
                 fail(node.line, "an output file is written with << , like cout — '." + node.name + "()' is not a file tool here.");
               }
               if (oc.isObj) {
-                var cdef = ctx.classes[oc.val.className];
-                var mth = cdef && cdef.methods[node.name];
-                if (!mth) fail(node.line, "the class " + oc.val.className + " has no member function named '" + node.name + "'.");
+                var viewCls = oc.viewType || oc.val.className;
+                var foundM = findMethod(viewCls, node.name);
+                if (!foundM) fail(node.line, "the class " + viewCls + " has no member function named '" + node.name + "'.");
+                var mth = foundM.method;
+                if (isVirtualMethod(viewCls, node.name)) {
+                  var dynM = findMethod(oc.val.className, node.name);
+                  if (dynM) mth = dynM.method;
+                }
                 var margs2 = [];
                 for (var mi = 0; mi < node.args.length; mi++) {
                   var man = node.args[mi];
-                  if (man.kind === "var") { var mac = lookupCell(env, man.name, man.line); if (mac.isObj) { margs2.push({ t: "objRef", cell: mac }); continue; } if (mac.isVec || mac.isMap || mac.isSet) { margs2.push({ t: "collRef", cell: mac }); continue; } }
+                  var mprm = mth.params[mi];
+                  if (man.kind === "var") { var mac = lookupCell(env, man.name, man.line); if (mac.isObj) { margs2.push({ t: "objRef", cell: mac }); continue; } if (mac.isVec || mac.isMap || mac.isSet) { margs2.push({ t: "collRef", cell: mac }); continue; } if (mprm && mprm.ref && !mac.isArr) { margs2.push({ t: "varRef", cell: mac }); continue; } }
                   margs2.push(evalExpr(env, man));
                 }
                 return runMethod(oc, mth, margs2, node.line);
@@ -15984,6 +17460,29 @@ int main() {
             } finally { env.pop(); }
             return;
           }
+          case "throw": {
+            var tval = node.expr ? evalExpr(env, node.expr) : { t: "int", v: 0 };
+            throw { makeThrow: true, value: tval, line: node.line };
+          }
+          case "try": {
+            try { execBlock(env, node.body); }
+            catch (e) {
+              if (!(e && e.makeThrow)) throw e;
+              var matched = null;
+              for (var ci9 = 0; ci9 < node.catches.length; ci9++) {
+                var ct9 = node.catches[ci9];
+                if (ct9.type === "..." || ct9.type === e.value.t || (ct9.type === "string" && e.value.t === "string")) { matched = ct9; break; }
+              }
+              if (!matched) throw e;
+              env.push({});
+              try {
+                var hscope = env[env.length - 1];
+                if (matched.name) hscope[matched.name] = { type: matched.type, isArr: false, val: makeConv(e.value, matched.type, node.line, matched.name) };
+                for (var hi = 0; hi < matched.body.stmts.length; hi++) execStmt(env, matched.body.stmts[hi]);
+              } finally { env.pop(); }
+            }
+            return;
+          }
           case "return": {
             var rv2 = node.expr ? evalExpr(env, node.expr) : null;
             throw { makeReturn: true, value: rv2 };
@@ -16074,6 +17573,7 @@ int main() {
         fail(node.line, "the machine could not run that statement.");
       }
       function bindParam(scope, pr, arg, line, fname) {
+        if (arg && arg.t === "varRef") { scope[pr.name] = arg.cell; return; }
         if (pr.isArr) {
           if (!arg || arg.t !== "arrayRef") fail(line, "the parameter '" + pr.name + "' of '" + fname + "' is an array — hand it an array, like " + pr.name + " itself, at the call.");
           scope[pr.name] = { type: pr.type, isArr: true, val: arg.cell.val };
@@ -16081,7 +17581,14 @@ int main() {
         }
         if (MAKE_CLASS_NAMES[pr.type]) {
           if (!arg || arg.t !== "objRef") fail(line, "the parameter '" + pr.name + "' of '" + fname + "' is a " + pr.type + " object — hand it an object of that class.");
-          scope[pr.name] = arg.cell;
+          if (pr.ref) { scope[pr.name] = { type: pr.type, isObj: true, val: arg.cell.val, viewType: pr.type }; return; }
+          if (arg.cell.val.className === pr.type) { scope[pr.name] = arg.cell; return; }
+          var pfields = {};
+          classFieldDefs(pr.type).forEach(function (f) {
+            var sf = arg.cell.val.fields[f.name];
+            pfields[f.name] = sf ? { type: f.type, val: sf.val, uninit: sf.uninit } : { type: f.type, val: makeDefault(f.type), uninit: !f.init };
+          });
+          scope[pr.name] = { type: pr.type, isObj: true, val: { className: pr.type, fields: pfields } };
           return;
         }
         if (pr.type.indexOf("<") >= 0) {
@@ -16094,6 +17601,31 @@ int main() {
         }
         if (arg && (arg.t === "arrayRef" || arg.t === "objRef" || arg.t === "collRef")) fail(line, "the parameter '" + pr.name + "' of '" + fname + "' holds one value, but the call hands it a whole collection or object.");
         scope[pr.name] = { type: pr.type, isArr: false, val: makeConv(arg, pr.type, line, pr.name) };
+      }
+      function findMethod(clsName, mname) {
+        var cur = clsName, guard = 0;
+        while (cur && ctx.classes[cur] && guard++ < 50) {
+          var cd = ctx.classes[cur];
+          if (cd.methods && Object.prototype.hasOwnProperty.call(cd.methods, mname)) return { method: cd.methods[mname], owner: cur };
+          cur = cd.base;
+        }
+        return null;
+      }
+      function isVirtualMethod(clsName, mname) {
+        var cur = clsName, guard = 0;
+        while (cur && ctx.classes[cur] && guard++ < 50) {
+          var cd = ctx.classes[cur];
+          if (cd.methods && cd.methods[mname] && cd.methods[mname].virtual) return true;
+          cur = cd.base;
+        }
+        return false;
+      }
+      function classFieldDefs(clsName) {
+        var chain = [], cur = clsName, guard = 0;
+        while (cur && ctx.classes[cur] && guard++ < 50) { chain.unshift(ctx.classes[cur]); cur = ctx.classes[cur].base; }
+        var out = [], seen = {};
+        chain.forEach(function (cd) { cd.fields.forEach(function (f) { if (!seen[f.name]) { seen[f.name] = 1; out.push(f); } }); });
+        return out;
       }
       function runMethod(ocell, mth, args, line) {
         if (args.length !== mth.params.length) fail(line, "'" + mth.name + "' was defined to take " + mth.params.length + " value" + (mth.params.length === 1 ? "" : "s") + ", but this call hands it " + args.length + ".");
@@ -16112,13 +17644,17 @@ int main() {
         return makeConv(retVal, mth.ret, line, mth.name);
       }
       function runCtor(ocell, args, line) {
-        var def = ctx.classes[ocell.val.className];
+        runCtorChain(ocell.val.className, ocell, args, line, true);
+      }
+      function runCtorChain(clsName, ocell, args, line, isOwn) {
+        var def = ctx.classes[clsName];
         if (!def) return;
+        if (def.base) runCtorChain(def.base, ocell, [], line, false);
         if (!def.ctor) {
-          if (args.length) fail(line, "the class " + def.name + " has no constructor that takes values — create its objects with no parentheses, then set the members.");
+          if (isOwn && args.length) fail(line, "the class " + def.name + " has no constructor that takes values — create its objects with no parentheses, then set the members.");
           return;
         }
-        if (args.length !== def.ctor.params.length) fail(line, "the " + def.name + " constructor takes " + def.ctor.params.length + " value" + (def.ctor.params.length === 1 ? "" : "s") + ", but this creation hands it " + args.length + ".");
+        if (isOwn && args.length !== def.ctor.params.length) fail(line, "the " + def.name + " constructor takes " + def.ctor.params.length + " value" + (def.ctor.params.length === 1 ? "" : "s") + ", but this creation hands it " + args.length + ".");
         if (++ctx.depth > 200) fail(line, "constructors here are nesting hundreds of levels deep. The program has stopped.");
         var fieldScope = {};
         Object.keys(ocell.val.fields).forEach(function (fn) { fieldScope[fn] = ocell.val.fields[fn]; });
@@ -16153,6 +17689,16 @@ int main() {
             scope[d.name] = { type: vt, isMap: true, kt: inner[0], vt: inner[1], val: { entries: {} } };
             return;
           }
+          if (vt.indexOf("unordered_map<") === 0) {
+            var uinner = vt.slice("unordered_map<".length, -1).split(",");
+            scope[d.name] = { type: vt, isMap: true, isUnordered: true, kt: uinner[0], vt: uinner[1], val: { entries: {} } };
+            return;
+          }
+          if (vt.indexOf("unordered_set<") === 0) {
+            var uet = vt.slice("unordered_set<".length, -1);
+            scope[d.name] = { type: vt, isSet: true, isUnordered: true, et: uet, val: { entries: {} } };
+            return;
+          }
           if (vt.indexOf("set<") === 0) {
             var et = vt.slice(4, -1);
             var scell = { type: vt, isSet: true, et: et, val: { entries: {} } };
@@ -16162,11 +17708,28 @@ int main() {
           }
           if (ctx.classes[vt]) {
             var def = ctx.classes[vt];
+            if (d.ptr) fail(node.line, "pointers to objects are beyond this machine's subset — use a reference (with &) to look at an object through a base class here.");
+            if (d.init && !d.initArgs) {
+              var srcV = (d.init.kind === "var") ? (function () { var sc = lookupCell(env, d.init.name, d.init.line); return sc.isObj ? { t: "objRef", cell: sc } : evalExpr(env, d.init); })() : evalExpr(env, d.init);
+              if (!srcV || srcV.t !== "objRef") fail(node.line, "a " + vt + " variable is initialised from another object of a compatible class.");
+              if (d.ref) {
+                scope[d.name] = { type: vt, isObj: true, val: srcV.cell.val, viewType: vt };
+                return;
+              }
+              var sfields = {};
+              classFieldDefs(vt).forEach(function (f) {
+                var sf = srcV.cell.val.fields[f.name];
+                sfields[f.name] = sf ? { type: f.type, val: sf.val, uninit: sf.uninit } : { type: f.type, val: makeDefault(f.type), uninit: !f.init };
+              });
+              scope[d.name] = { type: vt, isObj: true, val: { className: vt, fields: sfields } };
+              return;
+            }
+            var allFields = classFieldDefs(vt);
             var fields = {};
-            def.fields.forEach(function (f) { fields[f.name] = { type: f.type, val: makeDefault(f.type), uninit: !f.init }; });
+            allFields.forEach(function (f) { fields[f.name] = { type: f.type, val: makeDefault(f.type), uninit: !f.init }; });
             var ocell = { type: vt, isObj: true, val: { className: vt, fields: fields } };
             scope[d.name] = ocell;
-            def.fields.forEach(function (f) {
+            allFields.forEach(function (f) {
               if (f.init) { fields[f.name].val = makeConv(evalExpr(env, f.init), f.type, node.line, f.name); fields[f.name].uninit = false; }
             });
             var cargs = d.initArgs ? d.initArgs.map(function (e) {
@@ -16221,6 +17784,7 @@ int main() {
         callFunc("main", [], 1);
       } catch (e) {
         if (e && e.makeError) return { ok: false, error: e.msg, output: ctx.out };
+        if (e && e.makeThrow) return { ok: false, terminated: true, error: "Uncaught exception: a thrown " + e.value.t + " value (" + makeFmtVal(e.value, 1) + ") found no matching catch, so the program terminated. Nothing after the throw point ran.", output: ctx.out };
         throw e;
       }
       return { ok: true, output: ctx.out, steps: ctx.traceSteps, filesOut: ctx.filesOut };
@@ -18331,7 +19895,17 @@ int main() {
           { q: "Values 4, 9, 7 join a queue in that order. The first serve takes…", options: ["4", "7", "9"], correct: 0, why: "A queue serves its head, where the longest-waiting value — the first to arrive, 4 — sits." },
           { q: "A new value joins a queue that already holds three waiting values. It is stored…", options: ["At the tail, behind all three", "At the head, ahead of all three", "In place of the head value"], correct: 0, why: "Arrivals always go to the tail; the head only moves when a value is served." }
         ],
-        drag: { q: "A value has just been stored at stack[top]. Complete the next line so the stack is ready for the following push:", pre: "", slot: "", post: "++;", tokens: ["top", "head", "tail"], correct: "top", why: "A stack has one working counter: top must advance past the value just stored, or the next push would overwrite it." } }
+        drag: { q: "A value has just been stored at stack[top]. Complete the next line so the stack is ready for the following push:", pre: "", slot: "", post: "++;", tokens: ["top", "head", "tail"], correct: "top", why: "A stack has one working counter: top must advance past the value just stored, or the next push would overwrite it." } },
+      "Going Further \u2014 beyond the first course": { title: "Briefing: Going Further \u2014 beyond the first course (optional)",
+        body: "This group is <b>optional</b>: it collects three topics a first course usually only names, kept together here for when you are ready \u2014 nothing else on this page depends on them. <b>unordered_map</b> is a map's faster cousin: pairs live in hash <b>buckets</b>, so lookups are quick, but <b>no iteration order is guaranteed</b>, and <code>operator[]</code> still <b>plants a default value</b> for a missing key \u2014 use <code>count</code> or <code>find</code> for a pure check. <b>Inheritance</b> lets a derived class reuse a base class; a <b>virtual</b> base function is answered by the <em>object</em> through a base pointer or reference (polymorphism), while without <code>virtual</code> the call binds to the <b>declared type</b>, and copying a derived object into a base object <b>slices</b> the derived part off. Construction always runs <b>base first</b>. <b>Exceptions</b> are the third topic: <code>throw</code> leaves the <code>try</code> block at once, a <code>catch</code> receives only thrown values of <b>its own type</b> and the program then continues; a throw with no matching catch <b>terminates</b> the program.",
+        example: ["unordered_map<string, int> counts;", "counts[\"fig\"]++;", "cout << counts.count(\"plum\");"], note: "Prints <b>0</b>: fig was counted once (its answer would be 1 if asked), and count(\"plum\") reports absence <b>without planting plum</b> \u2014 the question [] would have answered by inserting plum at 0.",
+        checks: [
+          { q: "An unordered_map walk prints fig, plum, pear on your machine today. What is guaranteed about the order?", options: ["Nothing \u2014 each pair is visited once, but the order is not specified", "It is sorted, like a map", "It is insertion order, like a list"], correct: 0, why: "Bucket order is an implementation detail. Only the set of visited pairs is guaranteed; if order matters, use map." },
+          { q: "speak() is NOT virtual in the base. A Dog is viewed through an Animal& and speak() is called. Which version runs?", options: ["The Animal (base) version \u2014 the call binds to the declared type", "The Dog version \u2014 the object always decides", "Neither \u2014 the program cannot run"], correct: 0, why: "Without virtual there is no dispatch: the declared type of the reference decides. Marking the base function virtual hands the decision to the object." },
+          { q: "A try block throws a string, and the only catch takes an int. What happens?", options: ["No handler matches, so the program terminates", "The catch converts the string to an int and runs", "The throw is ignored and the try block continues"], correct: 0, why: "A catch receives only its own type. An unmatched exception leaves main uncaught, and an uncaught exception terminates the program." },
+          { q: "Creating a derived-class object runs the constructors in which order?", options: ["Base first, then the derived class's own", "Derived first, then the base", "Only the derived class's \u2014 the base is already built"], correct: 0, why: "The base part must exist before the derived part can be built on it: base constructor first, always." }
+        ],
+        drag: { q: "Complete the base-class declaration so that calls through a base reference are answered by the object's own class:", pre: "", slot: "", post: " string speak() { return \"some sound\"; }", tokens: ["virtual", "static", "friend"], correct: "virtual", why: "virtual is the word that turns a base-class call into a question the object answers \u2014 polymorphism. Without it, the declared type decides." } }
 
     };
     function briefGroupOf(idx) {
