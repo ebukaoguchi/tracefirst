@@ -1,5 +1,5 @@
 // TraceFirst service worker: network-first, cache fallback for offline use.
-const CACHE = 'tracefirst-v1';
+const CACHE = 'tracefirst-v2';
 const ASSETS = ['./', 'index.html', 'manifest.webmanifest', 'icon.svg'];
 
 self.addEventListener('install', (event) => {
