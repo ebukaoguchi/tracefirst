@@ -23970,10 +23970,40 @@ int main() {
          exactly as before. */
       (function () {
         if ("serviceWorker" in navigator) {
+          /* Automatic updates: registration uses updateViaCache "none" so
+             the browser never serves a stale service worker script, and
+             registration.update() runs on load and whenever the page
+             becomes visible again, so a newly published build is
+             discovered in the same session it appears. When a new worker
+             takes control and this page already had one (an update, not
+             the first install), the page reloads exactly once — guarded
+             by a session flag so it can never loop — landing the user on
+             the newest version with no action needed. A first install
+             never forces a reload. */
+          var hadController = !!navigator.serviceWorker.controller;
+          var reloadedForUpdate = false;
+          try { reloadedForUpdate = sessionStorage.getItem("tf-sw-reloaded") === "1"; } catch (e) {}
+          navigator.serviceWorker.addEventListener("controllerchange", function () {
+            if (!hadController || reloadedForUpdate) return;
+            reloadedForUpdate = true;
+            try { sessionStorage.setItem("tf-sw-reloaded", "1"); } catch (e) {}
+            window.location.reload();
+          });
           window.addEventListener("load", function () {
             try {
-              var reg = navigator.serviceWorker.register("sw.js");
-              if (reg && typeof reg.catch === "function") reg.catch(function () {});
+              var regPromise = navigator.serviceWorker.register("sw.js", { updateViaCache: "none" });
+              if (regPromise && typeof regPromise.then === "function") {
+                regPromise.then(function (reg) {
+                  if (reg && typeof reg.update === "function") {
+                    try { reg.update(); } catch (e) {}
+                  }
+                  document.addEventListener("visibilitychange", function () {
+                    if (document.visibilityState === "visible" && reg && typeof reg.update === "function") {
+                      try { reg.update(); } catch (e) {}
+                    }
+                  });
+                }).catch(function () {});
+              }
             } catch (e) {}
           });
         }
