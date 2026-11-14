@@ -258,6 +258,12 @@
       .flow-svg path.show { opacity: .95; }
       .cline.skipped-flash { opacity: .35; }
       .parting-note { margin-top: 10px; border: 1.5px solid var(--amber); background: var(--amber-soft); border-radius: 10px; padding: 11px 14px; font-size: .92rem; }
+      .repred-panel { margin-top: 12px; border: 1.5px solid var(--accent); background: var(--accent-soft); border-radius: 10px; padding: 13px 15px; }
+      .repred-panel[hidden] { display: none; }
+      .repred-panel h4 { font-size: .98rem; margin: 0; color: var(--accent-strong); }
+      .repred-panel p { font-size: .92rem; margin-top: 5px; }
+      .repred-panel .repred-done { font-weight: 600; color: var(--accent-strong); }
+      .trans-stage.runtime { background: var(--rust-soft); border-color: var(--rust); color: var(--rust); }
       /* Narration caption line (playback): one sentence for the current step */
       .play-caption { margin-top: 10px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 13px; font-size: .95rem; display: flex; gap: 10px; align-items: baseline; }
       .play-caption[hidden] { display: none; }
@@ -1753,7 +1759,7 @@
             <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Order code, then write a line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find and fix faults.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 86</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 90</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write your own programs.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
             <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
@@ -2092,7 +2098,7 @@ for (int i = 0; i < 3; i++) {
             <select class="lecture-select" id="lecture-ex-select" aria-label="Choose an exercise to project"></select>
             <button class="btn" type="button" id="lecture-project-btn">Project this exercise</button>
           </div>
-          <p class="lecture-pick-note">Any of the 86 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
+          <p class="lecture-pick-note">Any of the 90 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
         </div>
 
         <div id="lecture-project" hidden>
@@ -2430,6 +2436,13 @@ for (int i = 0; i < 3; i++) {
               <div class="console"><div class="chead">Program output</div><div class="cout" id="cout"></div></div>
               <div class="stepnote" id="stepnote"></div>
               <div class="parting-note" id="parting-note" hidden role="status"></div>
+              <div class="repred-panel" id="repred-panel" hidden>
+                <h4>Checkpoint — predict the rest of the run</h4>
+                <p id="repred-text">You are halfway through the trace. Before the machine steps on, lock a <b>second prediction</b> for the program's final output — with what you have seen so far, not just your first model.</p>
+                <div class="options" id="repred-options"></div>
+                <div class="lockrow"><button class="btn small" type="button" id="repred-lock" disabled>Lock my second prediction</button><span class="locknote">The trace waits at this checkpoint until you lock.</span></div>
+                <p class="repred-done" id="repred-done" hidden></p>
+              </div>
             </div>
           </section>
 
@@ -2812,10 +2825,10 @@ for (int i = 0; i < 3; i++) {
             <label for="trans-search">Search the translator</label>
             <div class="trans-search-row" style="margin-top:8px;">
               <input type="search" id="trans-search" placeholder="Try: semicolon, cout, string, brace, include…" autocomplete="off">
-              <button class="btn ghost small" type="button" id="trans-clear">Show all 45</button>
+              <button class="btn ghost small" type="button" id="trans-clear">Show all 48</button>
             </div>
           </div>
-          <p class="trans-count" id="trans-count" role="status">Showing all 45 errors — ordered by how early beginners usually meet them.</p>
+          <p class="trans-count" id="trans-count" role="status">Showing all 48 errors — ordered by how early beginners usually meet them.</p>
         </div>
 
         <div class="trans-list" id="trans-list" aria-label="Compiler error catalogue"></div>
@@ -3119,7 +3132,7 @@ int main() {
         <div id="instructors-body" hidden>
           <div class="lecture-inst-entry">
             <h4>Lecture mode — run a tracer exercise in front of the class</h4>
-            <p>A single projected screen: pick any of the 86 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
+            <p>A single projected screen: pick any of the 90 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
             <div class="journal-actions"><button class="btn small" type="button" id="lecture-open-btn-2">Open Lecture mode</button></div>
           </div>
                     <div class="studio" id="inst-studio">
@@ -8847,6 +8860,244 @@ int main() {
           correct: 0,
           explain: "Born with two zeros: size 2, capacity 2. The assignment fills v[0] with 5, and the push — finding the vector full — doubles the room to <b>4</b> and appends the 8: size <b>3</b>. The sum is 5 + 0 + 8 = <b>13</b>. Output: <b>3 4 13</b>."
         }
+      },
+      {
+        concept: "Decisions · switch — the basics",
+        topic: "Branches",
+        title: "The menu that stopped",
+        goal: "A <b>switch</b> tests one value against its <b>case</b> labels, jumps to the matching label, and runs from there — until a <b>break</b> throws it out of the switch. Here every case ends with break, so exactly one case runs.",
+        stories: {
+          health:   "A clinic kiosk prices a <strong>service</strong> by menu number: the visitor picked <strong>2</strong>, and the kiosk looks the price up in a switch. It prints one price.",
+          psych:    "A study app prices a <strong>session add-on</strong> by menu number: the participant picked <strong>2</strong>, and the app looks the price up in a switch. It prints one price.",
+          business: "A café till prices a <strong>drink size</strong> by menu number: the customer picked <strong>2</strong>, and the till looks the price up in a switch. It prints one price.",
+          arts:     "A box-office app prices a <strong>seat tier</strong> by menu number: the buyer picked <strong>2</strong>, and the app looks the price up in a switch. It prints one price."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int choice = 2;",
+          "    int price = 0;",
+          "    switch (choice) {",
+          "        case 1:",
+          "            price = 5;",
+          "            break;",
+          "        case 2:",
+          "            price = 8;",
+          "            break;",
+          "        case 3:",
+          "            price = 12;",
+          "            break;",
+          "        default:",
+          "            price = 0;",
+          "    }",
+          "    cout << price << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["8", "5", "20", "0"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 3, text: "You read the <b>first</b> case as the one that runs. The switch does not start at the top case: it compares <b>choice</b> (2) with each label and jumps straight to <b>case 2</b>. Case 1's statements never run at all." },
+          2: { step: 3, text: "You added every case (5 + 8 + 12 would overshoot even that). Each case ends in <b>break</b>, and break leaves the switch the moment it runs — so after case 2 sets price to 8, the switch is <em>over</em>. No other case gets a turn." },
+          3: { step: 2, text: "You sent the program to <b>default</b>. Default runs only when <em>no</em> case matches — and choice is 2, which matches case 2 exactly. Default is the trapdoor for unmatched values, not a case that always runs." }
+        },
+        steps: [
+          { line: 4, vars: { choice: ["int", "2"] }, out: "", note: "A box named <b>choice</b> is created holding <b>2</b> — the value the switch will test." },
+          { line: 5, vars: { choice: ["int", "2"], price: ["int", "0"] }, out: "", note: "A second box, <b>price</b>, starts at <b>0</b>. Whatever the switch leaves in it is what prints." },
+          { line: 6, vars: { choice: ["int", "2"], price: ["int", "0"] }, out: "", note: "The switch compares <b>choice</b> against its labels: 2 matches <b>case 2</b>, so control jumps directly there. Case 1 is skipped entirely." },
+          { line: 11, vars: { choice: ["int", "2"], price: ["int", "8"] }, out: "", note: "<b>The parting step.</b> Case 2's statement runs: <b>price becomes 8</b>." },
+          { line: 12, vars: { choice: ["int", "2"], price: ["int", "8"] }, out: "", note: "<b>break</b> leaves the switch at once. Case 3 and default never run." },
+          { line: 19, vars: { choice: ["int", "2"], price: ["int", "8"] }, out: "8", note: "The print reads the box: <b>8</b>." },
+          { line: 20, vars: { choice: ["int", "2"], price: ["int", "8"] }, out: "8", note: "The program ends. Final answer: <b>8</b> — one case matched, one case ran, break closed the switch behind it." }
+        ],
+        modify: {
+          prompt: "The pick changes: choice is set to 3 instead of 2 (the marked line). Everything else is untouched. What prints now?",
+          code: 'int choice = <mark>3</mark>;\nint price = 0;\nswitch (choice) {\n    case 1: price = 5; break;\n    case 2: price = 8; break;\n    case 3: price = 12; break;\n    default: price = 0;\n}\ncout << price << endl;',
+          options: ["12", "8", "20", "0"],
+          correct: 0,
+          explain: "Choice 3 matches <b>case 3</b>, which sets price to <b>12</b> and breaks. Output: <b>12</b>."
+        }
+      },
+      {
+        concept: "Decisions · switch — fall-through",
+        topic: "Branches",
+        title: "The alarm that kept ringing",
+        goal: "A case with <b>no break</b> does not stop at the next label: execution <b>falls through</b> into the case below and keeps going until a break (or the end of the switch). Labels are entry points, not walls.",
+        stories: {
+          health:   "A monitoring app builds an <strong>alert message</strong> from an alert level: level <strong>1</strong> should say only one word, but the message the app prints is longer than the nurse expected.",
+          psych:    "A mood-tracking app builds a <strong>status message</strong> from a check-in level: level <strong>1</strong> should say only one word, but the message the app prints is longer than expected.",
+          business: "A stock app builds a <strong>reorder message</strong> from an urgency level: level <strong>1</strong> should say only one word, but the message the app prints is longer than the buyer expected.",
+          arts:     "A rehearsal app builds a <strong>call message</strong> from a readiness level: level <strong>1</strong> should say only one word, but the message the app prints is longer than expected."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int level = 1;",
+          "    string msg = \"\";",
+          "    switch (level) {",
+          "        case 1:",
+          "            msg = \"low\";",
+          "        case 2:",
+          "            msg = msg + \" mid\";",
+          "            break;",
+          "        case 3:",
+          "            msg = msg + \" high\";",
+          "            break;",
+          "        default:",
+          "            msg = \"off\";",
+          "    }",
+          "    cout << msg << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["low mid", "low", "low mid high", "mid"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 4, text: "<b>Named misconception: every case stops on its own.</b> It does not — only a <b>break</b> stops a case, and case 1 has none. After msg becomes \"low\", execution falls straight through the case 2 label and runs its statement too. The label is a door, not a wall." },
+          2: { step: 5, text: "You let the fall-through run to the bottom of the switch. It stops earlier: case 2 ends with a <b>break</b>, and that break — the first one the falling execution meets — ends the switch. Case 3 never runs, so \" high\" is never added." },
+          3: { step: 3, text: "You started the trace inside case 2, as if entry skips the matched case's own statements. Entry at case 1 runs case 1's statement <em>first</em> (msg = \"low\") and only then falls into case 2 — the \"low\" is never skipped." }
+        },
+        steps: [
+          { line: 4, vars: { level: ["int", "1"] }, out: "", note: "A box named <b>level</b> holds <b>1</b> — the value the switch will test." },
+          { line: 5, vars: { level: ["int", "1"], msg: ["string", "\"\""] }, out: "", note: "The message box <b>msg</b> starts <b>empty</b>. The switch will build it up." },
+          { line: 6, vars: { level: ["int", "1"], msg: ["string", "\"\""] }, out: "", note: "Level 1 matches <b>case 1</b>. Control enters there." },
+          { line: 8, vars: { level: ["int", "1"], msg: ["string", "\"low\""] }, out: "", note: "Case 1's statement runs: <b>msg becomes \"low\"</b>. Now watch for a break — there is none under case 1." },
+          { line: 10, vars: { level: ["int", "1"], msg: ["string", "\"low mid\""] }, out: "", note: "<b>The parting step.</b> With no break, execution <b>falls through</b> the case 2 label and runs its statement too: <b>msg becomes \"low mid\"</b>." },
+          { line: 11, vars: { level: ["int", "1"], msg: ["string", "\"low mid\""] }, out: "", note: "Case 2's <b>break</b> — the first break the fall meets — leaves the switch. Case 3 and default never run." },
+          { line: 18, vars: { level: ["int", "1"], msg: ["string", "\"low mid\""] }, out: "low mid", note: "The print reads the box: <b>low mid</b> — two cases' work in one message." },
+          { line: 19, vars: { level: ["int", "1"], msg: ["string", "\"low mid\""] }, out: "low mid", note: "The program ends. Final answer: <b>low mid</b>." }
+        ],
+        modify: {
+          prompt: "One line is added: a break at the end of case 1 (the marked line). Everything else is untouched. What prints now?",
+          code: 'int level = 1;\nstring msg = "";\nswitch (level) {\n    case 1:\n        msg = "low";\n        <mark>break;</mark>\n    case 2:\n        msg = msg + " mid";\n        break;\n    case 3:\n        msg = msg + " high";\n        break;\n    default:\n        msg = "off";\n}\ncout << msg << endl;',
+          options: ["low", "low mid", "mid", "off"],
+          correct: 0,
+          explain: "The new <b>break</b> ends the switch the moment case 1 finishes, so the fall-through never happens: msg stays <b>\"low\"</b>. Output: <b>low</b>. One missing break was the whole bug."
+        }
+      },
+      {
+        concept: "Decisions · switch — default",
+        topic: "Branches",
+        title: "The grade with no case",
+        goal: "<b>default</b> is the case for every value with no label of its own. A switch matches <b>exact values only</b> — it has no ranges — so a value that lands between labels falls to default.",
+        stories: {
+          health:   "A fitness app turns a <strong>score out of 100</strong> into a letter band with a switch on score / 10. The score is <strong>55</strong>, and the app prints the band it lands in.",
+          psych:    "A quiz app turns a <strong>score out of 100</strong> into a letter band with a switch on score / 10. The score is <strong>55</strong>, and the app prints the band it lands in.",
+          business: "A training app turns a <strong>score out of 100</strong> into a letter band with a switch on score / 10. The score is <strong>55</strong>, and the app prints the band it lands in.",
+          arts:     "An audition app turns a <strong>score out of 100</strong> into a letter band with a switch on score / 10. The score is <strong>55</strong>, and the app prints the band it lands in."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int score = 55;",
+          "    char grade = '?';",
+          "    switch (score / 10) {",
+          "        case 10:",
+          "        case 9:",
+          "            grade = 'A';",
+          "            break;",
+          "        case 8:",
+          "            grade = 'B';",
+          "            break;",
+          "        case 7:",
+          "            grade = 'C';",
+          "            break;",
+          "        default:",
+          "            grade = 'F';",
+          "    }",
+          "    cout << grade << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["F", "C", "A", "?"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "<b>Named misconception: switch bands work like ranges.</b> They do not. The switch tests the exact value <b>score / 10 = 5</b> against its labels — 10, 9, 8, 7 — and 5 is none of them. There is no \"nearest band\". With no match, <b>default</b> runs." },
+          2: { step: 2, text: "You matched the stacked labels at the top. Stacked labels share the statements below them, but they still match only their own values — 10 and 9. The tested value is 5, so neither label catches it; the program falls to <b>default</b>." },
+          3: { step: 2, text: "You left grade at its starting value, as if an unmatched switch does nothing. It would — if there were no default. This switch <em>has</em> a default, and default is exactly the case that runs when nothing else matches: grade becomes 'F'." }
+        },
+        steps: [
+          { line: 4, vars: { score: ["int", "55"] }, out: "", note: "A box named <b>score</b> holds <b>55</b>." },
+          { line: 5, vars: { score: ["int", "55"], grade: ["char", "'?'"] }, out: "", note: "The <b>grade</b> box starts as <b>'?'</b> — a placeholder the switch is expected to overwrite." },
+          { line: 6, vars: { score: ["int", "55"], grade: ["char", "'?'"] }, out: "", note: "<b>The parting step.</b> The switch tests <b>score / 10 = 5</b> (integer division) against 10, 9, 8 and 7. No label equals 5, so control goes to <b>default</b>." },
+          { line: 18, vars: { score: ["int", "55"], grade: ["char", "'F'"] }, out: "", note: "Default's statement runs: <b>grade becomes 'F'</b>." },
+          { line: 20, vars: { score: ["int", "55"], grade: ["char", "'F'"] }, out: "F", note: "The print reads the box: <b>F</b>." },
+          { line: 21, vars: { score: ["int", "55"], grade: ["char", "'F'"] }, out: "F", note: "The program ends. Final answer: <b>F</b> — not because 55 is in a band, but because no case claimed it and default did." }
+        ],
+        modify: {
+          prompt: "The score changes: score is set to 85 instead of 55 (the marked line). Everything else is untouched. What prints now?",
+          code: 'int score = <mark>85</mark>;\nchar grade = \'?\';\nswitch (score / 10) {\n    case 10:\n    case 9: grade = \'A\'; break;\n    case 8: grade = \'B\'; break;\n    case 7: grade = \'C\'; break;\n    default: grade = \'F\';\n}\ncout << grade << endl;',
+          options: ["B", "A", "C", "F"],
+          correct: 0,
+          explain: "85 / 10 is <b>8</b>, which matches <b>case 8</b> exactly, so grade becomes <b>'B'</b> and the break closes the switch. Output: <b>B</b>."
+        }
+      },
+      {
+        concept: "Decisions · switch — char cases",
+        topic: "Branches",
+        title: "One letter, five doors",
+        goal: "Case labels can be <b>characters</b>, and several labels can be <b>stacked</b> over one shared body: any of them entering runs the same statements. Stacking is fall-through used on purpose.",
+        stories: {
+          health:   "A symptom-checker app tests whether one typed letter is a <strong>vowel</strong>: the letter is <strong>e</strong>, and five case labels share a single body. It prints 1 for a vowel, 0 otherwise.",
+          psych:    "A word-game app tests whether one typed letter is a <strong>vowel</strong>: the letter is <strong>e</strong>, and five case labels share a single body. It prints 1 for a vowel, 0 otherwise.",
+          business: "A form-checking app tests whether one typed letter is a <strong>vowel</strong>: the letter is <strong>e</strong>, and five case labels share a single body. It prints 1 for a vowel, 0 otherwise.",
+          arts:     "A lyrics app tests whether one typed letter is a <strong>vowel</strong>: the letter is <strong>e</strong>, and five case labels share a single body. It prints 1 for a vowel, 0 otherwise."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    char ch = 'e';",
+          "    int vowels = 0;",
+          "    switch (ch) {",
+          "        case 'a':",
+          "        case 'e':",
+          "        case 'i':",
+          "        case 'o':",
+          "        case 'u':",
+          "            vowels = 1;",
+          "            break;",
+          "        default:",
+          "            vowels = 0;",
+          "    }",
+          "    cout << vowels << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["1", "0", "5", "2"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "You sent 'e' to <b>default</b>, as if only the first label of a stack counts. Every stacked label is a real door: the switch compares ch against 'a', then <b>'e'</b> — and 'e' matches, entering the shared body. Default is only for letters no label claims." },
+          2: { step: 3, text: "You counted the <b>labels</b>. Five labels share <em>one</em> body, and the body runs <em>once</em>: it sets vowels to 1, it does not add 1 per label. The number of doors is not the number of runs." },
+          3: { step: 3, text: "The body runs exactly once, so vowels can only become <b>1</b> here. A 2 would need the statement to run twice — but after it runs, the <b>break</b> leaves the switch; nothing re-enters." }
+        },
+        steps: [
+          { line: 4, vars: { ch: ["char", "'e'"] }, out: "", note: "A box named <b>ch</b> holds the character <b>'e'</b>." },
+          { line: 5, vars: { ch: ["char", "'e'"], vowels: ["int", "0"] }, out: "", note: "The counter box <b>vowels</b> starts at <b>0</b> — the \"not a vowel\" answer, until the switch says otherwise." },
+          { line: 6, vars: { ch: ["char", "'e'"], vowels: ["int", "0"] }, out: "", note: "The switch tests ch against the stacked labels: 'a' no, <b>'e' yes</b>. Entry is through the 'e' door into the one shared body." },
+          { line: 12, vars: { ch: ["char", "'e'"], vowels: ["int", "1"] }, out: "", note: "<b>The parting step.</b> The shared body runs once: <b>vowels becomes 1</b>." },
+          { line: 13, vars: { ch: ["char", "'e'"], vowels: ["int", "1"] }, out: "", note: "<b>break</b> leaves the switch. Default never runs." },
+          { line: 18, vars: { ch: ["char", "'e'"], vowels: ["int", "1"] }, out: "1", note: "The print reads the box: <b>1</b>." },
+          { line: 19, vars: { ch: ["char", "'e'"], vowels: ["int", "1"] }, out: "1", note: "The program ends. Final answer: <b>1</b> — one letter, five doors, one body, one run." }
+        ],
+        modify: {
+          prompt: "The letter changes: ch is set to 'b' instead of 'e' (the marked line). Everything else is untouched. What prints now?",
+          code: 'char ch = <mark>\'b\'</mark>;\nint vowels = 0;\nswitch (ch) {\n    case \'a\':\n    case \'e\':\n    case \'i\':\n    case \'o\':\n    case \'u\':\n        vowels = 1;\n        break;\n    default:\n        vowels = 0;\n}\ncout << vowels << endl;',
+          options: ["0", "1", "5", "2"],
+          correct: 0,
+          explain: "'b' matches <b>none</b> of the five labels, so <b>default</b> runs and sets vowels to <b>0</b>. Output: <b>0</b>."
+        }
       }
     ];
 
@@ -8857,7 +9108,7 @@ int main() {
                pair: false, pairASelected: -1, pairALocked: false,
                pairBSelected: -1, pairBLocked: false, jointSelected: -1, jointLocked: false, rationale: "", muddy: 0,
                confidence: "", followSel: -1, followLocked: false, followCorrect: null,
-               teachBack: "", lastDuel: "" };
+               teachBack: "", lastDuel: "", reSel: -1, reLocked: false, reCorrect: null, reAtStep: -1 };
     }
     var state = {
       skin: "health",
@@ -9057,6 +9308,7 @@ int main() {
       { name: "Recursion", list: [13, 14, 15, 60, 61, 62] },
       { name: "Searching & Sorting", list: [16, 17, 41, 42, 43] },
       { name: "Decisions & References", list: [18, 19, 27, 51] },
+      { name: "Decisions — switch & fall-through", list: [86, 87, 88, 89] },
       { name: "Structured Data & Collections", list: [20, 21, 22] },
       { name: "Classes & Objects", list: [30, 31, 32] },
       { name: "File Input & Output", list: [33, 34, 63, 64, 65, 66, 67] },
@@ -9952,6 +10204,7 @@ int main() {
       }
       var pn0 = $("parting-note");
       if (pn0 && !(partingPauseActive && partingPauseEx === state.current && s.step === partingStepIndex())) pn0.hidden = true;
+      if (typeof renderRePred === "function") renderRePred();
 
       wiPaint = s.locked && s.step >= 0 && !s.traceDone && s.step < ex.steps.length - 1 && !wiState && wiExEligible(ex);
       paintMemoryStack({ memEl: $("memory"), memHeadEl: $("memory-h"), layoutEl: $("stack-layout"), stackColEl: $("stack-col"), stackEl: $("callstack"), heapEl: $("heap-region"), ex: ex, stepIdx: s.step,
@@ -10326,17 +10579,18 @@ int main() {
       card.hidden = false;
       var v = $("verdict");
       var actual = ex.options[ex.correct], mine = ex.options[s.selected];
+      var reHtml = s.reLocked ? '<p><b>Mid-trace re-prediction:</b> at the checkpoint you re-predicted <b>' + esc(ex.options[s.reSel] || "") + "</b> — it " + (s.reCorrect ? "held to the end, so the model you rebuilt mid-trace was the machine's model." : "also parted from the machine: seeing half the run was not enough to repair the model, which is the misconception to work on next.") + "</p>" : "";
       var ratEcho = s.rationale ? '<p class="rationale-echo">You predicted <b>' + esc(mine) + "</b> because: <i>" + esc(s.rationale) + "</i></p>" : "";
       if (s.correct) {
         v.innerHTML = '<div class="verdict good"><h3>Your model matched the machine.</h3>' +
           '<div class="vs"><div><span>You predicted</span>' + esc(mine) + '</div><div><span>The program printed</span>' + esc(actual) + "</div></div>" +
-          "<p>A correct prediction is evidence your mental model of this concept is sound — for these values. Stage 4 changes a value to check the model, not the memory.</p>" + ratEcho + teachBackHtml(s) + "</div>";
+          "<p>A correct prediction is evidence your mental model of this concept is sound — for these values. Stage 4 changes a value to check the model, not the memory.</p>" + reHtml + ratEcho + teachBackHtml(s) + "</div>";
       } else {
         var d = ex.diagnoses[s.selected];
         var confNote = s.confidence === "sure" ? '<p class="confident-note">You marked this prediction “Sure” — a confident miss, and the kind worth a second look: the model felt solid and still parted from the machine.</p>' : "";
         v.innerHTML = '<div class="verdict bad"><h3>Your model and the machine parted company.</h3>' +
           '<div class="vs"><div><span>You predicted</span>' + esc(mine) + '</div><div><span>The program printed</span>' + esc(actual) + "</div></div>" +
-          "<p>" + d.text + "</p>" + confNote + ratEcho + '<button class="btn small ghost jump" id="jump-btn" type="button">Jump to the parting step</button>' +
+          "<p>" + d.text + "</p>" + reHtml + confNote + ratEcho + '<button class="btn small ghost jump" id="jump-btn" type="button">Jump to the parting step</button>' +
           '<div id="followup-box"></div><p class="suggest-next" id="suggest-next"></p>' + teachBackHtml(s) + "</div>";
         $("jump-btn").addEventListener("click", function () {
           stopPlayback();
@@ -11106,6 +11360,7 @@ int main() {
        handlers so playback and clicking share one code path. */
     function traceAdvance() {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
+      if (typeof rePredGate === "function" && !rePredGate()) return false;
       if (s.step < ex.steps.length - 1) {
         s.step++;
         if (s.step === ex.steps.length - 1 && !wiActiveHere()) { s.traceDone = true; }
@@ -11121,6 +11376,7 @@ int main() {
     }
     function traceRunAll() {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
+      if (typeof rePredPending === "function" && rePredPending()) { s.step = Math.max(s.step, rePredCp(ex)); renderAll(); announce("Checkpoint: lock a second prediction before the run continues."); return; }
       s.step = ex.steps.length - 1; if (!wiActiveHere()) s.traceDone = true;
       renderAll();
       var dsAll = describeStep(); announce(dsAll); if (typeof speakTrace === "function") speakTrace(dsAll);
@@ -14072,7 +14328,10 @@ int main() {
       { id:42, title:"A name that starts with a number", raw:"error: expected unqualified-id before numeric constant", meaning:"The compiler was reading a declaration and expecting a name (an unqualified-id) — and instead it met a number. A name was written that begins with a digit, so the compiler reads the leading digits as a numeric constant sitting exactly where the name belongs.", cause:"An identifier starts with a digit: int 1stScore, double 2ndTry. C++ names must begin with a letter or an underscore; digits are allowed only after the first character. The error is reported at the number, and the fix is in the name: move the digit later (firstScore, score1) everywhere the variable is used.", before:"int 1stScore = 90;\ncout << 1stScore;", after:"int firstScore = 90;\ncout << firstScore;", keys:"expected unqualified-id before numeric constant name starts with digit identifier 1st variable naming" },
       { id:43, stage:"link", title:"Multiple definition — the same function defined twice (a linker error)", raw:"multiple definition of 'totalScore()'\n  — also seen as: first defined here / collect2: error: ld returned 1 exit status", meaning:"No compiler error anywhere: every file compiled on its own. This is a link error. The same function was defined — written out in full, body and all — in two places, and when the linker tried to assemble one program it found two bodies competing for one name. The rule the linker enforces is: one name, one definition.", cause:"The definition was pasted into two files, or written in a header that two files include (entry 45 is the variable version of the same accident). A declaration — the prototype line ending in a semicolon — may be repeated in as many files as need it; the definition, the one with the body, may exist exactly once in the whole program.", before:"// in main.cpp\nint totalScore() { return 42; }\n// in helpers.cpp — the same definition again\nint totalScore() { return 42; }", after:"// helpers.h — declare it (a promise, no body)\nint totalScore();\n// helpers.cpp — define it, once\nint totalScore() { return 42; }\n// main.cpp — just call it", keys:"multiple definition linker first defined here duplicate defined twice two files ld collect2" },
       { id:44, stage:"link", title:"Defined in another file — but that file was never linked (a linker error)", raw:"error: undefined reference to 'areaOf(int, int)'\ncollect2: error: ld returned 1 exit status", meaning:"Compile succeeded; link failed. And unlike entry 39, the function genuinely exists — it is defined in another file of the project. But that file was left out of the build, so when the linker went looking for the body, the piece of the program containing it was simply not on the table.", cause:"The call and the definition live in different files, and only the caller's file was compiled: a project that never added the second file, or a command like g++ main.cpp that forgets helpers.cpp. The fix is to the build, not to the code — no line of either file is wrong. Compile and link every file of the program together.", before:"// what was built: g++ main.cpp\n// main.cpp calls areaOf(3, 4)\n// helpers.cpp defines areaOf — and was never compiled", after:"// build every file of the program together:\n// g++ main.cpp helpers.cpp\n// now the linker finds areaOf's body", keys:"undefined reference linker other file not compiled linked object helpers collect2 ld g++ project" },
-      { id:45, stage:"link", title:"A variable defined in a header — duplicated wherever the header is included (a linker error)", raw:"error: multiple definition of 'score'\ncollect2: error: ld returned 1 exit status", meaning:"This is a link error, and every file compiled cleanly — because the header did not just describe the variable, it created it. Each file that includes the header therefore defines its own copy of the variable, and the linker, assembling the program, finds the same variable defined several times over and refuses to choose between the copies.", cause:"A definition like int score; was written in a header (score.h) that two or more .cpp files include. Headers are for declarations — promises, not things. The header should promise the variable with extern, and exactly one .cpp file should keep the promise with the single real definition.", before:"// score.h — included by main.cpp AND helpers.cpp\nint score;\n// two files include it, so score is defined twice", after:"// score.h — a promise only\nextern int score;\n// helpers.cpp — the one real definition\nint score;", keys:"multiple definition header variable extern duplicate symbol included twice linker ld collect2" }
+      { id:45, stage:"link", title:"A variable defined in a header — duplicated wherever the header is included (a linker error)", raw:"error: multiple definition of 'score'\ncollect2: error: ld returned 1 exit status", meaning:"This is a link error, and every file compiled cleanly — because the header did not just describe the variable, it created it. Each file that includes the header therefore defines its own copy of the variable, and the linker, assembling the program, finds the same variable defined several times over and refuses to choose between the copies.", cause:"A definition like int score; was written in a header (score.h) that two or more .cpp files include. Headers are for declarations — promises, not things. The header should promise the variable with extern, and exactly one .cpp file should keep the promise with the single real definition.", before:"// score.h — included by main.cpp AND helpers.cpp\nint score;\n// two files include it, so score is defined twice", after:"// score.h — a promise only\nextern int score;\n// helpers.cpp — the one real definition\nint score;", keys:"multiple definition header variable extern duplicate symbol included twice linker ld collect2" },
+      { id:46, stage:"runtime", title:"Segmentation fault — the program touched memory it does not own (a runtime crash)", raw:"Segmentation fault (core dumped)\n— the program may print some output first, then die. No compiler message, and no line number.", meaning:"This is a runtime crash, not a compiler or linker error: the program compiled, started running, and then touched a memory address it has no right to — the operating system killed it on the spot. The message names no line, because by the time the OS steps in, the machine is reporting an address, not your source. Any line number you are given for a crash like this is a guess; do not trust one.", cause:"Check in this order. (1) What printed last? Output stops where the crash happened, so the guilty statement is at or just after the last thing that printed. (2) Which index or pointer was in play there? The usual suspects: an array or vector index that ran past the last element (a loop using <= instead of < is the classic), a pointer that was never set to point at anything, or a pointer still being used after its target is gone. Fix the index or the pointer — never the symptom.", before:"int a[3] = {4, 8, 15};\nfor (int i = 0; i <= 3; i++) {\n    cout << a[i] << \" \";\n}  // i reaches 3 — one past the last slot", after:"int a[3] = {4, 8, 15};\nfor (int i = 0; i < 3; i++) {\n    cout << a[i] << \" \";\n}  // slots are 0, 1, 2 — the loop stops in time", keys:"segmentation fault segfault core dumped crash runtime died memory access violation bus error" },
+      { id:47, stage:"runtime", title:"Division by zero — the divisor reached zero while running (a runtime crash)", raw:"Floating point exception (core dumped)\n— on some systems the program simply stops, or prints inf / nan for doubles. No line number is reported.", meaning:"Integer division (or %) by zero is a runtime crash: the program compiled because the compiler cannot know what value the divisor will hold when the line runs — a count that came from data, a size that turned out to be 0. The crash message names no line: the processor raised the fault, not your source file. For doubles the same mistake usually does not crash at all — it quietly produces inf or nan and poisons every later result.", cause:"Check in this order. (1) Which division ran last before the crash? (2) What feeds its divisor — a count, a length, a difference — and what input or data made it 0? An average over an empty list is the classic: total / count with count still 0. (3) Guard before you divide: if the divisor can be 0, decide what the program should do instead (skip, print a message, return early) and test that case on purpose.", before:"int total = 60;\nint count = 0;  // no scores were read\ncout << total / count << endl;  // crash", after:"int total = 60;\nint count = 3;  // the three scores actually read\ncout << total / count << endl;  // prints 20", keys:"division by zero divide zero floating point exception runtime crash inf nan modulo average count" },
+      { id:48, stage:"runtime", title:"Out-of-bounds access — an index past the end (a runtime error, often silent)", raw:"Often NO message at all: the program prints garbage, or crashes three statements later.\nWith sanitizers on: runtime error: index 5 out of bounds for type 'int [5]'", meaning:"Reading or writing a[i] where i is outside 0..size-1 is undefined behaviour: the machine does not promise an error — it may hand back whatever happens to sit in that memory, which is why this bug can look like it works. That is also why there is usually no trustworthy line number: the damage is spotted far from the cause, if it is spotted at all. The sanitizer message above is the honest version — it exists only when the program was built with checks on.", cause:"Check in this order. (1) Find every index computed just before the wrong behaviour: a[i], v[i], word[i]. (2) Work out the index's largest possible value and compare it with the last legal one, size - 1: a loop bounded by <= size, or a hand-set index equal to size, is one too far — counting elements (size) is not naming the last slot (size - 1). (3) Check the same for negative values. Fix the bound or the index, then re-run with the edge inputs: first element, last element, empty.", before:"int a[4] = {3, 6, 9, 12};\nint i = 4;  // the size — not a slot\ncout << a[i] << endl;  // out of bounds", after:"int a[4] = {3, 6, 9, 12};\nint i = 3;  // the last slot\ncout << a[i] << endl;  // prints 12", keys:"out of bounds index subscript array vector runtime undefined behaviour sanitizer overflow past end size" }
 
     ];
     /* ================= Error Translator: fix-it rounds =================
@@ -14181,6 +14440,9 @@ int main() {
                     "Give the machine the definition it is missing, above main: <span class=\"mono\">int areaOf(int w, int h) { return w * h; }</span> — on a real command line you would instead compile the other file in, with g++ main.cpp helpers.cpp."] }
 
     };
+    FIXIT[46] = { code: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a[3] = {4, 8, 15};\n    for (int i = 0; i <= 3; i++) {\n        cout << a[i] << \" \";\n    }\n    cout << endl;\n    return 0;\n}", hints: ["The crash family: this loop reads <b>one slot past the end</b> of the array. Slots are numbered 0, 1, 2 — watch what value <b>i</b> reaches on the last pass, and what the loop condition allows.", "Change the loop bound on line 6 from <span class=\"mono\">i &lt;= 3</span> to <span class=\"mono\">i &lt; 3</span> — the loop must stop before i names a slot that does not exist. On a real machine, the unguarded version is the one that can die with a segmentation fault."] };
+    FIXIT[47] = { code: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int total = 60;\n    int count = 0;\n    cout << total / count << endl;\n    return 0;\n}", hints: ["Look at <b>line 7</b> — the division. Now look at line 6: what value does the <b>divisor</b> actually hold when the division runs?", "The divisor <span class=\"mono\">count</span> is 0 — no scores were counted, but the total (60) came from three scores. Set <span class=\"mono\">int count = 3;</span> so the average is over the scores that exist. In a real program you would also guard: never divide until you have checked the divisor is not 0."] };
+    FIXIT[48] = { code: "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a[4] = {3, 6, 9, 12};\n    int i = 4;\n    cout << a[i] << endl;\n    return 0;\n}", hints: ["Look at <b>line 6</b>: the index is the array's <b>size</b>. Now count the slots an array of size 4 actually has, starting from 0.", "The last slot of a 4-element array is index <b>3</b>, not 4. Change line 6 to <span class=\"mono\">int i = 3;</span> — 4 counts the elements; it does not name one."] };
     var fixitState = {};
     function fixitOf(id) {
       if (!fixitState[id]) fixitState[id] = { code: FIXIT[id].code, hints: 0, done: false, attempts: 0, lastOut: null };
@@ -14297,7 +14559,7 @@ int main() {
         var head = document.createElement("button");
         head.type = "button"; head.className = "trans-head";
         head.setAttribute("aria-expanded", transOpen[e.id] ? "true" : "false");
-        head.innerHTML = '<span class="tnum">' + e.id + '</span><span style="flex:1 1 auto;min-width:0;"><span class="ttitle">' + e.title + '</span>' + (e.stage === "link" ? '<span class="trans-stage link">Linker error</span>' : '<span class="trans-stage">Compiler error</span>') + '<span class="tsummary">' + esc(e.meaning.split(". ")[0] + ".") + '</span></span><span class="tchev" aria-hidden="true">' + (transOpen[e.id] ? "−" : "+") + "</span>";
+        head.innerHTML = '<span class="tnum">' + e.id + '</span><span style="flex:1 1 auto;min-width:0;"><span class="ttitle">' + e.title + '</span>' + (e.stage === "link" ? '<span class="trans-stage link">Linker error</span>' : e.stage === "runtime" ? '<span class="trans-stage runtime">Runtime error</span>' : '<span class="trans-stage">Compiler error</span>') + '<span class="tsummary">' + esc(e.meaning.split(". ")[0] + ".") + '</span></span><span class="tchev" aria-hidden="true">' + (transOpen[e.id] ? "−" : "+") + "</span>";
         head.addEventListener("click", function () {
           var willOpen = !transOpen[e.id]; transOpen = {}; if (willOpen) transOpen[e.id] = true; renderTrans($("trans-search").value);
           if (transOpen[e.id]) announce("Opened: " + e.title);
@@ -16893,6 +17155,23 @@ int main() {
             return { kind: "while", cond: wc, body: parseStmt(), line: t.line };
           }
           if (t.v === "for") return parseFor();
+          if (t.v === "break") { next(); expectOp(";"); return { kind: "break", line: t.line }; }
+          if (t.v === "continue") { next(); expectOp(";"); return { kind: "continue", line: t.line }; }
+          if (t.v === "switch") {
+            next(); expectOp("("); var swd = parseExpr(); expectOp(")"); expectOp("{");
+            var swSections = [];
+            while (!isOp("}")) {
+              var lt = peek(), swLabel = null, swDef = false;
+              if (isId("case")) { next(); swLabel = parseExpr(); expectOp(":"); }
+              else if (isId("default")) { next(); expectOp(":"); swDef = true; }
+              else fail(lt, "inside a switch, every statement must follow a case label or default: — the machine needs to know which door it entered by.");
+              var swStmts = [];
+              while (!isOp("}") && !isId("case") && !isId("default")) swStmts.push(parseStmt());
+              swSections.push({ label: swLabel, isDefault: swDef, stmts: swStmts, line: lt.line });
+            }
+            next();
+            return { kind: "switch", disc: swd, sections: swSections, line: t.line };
+          }
           if (t.v === "return") {
             next();
             var rv = null;
@@ -17720,8 +17999,30 @@ int main() {
       }
       function execStmt(env, node) {
         step(node.line);
-        if (ctx.trace && ["decl", "expr", "cout", "ostream", "cin", "istream", "return", "if", "rangefor"].indexOf(node.kind) >= 0) recordStep(env, node.line);
+        if (ctx.trace && ["decl", "expr", "cout", "ostream", "cin", "istream", "return", "if", "rangefor", "switch"].indexOf(node.kind) >= 0) recordStep(env, node.line);
         switch (node.kind) {
+          case "break": throw { makeBreak: true, line: node.line };
+          case "continue": throw { makeContinue: true, line: node.line };
+          case "switch": {
+            var dv = evalExpr(env, node.disc);
+            var startAt = -1, defAt = -1;
+            node.sections.forEach(function (sec, si) {
+              if (sec.isDefault) { defAt = si; return; }
+              var lv2 = evalExpr(env, sec.label);
+              var eq = (dv.t === "string" || lv2.t === "string") ? (dv.t === lv2.t && dv.v === lv2.v) : (makeNum(dv, node.line, "in a switch") === makeNum(lv2, node.line, "in a case label"));
+              if (eq && startAt === -1) startAt = si;
+            });
+            if (startAt === -1) startAt = defAt;
+            if (startAt >= 0) {
+              try {
+                for (var ssi = startAt; ssi < node.sections.length; ssi++) {
+                  var secStmts = node.sections[ssi].stmts;
+                  for (var ssj = 0; ssj < secStmts.length; ssj++) execStmt(env, secStmts[ssj]);
+                }
+              } catch (eSw) { if (!(eSw && eSw.makeBreak)) throw eSw; }
+            }
+            return;
+          }
           case "empty": return;
           case "block": execBlock(env, node); return;
           case "rangefor": {
@@ -17747,7 +18048,9 @@ int main() {
                 var it = items[ii];
                 if (it.t === "pair") lscope[node.name] = { type: "pair", isArr: false, val: it };
                 else lscope[node.name] = { type: node.vtype === "auto" ? it.t : node.vtype, isArr: false, val: makeConv(it, node.vtype === "auto" ? it.t : node.vtype, node.line, node.name) };
-                execStmt(env, node.body);
+                var rfBroke = false;
+                try { execStmt(env, node.body); } catch (eR) { if (eR && eR.makeBreak) rfBroke = true; else if (!(eR && eR.makeContinue)) throw eR; }
+                if (rfBroke) break;
               }
             } finally { env.pop(); }
             return;
@@ -17781,7 +18084,7 @@ int main() {
             else if (node.els) execStmt(env, node.els);
             return;
           case "while":
-            while (makeTruthy(evalExpr(env, node.cond), node.line)) { step(node.line); execStmt(env, node.body); }
+            while (makeTruthy(evalExpr(env, node.cond), node.line)) { step(node.line); try { execStmt(env, node.body); } catch (eW) { if (eW && eW.makeBreak) break; if (!(eW && eW.makeContinue)) throw eW; } }
             return;
           case "for": {
             env.push({});
@@ -17790,7 +18093,9 @@ int main() {
               for (;;) {
                 step(node.line);
                 if (node.cond && !makeTruthy(evalExpr(env, node.cond), node.line)) break;
-                execStmt(env, node.body);
+                var forBroke = false;
+                try { execStmt(env, node.body); } catch (eF) { if (eF && eF.makeBreak) forBroke = true; else if (!(eF && eF.makeContinue)) throw eF; }
+                if (forBroke) break;
                 for (var u = 0; u < node.updates.length; u++) evalExpr(env, node.updates[u]);
               }
             } finally { env.pop(); }
@@ -19278,6 +19583,7 @@ int main() {
         if (s.rationale) lines.push("Why: " + s.rationale);
         lines.push("Correct output: " + ex.options[ex.correct]);
         lines.push("Verdict: " + (s.correct ? "correct" : "parted"));
+        if (s.reLocked) lines.push("Re-prediction (mid-trace, step " + (s.reAtStep + 1) + "): " + ex.options[s.reSel] + " — " + (s.reCorrect ? "held to the end" : "also parted"));
         if (s.followLocked) {
           var fuJ = (!s.correct && ex.diagnoses && ex.diagnoses[s.selected]) ? followFor(ex, ex.diagnoses[s.selected].text.replace(/<[^>]+>/g, "")) : null;
           lines.push("Follow-up: " + (s.followCorrect ? "Repair held" : "Still active" + (fuJ ? " — " + fuJ.fam.label : "")));
@@ -20285,6 +20591,15 @@ int main() {
 
     /* ================= Gap 2: Reading layer — Briefings ================= */
     var BRIEFINGS = {
+      "Decisions — switch & fall-through": { title: "Briefing: switch — doors, not walls",
+        body: "A <b>switch</b> tests one value against its <b>case</b> labels and jumps to the matching label. The labels are <b>entry points, not compartments</b>: after entering, execution runs downward through any labels below until a <b>break</b> (or the end of the switch) stops it. That downward run is <b>fall-through</b> — a bug when a break is forgotten, and a tool when several labels are <b>stacked</b> over one shared body on purpose. <b>default</b> is the label every unmatched value lands on; without it, an unmatched switch does nothing at all. A switch matches <b>exact values only</b> — integers and characters — never ranges.",
+        example: ["int level = 1;", "switch (level) {", "    case 1:", "        msg = \"low\";", "    case 2:", "        msg = msg + \" mid\";", "        break;", "}"], note: "There is <b>no break</b> under case 1, so entering at case 1 runs <b>both</b> statements: msg ends as <b>\"low mid\"</b>, and only case 2's break stops the fall.",
+        checks: [
+          { q: "A case has no break. What happens when execution reaches the next case label?", options: ["It runs the next case's statements too", "The switch ends", "The program fails to compile", "It jumps back to the switch line"], correct: 0, why: "Labels do not stop execution — only break (or the end of the switch) does. That is fall-through." },
+          { q: "When does default run?", options: ["When no case label matches the tested value", "Always, after the matched case", "Only when the value is 0", "Instead of the matched case"], correct: 0, why: "Default is the unmatched value's case. A matched value never reaches it (a break or the switch's end intervenes)." },
+          { q: "Why stack case 'a': case 'e': case 'i': over one body?", options: ["So any of those letters enters the same statements", "So the body runs once per label", "Because every switch needs five cases", "To make default unreachable"], correct: 0, why: "Stacked labels share the body below them: entering through any one of them runs it — once." }
+        ],
+        drag: { q: "Drag the token that ends a case's run and leaves the switch: ___ ;", tokens: ["break", "default", "case", "return"], correct: "break", why: "break leaves the switch at once; the labels case and default only mark entry points, and return leaves the whole function." } },
       "Sorting & cost": { title: "Briefing: Sorting & cost — counting comparisons",
         body: "A sort's <b>cost</b> can be counted, not just felt: put an ordinary variable, <code>int comparisons = 0;</code>, in the program and raise it at every element-against-element test. The count separates things beginners merge: a <b>comparison</b> is a test, a <b>swap</b> is a move — bubble sort on 4 elements makes 6 comparisons but only as many swaps as the data forces. Bubble and selection sort both test <b>3 + 2 + 1 = 6</b> pairs on 4 elements whatever the data (their bill grows like <b>n²</b>), while <b>insertion sort</b> stops each key at the first smaller neighbour, so its bill collapses on nearly sorted data. The <b>merge step</b> combines two <em>already sorted</em> runs by comparing only their fronts, and copies any leftover tail for free; repeating it bottom-up is merge sort, whose bill grows like <b>n log n</b> — on 8 values, 17 comparisons against bubble sort's 28. A <b>partition</b> pass spends one comparison per element to place its pivot in its final home, without sorting either side.",
         example: ["int comparisons = 0;", "for (int j = 0; j < 3; j++) {", "    comparisons++;", "    if (a[j] > a[j + 1]) { swap them }", "}"], note: "One pass over 4 elements runs <b>comparisons++</b> <b>3</b> times — once per pair tested — whether or not any swap happens. Three passes test 3 + 2 + 1 = <b>6</b> pairs.",
@@ -22309,7 +22624,11 @@ int main() {
           followLocked: !!s.followLocked,
           followCorrect: (s.followCorrect === true || s.followCorrect === false) ? s.followCorrect : null,
           teachBack: (typeof s.teachBack === "string" && s.teachBack.trim()) ? s.teachBack.trim().slice(0, 240) : "",
-          lastDuel: (s.lastDuel === "issued" || s.lastDuel === "challenged") ? s.lastDuel : ""
+          lastDuel: (s.lastDuel === "issued" || s.lastDuel === "challenged") ? s.lastDuel : "",
+          reSel: (typeof s.reSel === "number" ? s.reSel : -1),
+          reLocked: !!s.reLocked,
+          reCorrect: (s.reCorrect === true || s.reCorrect === false) ? s.reCorrect : null,
+          reAtStep: (typeof s.reAtStep === "number" ? s.reAtStep : -1)
         });
       });
       try {
@@ -22466,6 +22785,10 @@ int main() {
           s.followCorrect = (sv.followCorrect === true || sv.followCorrect === false) ? sv.followCorrect : null;
           if (typeof sv.teachBack === "string" && sv.teachBack.trim()) s.teachBack = sv.teachBack.trim().slice(0, 240);
           if (sv.lastDuel === "issued" || sv.lastDuel === "challenged") s.lastDuel = sv.lastDuel;
+          if (typeof sv.reSel === "number") s.reSel = sv.reSel;
+          s.reLocked = !!sv.reLocked && s.locked;
+          s.reCorrect = (sv.reCorrect === true || sv.reCorrect === false) ? sv.reCorrect : null;
+          if (typeof sv.reAtStep === "number") s.reAtStep = sv.reAtStep;
           s.jointLocked = !!sv.jointLocked;
           if (s.locked || s.modDone) state.ex[i] = s;
         });
@@ -24094,6 +24417,80 @@ int main() {
       }
       renderOrderBody();
     }
+
+    /* ================= Mid-trace re-prediction =================
+       Design: ONE checkpoint per eligible exercise, at the midpoint step
+       (floor(steps/2)), offered on every locked run — right-first-time and
+       wrong alike, because a correct first prediction can rest on a wrong
+       reason, and a repaired model should be re-tested mid-run, not only
+       at the next exercise. Eligible = trace has at least 6 steps, so the
+       midpoint leaves a meaningful remainder. The trace cannot advance
+       past the checkpoint (Step, Run all and playback all funnel through
+       traceAdvance / traceRunAll, both gated) until the second prediction
+       locks. Stored additively on the exercise's existing tracer record
+       (reSel / reLocked / reCorrect / reAtStep) in tracefirst-progress-v1;
+       surfaced in the Stage 3 verdict and the prediction journal, in the
+       same style as the follow-up lines. No points or badges. */
+    function rePredCp(ex) { return Math.floor(ex.steps.length / 2); }
+    function rePredEligible(ex, s) { return !!(ex && s && s.locked && ex.steps && ex.steps.length >= 6); }
+    function rePredPending() {
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      return rePredEligible(ex, s) && !s.reLocked && !s.traceDone && s.step >= rePredCp(ex);
+    }
+    function rePredGate() {
+      if (rePredPending()) { renderRePred(); return false; }
+      return true;
+    }
+    var reSelLocal = -1, reExSeen = -1;
+    function renderRePred() {
+      var panel = $("repred-panel"); if (!panel) return;
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      if (reExSeen !== state.current) { reExSeen = state.current; reSelLocal = (s && typeof s.reSel === "number") ? s.reSel : -1; }
+      if (!rePredEligible(ex, s)) { panel.hidden = true; return; }
+      var doneEl = $("repred-done"), optsEl = $("repred-options"), lockBtn = $("repred-lock"), txtEl = $("repred-text");
+      if (s.reLocked) {
+        panel.hidden = false;
+        if (optsEl) optsEl.innerHTML = "";
+        if (txtEl) txtEl.hidden = true;
+        if (lockBtn) lockBtn.disabled = true;
+        if (doneEl) { doneEl.hidden = false; doneEl.textContent = "Second prediction locked at step " + (s.reAtStep + 1) + ": \u201C" + (ex.options[s.reSel] || "") + "\u201D — its verdict waits in Stage 3."; }
+        return;
+      }
+      if (!rePredPending()) { panel.hidden = true; return; }
+      panel.hidden = false;
+      if (txtEl) txtEl.hidden = false;
+      if (doneEl) doneEl.hidden = true;
+      if (optsEl && optsEl.getAttribute("data-for") !== String(state.current)) {
+        optsEl.setAttribute("data-for", String(state.current));
+        optsEl.innerHTML = "";
+        ex.options.forEach(function (opt, i) {
+          var b = document.createElement("button");
+          b.className = "opt-btn"; b.type = "button";
+          b.setAttribute("aria-pressed", reSelLocal === i ? "true" : "false");
+          b.innerHTML = '<span class="key">' + "ABCD"[i] + "</span><span>" + esc(opt) + "</span>";
+          b.addEventListener("click", function () { reSelLocal = i; renderRePred(); });
+          optsEl.appendChild(b);
+        });
+      } else if (optsEl) {
+        var kids = optsEl.children;
+        for (var ki = 0; ki < kids.length; ki++) kids[ki].setAttribute("aria-pressed", reSelLocal === ki ? "true" : "false");
+      }
+      if (lockBtn) lockBtn.disabled = reSelLocal < 0;
+    }
+    (function wireRePred() {
+      var btn = $("repred-lock"); if (!btn) return;
+      btn.addEventListener("click", function () {
+        var ex = EXERCISES[state.current], s = state.ex[state.current];
+        if (!rePredPending() || reSelLocal < 0) return;
+        s.reSel = reSelLocal;
+        s.reLocked = true;
+        s.reCorrect = reSelLocal === ex.correct;
+        s.reAtStep = s.step;
+        if (typeof tfSave === "function") tfSave();
+        announce("Second prediction locked: " + ex.options[reSelLocal] + ". The trace can step on.");
+        renderAll();
+      });
+    })();
     </script>
     <script>
     /* ---------------- Mode tab dropdowns ----------------
