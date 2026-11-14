@@ -281,6 +281,8 @@
       .mem-elems { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
       .mem-elem { border: 1.5px solid var(--accent); background: var(--accent-soft); border-radius: 7px; min-width: 36px; text-align: center; padding: 3px 8px; font-family: "IBM Plex Mono", monospace; font-weight: 600; font-size: 1.05rem; line-height: 1.25; }
       .mem-elem small { display: block; font-size: .6rem; color: var(--ink-soft); font-weight: 600; letter-spacing: .04em; }
+      .mem-elem.spare { border-style: dashed; border-color: var(--line); background: transparent; color: var(--ink-soft); }
+      .mem-cap-note { margin-top: 6px; font-size: .78rem; color: var(--ink-soft); }
       .mem-grid2 { display: grid; gap: 5px; margin-top: 8px; }
       .mem-grid-row { display: flex; gap: 5px; }
       .mem-grid-row .mem-elem { flex: 1 1 0; }
@@ -1690,7 +1692,9 @@
             <div class="bits-group" role="group" aria-labelledby="comfort-label">
               <button type="button" class="bg-btn comfort-btn" id="motion-toggle" aria-pressed="false"><span class="cdot" aria-hidden="true"></span>Reduce motion</button>
               <button type="button" class="bg-btn comfort-btn" id="textsize-toggle" aria-pressed="false"><span class="cdot" aria-hidden="true"></span>Larger text</button>
+              <button type="button" class="bg-btn comfort-btn" id="readaloud-toggle" aria-pressed="false"><span class="cdot" aria-hidden="true"></span>Read trace aloud</button>
             </div>
+            <p class="display-note" id="readaloud-note" hidden>Read-aloud needs speech synthesis, which this browser does not provide. Trace steps are still announced on screen as text as you step.</p>
             <p class="display-note">Display choices are saved in this browser, on this device.</p>
             <div class="display-clear">
               <span class="bgbar-label">TraceFirst as an app</span>
@@ -1749,7 +1753,7 @@
             <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Order code, then write a line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find and fix faults.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 81</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 86</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write your own programs.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
             <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
@@ -1878,6 +1882,8 @@
         <table class="refcard-table"><tr><th>Method</th><th>Does</th></tr>
         <tr><td><code>v.push_back(x)</code></td><td>Append x; the vector grows by one.</td></tr>
         <tr><td><code>v.size()</code> / <code>s.length()</code></td><td>How many elements / characters there are now.</td></tr>
+        <tr><td><code>v.capacity()</code></td><td>How many elements the vector has room for before it must grow — always at least size(), often more.</td></tr>
+        <tr><td><code>v.reserve(n)</code></td><td>Book room for n elements: capacity rises, size does not — no elements are created.</td></tr>
         <tr><td><code>v[i]</code> / <code>s[i]</code></td><td>The element / character at index i, counting from 0.</td></tr>
         <tr><td><code>s.substr(pos)</code> / <code>s.substr(pos, len)</code></td><td>The text from pos to the end / for len characters.</td></tr>
         <tr><td><code>counts[key]</code></td><td>A map's slot for key — created at 0 on first use.</td></tr>
@@ -2086,7 +2092,7 @@ for (int i = 0; i < 3; i++) {
             <select class="lecture-select" id="lecture-ex-select" aria-label="Choose an exercise to project"></select>
             <button class="btn" type="button" id="lecture-project-btn">Project this exercise</button>
           </div>
-          <p class="lecture-pick-note">Any of the 81 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
+          <p class="lecture-pick-note">Any of the 86 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
         </div>
 
         <div id="lecture-project" hidden>
@@ -2559,6 +2565,18 @@ for (int i = 0; i < 3; i++) {
           <span class="journal-status" id="assign-csv-note" role="status"></span>
         </div>
         <div id="assign-view" hidden style="margin-top:14px;border:1.5px solid var(--accent);border-radius:12px;padding:16px;" aria-live="polite"></div>
+      </section>
+<section class="card" id="quiz-section" style="margin-top:18px;" aria-labelledby="quiz-h">
+        <h3 id="quiz-h">Prediction quiz — five locks, then the verdicts</h3>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">A low-stakes check under test conditions, built from the tracer exercises themselves. An instructor picks any <strong>five</strong> exercises below; the student then works through them one at a time and <strong>locks all five predictions before any verdict appears</strong> — no per-question right or wrong along the way. Only when the fifth lock lands does the quiz show <strong>one score out of five</strong> plus a summary of the traps that caught the student, so the whole set can be reviewed while the reasoning is still fresh. It is deliberately not the assignment flow (those are worked in the tracer, with traces) and not a duel: there are no badges, points or streaks, and quiz answers live only in the quiz — they never change the exercise record, the accuracy counts, or the journal. Picks and progress are saved in this browser only, like everything else here.</p>
+        <h4 style="margin-top:16px;font-size:.95rem;">Choose the five exercises</h4>
+        <div id="quiz-picks" style="display:grid;gap:8px;margin-top:8px;"></div>
+        <div class="journal-actions">
+          <button class="btn" type="button" id="quiz-start-btn">Start quiz</button>
+          <span class="journal-status" id="quiz-setup-status" role="status"></span>
+        </div>
+        <div id="quiz-run" hidden style="margin-top:14px;border:1.5px solid var(--accent);border-radius:12px;padding:16px;"></div>
+        <div id="quiz-results" hidden style="margin-top:14px;border:1.5px solid var(--accent);border-radius:12px;padding:16px;" aria-live="polite"></div>
       </section>
 <section class="card crosswalk-card" id="crosswalk-section" aria-labelledby="crosswalk-h">
         <h3 id="crosswalk-h">Topic crosswalk</h3>
@@ -3101,12 +3119,12 @@ int main() {
         <div id="instructors-body" hidden>
           <div class="lecture-inst-entry">
             <h4>Lecture mode — run a tracer exercise in front of the class</h4>
-            <p>A single projected screen: pick any of the 81 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
+            <p>A single projected screen: pick any of the 86 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
             <div class="journal-actions"><button class="btn small" type="button" id="lecture-open-btn-2">Open Lecture mode</button></div>
           </div>
                     <div class="studio" id="inst-studio">
             <h4>Instructor exercise studio</h4>
-            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 81 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
+            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 86 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
             <div class="authored-field">
               <label for="inst-title">Exercise title</label>
               <input class="authored-input" type="text" id="inst-title" maxlength="80" placeholder="e.g. The average that is not an average" autocomplete="off">
@@ -8580,6 +8598,255 @@ int main() {
                   "correct": 0,
                   "explain": "The types now match, so the handler runs and receives the thrown text: it prints <b>caught jammed</b>, and — the exception handled — execution continues after the try/catch to print <b>after</b>: <b>start caught jammed after</b>. One type in one line is the difference between a recovery and a termination."
             }
+      },
+      {
+        concept: "Vectors — capacity growth",
+        topic: "Arrays and vectors",
+        title: "Room to grow",
+        goal: "A vector tracks <b>size</b> (elements it holds) and <b>capacity</b> (elements it has room for) as two separate numbers. <b>push_back</b> fills a spare slot when one exists; only when the vector is completely full does it grow — and on the standard library used here, growing <b>doubles</b> the room.",
+        stories: {
+          health:   "A step-counter app stores the day's <strong>readings</strong> in a vector that starts empty: it appends <strong>5</strong>, then <strong>8</strong>, then <strong>3</strong>. At the end it prints the vector's size, its capacity, and the second reading.",
+          psych:    "A survey app stores <strong>response scores</strong> in a vector that starts empty: it appends <strong>5</strong>, then <strong>8</strong>, then <strong>3</strong>. At the end it prints the vector's size, its capacity, and the second response.",
+          business: "A till app stores <strong>sale amounts</strong> in a vector that starts empty: it appends <strong>5</strong>, then <strong>8</strong>, then <strong>3</strong>. At the end it prints the vector's size, its capacity, and the second sale.",
+          arts:     "A rehearsal app stores <strong>practice ratings</strong> in a vector that starts empty: it appends <strong>5</strong>, then <strong>8</strong>, then <strong>3</strong>. At the end it prints the vector's size, its capacity, and the second rating."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <vector>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    vector<int> v;",
+          "    v.push_back(5);",
+          "    v.push_back(8);",
+          "    v.push_back(3);",
+          "    cout << v.size() << \" \" << v.capacity() << \" \" << v[1] << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["3 4 8", "3 3 8", "3 4 5", "4 4 8"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 3, text: "<b>Named misconception: capacity equals size.</b> They part company at the third push. The vector was full at size 2, capacity 2, so the third push first <em>doubled the room</em> to 4 and only then stored the 3 — leaving one spare slot. From then on capacity (4) is bigger than size (3), and capacity() reports the room, not the contents." },
+          2: { step: 4, text: "The size and capacity are right, but <b>v[1]</b> is the <em>second</em> element, not the first: indexes count from 0, so v[0] is 5 and v[1] is 8. Reading v[1] as if counting started at 1 hands you the wrong element." },
+          3: { step: 0, text: "Size counts <em>elements</em>, and a freshly declared vector holds none: <b>vector&lt;int&gt; v;</b> starts at size 0. Three push_back lines add three elements, so the size is 3 — the declaration itself is not an element." }
+        },
+        steps: [
+          { line: 5, vars: { v: ["vector<int>", "{} (size 0, capacity 0)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: [], cap: 0 }], out: "", note: "The vector <b>v</b> is created <b>empty</b>: size 0, and capacity 0 — it has not booked a single slot yet." },
+          { line: 6, vars: { v: ["vector<int>", "{5} (size 1, capacity 1)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["5"], cap: 1 }], out: "", note: "<b>v.push_back(5)</b>: the vector is full before it starts (0 of 0), so it first grows — capacity 0 becomes <b>1</b> — then stores the 5 at index 0. Size: 1." },
+          { line: 7, vars: { v: ["vector<int>", "{5, 8} (size 2, capacity 2)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["5", "8"], cap: 2 }], out: "", note: "<b>v.push_back(8)</b>: full again (1 of 1), so the room doubles — capacity 1 becomes <b>2</b> — and the 8 lands at index 1. Size: 2." },
+          { line: 8, vars: { v: ["vector<int>", "{5, 8, 3} (size 3, capacity 4)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["5", "8", "3"], cap: 4 }], out: "", note: "<b>v.push_back(3)</b>: full again (2 of 2), so the room doubles once more — capacity 2 becomes <b>4</b>. The 3 lands at index 2, and one <b>spare slot</b> (dashed) is left over: room with nothing in it. Size: 3, capacity: 4 — the two numbers have parted company." },
+          { line: 9, vars: { v: ["vector<int>", "{5, 8, 3} (size 3, capacity 4)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["5", "8", "3"], cap: 4 }], out: "3 4 8", note: "<b>The parting step.</b> The print reads all three numbers off the box: <b>size() is 3</b>, <b>capacity() is 4</b>, and <b>v[1]</b> — the second element — is <b>8</b>. Output: <b>3 4 8</b>." },
+          { line: 10, vars: { v: ["vector<int>", "{5, 8, 3} (size 3, capacity 4)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["5", "8", "3"], cap: 4 }], out: "3 4 8", note: "The program ends. Final answer: <b>3 4 8</b> — three elements held, room for four, second element 8." }
+        ],
+        modify: {
+          prompt: "One more push is added after the others: v.push_back(6);. The print statement is untouched. What prints now?",
+          code: 'vector<int> v;\nv.push_back(5);\nv.push_back(8);\nv.push_back(3);\nv.push_back(<mark>6</mark>);\ncout << v.size() << " " << v.capacity() << " " << v[1] << endl;',
+          options: ["4 4 8", "4 8 8", "3 4 8", "4 4 6"],
+          correct: 0,
+          explain: "The fourth push finds the <b>spare slot</b> the third push's growth left behind, so it fills it without growing: size becomes <b>4</b>, capacity stays <b>4</b>, and v[1] is still 8. Output: <b>4 4 8</b>."
+        }
+      },
+      {
+        concept: "Vectors — growth in a loop",
+        topic: "Arrays and vectors",
+        title: "The doubling staircase",
+        goal: "Push in a loop and capacity climbs a <b>staircase: 1, 2, 4, 8…</b> A push that finds the vector full doubles the room; a push that finds a spare slot changes only the size. Where the staircase stands depends on <em>how many pushes have happened</em>, not on the values pushed.",
+        stories: {
+          health:   "A clinic app records <strong>five days of step counts in tens</strong>: a loop pushes 10, 20, 30, 40, 50 into a vector that starts empty. It then prints the vector's size and capacity.",
+          psych:    "A study app records <strong>five session scores in tens</strong>: a loop pushes 10, 20, 30, 40, 50 into a vector that starts empty. It then prints the vector's size and capacity.",
+          business: "A shop app records <strong>five days of sales in tens</strong>: a loop pushes 10, 20, 30, 40, 50 into a vector that starts empty. It then prints the vector's size and capacity.",
+          arts:     "A venue app records <strong>five nights of attendance in tens</strong>: a loop pushes 10, 20, 30, 40, 50 into a vector that starts empty. It then prints the vector's size and capacity."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <vector>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    vector<int> v;",
+          "    for (int i = 1; i <= 5; i++) {",
+          "        v.push_back(i * 10);",
+          "    }",
+          "    cout << v.size() << \" \" << v.capacity() << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["5 8", "5 5", "5 4", "5 10"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 6, text: "<b>Named misconception: capacity equals size.</b> Watch the fifth push: the vector is full at 4 of 4, so before the 50 can be stored the room doubles to <b>8</b>. Size ends at 5, but capacity has already jumped ahead to 8 — it only ever moves in doublings, and it never waits for size to catch up." },
+          2: { step: 6, text: "4 was the capacity <em>before</em> the fifth push, not after it. That push found the vector full (4 of 4), and a push into a full vector grows it first: capacity doubled to <b>8</b>, then the 50 was stored. The print runs after all five pushes, so it sees the grown capacity." },
+          3: { step: 3, text: "Capacity never reaches 10 here. Growth <b>doubles the current room</b>: 1, then 2, then 4, then 8. It does not double the size, add the loop count, or grow by a fixed amount — after five pushes the staircase stands at 8." }
+        },
+        steps: [
+          { line: 5, vars: { v: ["vector<int>", "{} (size 0, capacity 0)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: [], cap: 0 }], out: "", note: "The vector <b>v</b> starts empty: size 0, capacity 0." },
+          { line: 6, vars: { v: ["vector<int>", "{} (size 0, capacity 0)"], i: ["int", "1"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: [], cap: 0 }, { name: "i", type: "int", value: "1" }], out: "", note: "The loop sets up its counter: <b>i = 1</b>. Test: is 1 &lt;= 5? <b>True</b> — enter the body." },
+          { line: 7, vars: { v: ["vector<int>", "{10} (size 1, capacity 1)"], i: ["int", "1"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["10"], cap: 1 }, { name: "i", type: "int", value: "1" }], out: "", note: "Pass 1: push 1 × 10 = <b>10</b>. The vector was full at 0 of 0, so it grows first: capacity <b>1</b>. Size: 1." },
+          { line: 7, vars: { v: ["vector<int>", "{10, 20} (size 2, capacity 2)"], i: ["int", "2"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["10", "20"], cap: 2 }, { name: "i", type: "int", value: "2" }], out: "", note: "Pass 2: push <b>20</b>. Full at 1 of 1, so the room doubles: capacity <b>2</b>. Size: 2." },
+          { line: 7, vars: { v: ["vector<int>", "{10, 20, 30} (size 3, capacity 4)"], i: ["int", "3"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["10", "20", "30"], cap: 4 }, { name: "i", type: "int", value: "3" }], out: "", note: "Pass 3: push <b>30</b>. Full at 2 of 2, so the room doubles again: capacity <b>4</b> — and one spare slot is left over. Size: 3." },
+          { line: 7, vars: { v: ["vector<int>", "{10, 20, 30, 40} (size 4, capacity 4)"], i: ["int", "4"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["10", "20", "30", "40"], cap: 4 }, { name: "i", type: "int", value: "4" }], out: "", note: "Pass 4: push <b>40</b> — into the <b>spare slot</b>. No growth this time: capacity stays <b>4</b>, and the vector is now exactly full. Size: 4." },
+          { line: 7, vars: { v: ["vector<int>", "{10, 20, 30, 40, 50} (size 5, capacity 8)"], i: ["int", "5"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["10", "20", "30", "40", "50"], cap: 8 }, { name: "i", type: "int", value: "5" }], out: "", note: "<b>The parting step.</b> Pass 5: push <b>50</b>. The vector is full at 4 of 4, so the room doubles before the store: capacity <b>8</b>, with three spare slots left over. Size: 5." },
+          { line: 6, vars: { v: ["vector<int>", "{10, 20, 30, 40, 50} (size 5, capacity 8)"], i: ["int", "6"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["10", "20", "30", "40", "50"], cap: 8 }, { name: "i", type: "int", value: "6" }], out: "", note: "i becomes 6 and the test fails: is 6 &lt;= 5? <b>False.</b> The loop ends after exactly five pushes." },
+          { line: 9, vars: { v: ["vector<int>", "{10, 20, 30, 40, 50} (size 5, capacity 8)"], i: ["int", "6"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["10", "20", "30", "40", "50"], cap: 8 }, { name: "i", type: "int", value: "6" }], out: "5 8", note: "The print: <b>size() is 5</b> — one per push — and <b>capacity() is 8</b>, the top of the staircase 1, 2, 4, 8. Output: <b>5 8</b>." },
+          { line: 10, vars: { v: ["vector<int>", "{10, 20, 30, 40, 50} (size 5, capacity 8)"], i: ["int", "6"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["10", "20", "30", "40", "50"], cap: 8 }, { name: "i", type: "int", value: "6" }], out: "5 8", note: "The program ends. Final answer: <b>5 8</b>." }
+        ],
+        modify: {
+          prompt: "The loop boundary changes from 5 to 8, so the loop pushes eight values (10 up to 80). The print statement is untouched. What prints now?",
+          code: 'vector<int> v;\nfor (int i = 1; i <= <mark>8</mark>; i++) {\n    v.push_back(i * 10);\n}\ncout << v.size() << " " << v.capacity() << endl;',
+          options: ["8 8", "8 16", "5 8", "8 4"],
+          correct: 0,
+          explain: "Pushes 6, 7 and 8 all land in the <b>spare slots</b> the fifth push's growth left behind, so the vector ends exactly full: size <b>8</b>, capacity <b>8</b>. A ninth push would be the one to double the room to 16. Output: <b>8 8</b>."
+        }
+      },
+      {
+        concept: "Vectors — reserve",
+        topic: "Arrays and vectors",
+        title: "Reserved is not filled",
+        goal: "<b>reserve(n)</b> books room in advance: it raises <b>capacity</b> to at least n — and creates <b>no elements at all</b>. Size stays exactly where it was, and there is still nothing at v[0] until a push_back puts something there. Reserving is booking seats, not seating people.",
+        stories: {
+          health:   "A clinic app knows a morning list will hold a handful of <strong>readings</strong>, so it reserves room for 4 in a vector, then appends <strong>7</strong> and <strong>9</strong> as they arrive. It prints the size, the capacity, and the sum of the first two readings.",
+          psych:    "A study app knows a session will hold a handful of <strong>scores</strong>, so it reserves room for 4 in a vector, then appends <strong>7</strong> and <strong>9</strong> as they arrive. It prints the size, the capacity, and the sum of the first two scores.",
+          business: "A stock app knows a delivery will hold a handful of <strong>counts</strong>, so it reserves room for 4 in a vector, then appends <strong>7</strong> and <strong>9</strong> as they arrive. It prints the size, the capacity, and the sum of the first two counts.",
+          arts:     "A gallery app knows a wall will hold a handful of <strong>ratings</strong>, so it reserves room for 4 in a vector, then appends <strong>7</strong> and <strong>9</strong> as they arrive. It prints the size, the capacity, and the sum of the first two ratings."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <vector>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    vector<int> v;",
+          "    v.reserve(4);",
+          "    v.push_back(7);",
+          "    v.push_back(9);",
+          "    cout << v.size() << \" \" << v.capacity() << \" \" << v[0] + v[1] << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["2 4 16", "4 4 16", "2 2 16", "2 4 7"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "<b>Named misconception: reserve fills the vector.</b> reserve(4) books four slots of <em>room</em> — it is a promise about capacity, not contents. No elements are created: right after the reserve, size is still <b>0</b>, and only the two push_back lines that follow put anything in. The size the print sees is 2, not 4." },
+          2: { step: 1, text: "The size is right, but the capacity was set by the <b>reserve</b> line, before any push: capacity is <b>4</b> from that line on. The pushes afterwards merely use the booked room — they neither shrink it nor re-book it." },
+          3: { step: 4, text: "Size and capacity are right; the sum is not. <b>v[0] + v[1]</b> adds <em>both</em> pushed values: 7 + 9 = <b>16</b>. Reading only the first element drops the 9 the second push stored." }
+        },
+        steps: [
+          { line: 5, vars: { v: ["vector<int>", "{} (size 0, capacity 0)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: [], cap: 0 }], out: "", note: "The vector <b>v</b> starts empty: size 0, capacity 0." },
+          { line: 6, vars: { v: ["vector<int>", "{} (size 0, capacity 4)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: [], cap: 4 }], out: "", note: "<b>The parting step.</b> <b>v.reserve(4)</b> books room for four: capacity jumps straight to <b>4</b> — the four dashed slots. But look at the size: still <b>0</b>. No elements were created; there is nothing at v[0] yet, and reading it now would reach past the last element." },
+          { line: 7, vars: { v: ["vector<int>", "{7} (size 1, capacity 4)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["7"], cap: 4 }], out: "", note: "<b>v.push_back(7)</b>: the first real element lands in the first booked slot. No growth — the room was already there. Size: 1, capacity: 4." },
+          { line: 8, vars: { v: ["vector<int>", "{7, 9} (size 2, capacity 4)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["7", "9"], cap: 4 }], out: "", note: "<b>v.push_back(9)</b>: a second element in the second booked slot. Size: 2, capacity: 4 — two slots still stand empty." },
+          { line: 9, vars: { v: ["vector<int>", "{7, 9} (size 2, capacity 4)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["7", "9"], cap: 4 }], out: "2 4 16", note: "The print: <b>size() is 2</b> (only pushes count), <b>capacity() is 4</b> (the reserve), and <b>v[0] + v[1]</b> is 7 + 9 = <b>16</b>. Output: <b>2 4 16</b>." },
+          { line: 10, vars: { v: ["vector<int>", "{7, 9} (size 2, capacity 4)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["7", "9"], cap: 4 }], out: "2 4 16", note: "The program ends. Final answer: <b>2 4 16</b> — reserved room is not contents." }
+        ],
+        modify: {
+          prompt: "The reserve changes: v.reserve(4); becomes v.reserve(2);. Both pushes and the print stay exactly as they are. What prints now?",
+          code: 'vector<int> v;\nv.reserve(<mark>2</mark>);\nv.push_back(7);\nv.push_back(9);\ncout << v.size() << " " << v.capacity() << " " << v[0] + v[1] << endl;',
+          options: ["2 2 16", "2 4 16", "4 2 16", "2 2 9"],
+          correct: 0,
+          explain: "reserve(2) books exactly enough room for the two pushes, so neither push needs to grow the vector: size <b>2</b>, capacity <b>2</b>, and the sum is still 7 + 9 = <b>16</b>. Output: <b>2 2 16</b>."
+        }
+      },
+      {
+        concept: "Vectors — size, capacity & indexing",
+        topic: "Arrays and vectors",
+        title: "The spare slot",
+        goal: "An index names an element only when it is <b>below size</b> — being below capacity is not enough. The spare slot inside capacity holds <b>no element</b>: reading it reaches past the last element. A <b>push_back</b> is what turns that spare slot into a real, readable element.",
+        stories: {
+          health:   "A tracking app appends <strong>four readings — 4, 7, 9, 11</strong> — to a vector that starts empty, then prints the fourth reading, the size, and the capacity.",
+          psych:    "A survey app appends <strong>four responses — 4, 7, 9, 11</strong> — to a vector that starts empty, then prints the fourth response, the size, and the capacity.",
+          business: "A sales app appends <strong>four daily figures — 4, 7, 9, 11</strong> — to a vector that starts empty, then prints the fourth figure, the size, and the capacity.",
+          arts:     "A media app appends <strong>four counts — 4, 7, 9, 11</strong> — to a vector that starts empty, then prints the fourth count, the size, and the capacity."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <vector>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    vector<int> v;",
+          "    v.push_back(4);",
+          "    v.push_back(7);",
+          "    v.push_back(9);",
+          "    v.push_back(11);",
+          "    cout << v[3] << \" \" << v.size() << \" \" << v.capacity() << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["11 4 4", "11 4 8", "9 4 4", "11 3 4"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 4, text: "Growth happens only when a push finds the vector <em>completely full</em>. The fourth push found the spare slot the third push's growth had left (3 of 4), so it simply filled it: capacity stays <b>4</b>. The doubling to 8 is waiting for a fifth push, not this one." },
+          2: { step: 4, text: "9 is <b>v[2]</b> — the third element. After the fourth push, index 3 names the element that push just stored: <b>v[3] is 11</b>. The index in the print is 3, and indexes count from 0, so it reaches the fourth element, not the third." },
+          3: { step: 4, text: "Four push_back lines ran, and every push adds exactly one element — including the fourth, spare slot or not. The size the print sees is <b>4</b>; a size of 3 would mean one of the pushes had not counted, and pushes always count." }
+        },
+        steps: [
+          { line: 5, vars: { v: ["vector<int>", "{} (size 0, capacity 0)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: [], cap: 0 }], out: "", note: "The vector <b>v</b> starts empty: size 0, capacity 0." },
+          { line: 6, vars: { v: ["vector<int>", "{4} (size 1, capacity 1)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["4"], cap: 1 }], out: "", note: "<b>v.push_back(4)</b>: grows from nothing to capacity <b>1</b> and stores the 4 at index 0. Size: 1." },
+          { line: 7, vars: { v: ["vector<int>", "{4, 7} (size 2, capacity 2)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["4", "7"], cap: 2 }], out: "", note: "<b>v.push_back(7)</b>: full, so the room doubles to <b>2</b>; the 7 lands at index 1. Size: 2." },
+          { line: 8, vars: { v: ["vector<int>", "{4, 7, 9} (size 3, capacity 4)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["4", "7", "9"], cap: 4 }], out: "", note: "<b>v.push_back(9)</b>: full, so the room doubles to <b>4</b>; the 9 lands at index 2. Size: 3 — and notice the dashed slot at index 3: it is <em>inside capacity but past size</em>. It holds no element, and reading v[3] right now would reach past the last element." },
+          { line: 9, vars: { v: ["vector<int>", "{4, 7, 9, 11} (size 4, capacity 4)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["4", "7", "9", "11"], cap: 4 }], out: "", note: "<b>The parting step.</b> <b>v.push_back(11)</b> fills the spare slot: no growth — capacity stays <b>4</b> — and index 3 becomes a real element holding <b>11</b>. The push is what made v[3] readable. Size: 4." },
+          { line: 10, vars: { v: ["vector<int>", "{4, 7, 9, 11} (size 4, capacity 4)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["4", "7", "9", "11"], cap: 4 }], out: "11 4 4", note: "The print: <b>v[3] is 11</b>, <b>size() is 4</b>, <b>capacity() is 4</b> — the vector ends exactly full. Output: <b>11 4 4</b>." },
+          { line: 11, vars: { v: ["vector<int>", "{4, 7, 9, 11} (size 4, capacity 4)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["4", "7", "9", "11"], cap: 4 }], out: "11 4 4", note: "The program ends. Final answer: <b>11 4 4</b>." }
+        ],
+        modify: {
+          prompt: "A fifth push is added after the others: v.push_back(12);. The print statement is untouched. What prints now?",
+          code: 'vector<int> v;\nv.push_back(4);\nv.push_back(7);\nv.push_back(9);\nv.push_back(11);\nv.push_back(<mark>12</mark>);\ncout << v[3] << " " << v.size() << " " << v.capacity() << endl;',
+          options: ["11 5 8", "12 5 8", "11 4 4", "11 5 4"],
+          correct: 0,
+          explain: "The fifth push finds the vector exactly full (4 of 4), so the room doubles to <b>8</b> before the 12 is stored: size <b>5</b>. But the print still reads <b>v[3]</b>, which is still 11. Output: <b>11 5 8</b>."
+        }
+      },
+      {
+        concept: "Vectors — sized construction",
+        topic: "Arrays and vectors",
+        title: "Born with three zeros",
+        goal: "<b>vector&lt;int&gt; v(3)</b> is not an empty vector with room for three: it is born holding <b>three real elements</b>, each set to 0 — so its <b>size and capacity both start at 3</b>. That is the opposite bargain from reserve(3), which books the room and creates nothing.",
+        stories: {
+          health:   "A clinic app creates a vector <strong>already holding three slots for the day's readings, each starting at 0</strong>. It records 5 into the first slot, appends one more reading of 8, then prints the size, the capacity, and the sum of all four slots.",
+          psych:    "A study app creates a vector <strong>already holding three slots for session scores, each starting at 0</strong>. It records 5 into the first slot, appends one more score of 8, then prints the size, the capacity, and the sum of all four slots.",
+          business: "A shop app creates a vector <strong>already holding three slots for daily figures, each starting at 0</strong>. It records 5 into the first slot, appends one more figure of 8, then prints the size, the capacity, and the sum of all four slots.",
+          arts:     "A venue app creates a vector <strong>already holding three slots for nightly counts, each starting at 0</strong>. It records 5 into the first slot, appends one more count of 8, then prints the size, the capacity, and the sum of all four slots."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <vector>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    vector<int> v(3);",
+          "    v[0] = 5;",
+          "    v.push_back(8);",
+          "    cout << v.size() << \" \" << v.capacity() << \" \" << v[0] + v[1] + v[2] + v[3] << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["4 6 13", "4 4 13", "3 6 13", "4 6 8"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "Growth doubles the room the vector <em>already has</em>: pushing into a full 3-of-3 vector grows capacity from 3 to <b>6</b>, not by a single slot to 4. Capacity grows by doubling whatever it was — starting from 3, the staircase runs 3, 6, 12, not 3, 4, 5." },
+          2: { step: 2, text: "The push_back still counts. The vector was born at size 3, and the push appends a fourth real element: the size the print sees is <b>4</b>. Being born with elements does not switch off what push_back does." },
+          3: { step: 3, text: "The sum runs over all four elements: v[0] is <b>5</b> (the assignment overwrote the first zero), v[1] and v[2] are still the <b>zeros</b> the vector was born with, and v[3] is the pushed <b>8</b> — 5 + 0 + 0 + 8 = <b>13</b>. Answer 8 counts only the pushed value and drops the 5." }
+        },
+        steps: [
+          { line: 5, vars: { v: ["vector<int>", "{0, 0, 0} (size 3, capacity 3)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["0", "0", "0"], cap: 3 }], out: "", note: "<b>vector&lt;int&gt; v(3)</b> creates the vector <em>already holding three elements</em>, each <b>0</b>: size <b>3</b>, capacity <b>3</b>. Compare reserve(3): that would have left size 0 with the same room booked." },
+          { line: 6, vars: { v: ["vector<int>", "{5, 0, 0} (size 3, capacity 3)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["5", "0", "0"], cap: 3 }], out: "", note: "<b>v[0] = 5</b> writes into the first of the born elements, replacing its 0. Index 0 is valid here precisely because the element exists — size is already 3. Size and capacity unchanged." },
+          { line: 7, vars: { v: ["vector<int>", "{5, 0, 0, 8} (size 4, capacity 6)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["5", "0", "0", "8"], cap: 6 }], out: "", note: "<b>The parting step.</b> <b>v.push_back(8)</b>: the vector is exactly full (3 of 3), so the room doubles — capacity 3 becomes <b>6</b> — and the 8 lands at index 3, leaving two spare slots. Size: 4." },
+          { line: 8, vars: { v: ["vector<int>", "{5, 0, 0, 8} (size 4, capacity 6)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["5", "0", "0", "8"], cap: 6 }], out: "4 6 13", note: "The print: <b>size() is 4</b>, <b>capacity() is 6</b>, and the sum is 5 + 0 + 0 + 8 = <b>13</b> — the two surviving zeros are real elements and take part. Output: <b>4 6 13</b>." },
+          { line: 9, vars: { v: ["vector<int>", "{5, 0, 0, 8} (size 4, capacity 6)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["5", "0", "0", "8"], cap: 6 }], out: "4 6 13", note: "The program ends. Final answer: <b>4 6 13</b>." }
+        ],
+        modify: {
+          prompt: "The construction changes: vector<int> v(3); becomes vector<int> v(2);, and the print drops its last term — v[3] would no longer exist — so it sums v[0] + v[1] + v[2]. Everything else stays. What prints now?",
+          code: 'vector<int> v(<mark>2</mark>);\nv[0] = 5;\nv.push_back(8);\ncout << v.size() << " " << v.capacity() << " " << v[0] + v[1] + v[2] << endl;',
+          options: ["3 4 13", "4 6 13", "3 2 13", "3 4 8"],
+          correct: 0,
+          explain: "Born with two zeros: size 2, capacity 2. The assignment fills v[0] with 5, and the push — finding the vector full — doubles the room to <b>4</b> and appends the 8: size <b>3</b>. The sum is 5 + 0 + 8 = <b>13</b>. Output: <b>3 4 13</b>."
+        }
       }
     ];
 
@@ -8785,6 +9052,7 @@ int main() {
       { name: "Foundations", list: [0, 1, 2] },
       { name: "Loops & Functions", list: [3, 4, 5, 6, 23, 24, 28, 44] },
       { name: "Arrays & Strings", list: [7, 8, 25, 26, 29, 45, 46, 52] },
+      { name: "Vectors — size & capacity", list: [81, 82, 83, 84, 85] },
       { name: "Pointers", list: [9, 10, 11, 12, 59] },
       { name: "Recursion", list: [13, 14, 15, 60, 61, 62] },
       { name: "Searching & Sorting", list: [16, 17, 41, 42, 43] },
@@ -8824,7 +9092,7 @@ int main() {
             b.setAttribute("aria-current", state.current === idx ? "true" : "false");
             b.setAttribute("aria-label", "Exercise " + (idx + 1) + ": " + ex.concept + " — " + ex.title + " (" + shortStatus + ")");
             b.innerHTML = '<span class="n">' + (idx + 1) + '</span><span class="ex-row-title">' + esc(ex.concept) + '</span><span class="status ' + st.cls + '">' + esc(shortStatus) + "</span>";
-            b.addEventListener("click", function () { stopPlayback(); if (typeof exitInstPlay === "function") exitInstPlay(); state.current = idx; renderAll(); });
+            b.addEventListener("click", function () { stopPlayback(); if (typeof stopSpeak === "function") stopSpeak(); if (typeof exitInstPlay === "function") exitInstPlay(); state.current = idx; renderAll(); });
             list.appendChild(b);
           })(i);
         });
@@ -9086,7 +9354,7 @@ int main() {
     function boxAria(box) {
       var base = box.name + ", type " + box.type;
       if (box.fields) return base + ", " + box.fields.map(function (f) { return f[0] + " is " + f[1]; }).join(", ");
-      if (box.elems) return base + (box.elems.length ? ", elements " + box.elems.map(function (v) { return fmtElem(v); }).join(", ") + ", size " + box.elems.length : ", empty, size 0");
+      if (box.elems) return base + (box.elems.length ? ", elements " + box.elems.map(function (v) { return fmtElem(v); }).join(", ") + ", size " + box.elems.length : ", empty, size 0") + (typeof box.cap === "number" ? ", capacity " + box.cap : "");
       if (box.grid) return base + ", rows: " + box.grid.map(function (r) { return r.map(function (v) { return fmtElem(v); }).join(" "); }).join("; ");
       return base + ", value " + fmtBoxValue(box.type, box.value || "").spoken;
     }
@@ -9323,11 +9591,16 @@ int main() {
           return '<div class="mem-field"><span class="flabel">' + esc(f[0]) + '</span><span class="fval">' + esc(f[1]) + "</span></div>";
         }).join("") + "</div>";
       } else if (box.elems) {
-        html += box.elems.length
-          ? '<div class="mem-elems">' + box.elems.map(function (v, ei) {
-              return '<span class="mem-elem' + fmtElemCls(v) + '">' + esc(fmtElem(v)) + "<small>[" + ei + "]</small></span>";
-            }).join("") + "</div>"
+        var elemsHtml = box.elems.map(function (v, ei) {
+          return '<span class="mem-elem' + fmtElemCls(v) + '">' + esc(fmtElem(v)) + "<small>[" + ei + "]</small></span>";
+        }).join("");
+        if (typeof box.cap === "number" && box.cap > box.elems.length) {
+          for (var spi = box.elems.length; spi < box.cap; spi++) elemsHtml += '<span class="mem-elem spare" aria-hidden="true">·<small>[' + spi + "]</small></span>";
+        }
+        html += (box.elems.length || elemsHtml)
+          ? '<div class="mem-elems">' + elemsHtml + "</div>"
           : '<div class="mem-empty-inline">no elements yet · size 0</div>';
+        if (typeof box.cap === "number") html += '<div class="mem-cap-note">size ' + box.elems.length + " · capacity " + box.cap + (box.cap > box.elems.length ? " — dashed slots are reserved room, not elements" : "") + "</div>";
       } else if (box.grid) {
         html += '<div class="mem-grid2">' + box.grid.map(function (row, ri) {
           return '<div class="mem-grid-row">' + row.map(function (v, ci) {
@@ -10837,20 +11110,20 @@ int main() {
         s.step++;
         if (s.step === ex.steps.length - 1 && !wiActiveHere()) { s.traceDone = true; }
         renderAll();
-        if (!stepAnnounceMuted) announce(describeStep());
+        if (!stepAnnounceMuted) { var dsA = describeStep(); announce(dsA); if (typeof speakTrace === "function") speakTrace(dsA); }
         return true;
       }
       return false;
     }
     function traceRetreat() {
       var s = state.ex[state.current];
-      if (s.step > -1) { s.step--; s.traceDone = false; renderAll(); announce(describeStep()); }
+      if (s.step > -1) { s.step--; s.traceDone = false; renderAll(); var dsR = describeStep(); announce(dsR); if (typeof speakTrace === "function") speakTrace(dsR); }
     }
     function traceRunAll() {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
       s.step = ex.steps.length - 1; if (!wiActiveHere()) s.traceDone = true;
       renderAll();
-      announce(describeStep());
+      var dsAll = describeStep(); announce(dsAll); if (typeof speakTrace === "function") speakTrace(dsAll);
     }
     function traceRestart() {
       if (wiActiveHere()) { wiRestartClean(); return; }
@@ -10983,7 +11256,9 @@ int main() {
         stepAnnounceMuted = true;
         traceAdvance();
         stepAnnounceMuted = false;
-        announce("Step " + (s2.step + 1) + " of " + ex2.steps.length + ". " + buildCaption(ex2, s2.step));
+        var capMsg2 = "Step " + (s2.step + 1) + " of " + ex2.steps.length + ". " + buildCaption(ex2, s2.step);
+        announce(capMsg2);
+        if (typeof speakTrace === "function") speakTrace(capMsg2);
         syncPlayUI();
       }, reducedMotion() ? 60 : 420);
     }
@@ -11036,7 +11311,9 @@ int main() {
       stepAnnounceMuted = false;
       if (!advanced) { stopPlayback(); return; }
       // The caption is this step's single announcement during playback.
-      announce("Step " + (s.step + 1) + " of " + ex.steps.length + ". " + buildCaption(ex, s.step));
+      var capMsg = "Step " + (s.step + 1) + " of " + ex.steps.length + ". " + buildCaption(ex, s.step);
+      announce(capMsg);
+      if (typeof speakTrace === "function") speakTrace(capMsg);
       var pi = wiActiveHere() ? -1 : partingStepIndex();
       if (pi >= 0 && pi < ex.steps.length - 1 && s.step === pi && !playback.partingPaused) {
         // Parting step reached: pause once for this run-through and surface
@@ -14740,6 +15017,32 @@ int main() {
        text grow across the whole platform. */
     var reduceMotionPref = false;
     var largeTextPref = false;
+    /* Read-aloud trace steps: a third reading-comfort preference, in the
+       same Display popover. When on, stepping or playing the Prediction
+       Tracer speaks the same step description the tracer announces on
+       screen (the line that ran, each memory-box change, new output) via
+       the browser's speech synthesis. It never auto-plays: speech happens
+       only in response to a step or play action while the toggle is on,
+       and turning the toggle off (or switching exercise) stops speech at
+       once. Where speech synthesis is unavailable the toggle is disabled
+       and a plain note explains; the on-screen announcements continue.
+       Persisted additively as `readAloudPref`, a view preference only. */
+    var readAloudPref = false;
+    var speechOk = false;
+    try { speechOk = ("speechSynthesis" in window) && (typeof window.SpeechSynthesisUtterance === "function"); } catch (e) { speechOk = false; }
+    function speakTrace(text) {
+      if (!readAloudPref || !speechOk || !text) return;
+      try {
+        window.speechSynthesis.cancel();
+        var u = new window.SpeechSynthesisUtterance(String(text));
+        u.rate = 1;
+        window.speechSynthesis.speak(u);
+      } catch (e) {}
+    }
+    function stopSpeak() {
+      if (!speechOk) return;
+      try { window.speechSynthesis.cancel(); } catch (e) {}
+    }
     function applyComfort() {
       if (reduceMotionPref) document.documentElement.setAttribute("data-motion", "reduced");
       else document.documentElement.removeAttribute("data-motion");
@@ -14747,6 +15050,12 @@ int main() {
       else document.documentElement.removeAttribute("data-textsize");
       var mt = $("motion-toggle"); if (mt) mt.setAttribute("aria-pressed", reduceMotionPref ? "true" : "false");
       var tt = $("textsize-toggle"); if (tt) tt.setAttribute("aria-pressed", largeTextPref ? "true" : "false");
+      var rt = $("readaloud-toggle");
+      if (rt) {
+        rt.setAttribute("aria-pressed", readAloudPref ? "true" : "false");
+        if (!speechOk) rt.disabled = true;
+      }
+      var rn = $("readaloud-note"); if (rn) rn.hidden = speechOk;
     }
     function setReduceMotionPref(on) {
       if (reduceMotionPref === !!on) { applyComfort(); return; }
@@ -14768,11 +15077,24 @@ int main() {
         : "Larger text off. Text is back to the standard size. Nothing else about your work has changed.");
       try { tfSave(); } catch (e) {}
     }
+    function setReadAloudPref(on) {
+      if (!speechOk) { applyComfort(); return; }
+      if (readAloudPref === !!on) { applyComfort(); return; }
+      readAloudPref = !!on;
+      applyComfort();
+      if (!readAloudPref) stopSpeak();
+      announce(readAloudPref
+        ? "Read-aloud on. As you step or play a trace, each step and each memory change will be spoken. Turn it off here at any time to stop the speech."
+        : "Read-aloud off. Trace steps will no longer be spoken; on-screen step announcements are unchanged.");
+      try { tfSave(); } catch (e) {}
+    }
     (function wireComfort() {
       var mt = $("motion-toggle");
       if (mt) mt.addEventListener("click", function () { setReduceMotionPref(!reduceMotionPref); });
       var tt = $("textsize-toggle");
       if (tt) tt.addEventListener("click", function () { setLargeTextPref(!largeTextPref); });
+      var rt = $("readaloud-toggle");
+      if (rt) rt.addEventListener("click", function () { setReadAloudPref(!readAloudPref); });
       applyComfort();
     })();
 
@@ -16901,7 +17223,7 @@ int main() {
         }
         if (cell.isMap) { return "{" + sortedKeys(cell).map(function (k) { return makeFmtVal(keyVal(cell, k), 1) + ": " + makeFmtVal(cell.val.entries[k], 1); }).join(", ") + "}"; }
         if (cell.isSet) { return "{" + sortedKeys(cell).map(function (k) { return makeFmtVal(keyVal(cell, k), 1); }).join(", ") + "}"; }
-        if (cell.isArr) return "{" + cell.val.map(function (e) { return makeFmtVal(e, 1); }).join(", ") + "}";
+        if (cell.isArr) return "{" + cell.val.map(function (e) { return makeFmtVal(e, 1); }).join(", ") + "}" + (cell.isVec ? " (size " + cell.val.length + ", capacity " + (cell.cap || 0) + ")" : "");
         if (cell.isFileIn) return "ifstream " + (cell.val.name || "(not open)");
         if (cell.isFileOut) return "ofstream " + (cell.val.name || "(not open)");
         if (cell.uninit) return "?";
@@ -17266,13 +17588,26 @@ int main() {
               if (oc.isVec) {
                 if (node.name === "push_back") {
                   if (node.args.length !== 1) fail(node.line, "push_back takes exactly one value.");
+                  // Capacity growth, modelled on libstdc++ (g++): a push that
+                  // finds the vector full doubles the room (0 -> 1 -> 2 -> 4
+                  // -> 8 ...); a push that finds a spare slot changes only
+                  // the size. Capacity is room booked, never elements held.
+                  if (oc.val.length >= (oc.cap || 0)) oc.cap = (oc.cap || 0) === 0 ? 1 : (oc.cap || 0) * 2;
                   oc.val.push(makeConv(evalExpr(env, node.args[0]), oc.elemType, node.line, "the vector"));
                   return { t: "void", v: null };
                 }
                 if (node.name === "size") return { t: "int", v: oc.val.length };
+                if (node.name === "capacity") return { t: "int", v: oc.cap || 0 };
+                if (node.name === "reserve") {
+                  if (node.args.length !== 1) fail(node.line, "reserve takes exactly one number — how much room to book.");
+                  var rn = Math.trunc(makeNum(evalExpr(env, node.args[0]), node.line, "as a capacity"));
+                  if (rn < 0 || rn > 100000) fail(node.line, "that reserve amount is not sensible here — check the value handed to reserve for '" + node.obj.name + "'.");
+                  if (rn > (oc.cap || 0)) oc.cap = rn;
+                  return { t: "void", v: null };
+                }
                 if (node.name === "empty") return { t: "int", v: oc.val.length === 0 ? 1 : 0 };
                 if (node.name === "clear") { oc.val.length = 0; return { t: "void", v: null }; }
-                fail(node.line, "the vector tools here are push_back, size, empty and clear — '." + node.name + "()' is not one of them.");
+                fail(node.line, "the vector tools here are push_back, size, capacity, reserve, empty and clear — '." + node.name + "()' is not one of them.");
               }
               if (oc.isMap) {
                 if (node.name === "count") {
@@ -17595,7 +17930,7 @@ int main() {
         if (pr.type.indexOf("<") >= 0) {
           if (!arg || arg.t !== "collRef") fail(line, "the parameter '" + pr.name + "' of '" + fname + "' is a collection — hand it a variable of that collection type.");
           var c = arg.cell;
-          if (c.isVec) scope[pr.name] = { type: pr.type, elemType: c.elemType, isArr: true, isVec: true, val: c.val };
+          if (c.isVec) scope[pr.name] = { type: pr.type, elemType: c.elemType, isArr: true, isVec: true, val: c.val, cap: c.cap || 0 };
           else if (c.isMap) scope[pr.name] = { type: pr.type, isMap: true, kt: c.kt, vt: c.vt, val: c.val };
           else scope[pr.name] = { type: pr.type, isSet: true, et: c.et, val: c.val };
           return;
@@ -17671,16 +18006,24 @@ int main() {
         node.decls.forEach(function (d) {
           if (vt.indexOf("vector<") === 0) {
             var elem = vt.slice(7, -1);
-            var cell = { type: vt, elemType: elem, isArr: true, isVec: true, val: [] };
+            var cell = { type: vt, elemType: elem, isArr: true, isVec: true, val: [], cap: 0 };
             scope[d.name] = cell;
-            if (d.initList) d.initList.forEach(function (e) { cell.val.push(makeConv(evalExpr(env, e), elem, node.line, d.name)); });
+            if (d.initList) { d.initList.forEach(function (e) { cell.val.push(makeConv(evalExpr(env, e), elem, node.line, d.name)); }); cell.cap = cell.val.length; }
+            else if (d.initArgs && d.initArgs.length) {
+              var cn = Math.trunc(makeNum(evalExpr(env, d.initArgs[0]), node.line, "as a vector size"));
+              if (cn < 0 || cn > 10000) fail(node.line, "that vector size is not sensible here — check the value used as the size of '" + d.name + "'.");
+              var cfill = d.initArgs.length > 1 ? evalExpr(env, d.initArgs[1]) : null;
+              for (var ck = 0; ck < cn; ck++) cell.val.push(cfill ? makeConv(cfill, elem, node.line, d.name) : makeDefault(elem));
+              cell.cap = cn;
+            }
             else if (d.init) {
               var iv = evalExpr(env, d.init);
-              if (iv.t === "collRef") cell.val = iv.cell.val.slice();
+              if (iv.t === "collRef") { cell.val = iv.cell.val.slice(); cell.cap = cell.val.length; }
               else {
                 var n = Math.trunc(makeNum(iv, node.line, "as a vector size"));
                 if (n < 0 || n > 10000) fail(node.line, "that vector size is not sensible here — check the value used as the size of '" + d.name + "'.");
                 for (var k = 0; k < n; k++) cell.val.push(makeDefault(elem));
+                cell.cap = n;
               }
             }
             return;
@@ -18984,7 +19327,7 @@ int main() {
        by that hydration and dropped by the next tfCollect save; missing
        optional sections default the same way an older save's would). */
     var TF_PROGRESS_ARRAY_KEYS = ["tracer", "gym", "refactor", "bridge", "order", "make", "authoredExercises", "instructorExercises", "assignments"];
-    var TF_PROGRESS_KNOWN_KEYS = ["v", "bitsFormat", "playbackSpeed", "bgTheme", "reduceMotionPref", "largeTextPref", "primerRead", "boltTourSeen", "tracer", "bolt", "gym", "refactor", "bridge", "order", "make", "challenges", "authoredExercises", "instructorExercises", "assignments", "gap", "lastTracer", "testOut"];
+    var TF_PROGRESS_KNOWN_KEYS = ["v", "bitsFormat", "playbackSpeed", "bgTheme", "reduceMotionPref", "largeTextPref", "readAloudPref", "primerRead", "boltTourSeen", "tracer", "bolt", "gym", "refactor", "bridge", "order", "make", "challenges", "authoredExercises", "instructorExercises", "assignments", "quiz", "gap", "lastTracer", "testOut"];
     function tfIsPlainObj(x) { return !!x && typeof x === "object" && !Array.isArray(x); }
     function tfCloneJson(x) { return JSON.parse(JSON.stringify(x)); }
     function tfValidateProgressFile(d) {
@@ -19005,6 +19348,8 @@ int main() {
       if (d.lastTracer !== undefined && typeof d.lastTracer !== "number") return false;
       if (d.reduceMotionPref !== undefined && typeof d.reduceMotionPref !== "boolean") return false;
       if (d.largeTextPref !== undefined && typeof d.largeTextPref !== "boolean") return false;
+      if (d.readAloudPref !== undefined && typeof d.readAloudPref !== "boolean") return false;
+      if (d.quiz !== undefined && d.quiz !== null && !tfIsPlainObj(d.quiz)) return false;
       if (d.primerRead !== undefined && typeof d.primerRead !== "boolean") return false;
       if (d.boltTourSeen !== undefined && typeof d.boltTourSeen !== "boolean") return false;
       return true;
@@ -19719,6 +20064,197 @@ int main() {
     })();
 
 
+    /* ---------------- Prediction quiz: five locks, then the verdicts ----------------
+       A low-stakes, test-conditions run over five EXISTING tracer exercises
+       (no content is duplicated: a quiz question is the exercise's own goal,
+       code, question and options). The instructor picks the five; the picks
+       persist on this device, so the set chosen here is the set a student
+       opening the same browser meets. The student steps through the five
+       one at a time and LOCKS each prediction before moving on; a locked
+       prediction cannot be changed, and NO verdict of any kind is shown
+       until all five are locked. Only then does the quiz reveal one score
+       out of five plus, for each miss, a trap summary — the exercise's own
+       named-misconception diagnosis for the option the student picked,
+       with its parting step. Deliberately separate from the per-exercise
+       flow (quiz answers never write into state.ex, so records, accuracy
+       counts, the journal and the digests are untouched), from prediction
+       duels (head-to-head share codes) and from instructor assignments
+       (TFA1: sets worked through in the tracer itself, with traces). There
+       are no badges, points or streaks: the score out of five is the whole
+       result. State persists additively as `quiz` inside
+       tracefirst-progress-v1; older saves simply lack the field. */
+    var quizState = { set: [0, 1, 2, 3, 4], picks: [-1, -1, -1, -1, -1], phase: "setup", lastScore: null, lastWhen: "" };
+    var quizSel = -1; /* the not-yet-locked choice on the current question */
+    function quizPlain(html) { var d = document.createElement("div"); d.innerHTML = html || ""; return d.textContent || ""; }
+    function quizLockedCount() { var n = 0; quizState.picks.forEach(function (p) { if (p >= 0) n++; }); return n; }
+    function quizCurrentPos() { for (var i = 0; i < 5; i++) if (quizState.picks[i] < 0) return i; return 5; }
+    function quizSave() { try { tfSave(); } catch (e) {} }
+    function quizScore() {
+      var n = 0;
+      quizState.set.forEach(function (exIdx, i) { if (quizState.picks[i] === EXERCISES[exIdx].correct) n++; });
+      return n;
+    }
+    function renderQuizSetup() {
+      var box = $("quiz-picks"); if (!box) return;
+      var startBtn = $("quiz-start-btn");
+      if (!box.children.length || box.getAttribute("data-built-for") !== String(EXERCISES.length)) {
+        box.innerHTML = "";
+        for (var q = 0; q < 5; q++) {
+          (function (qi) {
+            var lab = document.createElement("label");
+            lab.style.cssText = "font-weight:600;font-size:.92rem;display:block;";
+            lab.textContent = "Question " + (qi + 1) + " ";
+            var sel = document.createElement("select");
+            sel.id = "quiz-pick-" + qi;
+            sel.setAttribute("aria-label", "Quiz question " + (qi + 1) + " exercise");
+            sel.style.cssText = "width:100%;box-sizing:border-box;font:inherit;padding:9px 11px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel-2);color:var(--ink);margin-top:4px;";
+            EXERCISES.forEach(function (ex, ei) {
+              var o = document.createElement("option");
+              o.value = String(ei);
+              o.textContent = "Exercise " + (ei + 1) + " — " + ex.concept + ": " + ex.title;
+              sel.appendChild(o);
+            });
+            lab.appendChild(sel);
+            box.appendChild(lab);
+          })(q);
+        }
+        box.setAttribute("data-built-for", String(EXERCISES.length));
+      }
+      for (var i = 0; i < 5; i++) {
+        var s = $("quiz-pick-" + i);
+        if (s) { s.value = String(quizState.set[i]); s.disabled = quizState.phase !== "setup"; }
+      }
+      if (startBtn) {
+        startBtn.textContent = quizState.phase === "run" ? "Restart quiz with these five" : quizState.phase === "done" ? "Start a new quiz with these five" : "Start quiz";
+        startBtn.disabled = false;
+      }
+    }
+    function renderQuizRun() {
+      var box = $("quiz-run"); if (!box) return;
+      if (quizState.phase !== "run") { box.hidden = true; box.innerHTML = ""; return; }
+      var pos = quizCurrentPos();
+      if (pos >= 5) { box.hidden = true; return; }
+      var exIdx = quizState.set[pos], ex = EXERCISES[exIdx];
+      box.hidden = false;
+      var html = '<p style="font-size:.9rem;color:var(--ink-soft);margin:0;">Prediction <strong>' + (pos + 1) + " of 5</strong> · " + quizLockedCount() + " locked · <strong>No verdicts until all five are locked.</strong></p>";
+      html += '<h4 style="margin-top:12px;font-size:1rem;">Exercise ' + (exIdx + 1) + " — " + esc(ex.concept) + ": " + esc(ex.title) + "</h4>";
+      html += '<p style="font-size:.93rem;margin-top:6px;">' + ex.goal + "</p>";
+      html += '<pre style="background:var(--code-bg);color:var(--code-ink);border-radius:10px;padding:12px 14px;font-family:\'IBM Plex Mono\',monospace;font-size:.9rem;overflow-x:auto;margin-top:10px;">' + esc(ex.code.join("\n")) + "</pre>";
+      html += '<p class="predict-q">' + esc(ex.question) + "</p>";
+      html += '<div class="options" role="group" aria-label="Prediction options">';
+      ex.options.forEach(function (opt, oi) {
+        html += '<button type="button" class="opt-btn" data-qopt="' + oi + '" aria-pressed="' + (quizSel === oi ? "true" : "false") + '"><span class="key">' + "ABCD".charAt(oi) + "</span><span>" + esc(opt) + "</span></button>";
+      });
+      html += "</div>";
+      html += '<div class="lockrow"><button class="btn" type="button" id="quiz-lock-btn"' + (quizSel < 0 ? " disabled" : "") + ">" + (pos === 4 ? "Lock prediction &amp; see the results" : "Lock prediction &amp; continue") + '</button><span class="journal-status" role="status">Once locked, a prediction cannot be changed.</span></div>';
+      var locked = [];
+      quizState.set.forEach(function (ei, i) {
+        if (quizState.picks[i] >= 0) locked.push("Q" + (i + 1) + " (Exercise " + (ei + 1) + "): “" + EXERCISES[ei].options[quizState.picks[i]] + "”");
+      });
+      if (locked.length) html += '<p style="font-size:.88rem;color:var(--ink-soft);margin-top:12px;">Locked so far — ' + locked.join(" · ") + "</p>";
+      box.innerHTML = html;
+      Array.prototype.forEach.call(box.querySelectorAll("[data-qopt]"), function (b) {
+        b.addEventListener("click", function () {
+          quizSel = parseInt(b.getAttribute("data-qopt"), 10);
+          Array.prototype.forEach.call(box.querySelectorAll("[data-qopt]"), function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+          var lb = $("quiz-lock-btn"); if (lb) lb.disabled = false;
+        });
+      });
+      var lockBtn = $("quiz-lock-btn");
+      if (lockBtn) lockBtn.addEventListener("click", function () {
+        if (quizSel < 0) return;
+        quizState.picks[quizCurrentPos()] = quizSel;
+        quizSel = -1;
+        if (quizLockedCount() >= 5) {
+          quizState.phase = "done";
+          quizState.lastScore = quizScore();
+          quizState.lastWhen = new Date().toISOString().slice(0, 10);
+          announce("All five predictions are locked. Your quiz score is " + quizState.lastScore + " out of 5.");
+        } else {
+          announce("Prediction " + quizLockedCount() + " of 5 locked. No verdict yet — " + (5 - quizLockedCount()) + " to go.");
+        }
+        quizSave();
+        renderQuiz();
+        var target = quizState.phase === "done" ? $("quiz-results") : $("quiz-run");
+        if (target && target.scrollIntoView) target.scrollIntoView({ block: "nearest" });
+      });
+    }
+    function renderQuizResults() {
+      var box = $("quiz-results"); if (!box) return;
+      if (quizState.phase !== "done") { box.hidden = true; box.innerHTML = ""; return; }
+      var score = quizScore();
+      box.hidden = false;
+      var html = '<h4 style="font-size:1.05rem;">Your score: ' + score + " / 5</h4>";
+      html += '<p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">That is the whole result — a low-stakes snapshot of five predictions made before any verdict appeared. Misses below carry the trap summary for the answer you picked; open the exercise in the tracer to walk the step where your model and the machine parted.</p>';
+      quizState.set.forEach(function (exIdx, i) {
+        var ex = EXERCISES[exIdx], pick = quizState.picks[i], ok = pick === ex.correct;
+        html += '<div style="border-top:1px solid var(--line);margin-top:12px;padding-top:12px;">';
+        html += '<p style="font-weight:700;">Q' + (i + 1) + " · Exercise " + (exIdx + 1) + " — " + esc(ex.concept) + ": " + esc(ex.title) + " " + (ok ? "✓" : "✗") + "</p>";
+        html += '<p style="font-size:.92rem;margin-top:4px;">You predicted: <strong>' + esc(pick >= 0 ? ex.options[pick] : "—") + "</strong> · The program prints: <strong>" + esc(ex.options[ex.correct]) + "</strong></p>";
+        if (!ok) {
+          var d = ex.diagnoses ? ex.diagnoses[pick] : null;
+          if (d && ex.steps[d.step]) {
+            html += '<p style="font-size:.92rem;margin-top:4px;"><strong>The trap:</strong> ' + esc(quizPlain(d.text)) + " Your model and the machine parted at <strong>step " + (d.step + 1) + " of the trace (line " + (ex.steps[d.step].line + 1) + ")</strong>.</p>";
+          } else if (d) {
+            html += '<p style="font-size:.92rem;margin-top:4px;"><strong>The trap:</strong> ' + esc(quizPlain(d.text)) + "</p>";
+          }
+        } else {
+          html += '<p style="font-size:.92rem;margin-top:4px;">Your prediction matched the machine exactly.</p>';
+        }
+        html += '<div class="journal-actions"><button class="btn ghost small" type="button" data-quiz-open="' + exIdx + '">Open Exercise ' + (exIdx + 1) + " in the tracer</button></div>";
+        html += "</div>";
+      });
+      html += '<div class="lockrow"><button class="btn" type="button" id="quiz-retake-btn">Retake these five</button><button class="btn ghost" type="button" id="quiz-newset-btn">Choose different exercises</button></div>';
+      box.innerHTML = html;
+      Array.prototype.forEach.call(box.querySelectorAll("[data-quiz-open]"), function (b) {
+        b.addEventListener("click", function () {
+          var idx = parseInt(b.getAttribute("data-quiz-open"), 10);
+          if (typeof stopPlayback === "function") stopPlayback();
+          if (typeof stopSpeak === "function") stopSpeak();
+          state.current = idx;
+          renderAll();
+          var tm = $("tracer-mode"); if (tm && tm.scrollIntoView) tm.scrollIntoView();
+          announce("Exercise " + (idx + 1) + " opened in the tracer.");
+        });
+      });
+      var rt = $("quiz-retake-btn");
+      if (rt) rt.addEventListener("click", function () {
+        quizState.picks = [-1, -1, -1, -1, -1]; quizState.phase = "run"; quizSel = -1;
+        quizSave(); renderQuiz();
+        announce("Quiz restarted with the same five exercises. Lock all five predictions to see your score.");
+      });
+      var ns = $("quiz-newset-btn");
+      if (ns) ns.addEventListener("click", function () {
+        quizState.picks = [-1, -1, -1, -1, -1]; quizState.phase = "setup"; quizSel = -1;
+        quizSave(); renderQuiz();
+        var sec = $("quiz-section"); if (sec && sec.scrollIntoView) sec.scrollIntoView({ block: "nearest" });
+      });
+    }
+    function renderQuiz() { renderQuizSetup(); renderQuizRun(); renderQuizResults(); }
+    (function wireQuiz() {
+      var btn = $("quiz-start-btn");
+      if (btn) btn.addEventListener("click", function () {
+        var set = [], seen = {}, dup = false;
+        for (var i = 0; i < 5; i++) {
+          var s = $("quiz-pick-" + i);
+          var v = s ? parseInt(s.value, 10) : NaN;
+          if (isNaN(v) || v < 0 || v >= EXERCISES.length) v = i;
+          if (seen[v]) dup = true;
+          seen[v] = true; set.push(v);
+        }
+        var status = $("quiz-setup-status");
+        if (dup) { if (status) status.textContent = "Pick five different exercises — one exercise appears twice in this set."; return; }
+        if (status) status.textContent = "";
+        quizState.set = set;
+        quizState.picks = [-1, -1, -1, -1, -1];
+        quizState.phase = "run"; quizSel = -1;
+        quizSave(); renderQuiz();
+        announce("Quiz started. Five predictions to lock; no verdicts until all five are in.");
+        var run = $("quiz-run"); if (run && run.scrollIntoView) run.scrollIntoView({ block: "nearest" });
+      });
+      renderQuiz();
+    })();
+
     /* ================= Gap builds (1–10): shared additive state =================
        All state in this section lives in ONE additive field, `gap`, inside
        tracefirst-progress-v1 (see the persistence block). Older saves have
@@ -19785,6 +20321,15 @@ int main() {
           { q: "A vector starts empty and three push_back lines run. What is its size?", options: ["3", "2", "0"], correct: 0, why: "Each push_back appends exactly one element: size 3." }
         ],
         drag: { q: "Complete the statement so it prints how many characters word holds:", pre: "cout << word.", slot: "", post: "();", tokens: ["length", "sizeof", "capacity"], correct: "length", why: "length() is the string method that counts characters." } },
+      "Vectors — size & capacity": { title: "Briefing: Vectors — size & capacity",
+        body: "A vector keeps <b>two counts</b>. <b>size()</b> is how many elements it <em>holds</em>; <b>capacity()</b> is how many it has <em>room for</em> — always at least the size, often more. <code>push_back</code> fills a spare slot when one exists; when the vector is full it first <b>doubles</b> the room (the growth pattern of the standard library used here: 1, 2, 4, 8…). <code>reserve(n)</code> books room in advance — capacity rises, size does not, and no elements are created. An index names an element only when it is <b>below size</b>: spare slots inside capacity hold nothing, and reading one reaches past the last element.",
+        example: ["vector<int> v;", "v.push_back(5);", "v.push_back(6);", "v.push_back(7);", "cout << v.size() << \" \" << v.capacity();"], note: "Prints <b>3 4</b>: three elements held, room for four — the third push found the vector full at capacity 2, so the room doubled to 4 before the 7 was stored.",
+        checks: [
+          { q: "A vector's size is 3 and its capacity is 4. What does index 3 hold?", options: ["Nothing — index 3 is a spare slot, not an element", "The value 0", "A copy of the element at index 2"], correct: 0, why: "Indexes name elements only below size. Capacity 4 means room for four; size 3 means three exist. The fourth slot is reserved room." },
+          { q: "After v.reserve(6); on an empty vector, what is v.size()?", options: ["0 — reserve books room, it creates no elements", "6", "1"], correct: 0, why: "reserve raises capacity only. Elements arrive one push_back at a time." },
+          { q: "A vector is exactly full at size 4, capacity 4. One more push_back runs. Capacity becomes…", options: ["8 — a push into a full vector doubles the room", "5 — it grows by one slot", "4 — push_back never changes capacity"], correct: 0, why: "Growth doubles the current room: 4 becomes 8, and the pushed element takes the first of the new slots." }
+        ],
+        drag: { q: "Complete the statement so it prints how many elements the vector has room for:", pre: "cout << v.", slot: "", post: "();", tokens: ["capacity", "size", "length"], correct: "capacity", why: "capacity() reports the room booked; size() reports the elements held." } },
       "Pointers": { title: "Briefing: Pointers",
         body: "A pointer is a box that holds an <b>address</b> — the location of another box. <code>&amp;x</code> asks for x's address; <code>*p</code> follows the address in p and means <b>the box at that address</b>. Writing through <code>*p</code> writes into the original variable, which is how a function can change a caller's values when it is handed addresses instead of copies.",
         example: ["int x = 10;", "int* p = &x;", "*p += 5;", "cout << x;"], note: "Prints <b>15</b>: *p is x itself, so the += lands in x.",
@@ -21743,7 +22288,7 @@ int main() {
       } catch (e) { tfStorageOk = false; return null; }
     }
     function tfCollect() {
-      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", playbackSpeed: playbackSpeed, bgTheme: bgTheme, reduceMotionPref: !!reduceMotionPref, largeTextPref: !!largeTextPref, primerRead: !!primerRead, boltTourSeen: (typeof boltTourSeen !== "undefined" && !!boltTourSeen), tracer: [], bolt: null, gym: [], refactor: [], bridge: [], order: [], make: [], challenges: null, authoredExercises: [], instructorExercises: [],
+      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", playbackSpeed: playbackSpeed, bgTheme: bgTheme, reduceMotionPref: !!reduceMotionPref, largeTextPref: !!largeTextPref, readAloudPref: (typeof readAloudPref !== "undefined" && !!readAloudPref), primerRead: !!primerRead, boltTourSeen: (typeof boltTourSeen !== "undefined" && !!boltTourSeen), tracer: [], bolt: null, gym: [], refactor: [], bridge: [], order: [], make: [], challenges: null, authoredExercises: [], instructorExercises: [],
         lastTracer: (typeof tfLastTracer === "number" ? tfLastTracer : -1),
         testOut: (typeof testOut !== "undefined" && testOut)
           ? { passed: !!testOut.passed, score: (typeof testOut.score === "number" ? testOut.score : 0), via: (Array.isArray(testOut.via) ? testOut.via.slice() : [false, false, false]) }
@@ -21823,6 +22368,13 @@ int main() {
       try {
         if (typeof assignments !== "undefined" && Array.isArray(assignments)) {
           data.assignments = assignments.map(function (a) { return { title: a.title, due: a.due, exs: (a.exs || []).slice() }; });
+        }
+      } catch (e) {}
+      // Prediction quiz (additive field; absent in older saves)
+      try {
+        if (typeof quizState !== "undefined" && quizState) {
+          data.quiz = { set: quizState.set.slice(), picks: quizState.picks.slice(), phase: quizState.phase,
+            lastScore: (typeof quizState.lastScore === "number" ? quizState.lastScore : null), lastWhen: quizState.lastWhen || "" };
         }
       } catch (e) {}
       try { data.gap = JSON.parse(JSON.stringify(gapState)); } catch (e) {}
@@ -22048,6 +22600,7 @@ int main() {
       // Reading comfort (additive view preferences; absent in older saves = off)
       if (typeof d.reduceMotionPref === "boolean") reduceMotionPref = d.reduceMotionPref;
       if (typeof d.largeTextPref === "boolean") largeTextPref = d.largeTextPref;
+      if (typeof d.readAloudPref === "boolean" && typeof readAloudPref !== "undefined") readAloudPref = d.readAloudPref;
       if (typeof applyComfort === "function") applyComfort();
       // Primer
       if (d.primerRead) { primerRead = true; primerOpened = true; }
@@ -22071,6 +22624,19 @@ int main() {
               exs: a.exs.filter(function (n) { return typeof n === "number" && n >= 0 && n < EXERCISES.length; }) };
           }).filter(function (a) { return a.exs.length; });
           if (typeof renderAssignSaved === "function") renderAssignSaved();
+        }
+      } catch (e) {}
+      // Prediction quiz (additive field; absent in older saves)
+      try {
+        if (d.quiz && typeof d.quiz === "object" && typeof quizState !== "undefined") {
+          if (Array.isArray(d.quiz.set) && d.quiz.set.length === 5 && d.quiz.set.every(function (n) { return typeof n === "number" && n >= 0 && n < EXERCISES.length; })) quizState.set = d.quiz.set.slice();
+          if (Array.isArray(d.quiz.picks)) quizState.picks = quizState.set.map(function (_, i) { var p = d.quiz.picks[i]; return (typeof p === "number" && p >= 0 && p < 8) ? p : -1; });
+          quizState.phase = (d.quiz.phase === "run" || d.quiz.phase === "done") ? d.quiz.phase : "setup";
+          if (quizState.phase === "run" && quizState.picks.every(function (p) { return p >= 0; })) quizState.phase = "done";
+          if (quizState.phase === "done" && quizState.picks.some(function (p) { return p < 0; })) quizState.phase = "run";
+          if (typeof d.quiz.lastScore === "number") quizState.lastScore = d.quiz.lastScore;
+          if (typeof d.quiz.lastWhen === "string") quizState.lastWhen = d.quiz.lastWhen;
+          if (typeof renderQuiz === "function") renderQuiz();
         }
       } catch (e) {}
       // Gap-build state (additive field; absent in older saves)
