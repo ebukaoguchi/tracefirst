@@ -2468,7 +2468,7 @@ for (int i = 0; i < 3; i++) {
         </div>
       </section>
       <details class="session-tools" id="session-tools">
-        <summary><span class="session-tools-title">Session &amp; instructor tools</span><span class="gcount">Review &middot; Problem of the Day &middot; Lecture mode &middot; Journal &middot; Progress file &middot; Progress code &middot; Assignments &middot; Crosswalk &#9662;</span></summary>
+        <summary><span class="session-tools-title">Session &amp; instructor tools</span><span class="gcount">Review &middot; Problem of the Day &middot; Lecture mode &middot; Journal &middot; Progress file &middot; Progress code &middot; Assignments &middot; Prediction quiz &middot; Diagnostic pair &middot; Crosswalk &#9662;</span></summary>
         <div class="session-tools-inner">
 <section class="card" id="review-panel" aria-labelledby="review-h" style="margin-top:14px;">
         <span class="concept-tag">Review · spaced practice</span>
@@ -2854,7 +2854,7 @@ for (int i = 0; i < 3; i++) {
 
         <div class="trans-method"><strong>The method:</strong> an error message names the line where the compiler gave up, which is not always the line where the mistake is; read the first error first, fix it, compile again.</div>
 
-        <p class="foot"><strong>How to use this translator well:</strong> do not hunt through all 45. Copy two or three distinctive words from the message you actually got into the search box. The raw messages here use the wording of g++, the compiler in most introductory courses; other compilers phrase the same problems slightly differently, but the cause and the fix do not change.</p>
+        <p class="foot"><strong>How to use this translator well:</strong> do not hunt through all 48. Copy two or three distinctive words from the message you actually got into the search box. The raw messages here use the wording of g++, the compiler in most introductory courses; other compilers phrase the same problems slightly differently, but the cause and the fix do not change.</p>
       </div><!-- /translator-mode -->
 
       <div id="challenges-mode" role="tabpanel" tabindex="0" hidden>
@@ -9556,7 +9556,7 @@ int main() {
             b.className = "ex-btn ex-row"; b.type = "button";
             b.setAttribute("aria-current", state.current === idx ? "true" : "false");
             b.setAttribute("aria-label", "Exercise " + (idx + 1) + ": " + ex.concept + " — " + ex.title + " (" + shortStatus + ")");
-            b.innerHTML = '<span class="n">' + (idx + 1) + '</span><span class="ex-row-title">' + esc(ex.concept) + '</span><span class="status ' + st.cls + '">' + esc(shortStatus) + "</span>";
+            b.innerHTML = '<span class="n">' + (idx + 1) + '</span><span class="ex-row-title">' + esc(ex.concept) + ' — ' + esc(ex.title) + '</span><span class="status ' + st.cls + '">' + esc(shortStatus) + "</span>";
             b.addEventListener("click", function () { stopPlayback(); if (typeof stopSpeak === "function") stopSpeak(); if (typeof exitInstPlay === "function") exitInstPlay(); state.current = idx; renderAll(); });
             list.appendChild(b);
           })(i);
@@ -20496,6 +20496,21 @@ int main() {
       announce("Assignment opened: " + a.title + ".");
       return true;
     }
+    /* Keep an open assignment view live. Every tracer completion path
+       (solo lock, pair lock, Modify) ends in renderAll(), so chaining
+       a refresh onto renderAll() — the same wrapper pattern used by
+       the variants and duel layers — re-renders the open view from the
+       current records the moment a completion lands, with no need to
+       click View again. renderAssignView() never calls renderAll(),
+       so there is no re-entrancy. When no view is open this is a no-op. */
+    function refreshAssignViewIfOpen() {
+      var box = $("assign-view");
+      if (!box || box.hidden || !currentAssignment) return;
+      renderAssignView();
+    }
+    renderAll = (function (prevRenderAll) {
+      return function () { prevRenderAll(); refreshAssignViewIfOpen(); };
+    })(renderAll);
     function renderAssignSaved() {
       var box = $("assign-saved-list");
       if (!box) return;
@@ -20568,10 +20583,10 @@ int main() {
       if (openBtn) openBtn.addEventListener("click", function () { openAssignment($("assign-open-code").value); });
       var csvBtn = $("assign-csv-btn");
       if (csvBtn) csvBtn.addEventListener("click", function () {
-        var a = currentAssignment || assignments[0];
+        var a = currentAssignment || assignments[assignments.length - 1];
         var note = $("assign-csv-note");
-        if (!a) { if (note) note.textContent = "Create or open an assignment first."; return; }
-        downloadText(assignCsvText(a), assignSlug(a.title) + ".csv");
+        if (!a) { if (note) note.textContent = "Create or open an assignment first — there is no assignment to export yet."; return; }
+        assignDownloadCsv(a);
         if (note) note.textContent = "Exported \u201C" + a.title + "\u201D (" + a.exs.length + " exercises).";
       });
       var m = /^#assign-(.+)$/.exec(location.hash || "");
@@ -21799,7 +21814,7 @@ int main() {
       var today = todayStr();
       var dateLabel = new Date().toLocaleDateString(undefined, { weekday: "long", year: "numeric", month: "long", day: "numeric" });
       var doneToday = gapState.potd.doneDate === today;
-      var html = '<p style="font-size:.93rem;"><strong>' + esc(dateLabel) + '</strong> · Streak: <strong>' + gapState.potd.streak + " day" + (gapState.potd.streak === 1 ? "" : "s") + "</strong>" + (doneToday ? " · Completed today ✓" : "") + "</p>";
+      var html = '<p style="font-size:.93rem;"><strong>' + esc(dateLabel) + '</strong>' + (doneToday ? " · Completed today ✓" : "") + "</p>";
       html += '<p style="font-size:.95rem;margin-top:6px;"><strong>Exercise ' + (i + 1) + ": " + esc(ex.title) + "</strong> (" + esc(ex.concept) + ") — " + esc(ex.question) + "</p>";
       box.innerHTML = html;
       var opts = document.createElement("div"); opts.className = "options";
@@ -21817,7 +21832,7 @@ int main() {
               gapState.potd.lastDate = today; gapState.potd.doneDate = today;
             }
             gapState.attempts[i] = { date: today, correct: true };
-            announce("Problem of the Day complete. Streak: " + gapState.potd.streak + ".");
+            announce("Problem of the Day complete.");
           } else {
             reviewAns["potd"] = oi;
             gapState.attempts[i] = { date: today, correct: false };
@@ -21831,7 +21846,7 @@ int main() {
       box.appendChild(opts);
       if (doneToday) {
         var p = document.createElement("p"); p.style.marginTop = "8px"; p.style.fontSize = ".93rem";
-        p.innerHTML = "Done for today — the machine prints <b>" + esc(ex.options[ex.correct]) + "</b>. A new problem arrives tomorrow; the streak counts consecutive days completed, in this browser only.";
+        p.innerHTML = "Done for today — the machine prints <b>" + esc(ex.options[ex.correct]) + "</b>. A new problem arrives tomorrow.";
         box.appendChild(p);
       }
     }
@@ -23852,6 +23867,11 @@ int main() {
     var tfLoaded = tfLoad();
     var tfReturning = tfHasProgress(tfLoaded);
     try { tfHydrate(tfLoaded); } catch (e) {}
+    // An assignment opened from a #assign- link is first rendered during
+    // init, before the saved records hydrate here — re-render the open
+    // view now, from the hydrated records, so its first visible state
+    // already shows the current ticks and counts.
+    if (typeof currentAssignment !== "undefined" && currentAssignment && typeof renderAssignView === "function") { try { renderAssignView(); } catch (e) {} }
     if (tfReturning) {
       var wb = document.getElementById("welcome-back");
       if (wb) wb.hidden = false;
@@ -25603,20 +25623,11 @@ int main() {
             if (openMode === entry.mode && !wrapper.contains(document.activeElement)) closeMenus();
           }, 0);
         });
-        if (canHover) {
-          wrapper.addEventListener("mouseenter", function () {
-            if (hoverCloseTimer) { clearTimeout(hoverCloseTimer); hoverCloseTimer = null; }
-            if (openMode !== entry.mode) {
-              hoverOpenTimer = setTimeout(function () { openMenu(entry.mode, null); }, 140);
-            }
-          });
-          wrapper.addEventListener("mouseleave", function () {
-            if (hoverOpenTimer) { clearTimeout(hoverOpenTimer); hoverOpenTimer = null; }
-            if (openMode === entry.mode && !wrapper.contains(document.activeElement)) {
-              hoverCloseTimer = setTimeout(function () { if (openMode === entry.mode) closeMenus(); }, 260);
-            }
-          });
-        }
+        /* Signposting fix: menus open ONLY from the caret button.
+           Hovering or clicking the mode tab itself never opens a menu —
+           clicking the tab just selects the mode (its own setMode handler)
+           and closes any menu that happens to be open. */
+        btn.addEventListener("click", function () { closeMenus(); });
       });
 
       document.addEventListener("click", function (e) {
@@ -25632,6 +25643,9 @@ int main() {
         }
       });
       window.addEventListener("resize", function () { if (openMode) closeMenus(); });
+      /* An open sections menu never survives a page scroll: it would
+         otherwise hang over the tab bar and cover content below it. */
+      window.addEventListener("scroll", function () { if (openMode) closeMenus(); }, { passive: true });
 
       /* Mobile drawer: the same sections, indented under each mode row. */
       var drawer = byId("mobile-drawer");
