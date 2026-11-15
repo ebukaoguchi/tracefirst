@@ -1759,7 +1759,7 @@
             <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Order code, then write a line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find and fix faults.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 90</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 94</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write your own programs.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
             <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
@@ -2098,7 +2098,7 @@ for (int i = 0; i < 3; i++) {
             <select class="lecture-select" id="lecture-ex-select" aria-label="Choose an exercise to project"></select>
             <button class="btn" type="button" id="lecture-project-btn">Project this exercise</button>
           </div>
-          <p class="lecture-pick-note">Any of the 90 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
+          <p class="lecture-pick-note">Any of the 94 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
         </div>
 
         <div id="lecture-project" hidden>
@@ -2329,6 +2329,7 @@ for (int i = 0; i < 3; i++) {
               <span class="bits-note">Optional — one tap, and locking works without it.</span>
             </div>
             <div class="locked-banner" id="locked-banner" role="status"></div>
+            <div class="locked-banner" id="variant-banner" role="status" style="background:var(--amber-soft);color:var(--amber);" hidden>Fresh-numbers variant: same trap, new values. This retake tests whether you can still predict it — not whether you remember the last answer.</div>
             <div class="duel-reveal" id="duel-reveal" hidden></div>
           </section>
 
@@ -2361,6 +2362,8 @@ for (int i = 0; i < 3; i++) {
             <div class="lockrow">
               <button class="btn" id="modify-btn" disabled>Check my prediction</button>
               <button class="btn ghost" id="next-btn" hidden>Next exercise</button>
+              <button class="btn ghost" id="retake-btn" type="button" hidden>Retake with fresh numbers</button>
+              <span class="journal-status" id="retake-status" role="status"></span>
             </div>
             <div class="feedback" id="modify-feedback" role="status"></div>
           </section>
@@ -2590,6 +2593,21 @@ for (int i = 0; i < 3; i++) {
         </div>
         <div id="quiz-run" hidden style="margin-top:14px;border:1.5px solid var(--accent);border-radius:12px;padding:16px;"></div>
         <div id="quiz-results" hidden style="margin-top:14px;border:1.5px solid var(--accent);border-radius:12px;padding:16px;" aria-live="polite"></div>
+      </section>
+<section class="card" id="diagpair-section" style="margin-top:18px;" aria-labelledby="diagpair-h">
+        <h3 id="diagpair-h">Pre / post diagnostic pair — the same five, twice</h3>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">A before-and-after measure built from the tracer exercises themselves. Pick any <strong>five</strong> exercises as the diagnostic set. A student runs the set once as the <strong>pre</strong> run — five predictions, each with an optional confidence mark, locked before any verdict appears — and runs the <strong>same five</strong> again later as the <strong>post</strong> run. The pair view then shows the delta side by side: <strong>prediction accuracy</strong> and the <strong>confident-wrong rate</strong> (predictions marked “sure” that missed), pre against post. Like the prediction quiz, diagnostic runs live only here: they never write into the per-exercise record, the accuracy counts, or the journal, and there are no badges, points or streaks. The set and both runs are saved in this browser only.</p>
+        <h4 style="margin-top:16px;font-size:.95rem;">Choose the five diagnostic exercises</h4>
+        <div id="diagpair-picks" style="display:grid;gap:8px;margin-top:8px;"></div>
+        <div class="journal-actions">
+          <button class="btn" type="button" id="diagpair-start-pre-btn">Start the pre run</button>
+          <button class="btn ghost" type="button" id="diagpair-start-post-btn">Start the post run</button>
+          <button class="btn ghost" type="button" id="diagpair-reset-btn">Clear the pair</button>
+          <span class="journal-status" id="diagpair-setup-status" role="status"></span>
+        </div>
+        <p style="font-size:.9rem;color:var(--ink-soft);margin-top:8px;" id="diagpair-state-line" role="status"></p>
+        <div id="diagpair-run" hidden style="margin-top:14px;border:1.5px solid var(--accent);border-radius:12px;padding:16px;"></div>
+        <div id="diagpair-results" hidden style="margin-top:14px;border:1.5px solid var(--accent);border-radius:12px;padding:16px;" aria-live="polite"></div>
       </section>
 <section class="card crosswalk-card" id="crosswalk-section" aria-labelledby="crosswalk-h">
         <h3 id="crosswalk-h">Topic crosswalk</h3>
@@ -3132,12 +3150,12 @@ int main() {
         <div id="instructors-body" hidden>
           <div class="lecture-inst-entry">
             <h4>Lecture mode — run a tracer exercise in front of the class</h4>
-            <p>A single projected screen: pick any of the 90 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
+            <p>A single projected screen: pick any of the 94 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
             <div class="journal-actions"><button class="btn small" type="button" id="lecture-open-btn-2">Open Lecture mode</button></div>
           </div>
                     <div class="studio" id="inst-studio">
             <h4>Instructor exercise studio</h4>
-            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 86 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
+            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 94 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
             <div class="authored-field">
               <label for="inst-title">Exercise title</label>
               <input class="authored-input" type="text" id="inst-title" maxlength="80" placeholder="e.g. The average that is not an average" autocomplete="off">
@@ -9098,6 +9116,200 @@ int main() {
           correct: 0,
           explain: "'b' matches <b>none</b> of the five labels, so <b>default</b> runs and sets vowels to <b>0</b>. Output: <b>0</b>."
         }
+      },
+      {
+        concept: "Decisions · && — short-circuit",
+        topic: "Branches",
+        title: "The check that never ran",
+        goal: "<b>&&</b> stops at the first false. If the left side of an <b>&&</b> is false, the right side is <b>never evaluated at all</b> — not even a function call hiding in it. This is <b>short-circuit evaluation</b>.",
+        stories: {
+          health:   "A clinic app guards a <strong>dosage helper</strong> behind a check: the helper runs only when a patient has already had a first dose. The counter of doses so far is <strong>0</strong>, and the app prints the counter and whether the door opened.",
+          psych:    "A study app guards a <strong>bonus helper</strong> behind a check: the helper runs only when a participant has already made a first attempt. The attempt counter is <strong>0</strong>, and the app prints the counter and whether the bonus door opened.",
+          business: "A loyalty app guards a <strong>points helper</strong> behind a check: the helper runs only when a member has already made a first purchase. The purchase counter is <strong>0</strong>, and the app prints the counter and whether the bonus door opened.",
+          arts:     "A rehearsal app guards a <strong>coaching helper</strong> behind a check: the helper runs only when a performer has already had a first session. The session counter is <strong>0</strong>, and the app prints the counter and whether the coaching door opened."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int bump(int &n) {",
+          "    n = n + 10;",
+          "    return n;",
+          "}",
+          "",
+          "int main() {",
+          "    int tries = 0;",
+          "    bool open = (tries > 0) && (bump(tries) > 5);",
+          "    cout << tries << \" \" << open << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["0 0", "10 0", "10 1", "0 1"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "<b>Named misconception: both sides of && always run.</b> They do not. The left side, <b>tries &gt; 0</b>, is false — and a false left side ends an <b>&&</b> on the spot. <b>bump is never called</b>, so tries is never raised to 10. Your answer ran a call the machine skipped." },
+          2: { step: 1, text: "Two slips stacked: bump ran in your trace (it never does — the false left side cancels the whole <b>&&</b> before the call), and a true right side carried the result. <b>&&</b> needs <em>both</em> sides true; with the left false, the answer is false whatever the right side would have said." },
+          3: { step: 1, text: "You kept tries at 0 — bump indeed never runs — but you let <b>open</b> come out true. A short-circuited <b>&&</b> is not “undecided”: the moment the left side is false, the whole expression <b>is</b> false. That falseness is exactly why the machine is allowed to skip the right side." }
+        },
+        steps: [
+          { line: 9, vars: { tries: ["int", "0"] }, out: "", note: "The counter <b>tries</b> starts at <b>0</b>. Above main sits a helper, <b>bump</b>, which adds 10 to whatever box it is handed — <em>if</em> it is ever called." },
+          { line: 10, vars: { tries: ["int", "0"] }, out: "", note: "<b>The parting step.</b> The left side of the <b>&&</b> is tested first: is <b>0 &gt; 0</b>? <b>False.</b> An <b>&&</b> with a false left side is false already — so the machine <b>never evaluates the right side</b>. bump is not called; its body does not run; tries is untouched." },
+          { line: 10, vars: { tries: ["int", "0"], open: ["bool", "false"] }, out: "", note: "The whole expression's value is <b>false</b>, and that is what lands in the box: <b>open becomes false</b>. Notice there is no frame for bump on the call stack — no call ever happened." },
+          { line: 11, vars: { tries: ["int", "0"], open: ["bool", "false"] }, out: "0 0", note: "The print reads both boxes: tries is still <b>0</b>, and a bool prints as <b>0</b> for false. Output: <b>0 0</b>." },
+          { line: 12, vars: { tries: ["int", "0"], open: ["bool", "false"] }, out: "0 0", note: "The program ends. Final answer: <b>0 0</b> — the check on the right never ran." }
+        ],
+        modify: {
+          prompt: "The counter starts at 3 instead of 0 (the marked line). Everything else — the helper, the test, the print — is untouched. What prints now?",
+          code: 'int tries = <mark>3</mark>;\nbool open = (tries > 0) && (bump(tries) > 5);\ncout << tries << " " << open << endl;',
+          options: ["13 1", "3 1", "13 0", "3 0"],
+          correct: 0,
+          explain: "This time the left side is <b>true</b> (3 &gt; 0), so the right side <b>does</b> run: bump raises tries to <b>13</b>, and 13 &gt; 5 is true, so open is true. Output: <b>13 1</b>. Short-circuiting skips work only when the answer is already decided."
+        }
+      },
+      {
+        concept: "Decisions · || — short-circuit",
+        topic: "Branches",
+        title: "The shortcut on the left",
+        goal: "<b>||</b> stops at the first true. If the left side of an <b>||</b> is true, the right side is <b>never evaluated at all</b> — the mirror image of <b>&&</b>'s short-circuit.",
+        stories: {
+          health:   "A clinic app opens a <strong>walk-in door</strong> when a patient has no doses yet, or when a helper check passes. The dose counter is <strong>0</strong>, and the app prints the counter and whether the door opened.",
+          psych:    "A study app opens a <strong>welcome door</strong> when a participant has made no attempts yet, or when a helper check passes. The attempt counter is <strong>0</strong>, and the app prints the counter and whether the door opened.",
+          business: "A loyalty app opens a <strong>welcome-bonus door</strong> when a member has made no purchases yet, or when a helper check passes. The purchase counter is <strong>0</strong>, and the app prints the counter and whether the door opened.",
+          arts:     "A rehearsal app opens a <strong>trial-session door</strong> when a performer has had no sessions yet, or when a helper check passes. The session counter is <strong>0</strong>, and the app prints the counter and whether the door opened."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int bump(int &n) {",
+          "    n = n + 10;",
+          "    return n;",
+          "}",
+          "",
+          "int main() {",
+          "    int tries = 0;",
+          "    bool open = (tries == 0) || (bump(tries) > 5);",
+          "    cout << tries << \" \" << open << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["0 1", "10 1", "0 0", "10 0"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "<b>Named misconception: both sides of || always run.</b> They do not. The left side, <b>tries == 0</b>, is true — and a true left side settles an <b>||</b> on the spot. <b>bump is never called</b>, so tries is never raised to 10. The final answer came out right in your trace, but by a road the machine never travelled." },
+          2: { step: 1, text: "You read the left test backwards. <b>tries == 0</b> asks “is tries equal to 0?” — and tries <em>is</em> 0, so the left side is <b>true</b>. A true left side makes the whole <b>||</b> true immediately; the right side is not even consulted." },
+          3: { step: 1, text: "Two slips stacked: bump ran in your trace (it never does — a true left side cancels the <b>||</b> before the call), and you judged <b>||</b> by <b>&&</b>'s rule. <b>||</b> needs only <em>one</em> true side, and it already has it." }
+        },
+        steps: [
+          { line: 9, vars: { tries: ["int", "0"] }, out: "", note: "The counter <b>tries</b> starts at <b>0</b>. The helper <b>bump</b> waits above main — it adds 10 to a box <em>if</em> it is called." },
+          { line: 10, vars: { tries: ["int", "0"] }, out: "", note: "<b>The parting step.</b> The left side of the <b>||</b> is tested first: is <b>0 == 0</b>? <b>True.</b> An <b>||</b> with a true left side is true already — so the machine <b>never evaluates the right side</b>. bump is not called and tries is untouched." },
+          { line: 10, vars: { tries: ["int", "0"], open: ["bool", "true"] }, out: "", note: "The whole expression's value is <b>true</b>: <b>open becomes true</b>. No frame for bump ever appears on the call stack — no call happened." },
+          { line: 11, vars: { tries: ["int", "0"], open: ["bool", "true"] }, out: "0 1", note: "The print reads both boxes: tries is still <b>0</b>, and a bool prints as <b>1</b> for true. Output: <b>0 1</b>." },
+          { line: 12, vars: { tries: ["int", "0"], open: ["bool", "true"] }, out: "0 1", note: "The program ends. Final answer: <b>0 1</b> — the left side took the shortcut." }
+        ],
+        modify: {
+          prompt: "The counter starts at 2 instead of 0 (the marked line). Everything else is untouched. What prints now?",
+          code: 'int tries = <mark>2</mark>;\nbool open = (tries == 0) || (bump(tries) > 5);\ncout << tries << " " << open << endl;',
+          options: ["12 1", "2 1", "12 0", "2 0"],
+          correct: 0,
+          explain: "Now the left side is <b>false</b> (2 is not 0), so the <b>||</b> still needs its right side: bump runs, tries becomes <b>12</b>, and 12 &gt; 5 is true. Output: <b>12 1</b>. The shortcut exists only when the left side has already decided the answer."
+        }
+      },
+      {
+        concept: "Decisions · ! precedence",
+        topic: "Branches",
+        title: "The not that grabbed one value",
+        goal: "<b>!</b> binds tighter than <b>==</b>. In <b>!signal == 1</b> the <b>!</b> applies to <b>signal alone</b> first — it never waits for the comparison to happen.",
+        stories: {
+          health:   "A monitor app computes a <strong>quiet flag</strong> from a sensor signal of <strong>5</strong>: the flag is set by the expression <strong>!signal == 1</strong>, and the app prints the flag.",
+          psych:    "A focus app computes a <strong>quiet flag</strong> from an alert signal of <strong>5</strong>: the flag is set by the expression <strong>!signal == 1</strong>, and the app prints the flag.",
+          business: "A dashboard computes a <strong>quiet flag</strong> from an alert signal of <strong>5</strong>: the flag is set by the expression <strong>!signal == 1</strong>, and the app prints the flag.",
+          arts:     "A lighting desk computes a <strong>quiet flag</strong> from a cue signal of <strong>5</strong>: the flag is set by the expression <strong>!signal == 1</strong>, and the app prints the flag."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int signal = 5;",
+          "    bool quiet = !signal == 1;",
+          "    cout << quiet << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["0", "1", "true", "5"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "<b>Named misconception: ! waits for the whole comparison.</b> It does not — <b>!</b> has higher precedence than <b>==</b>, so it grabs the value right next to it: <b>!signal</b> is computed first (!5 is 0, since any nonzero value is true and its negation is false), and only then does <b>0 == 1</b> run — false. You computed !(signal == 1), which is a different expression." },
+          2: { step: 2, text: "Two slips: a <b>bool</b> printed with <b>cout</b> comes out as <b>1</b> or <b>0</b>, never as the word true — and this flag is false anyway. Even a correct value would have printed as a digit." },
+          3: { step: 1, text: "You printed <b>signal</b> itself — but signal never reaches the cout. The print reads <b>quiet</b>, a separate bool box whose value the expression <b>!signal == 1</b> decides: !5 is 0, and 0 == 1 is false." }
+        },
+        steps: [
+          { line: 4, vars: { signal: ["int", "5"] }, out: "", note: "The box <b>signal</b> holds <b>5</b> — a nonzero value, which counts as <b>true</b> wherever a condition is expected." },
+          { line: 5, vars: { signal: ["int", "5"] }, out: "", note: "<b>The parting step.</b> Precedence decides who goes first, and <b>!</b> outranks <b>==</b>: the machine computes <b>!signal</b> before any comparison. !5 is <b>0</b> — the negation of a nonzero (true) value is false. The expression is now <b>0 == 1</b>." },
+          { line: 5, vars: { signal: ["int", "5"], quiet: ["bool", "false"] }, out: "", note: "Now the comparison runs: is <b>0 == 1</b>? <b>False.</b> <b>quiet becomes false</b>." },
+          { line: 6, vars: { signal: ["int", "5"], quiet: ["bool", "false"] }, out: "0", note: "The print reads quiet, and a false bool prints as <b>0</b>. Output: <b>0</b>." },
+          { line: 7, vars: { signal: ["int", "5"], quiet: ["bool", "false"] }, out: "0", note: "The program ends. Final answer: <b>0</b> — the not grabbed one value, not the whole comparison." }
+        ],
+        modify: {
+          prompt: "The signal changes to 0 (the marked line). The expression is untouched. What prints now?",
+          code: 'int signal = <mark>0</mark>;\nbool quiet = !signal == 1;\ncout << quiet << endl;',
+          options: ["1", "0", "2", "true"],
+          correct: 0,
+          explain: "Precedence is unchanged: <b>!0</b> is computed first, and !0 is <b>1</b> (zero is false, its negation true). Then <b>1 == 1</b> is true, so quiet is true and prints <b>1</b>."
+        }
+      },
+      {
+        concept: "Decisions · == vs = in a condition",
+        topic: "Branches",
+        title: "The test that rewrote the code",
+        goal: "<b>=</b> inside a condition is still an <b>assignment</b>: it writes into the box, and the condition's value is <b>the value just assigned</b>. <b>==</b> compares; <b>=</b> overwrites — even between the parentheses of an <b>if</b>.",
+        stories: {
+          health:   "A clinic door system stores the <strong>correct entry code, 1234</strong>, and a flag for whether entry was granted. Its check line was written with a <strong>single =</strong> where a comparison was meant, testing against 9999. The system prints the stored code and the flag.",
+          psych:    "A lab door system stores the <strong>correct entry code, 1234</strong>, and a flag for whether entry was granted. Its check line was written with a <strong>single =</strong> where a comparison was meant, testing against 9999. The system prints the stored code and the flag.",
+          business: "An office door system stores the <strong>correct entry code, 1234</strong>, and a flag for whether entry was granted. Its check line was written with a <strong>single =</strong> where a comparison was meant, testing against 9999. The system prints the stored code and the flag.",
+          arts:     "A studio door system stores the <strong>correct entry code, 1234</strong>, and a flag for whether entry was granted. Its check line was written with a <strong>single =</strong> where a comparison was meant, testing against 9999. The system prints the stored code and the flag."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int code = 1234;",
+          "    int entered = 0;",
+          "    if (code = 9999) {",
+          "        entered = 1;",
+          "    }",
+          "    cout << code << \" \" << entered << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["9999 1", "1234 0", "1234 1", "9999 0"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "<b>Named misconception: = inside a condition still compares.</b> It does not. The condition holds <b>code = 9999</b> — an assignment, not a test — so code is <b>overwritten with 9999</b> before any branching is decided, and the condition's value is the assigned value, 9999: nonzero, therefore true. Your trace ran the comparison the programmer <em>meant</em> to write (1234 == 9999, false), not the one on the page." },
+          2: { step: 2, text: "You let the branch run but kept the old code. The assignment is real: <b>code = 9999</b> writes into the box wherever it appears, including inside an if. By the time the print runs, the 1234 is gone — overwritten, not merely outvoted." },
+          3: { step: 2, text: "You saw the overwrite but skipped the branch. An assignment expression <em>has</em> a value — the value just assigned, <b>9999</b> — and the if tests that value: nonzero means true, so the branch runs and entered becomes 1. The assignment does double duty: it writes, and its result decides the branch." }
+        },
+        steps: [
+          { line: 4, vars: { code: ["int", "1234"] }, out: "", note: "The box <b>code</b> holds <b>1234</b> — the correct entry code, for now." },
+          { line: 5, vars: { code: ["int", "1234"], entered: ["int", "0"] }, out: "", note: "The flag <b>entered</b> starts at <b>0</b>: nobody has been let in yet." },
+          { line: 6, vars: { code: ["int", "9999"], entered: ["int", "0"] }, out: "", note: "<b>The parting step.</b> Read the condition character by character: it is <b>code = 9999</b>, one equals sign — an <b>assignment</b>. It fires immediately: <b>code becomes 9999</b>. The 1234 is overwritten before the branch is even decided." },
+          { line: 7, vars: { code: ["int", "9999"], entered: ["int", "1"] }, out: "", note: "The condition's value is the value just assigned — <b>9999</b>, which is nonzero, so the test is <b>true</b> and the branch runs: <b>entered becomes 1</b>. The wrong code “passed”, because nothing was ever compared." },
+          { line: 9, vars: { code: ["int", "9999"], entered: ["int", "1"] }, out: "9999 1", note: "The print reads both boxes: <b>9999 1</b> — the stored code is the attacker's value, and the door opened." },
+          { line: 10, vars: { code: ["int", "9999"], entered: ["int", "1"] }, out: "9999 1", note: "The program ends. Final answer: <b>9999 1</b>. One missing = turned a test into a rewrite." }
+        ],
+        modify: {
+          prompt: "The condition changes: it now assigns 0 instead of 9999 (the marked value). Everything else is untouched. What prints now?",
+          code: 'int code = 1234;\nint entered = 0;\nif (code = <mark>0</mark>) {\n    entered = 1;\n}\ncout << code << " " << entered << endl;',
+          options: ["0 0", "0 1", "1234 0", "1234 1"],
+          correct: 0,
+          explain: "It is still an assignment: <b>code becomes 0</b>. But the condition's value is now <b>0</b>, which is false, so the branch is skipped and entered stays 0. Output: <b>0 0</b> — the same one-character bug, the opposite outcome, decided entirely by the value assigned."
+        }
       }
     ];
 
@@ -9309,6 +9521,7 @@ int main() {
       { name: "Searching & Sorting", list: [16, 17, 41, 42, 43] },
       { name: "Decisions & References", list: [18, 19, 27, 51] },
       { name: "Decisions — switch & fall-through", list: [86, 87, 88, 89] },
+      { name: "Decisions — short-circuit & precedence", list: [90, 91, 92, 93] },
       { name: "Structured Data & Collections", list: [20, 21, 22] },
       { name: "Classes & Objects", list: [30, 31, 32] },
       { name: "File Input & Output", list: [33, 34, 63, 64, 65, 66, 67] },
@@ -19633,7 +19846,7 @@ int main() {
        by that hydration and dropped by the next tfCollect save; missing
        optional sections default the same way an older save's would). */
     var TF_PROGRESS_ARRAY_KEYS = ["tracer", "gym", "refactor", "bridge", "order", "make", "authoredExercises", "instructorExercises", "assignments"];
-    var TF_PROGRESS_KNOWN_KEYS = ["v", "bitsFormat", "playbackSpeed", "bgTheme", "reduceMotionPref", "largeTextPref", "readAloudPref", "primerRead", "boltTourSeen", "tracer", "bolt", "gym", "refactor", "bridge", "order", "make", "challenges", "authoredExercises", "instructorExercises", "assignments", "quiz", "gap", "lastTracer", "testOut"];
+    var TF_PROGRESS_KNOWN_KEYS = ["v", "bitsFormat", "playbackSpeed", "bgTheme", "reduceMotionPref", "largeTextPref", "readAloudPref", "primerRead", "boltTourSeen", "tracer", "bolt", "gym", "refactor", "bridge", "order", "make", "challenges", "authoredExercises", "instructorExercises", "assignments", "quiz", "gap", "lastTracer", "testOut", "variants", "diagPair"];
     function tfIsPlainObj(x) { return !!x && typeof x === "object" && !Array.isArray(x); }
     function tfCloneJson(x) { return JSON.parse(JSON.stringify(x)); }
     function tfValidateProgressFile(d) {
@@ -20561,6 +20774,615 @@ int main() {
       renderQuiz();
     })();
 
+    /* ================= Fresh-numbers variants on retake =================
+       When a student who has finished an exercise (Modify done) retakes
+       it, supported exercises re-roll their literal values — numbers,
+       array contents — while the trap, the step structure and the
+       diagnosis logic stay identical, so the retake tests prediction
+       rather than recall of the first answer. A variant is a full
+       exercise object rebuilt by a per-exercise generator from a seed;
+       the seed persists additively as `variants` inside
+       tracefirst-progress-v1 (older saves lack the field), and the
+       variant is re-installed from its seed on load. The retake resets
+       that exercise's own record, like any fresh attempt.
+       COVERAGE: generators exist for exercises 1, 2, 4, 5, 6, 7 and 8
+       (indexes 0, 1, 3, 4, 5, 6, 7) — the foundational exercises whose
+       traces are pure functions of a few literals. The other exercises
+       are NOT parameterised: their values are woven through file
+       contents, pointer/heap state, strings, class state or long
+       hand-verified traces that a generator cannot rebuild without
+       risking a wrong keyed answer, so they keep their original
+       numbers on retake. */
+    var variantSeeds = {};
+    var variantInstalled = {};
+    var BASE_EXERCISES = EXERCISES.slice();
+    function variantRng(seed) {
+      var t = (seed >>> 0) || 1;
+      return function () {
+        t += 0x6D2B79F5;
+        var r = Math.imul(t ^ (t >>> 15), 1 | t);
+        r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
+        return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+    function vpick(rng, arr) { return arr[Math.floor(rng() * arr.length) % arr.length]; }
+    function vclone(o) { return JSON.parse(JSON.stringify(o)); }
+
+    function genVariant0(rng) {
+      var ex = vclone(BASE_EXERCISES[0]);
+      var a = vpick(rng, [8, 12, 14, 18, 16, 9]);
+      var b = vpick(rng, [3, 4, 6, 7]);
+      var s1 = a + b, ans = s1 * 2;
+      ex.goal = ex.goal.replace("points + 5", "points + " + b);
+      ex.code[4] = "    int points = " + a + ";";
+      ex.code[5] = "    points = points + " + b + ";";
+      ex.stories = {
+        health:   "A physical-therapy app awards <strong>activity points</strong> during a recovery session. It starts a patient at " + a + " points, adds a " + b + "-point bonus for finishing a stretching set, then doubles the total as a completion reward. The app prints one number at the end.",
+        psych:    "A study-participation app awards <strong>engagement points</strong> for a reading task. It starts a participant at " + a + " points, adds " + b + " points for finishing the comprehension check, then doubles the total as a completion bonus. The app prints one number at the end.",
+        business: "A coffee shop's loyalty program awards <strong>points</strong> on a visit. It starts the account at " + a + " points, adds a " + b + "-point bonus for bringing a reusable cup, then doubles the total as a weekend promotion. The receipt prints one number.",
+        arts:     "A rehearsal tracker awards <strong>practice points</strong> for a session. It starts the performer at " + a + " points, adds " + b + " points for finishing the warm-up, then doubles the total as a full-session reward. The app prints one number at the end."
+      };
+      ex.options = [String(ans), String(s1), String(a * 2), String(a)];
+      ex.correct = 0;
+      ex.diagnoses = {
+        1: { step: 1, text: "You stopped one statement early. <b>points + " + b + "</b> gives " + s1 + " — but the program does not end there. The next statement doubles whatever is in the box <em>now</em>, and by then the box holds " + s1 + ", not " + a + "." },
+        2: { step: 2, text: "You doubled the <em>starting</em> value. The machine works statement by statement on the <em>current</em> value: by the time it reaches the doubling line, the +" + b + " has already landed, so it doubles " + s1 + ", not " + a + "." },
+        3: { step: 2, text: "You treated the later statements as if they changed nothing. Every assignment writes into the box. Two writes happen after the start, and each one uses the value the previous write left behind." }
+      };
+      ex.steps = [
+        { line: 4, vars: { points: ["int", String(a)] }, out: "", note: "A box named <b>points</b> is created and filled with <b>" + a + "</b>. Nothing has printed yet — declarations are silent." },
+        { line: 5, vars: { points: ["int", String(s1)] }, out: "", note: "Read the right side first: the <em>old</em> points (" + a + ") + " + b + " = " + s1 + ". Only then does the box get overwritten: <b>points becomes " + s1 + "</b>. The old " + a + " is gone." },
+        { line: 6, vars: { points: ["int", String(ans)] }, out: "", note: "Again, right side first: the <em>current</em> points (" + s1 + ") × 2 = " + ans + ". <b>points becomes " + ans + "</b>. The starting " + a + " plays no part in this line at all." },
+        { line: 7, vars: { points: ["int", String(ans)] }, out: String(ans), note: "<b>cout</b> reads the box and prints what it finds: <b>" + ans + "</b>. Printing never changes the value." },
+        { line: 8, vars: { points: ["int", String(ans)] }, out: String(ans), note: "The program ends. Final answer: <b>" + ans + "</b>." }
+      ];
+      var m = vpick(rng, [16, 24, 25, 30]);
+      var mAns = (m + b) * 2;
+      ex.modify = {
+        prompt: "Same program, one change: the starting value is " + m + " instead of " + a + ". The +" + b + " and the doubling stay exactly as they are.",
+        code: "int points = <mark>" + m + "</mark>;\npoints = points + " + b + ";\npoints = points * 2;\ncout << points << endl;",
+        options: [String(mAns), String(m * 2), String(m + b), String(mAns + b)],
+        correct: 0,
+        explain: m + " + " + b + " = " + (m + b) + ", then " + (m + b) + " × 2 = <b>" + mAns + "</b>. The order of operations is the order of the statements: add first, then double the result."
+      };
+      return ex;
+    }
+
+    function genVariant1(rng) {
+      var ex = vclone(BASE_EXERCISES[1]);
+      var pair = vpick(rng, [[14, 4], [29, 5], [23, 4], [19, 4], [26, 4], [18, 4], [33, 5]]);
+      var T = pair[0], C = pair[1];
+      var t = Math.floor(T / C), rem = T - t * C, rnd = Math.round(T / C), dec = String(T / C);
+      ex.code[4] = "    int total = " + T + ";";
+      ex.code[5] = "    int count = " + C + ";";
+      ex.stories = {
+        health:   "A clinic app collects a patient's <strong>pain score</strong> on " + C + " days. The scores add up to " + T + ". The app stores the total and the count in whole-number variables and computes the average to display on the chart.",
+        psych:    "A survey study collects <strong>" + C + " responses</strong> on a rating scale. The responses add up to " + T + ". The analysis program stores the total and the count in whole-number variables and computes the average response.",
+        business: "A shop counts <strong>items sold</strong> over " + C + " days. The days add up to " + T + " items. The stock program stores the total and the count in whole-number variables and computes the average per day.",
+        arts:     C + " judges score a short film. Their <strong>scores add up to " + T + "</strong>. The festival program stores the total and the count in whole-number variables and computes the average score."
+      };
+      ex.options = [String(t), dec, String(rnd), String(rem)];
+      ex.correct = 0;
+      ex.diagnoses = {
+        1: { step: 2, text: dec + " is the answer mathematics gives — and the answer a <b>double</b> variable would hold. But every variable here is an <b>int</b>, and int division cannot keep a fraction. The fraction is discarded before the value ever reaches the box." },
+        2: { step: 2, text: "You rounded. C++ integer division does not round to the nearest whole number — it cuts the fraction off entirely. " + T + " ÷ " + C + " leaves " + t + " with a remainder, and the remainder is thrown away, so the result is " + t + ", not " + rnd + "." },
+        3: { step: 2, text: "Check the arithmetic the machine actually does: " + T + " ÷ " + C + " is " + t + " with a remainder of " + rem + ". Integer division keeps the " + t + " and discards the remainder — the answer is " + t + ", not the remainder and not the count of full groups minus one." }
+      };
+      ex.steps = [
+        { line: 4, vars: { total: ["int", String(T)] }, out: "", note: "The box <b>total</b> is created holding <b>" + T + "</b> — the sum of all " + C + " values." },
+        { line: 5, vars: { total: ["int", String(T)], count: ["int", String(C)] }, out: "", note: "A second box, <b>count</b>, holds <b>" + C + "</b>. Two boxes, two whole numbers." },
+        { line: 6, vars: { total: ["int", String(T)], count: ["int", String(C)], average: ["int", String(t)] }, out: "", note: T + " / " + C + " in whole numbers: the machine computes " + t + " remainder " + rem + ", and because <b>average</b> is an <b>int</b>, the fraction has nowhere to live. <b>average becomes " + t + "</b>." },
+        { line: 7, vars: { total: ["int", String(T)], count: ["int", String(C)], average: ["int", String(t)] }, out: String(t), note: "The program prints <b>" + t + "</b>. If the programmer wanted " + dec + ", at least one of these variables would need to be a <b>double</b>." },
+        { line: 8, vars: { total: ["int", String(T)], count: ["int", String(C)], average: ["int", String(t)] }, out: String(t), note: "The program ends. Final answer: <b>" + t + "</b> — truncated, not rounded." }
+      ];
+      var T2 = (T === t * C + C - 1) ? t * C + 1 : t * C + C - 1;
+      var dec2 = String(T2 / C);
+      ex.modify = {
+        prompt: "The total changes to " + T2 + "; the count is still " + C + ", and every variable is still an int. What prints now?",
+        code: "int total = <mark>" + T2 + "</mark>;\nint count = " + C + ";\nint average = total / count;\ncout << average << endl;",
+        options: [String(t), dec2, String(t + 1), String(T2)],
+        correct: 0,
+        explain: T2 + " / " + C + " is " + t + " remainder " + (T2 - t * C) + ". The fraction is still discarded, so the answer is still <b>" + t + "</b> — the total had to reach " + ((t + 1) * C) + " before the printed average would move."
+      };
+      return ex;
+    }
+
+    function genVariant3(rng) {
+      var ex = vclone(BASE_EXERCISES[3]);
+      var N = vpick(rng, [5, 6]);
+      var S = N * (N + 1) / 2, Sprev = S - N, fact = 1;
+      for (var fi = 2; fi <= N; fi++) fact *= fi;
+      ex.code[5] = "    for (int i = 1; i <= " + N + "; i++) {";
+      ex.stories = {
+        health:   "A recovery plan adds a <strong>growing daily bonus</strong>: 1 bonus point on day 1, 2 more on day 2, and so on up to " + N + " on day " + N + ". A tracker program adds each day's bonus into a running total across the " + N + " days and prints the total.",
+        psych:    "A habit-formation study awards a <strong>growing daily bonus</strong>: 1 point on day 1, 2 more on day 2, and so on up to " + N + " on day " + N + ". A program adds each day's bonus into a running total across the " + N + " days and prints the total.",
+        business: "A savings challenge adds a <strong>growing daily deposit</strong>: 1 unit on day 1, 2 more on day 2, and so on up to " + N + " on day " + N + ". A program adds each day's deposit into a running total across the " + N + " days and prints the total.",
+        arts:     "A practice plan adds <strong>growing daily minutes</strong> of new material: 1 segment on day 1, 2 more on day 2, and so on up to " + N + " on day " + N + ". A program adds each day's segments into a running total across the " + N + " days and prints the total."
+      };
+      ex.options = [String(S), String(Sprev), String(N), String(fact)];
+      ex.correct = 0;
+      ex.diagnoses = {
+        1: { step: N + 1, text: Sprev + " is the total after <em>" + (N - 1) + "</em> passes. The test is <b>i &lt;= " + N + "</b>, so the loop takes a pass with i = " + N + " as well, adding " + N + " more. A loop that includes its boundary is the classic off-by-one trap — this one includes it." },
+        2: { step: 3, text: N + " is the number of <em>trips</em> through the loop, not the total. The counter <b>i</b> and the accumulator <b>total</b> are different boxes doing different jobs: i counts passes, total collects the running sum." },
+        3: { step: 3, text: "You multiplied the pass numbers together. The body says <b>total = total + i</b> — addition, one pass at a time. Loops do whatever the body says; read the body, not the shape of the numbers." }
+      };
+      var steps3 = [
+        { line: 4, vars: { total: ["int", "0"] }, out: "", note: "The accumulator <b>total</b> starts at <b>0</b>. Starting an accumulator at zero is deliberate: nothing has been added yet." },
+        { line: 5, vars: { total: ["int", "0"], i: ["int", "1"] }, out: "", note: "The loop sets up its counter: <b>i = 1</b>. Test: is 1 &lt;= " + N + "? <b>True</b> — enter the body." }
+      ];
+      var run3 = 0;
+      for (var k = 1; k <= N; k++) {
+        var prevRun = run3; run3 += k;
+        steps3.push({ line: 6, vars: { total: ["int", String(run3)], i: ["int", String(k)] }, out: "", note: "Pass " + k + ": total = " + prevRun + " + " + k + " = <b>" + run3 + "</b>." + (k === N ? " The test was " + N + " &lt;= " + N + " — <b>true</b>, the boundary counts." : " Then i becomes " + (k + 1) + ".") });
+      }
+      steps3.push({ line: 5, vars: { total: ["int", String(S)], i: ["int", String(N + 1)] }, out: "", note: "Test again: is " + (N + 1) + " &lt;= " + N + "? <b>False.</b> The loop ends. <b>i</b> is left at " + (N + 1) + "; <b>total</b> keeps its " + S + "." });
+      steps3.push({ line: 8, vars: { total: ["int", String(S)], i: ["int", String(N + 1)] }, out: String(S), note: "The program prints <b>" + S + "</b> — the sum 1 + 2 + … + " + N + ", accumulated one pass at a time." });
+      steps3.push({ line: 9, vars: { total: ["int", String(S)], i: ["int", String(N + 1)] }, out: String(S), note: "The program ends. Final answer: <b>" + S + "</b>." });
+      ex.steps = steps3;
+      ex.modify = {
+        prompt: "The loop boundary changes from " + N + " to " + (N - 1) + ". The body is untouched. What prints now?",
+        code: "int total = 0;\nfor (int i = 1; i <= <mark>" + (N - 1) + "</mark>; i++) {\n    total = total + i;\n}\ncout << total << endl;",
+        options: [String(Sprev), String(S), String(N - 1), String(N)],
+        correct: 0,
+        explain: "With i &lt;= " + (N - 1) + " the loop takes " + (N - 1) + " passes, summing to <b>" + Sprev + "</b>. The last pass — the one that added " + N + " — never happens."
+      };
+      return ex;
+    }
+    function genVariant4(rng) {
+      var ex = vclone(BASE_EXERCISES[4]);
+      var x = vpick(rng, [4, 6, 8, 9, 11, 13]);
+      var dbl = x * 2, ans = dbl + 1;
+      ex.code[8] = "    int result = doubleIt(" + x + ") + 1;";
+      ex.stories = {
+        health:   "A clinic calculator has a helper that <strong>doubles any measurement</strong> it is given. The main program asks the helper to double a reading of " + x + ", adds 1 as a calibration adjustment, and prints the result.",
+        psych:    "A gamified survey has a helper that <strong>doubles any bonus score</strong> it is given. The main program asks the helper to double a bonus of " + x + ", adds 1 extra point, and prints the result.",
+        business: "A loyalty program has a helper that <strong>doubles any points value</strong> it is given. The main program asks the helper to double " + x + " points, adds 1 goodwill point, and prints the result.",
+        arts:     "An audio tool has a helper that <strong>doubles any level value</strong> it is given. The main program asks the helper to double a level of " + x + ", adds 1, and prints the result."
+      };
+      ex.options = [String(ans), String(dbl), String(dbl + 2), String(x + 1)];
+      ex.correct = 0;
+      ex.diagnoses = {
+        1: { step: 3, text: dbl + " is what the function hands back — but the main program is not finished. The call sits inside a larger expression: <b>doubleIt(" + x + ") + 1</b>. The returned " + dbl + " still has the + 1 waiting for it." },
+        2: { step: 1, text: "You applied the + 1 <em>before</em> the doubling: (" + x + " + 1) × 2 = " + (dbl + 2) + ". But the code's order is fixed by the expression: the call <b>doubleIt(" + x + ")</b> is evaluated first, and only its result meets the + 1." },
+        3: { step: 1, text: (x + 1) + " is " + x + " + 1 — the doubling never happened in your trace. The call is the heart of this line: <b>doubleIt(" + x + ")</b> runs the function, which returns " + dbl + ", and then the + 1 applies." }
+      };
+      ex.steps = [
+        { line: 8, vars: {}, out: "", note: "<b>main</b> starts and reaches the assignment. Before anything can be stored, the right side must be worked out — and it contains a function call." },
+        { line: 3, vars: { x: ["int", String(x)] }, out: "", note: "Control jumps up into <b>doubleIt</b>. The argument " + x + " is copied into the function's own box, <b>x</b>. main is paused mid-statement." },
+        { line: 4, vars: { x: ["int", String(x)] }, out: "", note: "The function computes x * 2 = " + dbl + " and <b>returns</b> it. The box <b>x</b> ceases to exist; only the returned value travels back." },
+        { line: 8, vars: { result: ["int", String(ans)] }, out: "", note: "Back in main, the call is replaced by its result: " + dbl + " + 1 = " + ans + ", and that is stored. <b>result becomes " + ans + "</b>." },
+        { line: 9, vars: { result: ["int", String(ans)] }, out: String(ans), note: "The program prints <b>" + ans + "</b>." },
+        { line: 10, vars: { result: ["int", String(ans)] }, out: String(ans), note: "The program ends. Final answer: <b>" + ans + "</b> — doubled first, then adjusted." }
+      ];
+      var m = vpick(rng, [5, 10, 12, 14].filter(function (v) { return v !== x; }));
+      ex.modify = {
+        prompt: "The call changes from doubleIt(" + x + ") to doubleIt(" + m + "). The function and the + 1 are unchanged. What prints now?",
+        code: "int result = doubleIt(<mark>" + m + "</mark>) + 1;\ncout << result << endl;",
+        options: [String(m * 2 + 1), String(m * 2), String(m * 2 + 2), String(m + 1)],
+        correct: 0,
+        explain: "doubleIt(" + m + ") returns " + (m * 2) + ", then the + 1 applies: <b>" + (m * 2 + 1) + "</b>. The function's rule never changed — only the value fed into it."
+      };
+      return ex;
+    }
+
+    function genVariant5(rng) {
+      var ex = vclone(BASE_EXERCISES[5]);
+      var N = vpick(rng, [3, 5, 6]);
+      var S = N * (N + 1) / 2, Sprev = S - N;
+      ex.code[6] = "    while (count <= " + N + ") {";
+      ex.stories = {
+        health:   "A recovery app awards <strong>streak points</strong> with a while loop: it adds 1 point for day 1, 2 for day 2, and so on up to " + N + " for day " + N + ". When the loop stops, the app prints the total points and the day counter's final value.",
+        psych:    "A habit study awards <strong>streak points</strong> with a while loop: 1 point for day 1, 2 for day 2, and so on up to " + N + " for day " + N + ". When the loop stops, the program prints the total points and the day counter's final value.",
+        business: "A savings challenge uses a while loop to add a <strong>growing daily deposit</strong>: 1 unit for day 1, 2 for day 2, and so on up to " + N + " for day " + N + ". When the loop stops, the program prints the total saved and the day counter's final value.",
+        arts:     "A practice tracker uses a while loop to add <strong>growing daily segments</strong>: 1 segment for day 1, 2 for day 2, and so on up to " + N + " for day " + N + ". When the loop stops, the app prints the total segments and the day counter's final value."
+      };
+      ex.options = [S + " " + (N + 1), S + " " + N, Sprev + " " + (N + 1), String(S)];
+      ex.correct = 0;
+      ex.diagnoses = {
+        1: { step: 2 * N + 2, text: "Your total is right — your counter is one short. The last pass adds " + N + " to the total, but the body still has a second statement: <b>count++</b> runs <em>after</em> the addition, taking count to " + (N + 1) + ". Only then does the test fail. The loop cannot stop on " + N + ", because " + N + " still passes the test." },
+        2: { step: 2 * N + 1, text: Sprev + " is the total after <em>" + (N - 1) + "</em> passes. The test is <b>count &lt;= " + N + "</b>, so a pass with count = " + N + " runs and adds " + N + " more. Watch the pass where count is " + N + " — it is included, not excluded." },
+        3: { step: 2 * N + 4, text: "The total is only half the output. The cout statement prints <b>two</b> values with a space between them: total, then count. When a program prints several things, a prediction has to account for every one of them." }
+      };
+      var steps5 = [
+        { line: 4, vars: { count: ["int", "1"] }, out: "", note: "The counter <b>count</b> starts at <b>1</b> — the first value the loop will add." },
+        { line: 5, vars: { count: ["int", "1"], total: ["int", "0"] }, out: "", note: "The accumulator <b>total</b> starts at <b>0</b>: nothing has been added yet." },
+        { line: 6, vars: { count: ["int", "1"], total: ["int", "0"] }, out: "", note: "First test: is <b>1 &lt;= " + N + "</b>? <b>True</b> — enter the body." }
+      ];
+      var run5 = 0;
+      for (var k = 1; k <= N; k++) {
+        var prev5 = run5; run5 += k;
+        steps5.push({ line: 7, vars: { count: ["int", String(k)], total: ["int", String(run5)] }, out: "", note: "Pass " + k + ": total += count makes total = " + prev5 + " + " + k + " = <b>" + run5 + "</b>." });
+        steps5.push({ line: 8, vars: { count: ["int", String(k + 1)], total: ["int", String(run5)] }, out: "", note: (k === N)
+          ? "And <b>count++ still runs</b>: count becomes <b>" + (N + 1) + "</b>. This is the step that predictions of “" + S + " " + N + "” miss — the increment belongs to the pass that just added " + N + "."
+          : "<b>count++</b> runs after the addition: count becomes <b>" + (k + 1) + "</b>. Back to the test." });
+      }
+      steps5.push({ line: 6, vars: { count: ["int", String(N + 1)], total: ["int", String(S)] }, out: "", note: "Test again: is <b>" + (N + 1) + " &lt;= " + N + "</b>? <b>False.</b> The loop ends — with count one past the last value it added." });
+      steps5.push({ line: 10, vars: { count: ["int", String(N + 1)], total: ["int", String(S)] }, out: S + " " + (N + 1), note: "The program prints both boxes: <b>" + S + " " + (N + 1) + "</b>." });
+      steps5.push({ line: 11, vars: { count: ["int", String(N + 1)], total: ["int", String(S)] }, out: S + " " + (N + 1), note: "The program ends. Final answer: <b>" + S + " " + (N + 1) + "</b> — the counter overshoots by design." });
+      ex.steps = steps5;
+      ex.modify = {
+        prompt: "The loop test changes from count <= " + N + " to count <= " + (N - 1) + ". The body is untouched. What prints now?",
+        code: "int count = 1;\nint total = 0;\nwhile (count <= <mark>" + (N - 1) + "</mark>) {\n    total += count;\n    count++;\n}\ncout << total << \" \" << count << endl;",
+        options: [Sprev + " " + N, Sprev + " " + (N - 1), S + " " + N, (N - 1) + " " + N],
+        correct: 0,
+        explain: (N - 1) + " passes add up to <b>" + Sprev + "</b>, and the counter still overshoots by one, ending at <b>" + N + "</b>: the last count++ runs before the test fails."
+      };
+      return ex;
+    }
+
+    function genVariant6(rng) {
+      var ex = vclone(BASE_EXERCISES[6]);
+      var O = vpick(rng, [3, 4]);
+      var I = vpick(rng, [2, 4]);
+      function pat(o, i) { var s = ""; for (var q = 0; q < o; q++) { for (var w = 0; w < i; w++) s += "*"; s += "|"; } return s; }
+      var P = pat(O, I);
+      ex.goal = "The inner loop runs to completion for <b>every single step</b> of the outer loop. " + O + " outer passes × " + I + " inner passes = " + (O * I) + " stars.";
+      ex.code[4] = "    for (int i = 0; i < " + O + "; i++) {";
+      ex.code[5] = "        for (int j = 0; j < " + I + "; j++) {";
+      ex.stories = {
+        health:   "A recovery chart prints a progress pattern: for each of <strong>" + O + " weeks</strong>, it prints <strong>" + I + " stars</strong> (one per completed session) and then a bar to close the week. The chart is one line of pattern.",
+        psych:    "A study dashboard prints a progress pattern: for each of <strong>" + O + " cohorts</strong>, it prints <strong>" + I + " stars</strong> (one per completed survey round) and then a bar to close the cohort. The chart is one line of pattern.",
+        business: "A sales chart prints a pattern: for each of <strong>" + O + " quarters</strong>, it prints <strong>" + I + " stars</strong> (one per monthly target met) and then a bar to close the quarter. The chart is one line of pattern.",
+        arts:     "A programme prints a pattern: for each of <strong>" + O + " acts</strong>, it prints <strong>" + I + " stars</strong> (one per featured piece) and then a bar to close the act. The programme is one line of pattern."
+      };
+      var starsOnly = ""; for (var so = 0; so < O * I; so++) starsOnly += "*";
+      ex.options = [P, pat(O - 1, I), pat(O, I - 1), starsOnly];
+      ex.correct = 0;
+      ex.diagnoses = {
+        1: { step: I + 3, text: "That is only the <em>first</em> outer pass. The outer loop runs " + O + " times, and when it steps again the inner loop <b>restarts from j = 0</b> and prints " + I + " more stars. Watch the second outer pass begin." },
+        2: { step: 3, text: "You gave the inner loop " + (I - 1) + " trips. Its test is <b>j &lt; " + I + "</b>, so j takes 0 up to " + (I - 1) + " — <b>" + I + "</b> stars per outer pass, not " + (I - 1) + "." },
+        3: { step: I + 2, text: "Your star count is right — " + (O * I) + " — but a separator prints after <em>each</em> completed inner loop. The bars are part of the outer loop's body, so they appear once per outer pass." }
+      };
+      var steps6 = [
+        { line: 4, vars: { i: ["int", "0"] }, out: "", note: "The outer loop starts: <b>i = 0</b>. Test: 0 &lt; " + O + " is true — enter the outer body." },
+        { line: 5, vars: { i: ["int", "0"], j: ["int", "0"] }, out: "", note: "The inner loop starts with its own counter: <b>j = 0</b>." }
+      ];
+      var out6 = "";
+      for (var o = 0; o < O; o++) {
+        for (var j = 0; j < I; j++) {
+          out6 += "*";
+          var note6;
+          if (o === 0 && j === 0) note6 = "Inner pass 1 prints a star. Output so far: <b>" + out6 + "</b>.";
+          else if (j === 0) note6 = "Outer pass " + (o + 1) + ": i = " + o + ", and the inner loop <b>restarts at j = 0</b>. Output so far: <b>" + out6 + "</b>.";
+          else if (j === I - 1) note6 = "Inner pass " + I + " (j = " + j + ") prints the last star of this group: <b>" + out6 + "</b>. After this, j becomes " + I + " and the inner test fails.";
+          else note6 = "Inner pass " + (j + 1) + " (j = " + j + ") prints another star: <b>" + out6 + "</b>.";
+          steps6.push({ line: 6, vars: { i: ["int", String(o)], j: ["int", String(j)] }, out: out6, note: note6 });
+        }
+        out6 += "|";
+        steps6.push({ line: 8, vars: { i: ["int", String(o)], j: ["int", String(I)] }, out: out6, note: "The inner loop is finished, so the outer body continues: the separator prints. <b>" + out6 + "</b>" + (o === O - 1 ? " — the last outer pass is done." : " — outer pass " + (o + 1) + " done.") });
+      }
+      steps6.push({ line: 4, vars: { i: ["int", String(O)], j: ["int", String(I)] }, out: out6, note: "Outer test again: i = " + O + ", and " + O + " &lt; " + O + " is <b>false</b>. Both loops are done." });
+      steps6.push({ line: 10, vars: { i: ["int", String(O)], j: ["int", String(I)] }, out: out6, note: "The program ends. Final answer: <b>" + out6 + "</b> — " + O + " outer passes, each running the inner loop's full " + I + "." });
+      ex.steps = steps6;
+      var starsOnlyM = ""; for (var sm = 0; sm < (O + 1) * I; sm++) starsOnlyM += "*";
+      ex.modify = {
+        prompt: "The outer loop's boundary changes from " + O + " to " + (O + 1) + ". The inner loop is untouched. What prints now?",
+        code: "for (int i = 0; i < <mark>" + (O + 1) + "</mark>; i++) {\n    for (int j = 0; j < " + I + "; j++) {\n        cout << \"*\";\n    }\n    cout << \"|\";\n}",
+        options: [pat(O + 1, I), P, starsOnlyM, pat(O + 1, I - 1)],
+        correct: 0,
+        explain: "Each outer pass produces the same block. " + (O + 1) + " outer passes produce it " + (O + 1) + " times: <b>" + pat(O + 1, I) + "</b> — " + ((O + 1) * I) + " stars, " + (O + 1) + " bars."
+      };
+      return ex;
+    }
+
+    function genVariant7(rng) {
+      var ex = vclone(BASE_EXERCISES[7]);
+      var vals = vpick(rng, [[3, 8, 5], [6, 2, 9], [7, 4, 3], [5, 11, 6], [8, 3, 7], [4, 6, 11]]);
+      var a = vals[0], b = vals[1], c = vals[2], S = a + b + c;
+      var arrStr = "{" + a + ", " + b + ", " + c + "}";
+      ex.code[4] = "    int data[] = " + arrStr + ";";
+      ex.stories = {
+        health:   "Three days of <strong>step counts, in thousands</strong>, are stored in an array: " + a + ", " + b + ", and " + c + ". A program adds up the whole array, then also prints the <strong>second day's</strong> value.",
+        psych:    "Three participants' <strong>session counts</strong> are stored in an array: " + a + ", " + b + ", and " + c + ". A program adds up the whole array, then also prints the <strong>second participant's</strong> count.",
+        business: "Three days of <strong>sales, in hundreds</strong>, are stored in an array: " + a + ", " + b + ", and " + c + ". A program adds up the whole array, then also prints the <strong>second day's</strong> figure.",
+        arts:     "Three rehearsals' <strong>attendance figures</strong> are stored in an array: " + a + ", " + b + ", and " + c + ". A program adds up the whole array, then also prints the <strong>second rehearsal's</strong> figure."
+      };
+      ex.options = [S + " " + b, S + " " + a, "3 " + b, S + " 1"];
+      ex.correct = 0;
+      ex.diagnoses = {
+        1: { step: 6, text: a + " is <b>data[0]</b> — the <em>first</em> element. Indexes count from 0, so <b>data[1]</b> is the second element: <b>" + b + "</b>. One-based thinking is the single most common array mistake." },
+        2: { step: 2, text: "3 is the sum of the <em>indexes</em> (0 + 1 + 2). The body adds <b>data[i]</b> — the value stored at the index — not i itself. The index tells the machine where to look; it is never the thing added." },
+        3: { step: 6, text: "<b>data[1]</b> prints the <em>value held at</em> index 1, which is " + b + " — not the index itself. The bracket is a lookup, and what comes back is the contents." }
+      };
+      ex.steps = [
+        { line: 4, vars: { data: ["int[3]", arrStr] }, out: "", note: "One name, three boxes: <b>data</b> holds " + a + ", " + b + ", and " + c + " at indexes <b>0, 1, and 2</b>. Note that no box is called data[3] — the indexes stop at 2." },
+        { line: 5, vars: { data: ["int[3]", arrStr], sum: ["int", "0"] }, out: "", note: "The accumulator <b>sum</b> starts at 0." },
+        { line: 7, vars: { data: ["int[3]", arrStr], sum: ["int", String(a)], i: ["int", "0"] }, out: "", note: "i = 0: the machine looks up <b>data[0]</b>, finds " + a + ", and adds it. sum = <b>" + a + "</b>." },
+        { line: 7, vars: { data: ["int[3]", arrStr], sum: ["int", String(a + b)], i: ["int", "1"] }, out: "", note: "i = 1: <b>data[1]</b> is " + b + " — the second element. sum = " + a + " + " + b + " = <b>" + (a + b) + "</b>." },
+        { line: 7, vars: { data: ["int[3]", arrStr], sum: ["int", String(S)], i: ["int", "2"] }, out: "", note: "i = 2: <b>data[2]</b> is " + c + ". sum = " + (a + b) + " + " + c + " = <b>" + S + "</b>." },
+        { line: 6, vars: { data: ["int[3]", arrStr], sum: ["int", String(S)], i: ["int", "3"] }, out: "", note: "Test: 3 &lt; 3 is <b>false</b>. The loop ends before any data[3] lookup — a good thing, since there is none." },
+        { line: 9, vars: { data: ["int[3]", arrStr], sum: ["int", String(S)], i: ["int", "3"] }, out: S + " " + b, note: "The print: sum is <b>" + S + "</b>, and <b>data[1]</b> looks up index 1 one more time and prints its value, <b>" + b + "</b>. Output: <b>" + S + " " + b + "</b>." },
+        { line: 10, vars: { data: ["int[3]", arrStr], sum: ["int", String(S)], i: ["int", "3"] }, out: S + " " + b, note: "The program ends. Final answer: <b>" + S + " " + b + "</b>." }
+      ];
+      var c2 = vpick(rng, [c + 3, c + 4, 9, 12].filter(function (v) { return v !== c; }));
+      var S2 = S - c + c2;
+      ex.modify = {
+        prompt: "The array's last element changes from " + c + " to " + c2 + ". Nothing else changes. What prints now?",
+        code: "int data[] = {" + a + ", " + b + ", <mark>" + c2 + "</mark>};\nint sum = 0;\nfor (int i = 0; i < 3; i++) {\n    sum += data[i];\n}\ncout << sum << \" \" << data[1] << endl;",
+        options: [S2 + " " + b, S + " " + b, S2 + " " + a, S2 + " 1"],
+        correct: 0,
+        explain: "Only the last element moved: the sum becomes " + a + " + " + b + " + " + c2 + " = <b>" + S2 + "</b>, and data[1] is still <b>" + b + "</b>. Output: <b>" + S2 + " " + b + "</b>."
+      };
+      return ex;
+    }
+
+    var VAR_GENERATORS = { 0: genVariant0, 1: genVariant1, 3: genVariant3, 4: genVariant4, 5: genVariant5, 6: genVariant6, 7: genVariant7 };
+    function installVariant(idx) {
+      var seed = variantSeeds[idx];
+      if (typeof seed !== "number" || !VAR_GENERATORS[idx]) return false;
+      EXERCISES[idx] = VAR_GENERATORS[idx](variantRng(seed));
+      variantInstalled[idx] = seed;
+      return true;
+    }
+    function variantSignature(ex) { return ex ? (ex.code.join("\n") + "|" + ex.options.join(",")) : ""; }
+    function retakeCurrentExercise() {
+      var idx = state.current;
+      if (!VAR_GENERATORS[idx]) return;
+      var before = variantSignature(EXERCISES[idx]);
+      var seed = 0, tries = 0;
+      do {
+        seed = Math.floor(Math.random() * 2000000000) + 1;
+        var probe = VAR_GENERATORS[idx](variantRng(seed));
+        tries++;
+      } while (tries < 10 && variantSignature(probe) === before);
+      variantSeeds[idx] = seed;
+      installVariant(idx);
+      state.ex[idx] = freshExState();
+      try { tfSave(); } catch (e) {}
+      renderAll();
+      var st = $("retake-status");
+      if (st) st.textContent = "Fresh numbers rolled for Exercise " + (idx + 1) + " — same trap, new values. Predict it cold.";
+      announce("Exercise " + (idx + 1) + " retaken with fresh numbers. Same trap, new values — predict it cold.");
+      var h = $("ex-title"); if (h && h.scrollIntoView) h.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    function syncVariantUI() {
+      var rb = $("retake-btn"), st = $("retake-status"), vb = $("variant-banner");
+      var idx = state.current, s = state.ex[idx];
+      var supported = !!VAR_GENERATORS[idx];
+      if (rb) rb.hidden = !(supported && s && s.modDone);
+      if (st && !(supported && s && s.modDone)) st.textContent = "";
+      if (st && supported && s && s.modDone) st.textContent = "Finished this one? Retake it with fresh numbers — the trap is the same, the values are not.";
+      if (st && !supported && s && s.modDone) st.textContent = "This exercise keeps its original numbers on a retake: its values run through files, pointers, strings or class state that cannot be re-rolled without risking a wrong keyed answer.";
+      if (vb) vb.hidden = !variantInstalled[idx];
+    }
+    (function wireRetake() {
+      var rb = $("retake-btn");
+      if (rb) rb.addEventListener("click", retakeCurrentExercise);
+    })();
+    renderAll = (function (prevRenderAll) {
+      return function () { prevRenderAll(); syncVariantUI(); };
+    })(renderAll);
+    /* ================= Pre / post diagnostic pair =================
+       A set-based run kept separate from per-exercise records, following
+       the prediction-quiz precedent: the instructor picks any five
+       exercises as the diagnostic set; a student runs the set once as
+       the "pre" run and again later as the "post" run (same five, same
+       order). Each run locks five predictions — each with an optional
+       confidence mark — before any verdict appears. The pair view shows
+       the delta: prediction accuracy and confident-wrong rate, pre vs
+       post. Runs NEVER write into state.ex, so per-exercise completion,
+       accuracy counts, the journal and the digests are untouched. State
+       persists additively as `diagPair` inside tracefirst-progress-v1;
+       older saves simply lack the field. No badges, points or streaks. */
+    var diagPairState = { set: [0, 1, 2, 3, 4], phase: "setup", runKind: "", runPicks: [-1, -1, -1, -1, -1], runConfs: ["", "", "", "", ""], pre: null, post: null };
+    var diagSel = -1, diagConf = "";
+    function diagPairSave() { try { tfSave(); } catch (e) {} }
+    function diagPairPos() { for (var i = 0; i < 5; i++) if (diagPairState.runPicks[i] < 0) return i; return 5; }
+    function diagRunStats(run) {
+      if (!run) return null;
+      var right = 0, cw = 0, sure = 0;
+      diagPairState.set.forEach(function (exIdx, i) {
+        var ok = run.picks[i] === EXERCISES[exIdx].correct;
+        if (ok) right++;
+        if (run.confs[i] === "sure") { sure++; if (!ok) cw++; }
+      });
+      return { right: right, acc: Math.round((right / 5) * 100), cw: cw, cwRate: Math.round((cw / 5) * 100), sure: sure };
+    }
+    function diagPairPlain(html) { var d = document.createElement("div"); d.innerHTML = html || ""; return d.textContent || ""; }
+    function renderDiagPairSetup() {
+      var box = $("diagpair-picks"); if (!box) return;
+      if (!box.children.length || box.getAttribute("data-built-for") !== String(EXERCISES.length)) {
+        box.innerHTML = "";
+        for (var q = 0; q < 5; q++) {
+          (function (qi) {
+            var lab = document.createElement("label");
+            lab.style.cssText = "font-weight:600;font-size:.92rem;display:block;";
+            lab.textContent = "Diagnostic " + (qi + 1) + " ";
+            var sel = document.createElement("select");
+            sel.id = "diagpair-pick-" + qi;
+            sel.setAttribute("aria-label", "Diagnostic exercise " + (qi + 1));
+            sel.style.cssText = "width:100%;box-sizing:border-box;font:inherit;padding:9px 11px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel-2);color:var(--ink);margin-top:4px;";
+            EXERCISES.forEach(function (ex, ei) {
+              var o = document.createElement("option");
+              o.value = String(ei);
+              o.textContent = "Exercise " + (ei + 1) + " — " + ex.concept + ": " + ex.title;
+              sel.appendChild(o);
+            });
+            lab.appendChild(sel);
+            box.appendChild(lab);
+          })(q);
+        }
+        box.setAttribute("data-built-for", String(EXERCISES.length));
+      }
+      for (var i = 0; i < 5; i++) {
+        var s = $("diagpair-pick-" + i);
+        if (s) { s.value = String(diagPairState.set[i]); s.disabled = diagPairState.phase === "run"; }
+      }
+      var preBtn = $("diagpair-start-pre-btn"), postBtn = $("diagpair-start-post-btn");
+      var running = diagPairState.phase === "run";
+      if (preBtn) { preBtn.disabled = running; preBtn.textContent = diagPairState.pre ? "Start a new pre run (clears the pair)" : "Start the pre run"; }
+      if (postBtn) { postBtn.disabled = running || !diagPairState.pre; postBtn.textContent = diagPairState.post ? "Retake the post run" : "Start the post run"; }
+      var line = $("diagpair-state-line");
+      if (line) {
+        if (running) line.textContent = "A " + diagPairState.runKind + " run is in progress below — " + diagPairPos() + " of 5 predictions locked.";
+        else if (diagPairState.pre && diagPairState.post) line.textContent = "Pair complete: pre run " + (diagPairState.pre.when || "") + " · post run " + (diagPairState.post.when || "") + ". The delta is below.";
+        else if (diagPairState.pre) line.textContent = "Pre run recorded" + (diagPairState.pre.when ? " on " + diagPairState.pre.when : "") + ": " + diagRunStats(diagPairState.pre).right + " of 5 correct. Run the same five again later as the post run to see the delta.";
+        else line.textContent = "No runs yet. Pick five exercises and start the pre run.";
+      }
+    }
+    function renderDiagPairRun() {
+      var box = $("diagpair-run"); if (!box) return;
+      if (diagPairState.phase !== "run") { box.hidden = true; box.innerHTML = ""; return; }
+      var pos = diagPairPos();
+      if (pos >= 5) { box.hidden = true; return; }
+      var exIdx = diagPairState.set[pos], ex = EXERCISES[exIdx];
+      box.hidden = false;
+      var kind = diagPairState.runKind;
+      var html = '<p style="font-size:.9rem;color:var(--ink-soft);margin:0;"><strong style="text-transform:capitalize;">' + kind + ' run</strong> · Prediction <strong>' + (pos + 1) + " of 5</strong> · " + pos + " locked · <strong>No verdicts until all five are locked.</strong></p>";
+      html += '<h4 style="margin-top:12px;font-size:1rem;">Exercise ' + (exIdx + 1) + " — " + esc(ex.concept) + ": " + esc(ex.title) + "</h4>";
+      html += '<p style="font-size:.93rem;margin-top:6px;">' + ex.goal + "</p>";
+      html += '<pre style="background:var(--code-bg);color:var(--code-ink);border-radius:10px;padding:12px 14px;font-family:\'IBM Plex Mono\',monospace;font-size:.9rem;overflow-x:auto;margin-top:10px;">' + esc(ex.code.join("\n")) + "</pre>";
+      html += '<p class="predict-q">' + esc(ex.question) + "</p>";
+      html += '<div class="options" role="group" aria-label="Prediction options">';
+      ex.options.forEach(function (opt, oi) {
+        html += '<button type="button" class="opt-btn" data-dpopt="' + oi + '" aria-pressed="' + (diagSel === oi ? "true" : "false") + '"><span class="key">' + "ABCD".charAt(oi) + "</span><span>" + esc(opt) + "</span></button>";
+      });
+      html += "</div>";
+      html += '<div class="lockrow" role="group" aria-label="Confidence"><span style="font-size:.9rem;color:var(--ink-soft);">Confidence (optional):</span>' +
+        '<button type="button" class="btn ghost small" data-dpconf="sure" aria-pressed="' + (diagConf === "sure" ? "true" : "false") + '">Sure</button>' +
+        '<button type="button" class="btn ghost small" data-dpconf="unsure" aria-pressed="' + (diagConf === "unsure" ? "true" : "false") + '">Not sure</button></div>';
+      html += '<div class="lockrow"><button class="btn" type="button" id="diagpair-lock-btn"' + (diagSel < 0 ? " disabled" : "") + ">" + (pos === 4 ? "Lock prediction &amp; finish the " + kind + " run" : "Lock prediction &amp; continue") + '</button><span class="journal-status" role="status">Once locked, a prediction cannot be changed.</span></div>';
+      box.innerHTML = html;
+      Array.prototype.forEach.call(box.querySelectorAll("[data-dpopt]"), function (b) {
+        b.addEventListener("click", function () {
+          diagSel = parseInt(b.getAttribute("data-dpopt"), 10);
+          Array.prototype.forEach.call(box.querySelectorAll("[data-dpopt]"), function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+          var lb = $("diagpair-lock-btn"); if (lb) lb.disabled = false;
+        });
+      });
+      Array.prototype.forEach.call(box.querySelectorAll("[data-dpconf]"), function (b) {
+        b.addEventListener("click", function () {
+          var v = b.getAttribute("data-dpconf");
+          diagConf = (diagConf === v) ? "" : v;
+          Array.prototype.forEach.call(box.querySelectorAll("[data-dpconf]"), function (x) { x.setAttribute("aria-pressed", x.getAttribute("data-dpconf") === diagConf ? "true" : "false"); });
+        });
+      });
+      var lockBtn = $("diagpair-lock-btn");
+      if (lockBtn) lockBtn.addEventListener("click", function () {
+        if (diagSel < 0) return;
+        var p = diagPairPos();
+        diagPairState.runPicks[p] = diagSel;
+        diagPairState.runConfs[p] = diagConf;
+        diagSel = -1; diagConf = "";
+        if (diagPairPos() >= 5) {
+          var done = { picks: diagPairState.runPicks.slice(), confs: diagPairState.runConfs.slice(), when: new Date().toISOString().slice(0, 10) };
+          if (diagPairState.runKind === "pre") { diagPairState.pre = done; diagPairState.post = null; }
+          else diagPairState.post = done;
+          diagPairState.phase = "setup"; diagPairState.runKind = "";
+          diagPairState.runPicks = [-1, -1, -1, -1, -1]; diagPairState.runConfs = ["", "", "", "", ""];
+          announce("All five predictions are locked. The " + kind + " run is recorded.");
+        } else {
+          announce("Prediction " + diagPairPos() + " of 5 locked. No verdict yet.");
+        }
+        diagPairSave();
+        renderDiagPair();
+        var target = $("diagpair-results");
+        if (target && !target.hidden && target.scrollIntoView) target.scrollIntoView({ block: "nearest" });
+      });
+    }
+    function renderDiagPairResults() {
+      var box = $("diagpair-results"); if (!box) return;
+      var pre = diagPairState.pre, post = diagPairState.post;
+      if (!pre) { box.hidden = true; box.innerHTML = ""; return; }
+      box.hidden = false;
+      var ps = diagRunStats(pre), qs = post ? diagRunStats(post) : null;
+      var html = "";
+      if (qs) {
+        var dAcc = qs.right - ps.right, dCw = qs.cw - ps.cw;
+        html += '<h4 style="font-size:1.05rem;">The delta — pre vs post</h4>';
+        html += '<div style="overflow-x:auto;"><table class="digest-table" style="margin-top:10px;"><caption class="sr-live">Pre and post diagnostic comparison</caption><thead><tr><th scope="col">Measure</th><th scope="col">Pre' + (pre.when ? " (" + esc(pre.when) + ")" : "") + '</th><th scope="col">Post' + (post.when ? " (" + esc(post.when) + ")" : "") + '</th><th scope="col">Change</th></tr></thead><tbody>';
+        html += '<tr><td>Prediction accuracy</td><td>' + ps.right + " / 5 (" + ps.acc + '%)</td><td>' + qs.right + " / 5 (" + qs.acc + '%)</td><td>' + (dAcc > 0 ? "+" : "") + dAcc + " exercise" + (Math.abs(dAcc) === 1 ? "" : "s") + " (" + (qs.acc - ps.acc > 0 ? "+" : "") + (qs.acc - ps.acc) + " pts)</td></tr>";
+        html += '<tr><td>Confident-wrong rate</td><td>' + ps.cw + " / 5 (" + ps.cwRate + '%)</td><td>' + qs.cw + " / 5 (" + qs.cwRate + '%)</td><td>' + (dCw > 0 ? "+" : "") + dCw + " (" + ps.sure + " marked sure pre · " + qs.sure + " post)</td></tr>";
+        html += "</tbody></table></div>";
+        html += '<p style="font-size:.92rem;color:var(--ink-soft);margin-top:8px;">Accuracy up and confident-wrong down is the pair working. Accuracy up with confident-wrong also up means the knowledge grew but the calibration did not — a different conversation.</p>';
+      } else {
+        html += '<h4 style="font-size:1.05rem;">Pre run: ' + ps.right + " / 5 correct</h4>";
+        html += '<p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">Confident-wrong so far: <strong>' + ps.cw + " of 5</strong> (" + ps.sure + " predictions marked sure). Run the same five as the post run later and the delta appears here. Misses below carry the trap summary for the answer picked.</p>";
+      }
+      diagPairState.set.forEach(function (exIdx, i) {
+        var ex = EXERCISES[exIdx];
+        var pOk = pre.picks[i] === ex.correct;
+        html += '<div style="border-top:1px solid var(--line);margin-top:12px;padding-top:12px;">';
+        html += '<p style="font-weight:700;">D' + (i + 1) + " · Exercise " + (exIdx + 1) + " — " + esc(ex.concept) + ": " + esc(ex.title) + "</p>";
+        html += '<p style="font-size:.92rem;margin-top:4px;">Pre: predicted <strong>' + esc(pre.picks[i] >= 0 ? ex.options[pre.picks[i]] : "—") + "</strong> " + (pOk ? "✓" : "✗") + (pre.confs[i] ? " · marked " + (pre.confs[i] === "sure" ? "sure" : "not sure") : "") + " · The program prints: <strong>" + esc(ex.options[ex.correct]) + "</strong></p>";
+        if (post) {
+          var qOk = post.picks[i] === ex.correct;
+          html += '<p style="font-size:.92rem;margin-top:4px;">Post: predicted <strong>' + esc(post.picks[i] >= 0 ? ex.options[post.picks[i]] : "—") + "</strong> " + (qOk ? "✓" : "✗") + (post.confs[i] ? " · marked " + (post.confs[i] === "sure" ? "sure" : "not sure") : "") + "</p>";
+        }
+        if (!pOk) {
+          var d = ex.diagnoses ? ex.diagnoses[pre.picks[i]] : null;
+          if (d) html += '<p style="font-size:.92rem;margin-top:4px;"><strong>The pre-run trap:</strong> ' + esc(diagPairPlain(d.text)) + "</p>";
+        }
+        html += '<div class="journal-actions"><button class="btn ghost small" type="button" data-dpopen="' + exIdx + '">Open Exercise ' + (exIdx + 1) + " in the tracer</button></div>";
+        html += "</div>";
+      });
+      box.innerHTML = html;
+      Array.prototype.forEach.call(box.querySelectorAll("[data-dpopen]"), function (b) {
+        b.addEventListener("click", function () {
+          var idx = parseInt(b.getAttribute("data-dpopen"), 10);
+          if (typeof stopPlayback === "function") stopPlayback();
+          if (typeof stopSpeak === "function") stopSpeak();
+          if (typeof exitInstPlay === "function") exitInstPlay();
+          state.current = idx;
+          renderAll();
+          var tm = $("tracer-mode"); if (tm && tm.scrollIntoView) tm.scrollIntoView();
+          announce("Exercise " + (idx + 1) + " opened in the tracer.");
+        });
+      });
+    }
+    function renderDiagPair() { renderDiagPairSetup(); renderDiagPairRun(); renderDiagPairResults(); }
+    function diagPairReadSet() {
+      var set = [], seen = {}, dup = false;
+      for (var i = 0; i < 5; i++) {
+        var s = $("diagpair-pick-" + i);
+        var v = s ? parseInt(s.value, 10) : NaN;
+        if (isNaN(v) || v < 0 || v >= EXERCISES.length) v = diagPairState.set[i];
+        if (seen[v]) dup = true;
+        seen[v] = true; set.push(v);
+      }
+      return dup ? null : set;
+    }
+    (function wireDiagPair() {
+      var preBtn = $("diagpair-start-pre-btn"), postBtn = $("diagpair-start-post-btn"), resetBtn = $("diagpair-reset-btn");
+      if (preBtn) preBtn.addEventListener("click", function () {
+        var status = $("diagpair-setup-status");
+        var set = diagPairReadSet();
+        if (!set) { if (status) status.textContent = "Pick five different exercises — one exercise appears twice in this set."; return; }
+        if (status) status.textContent = "";
+        diagPairState.set = set;
+        diagPairState.pre = null; diagPairState.post = null;
+        diagPairState.phase = "run"; diagPairState.runKind = "pre";
+        diagPairState.runPicks = [-1, -1, -1, -1, -1]; diagPairState.runConfs = ["", "", "", "", ""];
+        diagSel = -1; diagConf = "";
+        diagPairSave(); renderDiagPair();
+        announce("Pre run started. Five predictions to lock; no verdicts until all five are in.");
+        var run = $("diagpair-run"); if (run && run.scrollIntoView) run.scrollIntoView({ block: "nearest" });
+      });
+      if (postBtn) postBtn.addEventListener("click", function () {
+        var status = $("diagpair-setup-status");
+        if (!diagPairState.pre) { if (status) status.textContent = "Run the pre run first — the post run repeats the same five exercises."; return; }
+        if (status) status.textContent = "";
+        diagPairState.phase = "run"; diagPairState.runKind = "post";
+        diagPairState.runPicks = [-1, -1, -1, -1, -1]; diagPairState.runConfs = ["", "", "", "", ""];
+        diagSel = -1; diagConf = "";
+        diagPairSave(); renderDiagPair();
+        announce("Post run started — the same five exercises as the pre run. Five predictions to lock; no verdicts until all five are in.");
+        var run = $("diagpair-run"); if (run && run.scrollIntoView) run.scrollIntoView({ block: "nearest" });
+      });
+      if (resetBtn) resetBtn.addEventListener("click", function () {
+        diagPairState.phase = "setup"; diagPairState.runKind = "";
+        diagPairState.runPicks = [-1, -1, -1, -1, -1]; diagPairState.runConfs = ["", "", "", "", ""];
+        diagPairState.pre = null; diagPairState.post = null;
+        diagSel = -1; diagConf = "";
+        diagPairSave(); renderDiagPair();
+        var status = $("diagpair-setup-status");
+        if (status) status.textContent = "Pair cleared. The exercise picks stay — start a new pre run whenever you are ready.";
+        announce("Diagnostic pair cleared.");
+      });
+      renderDiagPair();
+    })();
+    setTimeout(function () { syncVariantUI(); renderDiagPair(); }, 0);
+
     /* ================= Gap builds (1–10): shared additive state =================
        All state in this section lives in ONE additive field, `gap`, inside
        tracefirst-progress-v1 (see the persistence block). Older saves have
@@ -20591,6 +21413,15 @@ int main() {
 
     /* ================= Gap 2: Reading layer — Briefings ================= */
     var BRIEFINGS = {
+      "Decisions — short-circuit & precedence": { title: "Briefing: short-circuit & precedence — who runs, who decides",
+        body: "<b>&&</b> and <b>||</b> evaluate <b>left to right</b> and stop the moment the answer is decided: a false left side ends an <b>&&</b>, a true left side ends an <b>||</b> — and the right side is <b>never evaluated</b>, not even a function call hiding in it. That is <b>short-circuit evaluation</b>. Operators also have <b>precedence</b>: <b>!</b> binds tighter than <b>==</b>, so <code>!x == 1</code> means <code>(!x) == 1</code>, never <code>!(x == 1)</code>. And <b>=</b> is assignment wherever it appears: inside a condition it <b>writes into the box</b>, and the condition's value is the value just assigned. <b>==</b> compares; <b>=</b> overwrites.",
+        example: ["int tries = 0;", "bool open = (tries > 0) && (bump(tries) > 5);", "cout << tries << \" \" << open;"], note: "Prints <b>0 0</b>: the left side (tries &gt; 0) is false, so the <b>&&</b> is settled and <b>bump is never called</b> — tries is still 0, and open is false.",
+        checks: [
+          { q: "In (a && b), a is false. What happens to b?", options: ["It is never evaluated — the && is already false", "It is evaluated, but its value is ignored", "It is evaluated first next time the line runs"], correct: 0, why: "A false left side decides an && completely. The right side does not run at all — calls inside it never happen." },
+          { q: "What does !x == 1 compute when x is 5?", options: ["(!x) == 1, which is 0 == 1 — false", "!(x == 1), which is true", "It does not compile — ! needs a bool"], correct: 0, why: "! binds tighter than ==, so it applies to x alone first: !5 is 0, and 0 == 1 is false." },
+          { q: "What does if (code = 0) do to code?", options: ["It assigns 0 to code, and the branch is skipped because 0 is false", "It tests whether code equals 0 and leaves code unchanged", "It does not compile — conditions need =="], correct: 0, why: "A single = is assignment even inside a condition: code is overwritten with 0, and the assigned value 0 makes the condition false." }
+        ],
+        drag: { q: "Drag the token that compares two values without changing either: a ___ b", tokens: ["==", "=", "!"], correct: "==", why: "== compares and changes nothing; = assigns into the left-hand box, and ! negates the single value beside it." } },
       "Decisions — switch & fall-through": { title: "Briefing: switch — doors, not walls",
         body: "A <b>switch</b> tests one value against its <b>case</b> labels and jumps to the matching label. The labels are <b>entry points, not compartments</b>: after entering, execution runs downward through any labels below until a <b>break</b> (or the end of the switch) stops it. That downward run is <b>fall-through</b> — a bug when a break is forgotten, and a tool when several labels are <b>stacked</b> over one shared body on purpose. <b>default</b> is the label every unmatched value lands on; without it, an unmatched switch does nothing at all. A switch matches <b>exact values only</b> — integers and characters — never ranges.",
         example: ["int level = 1;", "switch (level) {", "    case 1:", "        msg = \"low\";", "    case 2:", "        msg = msg + \" mid\";", "        break;", "}"], note: "There is <b>no break</b> under case 1, so entering at case 1 runs <b>both</b> statements: msg ends as <b>\"low mid\"</b>, and only case 2's break stops the fall.",
@@ -22697,6 +23528,17 @@ int main() {
         }
       } catch (e) {}
       try { data.gap = JSON.parse(JSON.stringify(gapState)); } catch (e) {}
+      // Fresh-numbers variants (additive field; absent in older saves)
+      try { if (typeof variantSeeds !== "undefined" && variantSeeds) data.variants = JSON.parse(JSON.stringify(variantSeeds)); } catch (e) {}
+      // Pre/post diagnostic pair (additive field; absent in older saves)
+      try {
+        if (typeof diagPairState !== "undefined" && diagPairState) {
+          var dpRunOut = function (r) { return r ? { picks: r.picks.slice(), confs: r.confs.slice(), when: r.when || "" } : null; };
+          data.diagPair = { set: diagPairState.set.slice(), phase: diagPairState.phase, runKind: diagPairState.runKind || "",
+            runPicks: diagPairState.runPicks.slice(), runConfs: diagPairState.runConfs.slice(),
+            pre: dpRunOut(diagPairState.pre), post: dpRunOut(diagPairState.post) };
+        }
+      } catch (e) {}
       return data;
     }
     function tfHasProgress(d) {
@@ -22725,6 +23567,7 @@ int main() {
         });
         if (found) return true;
       }
+      if (d.diagPair && (d.diagPair.pre || d.diagPair.post)) return true;
       if (d.gap && typeof d.gap === "object") {
         if (d.gap.ladders && Object.keys(d.gap.ladders).length) return true;
         if (d.gap.briefings && Object.keys(d.gap.briefings).length) return true;
@@ -22960,6 +23803,37 @@ int main() {
           if (typeof d.quiz.lastScore === "number") quizState.lastScore = d.quiz.lastScore;
           if (typeof d.quiz.lastWhen === "string") quizState.lastWhen = d.quiz.lastWhen;
           if (typeof renderQuiz === "function") renderQuiz();
+        }
+      } catch (e) {}
+      // Fresh-numbers variants (additive field; absent in older saves)
+      try {
+        if (d.variants && typeof d.variants === "object" && typeof variantSeeds !== "undefined" && typeof VAR_GENERATORS !== "undefined") {
+          Object.keys(d.variants).forEach(function (k) {
+            var vidx = parseInt(k, 10), vsd = d.variants[k];
+            if (typeof vsd === "number" && EXERCISES[vidx] && VAR_GENERATORS[vidx]) { variantSeeds[vidx] = vsd; installVariant(vidx); }
+          });
+        }
+      } catch (e) {}
+      // Pre/post diagnostic pair (additive field; absent in older saves)
+      try {
+        if (d.diagPair && typeof d.diagPair === "object" && typeof diagPairState !== "undefined") {
+          var dpIn = d.diagPair;
+          var dpRunIn = function (r) {
+            if (!r || !Array.isArray(r.picks) || r.picks.length !== 5) return null;
+            var confs = ["", "", "", "", ""];
+            if (Array.isArray(r.confs)) for (var ci = 0; ci < 5; ci++) confs[ci] = (r.confs[ci] === "sure" || r.confs[ci] === "unsure") ? r.confs[ci] : "";
+            return { picks: r.picks.slice(), confs: confs, when: (typeof r.when === "string" ? r.when : "") };
+          };
+          if (Array.isArray(dpIn.set) && dpIn.set.length === 5 && dpIn.set.every(function (n) { return typeof n === "number" && n >= 0 && n < EXERCISES.length; })) diagPairState.set = dpIn.set.slice();
+          diagPairState.pre = dpRunIn(dpIn.pre);
+          diagPairState.post = dpRunIn(dpIn.post);
+          if (dpIn.phase === "run" && (dpIn.runKind === "pre" || dpIn.runKind === "post") && Array.isArray(dpIn.runPicks) && dpIn.runPicks.length === 5 && diagPairState.runPicks) {
+            diagPairState.phase = "run"; diagPairState.runKind = dpIn.runKind;
+            diagPairState.runPicks = dpIn.runPicks.map(function (p) { return (typeof p === "number" && p >= 0 && p < 8) ? p : -1; });
+            if (Array.isArray(dpIn.runConfs)) for (var cj = 0; cj < 5; cj++) diagPairState.runConfs[cj] = (dpIn.runConfs[cj] === "sure" || dpIn.runConfs[cj] === "unsure") ? dpIn.runConfs[cj] : "";
+            if (diagPairState.runPicks.every(function (p) { return p >= 0; })) { diagPairState.phase = "setup"; diagPairState.runKind = ""; diagPairState.runPicks = [-1, -1, -1, -1, -1]; diagPairState.runConfs = ["", "", "", "", ""]; }
+          }
+          if (typeof renderDiagPair === "function") renderDiagPair();
         }
       } catch (e) {}
       // Gap-build state (additive field; absent in older saves)
