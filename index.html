@@ -586,6 +586,20 @@
       .trans-es .trans-es-label { display: block; font-family: "IBM Plex Mono", monospace; font-size: .68rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--accent-strong); margin-bottom: 3px; }
       .cat-nodata { margin-top: 10px; font-size: .92rem; color: var(--ink-soft); }
       .catalogue-list-wrap { margin-top: 12px; }
+      /* Instructor step notes (shown in the trace) + misconception heatmap */
+      .inst-step-note { margin-top: 10px; padding: 10px 12px; border: 1.5px dashed var(--accent); border-radius: 10px; background: var(--accent-soft); font-size: .93rem; }
+      .inst-step-note .isn-label { display: block; font-family: "IBM Plex Mono", monospace; font-size: .68rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--accent-strong); margin-bottom: 3px; }
+      .heat-table td.heat-0 { background: transparent; }
+      .heat-table td.heat-1 { background: color-mix(in srgb, var(--amber) 18%, transparent); }
+      .heat-table td.heat-2 { background: color-mix(in srgb, var(--amber) 38%, transparent); }
+      .heat-table td.heat-3 { background: color-mix(in srgb, var(--rust) 34%, transparent); }
+      .heat-table td.heat-4 { background: color-mix(in srgb, var(--rust) 55%, transparent); color: var(--ink); }
+      .stepnote-list { display: grid; gap: 8px; margin-top: 10px; }
+      .stepnote-item { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: baseline; justify-content: space-between; border: 1px solid var(--line); background: var(--panel-2); border-radius: 10px; padding: 9px 12px; font-size: .92rem; }
+      .stepnote-item .sn-where { font-weight: 700; }
+      .stepnote-form { display: grid; gap: 10px; margin-top: 10px; }
+      .stepnote-form select, .stepnote-form textarea { width: 100%; box-sizing: border-box; font: inherit; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--panel-2); color: var(--ink); margin-top: 4px; }
+      .stepnote-form label { font-weight: 600; font-size: .92rem; }
       .trans-fix { margin-top: 14px; }
       .fix-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
       .fix-box { border-radius: 10px; padding: 11px 12px; font-family: "IBM Plex Mono", monospace; font-size: .86rem; white-space: pre-wrap; word-break: break-word; line-height: 1.55; }
@@ -1765,7 +1779,7 @@
             <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Order code, then write a line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find and fix faults.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 98</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 104</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write your own programs.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
             <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
@@ -2104,7 +2118,7 @@ for (int i = 0; i < 3; i++) {
             <select class="lecture-select" id="lecture-ex-select" aria-label="Choose an exercise to project"></select>
             <button class="btn" type="button" id="lecture-project-btn">Project this exercise</button>
           </div>
-          <p class="lecture-pick-note">Any of the 98 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
+          <p class="lecture-pick-note">Any of the 104 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
         </div>
 
         <div id="lecture-project" hidden>
@@ -2444,6 +2458,7 @@ for (int i = 0; i < 3; i++) {
               </div>
               <div class="console"><div class="chead">Program output</div><div class="cout" id="cout"></div></div>
               <div class="stepnote" id="stepnote"></div>
+              <div class="inst-step-note" id="inst-step-note" hidden><span class="isn-label">Instructor note</span><span id="inst-step-note-text"></span></div>
               <div class="parting-note" id="parting-note" hidden role="status"></div>
               <div class="repred-panel" id="repred-panel" hidden>
                 <h4>Checkpoint — predict the rest of the run</h4>
@@ -2634,6 +2649,31 @@ for (int i = 0; i < 3; i++) {
           <button class="btn ghost" type="button" id="catalogue-clear-btn">Clear imported counts</button>
           <span class="journal-status" id="catalogue-status" role="status"></span>
         </div>
+        <h4 style="margin-top:22px;font-size:.95rem;">Class misconception heatmap — this device's record</h4>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:4px;">One row per exercise <strong>attempted on this device</strong>: attempts, first-prediction accuracy, and how many misses were <strong>confident-wrong</strong> (marked “Sure”, then missed) — the misses that mark a carried misconception rather than a guess. Shading follows the confident-wrong rate. Exercises nobody on this device has attempted are not listed and are never shown as zeros: they are marked “no data” in the export. This is this browser's saved record only — it is not a whole class unless this device is the class's device.</p>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:8px;" id="heatmap-source-note" role="status"></p>
+        <div id="heatmap-box"></div>
+        <div class="journal-actions">
+          <button class="btn ghost small" type="button" id="heatmap-csv-btn">Export heatmap CSV</button>
+          <span class="journal-status" id="heatmap-status" role="status"></span>
+        </div>
+      </section>
+<section class="card" id="stepnotes-section" style="margin-top:18px;" aria-labelledby="stepnotes-h">
+        <h3 id="stepnotes-h">Step notes — instructor annotations on trace steps</h3>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">Attach a short note to one step of one exercise — a parting step worth dwelling on, a line a class keeps misreading. A student working on <strong>this device</strong> sees the note under that step's explanation, and only once they have locked the prediction that covers the step: for steps past the mid-trace checkpoint, only after the second prediction locks. Until you add a note, nothing shows — there is no empty placeholder in the student's trace.</p>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:8px;"><strong>Where notes travel:</strong> notes are saved in this browser only, like everything in these tools. Assignment codes (TFA1:) carry a title, a due date and an exercise list — they carry no per-step data — so <strong>step notes do not travel with assignments</strong>, and progress codes do not carry them either. A student sees a note only on a device where an instructor entered it: a classroom or lecture machine, not the student's own phone.</p>
+        <div class="stepnote-form">
+          <label>Exercise<br><select id="stepnote-ex"></select></label>
+          <label>Step<br><select id="stepnote-step"></select></label>
+          <label>Note (one or two sentences, at most 280 characters)<br><textarea id="stepnote-text" rows="3" maxlength="280" placeholder="e.g. Watch the box, not the name: the write lands through score, and this window only watches."></textarea></label>
+        </div>
+        <div class="journal-actions">
+          <button class="btn" type="button" id="stepnote-save-btn">Save note for this step</button>
+          <button class="btn ghost" type="button" id="stepnote-delete-btn">Delete this step's note</button>
+          <span class="journal-status" id="stepnote-status" role="status"></span>
+        </div>
+        <h4 style="margin-top:18px;font-size:.95rem;">Notes saved on this device</h4>
+        <div id="stepnote-list"></div>
       </section>
         </div>
       </details>
@@ -3171,12 +3211,12 @@ int main() {
         <div id="instructors-body" hidden>
           <div class="lecture-inst-entry">
             <h4>Lecture mode — run a tracer exercise in front of the class</h4>
-            <p>A single projected screen: pick any of the 98 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
+            <p>A single projected screen: pick any of the 104 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
             <div class="journal-actions"><button class="btn small" type="button" id="lecture-open-btn-2">Open Lecture mode</button></div>
           </div>
                     <div class="studio" id="inst-studio">
             <h4>Instructor exercise studio</h4>
-            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 98 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
+            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 104 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
             <div class="authored-field">
               <label for="inst-title">Exercise title</label>
               <input class="authored-input" type="text" id="inst-title" maxlength="80" placeholder="e.g. The average that is not an average" autocomplete="off">
@@ -9637,6 +9677,302 @@ int main() {
           correct: 0,
           explain: "Probe 1: mid 4, a[4] = 30 — too big, hi becomes 3. Probe 2: mid = (0 + 3) / 2 = 1, a[1] = 9 — still too big, hi becomes 0. Probe 3: mid 0, and a[0] is exactly 2. Output: <b>0 3</b> — the first cell this time, found from the other direction."
         }
+      },
+      {
+        concept: "Const · variables",
+        topic: "Const correctness",
+        title: "The limit that would not move",
+        goal: "<b>const</b> is a promise the <b>compiler</b> enforces over the whole program, before anything runs: a const box is filled once, where it is declared, and any later assignment to it — anywhere — makes the whole program fail to compile. This program never runs, and predicting that <em>is</em> the prediction.",
+        stories: {
+          health:   "A clinic app sets a <strong>safety cap of 100</strong> on daily activity points and declares it constant so no later code can quietly raise it. A patient starts at 40 points and earns 30 more. Further down, a line tries to raise the cap to 150, and then the app goes to print the score and the cap.",
+          psych:    "A study platform sets a <strong>maximum bonus of 100 points</strong> and declares it constant so no later code can quietly raise it. A participant starts at 40 points and earns 30 more. Further down, a line tries to raise the maximum to 150, and then the program goes to print the score and the maximum.",
+          business: "A loyalty program sets a <strong>points cap of 100</strong> and declares it constant so no later code can quietly raise it. An account starts at 40 points and earns 30 more. Further down, a line tries to raise the cap to 150, and then the program goes to print the balance and the cap.",
+          arts:     "A rehearsal tracker sets a <strong>session cap of 100 points</strong> and declares it constant so no later code can quietly raise it. A performer starts at 40 points and earns 30 more. Further down, a line tries to raise the cap to 150, and then the program goes to print the score and the cap."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    const int limit = 100;",
+          "    int score = 40;",
+          "    score = score + 30;",
+          "    limit = 150;",
+          "    cout << score << \" \" << limit << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "Will this program compile? If it does, what does it print?",
+        options: ["It does not compile — nothing prints", "70 150", "70 100", "40 100"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 3, text: "<b>Named misconception: const is only a starting value.</b> You read <b>const int limit = 100</b> as “limit starts at 100” — an ordinary declaration with a note attached. const is a lock, not a label: the fill at the declaration is the only write limit may ever receive, and the parting step, <b>limit = 150;</b>, is a second write. The compiler rejects the whole program for it." },
+          2: { step: 3, text: "<b>Named misconception: the compiler skips the bad line.</b> Your answer runs the legal lines and quietly drops the illegal one. Compilers do not edit programs: one assignment to a const box, anywhere, refuses the <em>entire</em> program. The legal lines were checked, but they never run — so score's 70 is never computed and never printed." },
+          3: { step: 3, text: "<b>Named misconception: a compile error is a stop sign partway through a run.</b> That model belongs to runtime errors. A compile error happens before there is a program to run: the machine never starts, score is never even created, and nothing at all prints — not a partial run, not the values the boxes “would have had”." }
+        },
+        steps: [
+          { line: 4, vars: { limit: ["const int", "100"] }, out: "", note: "The compiler reads the whole program <em>before anything runs</em>. First declaration: <b>limit</b> is <b>const</b>, filled once — here — with <b>100</b>. That fill is the only write a const box ever gets." },
+          { line: 5, vars: { limit: ["const int", "100"], score: ["int", "40"] }, out: "", note: "<b>score</b> is an ordinary box, filled with <b>40</b>. Ordinary boxes may be written again and again; const boxes may not. That difference is the whole exercise." },
+          { line: 6, vars: { limit: ["const int", "100"], score: ["int", "40"] }, out: "", note: "This line is legal: <b>score = score + 30</b> writes an ordinary box. <em>If</em> the program were allowed to run, score would become 70 here. The compiler notes the line is fine — and reads on." },
+          { line: 7, vars: { limit: ["const int", "100"], score: ["int", "40"] }, out: "", note: "<b>The parting step.</b> <b>limit = 150;</b> — a second write to a const box. The compiler stops here and <b>rejects the whole program</b>: the legal lines above were only ever checked, never run. Nothing prints." },
+          { line: 8, vars: { limit: ["const int", "100"], score: ["int", "40"] }, out: "", note: "The print line is itself legal — reading a const box is always allowed. It changes nothing: a rejected program has no runs, so this line is never reached." },
+          { line: 9, vars: { limit: ["const int", "100"], score: ["int", "40"] }, out: "", note: "The program ends — on paper. Final answer: <b>it does not compile, and nothing prints</b>. const moved the failure earlier: from a wrong answer at run time to no program at all." }
+        ],
+        modify: {
+          prompt: "One change: the const is removed — limit is now declared as a plain int. Everything else is untouched. Will it compile now, and if so, what prints?",
+          code: '<mark>int</mark> limit = 100;\nint score = 40;\nscore = score + 30;\nlimit = 150;\ncout << score << " " << limit << endl;',
+          options: ["70 150", "It still does not compile", "70 100", "40 150"],
+          correct: 0,
+          explain: "Without const, limit is an ordinary box: score becomes 40 + 30 = <b>70</b>, and limit is overwritten with <b>150</b>. The program compiles and prints <b>70 150</b> — which is exactly the quiet cap-raise the const was there to prevent."
+        }
+      },
+      {
+        concept: "Const · references",
+        topic: "Const correctness",
+        title: "The window that saw the change",
+        goal: "A <b>const reference</b> is a second name for a box, opened read-only: it may look, never write. But const guards <em>the name it is attached to</em> — the box itself stays writable through its own name, and the read-only name sees every change.",
+        stories: {
+          health:   "A clinic dashboard opens a <strong>read-only view</strong> of a patient's activity score so display code can show it but never alter it. The score starts at 10. The dashboard prints the view, then the care team updates the score itself to 42, and the dashboard prints the view again.",
+          psych:    "A study dashboard opens a <strong>read-only view</strong> of a participant's engagement score so display code can show it but never alter it. The score starts at 10. The dashboard prints the view, then the research team updates the score itself to 42, and the dashboard prints the view again.",
+          business: "A sales dashboard opens a <strong>read-only view</strong> of an account's points balance so display code can show it but never alter it. The balance starts at 10. The dashboard prints the view, then the account itself is updated to 42, and the dashboard prints the view again.",
+          arts:     "A festival dashboard opens a <strong>read-only view</strong> of a performer's practice score so display code can show it but never alter it. The score starts at 10. The dashboard prints the view, then the score itself is updated to 42, and the dashboard prints the view again."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int score = 10;",
+          "    const int& view = score;",
+          "    cout << view << \" \";",
+          "    score = 42;",
+          "    cout << view << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["10 42", "10 10", "42 42", "It does not compile — view is const, so score is frozen too"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 3, text: "<b>Named misconception: a const reference takes a snapshot.</b> You treated <b>view</b> as a photograph of score's 10, taken at the declaration. A reference is not a copy and holds no value of its own — it is a second name for the same box. When the box changes, every name for it reads the new value, const or not: at the parting step score becomes 42, and view reads 42." },
+          2: { step: 3, text: "You applied the change one print too early. The first print happens <em>before</em> the update line: it reads view while score still holds its starting 10. The update lands between the two prints, so the pair is 10 then 42 — the trace's order, not the final state twice." },
+          3: { step: 3, text: "<b>Named misconception: const on one name freezes the box.</b> const restricts the name it is attached to — <b>view</b> — not the box it names. score was never declared const, so <b>score = 42;</b> is perfectly legal; only a write <em>through view</em> (view = 42;) would be refused. The program compiles, and the write goes ahead." }
+        },
+        steps: [
+          { line: 4, vars: { score: ["int", "10"] }, out: "", note: "An ordinary box, <b>score</b>, starts at <b>10</b>. Nothing about score itself is const." },
+          { line: 5, vars: { score: ["int", "10"], view: ["const int&", "→ score"] }, out: "", note: "A second name for the same box: <b>view</b> is bound to <b>score</b> — no new box, no copy. The <b>const</b> sits on this name: through view, the box may be <b>read but never written</b>." },
+          { line: 6, vars: { score: ["int", "10"], view: ["const int&", "→ score"] }, out: "10 ", note: "The first print reads <b>view</b> — a legal read — and shows score's current value: <b>10</b>." },
+          { line: 7, vars: { score: ["int", "42"], view: ["const int&", "→ score"] }, out: "10 ", note: "<b>The parting step.</b> The write goes through <b>score's own name</b> — and score was never const. The box becomes <b>42</b>, and view, being the same box under a read-only name, now reads 42. const guarded the window, not the room." },
+          { line: 8, vars: { score: ["int", "42"], view: ["const int&", "→ score"] }, out: "10 42", note: "The second print reads view again and shows <b>42</b> — the change the box's own name made, fully visible through the read-only name." },
+          { line: 9, vars: { score: ["int", "42"], view: ["const int&", "→ score"] }, out: "10 42", note: "The program ends. Final answer: <b>10 42</b> — one box, two names, and only one of the names was read-only." }
+        ],
+        modify: {
+          prompt: "The update changes: score is set to 77 instead of 42. The declaration of view and both prints are untouched. What prints now?",
+          code: 'int score = 10;\nconst int& view = score;\ncout << view << " ";\nscore = <mark>77</mark>;\ncout << view << endl;',
+          options: ["10 77", "10 10", "77 77", "It does not compile"],
+          correct: 0,
+          explain: "The first print still catches score at its start: <b>10</b>. The write through score's own name is still legal, and view — the same box — reads the new value at the second print: <b>77</b>. Output: <b>10 77</b>."
+        }
+      },
+      {
+        concept: "Const · parameters",
+        topic: "Const correctness",
+        title: "Read, but never written",
+        goal: "A <b>const int&</b> parameter hands a function a read-only name for the caller's box: no copy, full view, no write access. The const lives on the parameter name <em>inside the function</em> — the caller's own variable stays exactly as writable as it always was.",
+        stories: {
+          health:   "A monitor program has a helper that <strong>reports a sensor reading</strong> without being able to change it — the helper receives the reading read-only. The reading starts at 7 and is reported; then the sensor updates it to 12 and it is reported again, before the program signs off.",
+          psych:    "A survey program has a helper that <strong>reports a participant's score</strong> without being able to change it — the helper receives the score read-only. The score starts at 7 and is reported; then the study updates it to 12 and it is reported again, before the program signs off.",
+          business: "A stock program has a helper that <strong>reports an account balance</strong> without being able to change it — the helper receives the balance read-only. The balance starts at 7 and is reported; then a deposit updates it to 12 and it is reported again, before the program signs off.",
+          arts:     "A box-office program has a helper that <strong>reports a ticket count</strong> without being able to change it — the helper receives the count read-only. The count starts at 7 and is reported; then sales update it to 12 and it is reported again, before the program signs off."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "void report(const int& value) {",
+          "    cout << value << \" \";",
+          "}",
+          "",
+          "int main() {",
+          "    int reading = 7;",
+          "    report(reading);",
+          "    reading = 12;",
+          "    report(reading);",
+          "    cout << \"done\" << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["7 12 done", "7 7 done", "It does not compile — a const int& parameter cannot be used", "12 12 done"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 3, text: "<b>Named misconception: the parameter froze the caller's variable.</b> You carried the parameter's const out of the function and onto main's box. The const lives on the name <b>value</b>, inside report only. At the parting step main writes through <b>reading</b>'s own name — reading was never const — and the second call reads the new 12 through a fresh read-only window." },
+          2: { step: 1, text: "<b>Named misconception: a const parameter is a locked door.</b> const int& is the standard way to hand a function a value it may inspect without copying: <em>reading</em> through it is exactly what it is for, and report does nothing else. What would not compile is a <em>write</em> through value — there is none here." },
+          3: { step: 3, text: "You ran both calls after the update. The calls are interleaved with the write: the first report runs while reading is still <b>7</b>, the update lands at the parting step, and only then does the second report read <b>12</b>. Sequence is the whole trace: 7, then 12." }
+        },
+        steps: [
+          { line: 8, vars: { reading: ["int", "7"] }, out: "", note: "main's box <b>reading</b> starts at <b>7</b>. It is an ordinary, writable box — no const anywhere near its declaration." },
+          { line: 9, vars: { reading: ["int", "7"], value: ["const int&", "→ reading"] }, out: "", note: "The call binds report's parameter: <b>value</b> becomes a <b>read-only second name</b> for reading's box. No copy is made — and through this name, the box may be read but never written." },
+          { line: 4, vars: { reading: ["int", "7"], value: ["const int&", "→ reading"] }, out: "7 ", note: "Inside report, the read is legal and prints <b>7</b>. Reading is what a const reference is <em>for</em>." },
+          { line: 10, vars: { reading: ["int", "12"] }, out: "7 ", note: "<b>The parting step.</b> Back in main, <b>reading = 12;</b> writes through the box's own name. The const was on report's parameter name, not on this box — the write is legal, and reading becomes <b>12</b>." },
+          { line: 11, vars: { reading: ["int", "12"], value: ["const int&", "→ reading"] }, out: "7 ", note: "The second call binds a fresh read-only name to the same box — which now holds 12." },
+          { line: 4, vars: { reading: ["int", "12"], value: ["const int&", "→ reading"] }, out: "7 12 ", note: "The second report reads through its window and prints <b>12</b>: the caller's own change, fully visible to a function that could never have made it." },
+          { line: 12, vars: { reading: ["int", "12"] }, out: "7 12 done", note: "main signs off with <b>done</b>." },
+          { line: 13, vars: { reading: ["int", "12"] }, out: "7 12 done", note: "The program ends. Final answer: <b>7 12 done</b> — the helper could look both times, and touch neither." }
+        ],
+        modify: {
+          prompt: "The sensor's second value changes: reading is set to 20 instead of 12. report and everything else are untouched. What prints now?",
+          code: 'int reading = 7;\nreport(reading);\nreading = <mark>20</mark>;\nreport(reading);\ncout << "done" << endl;',
+          options: ["7 20 done", "7 7 done", "20 20 done", "It does not compile"],
+          correct: 0,
+          explain: "The first report still reads the starting value, <b>7</b>. main's own write is still legal — reading was never const — so the second report reads <b>20</b> through its read-only window. Output: <b>7 20 done</b>."
+        }
+      },
+      {
+        concept: "Const · parameters",
+        topic: "Const correctness",
+        title: "The helper that tried to fix it",
+        goal: "A function that means to <em>change</em> the caller's box needs a plain <b>int&</b>. Declare the parameter <b>const int&</b> instead and the write inside is refused — not at the call, not at run time, but by the compiler, before the program exists.",
+        stories: {
+          health:   "A clinic program has a helper meant to <strong>add one to a patient's session count</strong>. The helper's parameter was declared read-only by mistake. The count starts at 5, main hands it to the helper, and then goes to print it.",
+          psych:    "A study program has a helper meant to <strong>add one to a participant's attempt count</strong>. The helper's parameter was declared read-only by mistake. The count starts at 5, main hands it to the helper, and then goes to print it.",
+          business: "A sales program has a helper meant to <strong>add one to an account's order count</strong>. The helper's parameter was declared read-only by mistake. The count starts at 5, main hands it to the helper, and then goes to print it.",
+          arts:     "A festival program has a helper meant to <strong>add one to a performer's rehearsal count</strong>. The helper's parameter was declared read-only by mistake. The count starts at 5, main hands it to the helper, and then goes to print it."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "void bump(const int& n) {",
+          "    n = n + 1;",
+          "}",
+          "",
+          "int main() {",
+          "    int count = 5;",
+          "    bump(count);",
+          "    cout << count << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "Will this program compile? If it does, what does it print?",
+        options: ["It does not compile — bump assigns through a const reference", "6", "5", "It compiles, but prints nothing"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "<b>Named misconception: const on a parameter is a promise the compiler trusts.</b> You assumed the write goes ahead because the intent is harmless. const is not a promise — it is enforced. At the parting step, <b>n = n + 1;</b> assigns through a <b>const int&</b>, and that single line makes the compiler reject the whole program before main ever runs. The fix is in the declaration: a helper that must write needs <b>int&</b>, without the const." },
+          2: { step: 1, text: "<b>Named misconception: the call is quietly ignored.</b> Your answer keeps the program but drops the helper's effect, as if the compiler skipped the bad line or the call. Compilers skip nothing: one illegal write refuses the entire program, so count's untouched 5 is never printed either — nothing is." },
+          3: { step: 1, text: "A program that compiles runs main, and main here ends in a print — it cannot compile <em>and</em> print nothing. This one never reaches the starting line: the write through the const parameter refuses the whole program at compile time." }
+        },
+        steps: [
+          { line: 3, vars: {}, out: "", note: "The compiler reads the helper first: its parameter <b>n</b> is a <b>const int&</b> — a read-only second name for whatever box a caller hands over. Nothing has run; the compiler is still reading." },
+          { line: 4, vars: {}, out: "", note: "<b>The parting step.</b> Reading n is fine — <b>n + 1</b> is a legal read. <b>Assigning to n is not</b>: n is const. The compiler rejects the program at this line, before main is even read. There will be no run." },
+          { line: 8, vars: { count: ["int", "5"] }, out: "", note: "The compiler reads on into main anyway: <b>count</b> starts at 5, an ordinary box. The declaration is legal — but legality line by line is not enough when one line has already refused the whole." },
+          { line: 9, vars: { count: ["int", "5"] }, out: "", note: "The call itself is shaped correctly — an int box for an int& parameter. It changes nothing: a rejected program has no calls." },
+          { line: 10, vars: { count: ["int", "5"] }, out: "", note: "The print line is never reached. There is no program to reach it with." },
+          { line: 11, vars: { count: ["int", "5"] }, out: "", note: "Final answer: <b>the program does not compile, and nothing prints</b>. To make bump legal, its parameter must drop the const — <b>int& n</b> — and then the write would land in the caller's box, as the Modify stage shows." }
+        ],
+        modify: {
+          prompt: "One change: bump's parameter drops the const — it is now a plain int& n. Everything else is untouched. Will it compile now, and if so, what prints?",
+          code: 'void bump(<mark>int&</mark> n) {\n    n = n + 1;\n}\nint count = 5;\nbump(count);\ncout << count << endl;',
+          options: ["6", "5", "It still does not compile", "It compiles, but prints nothing"],
+          correct: 0,
+          explain: "With a plain <b>int&</b>, the write is legal — and because the parameter is a reference, it lands in the caller's own box: count becomes 5 + 1 = <b>6</b>, and the print shows <b>6</b>. The const was the whole difference between a helper that reports and a helper that changes."
+        }
+      },
+      {
+        concept: "Const · pointers",
+        topic: "Const correctness",
+        title: "The aim was never locked",
+        goal: "In <b>const int* p</b>, the const belongs to the <b>pointed-at int</b>: through p that int may be read but never written — while <b>p itself is an ordinary pointer</b> and may be re-aimed at another box whenever the program likes. Placement is the whole meaning.",
+        stories: {
+          health:   "A monitor program points a <strong>read-only probe</strong> at the first of two sensor values, 5 and 9, then re-aims the probe at the second value and prints whatever the probe is looking at.",
+          psych:    "A study program points a <strong>read-only cursor</strong> at the first of two response values, 5 and 9, then re-aims the cursor at the second value and prints whatever the cursor is looking at.",
+          business: "A stock program points a <strong>read-only selector</strong> at the first of two account values, 5 and 9, then re-aims the selector at the second value and prints whatever the selector is looking at.",
+          arts:     "A programme program points a <strong>read-only spotlight</strong> at the first of two scores, 5 and 9, then re-aims the spotlight at the second score and prints whatever the spotlight is looking at."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int first = 5;",
+          "    int second = 9;",
+          "    const int* p = &first;",
+          "    p = &second;",
+          "    cout << *p << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["9", "5", "It does not compile — p is const, so it cannot be re-aimed", "0"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 3, text: "<b>Named misconception: the const froze the pointer.</b> You kept p aimed at first because its declaration carries const. Read the placement: in <b>const int* p</b> the const sits with the <b>int</b> — it is the pointed-at value that is read-only <em>through p</em>. p itself was never declared const, so the parting step, <b>p = &second;</b>, is legal, and the print reads second's 9." },
+          2: { step: 3, text: "<b>Named misconception: any const near a pointer locks the whole declaration.</b> One const locks exactly one thing, and placement says which. <b>const int*</b> locks the pointee (read-only through this pointer, pointer free to move); <b>int* const</b> locks the pointer (aim fixed, pointee writable). This program declared the first kind, so it compiles and the re-aim stands." },
+          3: { step: 2, text: "p is aimed before it is ever read: its declaration points it at <b>first</b>. There is no moment where p holds nothing — and after the re-aim it holds second's address, so the print reads a real value, 9, not an empty 0." }
+        },
+        steps: [
+          { line: 4, vars: { first: ["int", "5"] }, out: "", note: "The first box, <b>first</b>, holds <b>5</b>. Neither box is const — watch where the const actually lands." },
+          { line: 5, vars: { first: ["int", "5"], second: ["int", "9"] }, out: "", note: "A second ordinary box, <b>second</b>, holds <b>9</b>." },
+          { line: 6, vars: { first: ["int", "5"], second: ["int", "9"], p: ["const int*", "→ first"] }, out: "", note: "<b>p</b> is aimed at <b>first</b>. Its type reads <b>const int*</b>: through p, the pointed-at int is read-only. The const is on the <em>pointee</em> — p's own aim is not locked." },
+          { line: 7, vars: { first: ["int", "5"], second: ["int", "9"], p: ["const int*", "→ second"] }, out: "", note: "<b>The parting step.</b> <b>p = &second;</b> re-aims the pointer — legal, because p itself is not const. What p may never do is <em>write</em> through itself, as in *p = 0; — that line is not in this program." },
+          { line: 8, vars: { first: ["int", "5"], second: ["int", "9"], p: ["const int*", "→ second"] }, out: "9", note: "Reading through p is always allowed: <b>*p</b> is the box p currently aims at — second — so the program prints <b>9</b>." },
+          { line: 9, vars: { first: ["int", "5"], second: ["int", "9"], p: ["const int*", "→ second"] }, out: "9", note: "The program ends. Final answer: <b>9</b> — a read-only view that was free to move house." }
+        ],
+        modify: {
+          prompt: "The declaration changes: the const moves after the star — p is now int* const p = &first;. The re-aim line is untouched. What happens now?",
+          code: 'int first = 5;\nint second = 9;\n<mark>int* const</mark> p = &first;\np = &second;\ncout << *p << endl;',
+          options: ["It does not compile — a const pointer cannot be re-aimed", "9", "5", "It compiles, but prints nothing"],
+          correct: 0,
+          explain: "Moving the const moves the lock: in <b>int* const p</b> the <em>pointer itself</em> is const, so <b>p = &second;</b> is an assignment to a const box — and the compiler rejects the whole program. Same star, same names, opposite lock."
+        }
+      },
+      {
+        concept: "Const · pointers",
+        topic: "Const correctness",
+        title: "Fixed aim, open box",
+        goal: "In <b>int* const p</b>, the const belongs to the <b>pointer</b>: its aim is fixed for life — but the box it aims at was never const, and writing <em>through</em> the pointer into that box is fully legal. The mirror image of the previous exercise, and the pair is the lesson.",
+        stories: {
+          health:   "A clinic program fixes a <strong>pointer permanently on a patient's total</strong> — the aim can never wander to another patient — then updates the total through the pointer from 20 to 35, while a second patient's value of 99 sits nearby, and prints both.",
+          psych:    "A study program fixes a <strong>pointer permanently on a participant's total</strong> — the aim can never wander to another participant — then updates the total through the pointer from 20 to 35, while a second participant's value of 99 sits nearby, and prints both.",
+          business: "A sales program fixes a <strong>pointer permanently on an account's total</strong> — the aim can never wander to another account — then updates the total through the pointer from 20 to 35, while a second account's value of 99 sits nearby, and prints both.",
+          arts:     "A festival program fixes a <strong>pointer permanently on a performer's total</strong> — the aim can never wander to another performer — then updates the total through the pointer from 20 to 35, while a second performer's value of 99 sits nearby, and prints both."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int total = 20;",
+          "    int other = 99;",
+          "    int* const p = &total;",
+          "    *p = 35;",
+          "    cout << total << \" \" << other << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["35 99", "20 99", "It does not compile — p is const, so nothing through it may change", "35 35"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 3, text: "<b>Named misconception: a const pointer freezes the pointed-at value.</b> Placement again: in <b>int* const p</b> the const sits with the <b>pointer</b>, so what is frozen is p's <em>aim</em>. The box it aims at, total, was never declared const — at the parting step <b>*p = 35;</b> writes into it legally, and total becomes 35." },
+          2: { step: 3, text: "<b>Named misconception: const anywhere in the declaration locks everything it touches.</b> One const locks one thing. Here it locks the aim: the line that would fail is <b>p = &other;</b> — re-aiming — and that line is not in this program. Writing through the fixed aim is the pointer's whole job, and it is allowed." },
+          3: { step: 3, text: "The write went into exactly one box: the one p aims at, <b>total</b>. <b>other</b> is a separate box that p has never pointed at — a pointer writes where it aims, nowhere else — so other keeps its 99." }
+        },
+        steps: [
+          { line: 4, vars: { total: ["int", "20"] }, out: "", note: "The box <b>total</b> starts at <b>20</b> — an ordinary, writable box." },
+          { line: 5, vars: { total: ["int", "20"], other: ["int", "99"] }, out: "", note: "A second box, <b>other</b>, holds <b>99</b>. Keep an eye on it: nothing in this program ever aims at it." },
+          { line: 6, vars: { total: ["int", "20"], other: ["int", "99"], p: ["int* const", "→ total"] }, out: "", note: "<b>p</b> is aimed at <b>total</b>, and its type reads <b>int* const</b>: the const sits with the pointer, so this aim is <b>fixed for p's whole life</b>. The box at the end of the aim is untouched by that const." },
+          { line: 7, vars: { total: ["int", "35"], other: ["int", "99"], p: ["int* const", "→ total"] }, out: "", note: "<b>The parting step.</b> <b>*p = 35;</b> writes <em>through</em> the pointer into total's box. The box was never const — only p's aim is — so the write is legal and total becomes <b>35</b>." },
+          { line: 8, vars: { total: ["int", "35"], other: ["int", "99"], p: ["int* const", "→ total"] }, out: "35 99", note: "The print: total is <b>35</b>, and other is still <b>99</b> — the fixed aim wrote exactly where it pointed, and nowhere else." },
+          { line: 9, vars: { total: ["int", "35"], other: ["int", "99"], p: ["int* const", "→ total"] }, out: "35 99", note: "The program ends. Final answer: <b>35 99</b> — the aim was locked; the box never was." }
+        ],
+        modify: {
+          prompt: "A new line is added after the write: p = &other; — everything else is untouched. What happens now?",
+          code: 'int total = 20;\nint other = 99;\nint* const p = &total;\n*p = 35;\n<mark>p = &other;</mark>\ncout << total << " " << other << endl;',
+          options: ["It does not compile — a const pointer cannot be re-aimed", "It prints 35 99 — the extra line changes nothing", "99 99", "35 35"],
+          correct: 0,
+          explain: "The added line assigns to <b>p itself</b> — and in <b>int* const p</b>, p is the const one. One assignment to a const box refuses the whole program: <b>it does not compile</b>, and the legal write above it never runs."
+        }
       }
     ];
 
@@ -9844,6 +10180,7 @@ int main() {
       { name: "Arrays & Strings", list: [7, 8, 25, 26, 29, 45, 46, 52] },
       { name: "Vectors — size & capacity", list: [81, 82, 83, 84, 85] },
       { name: "Pointers", list: [9, 10, 11, 12, 59] },
+      { name: "Const & read-only access", list: [98, 99, 100, 101, 102, 103] },
       { name: "Recursion", list: [13, 14, 15, 60, 61, 62] },
       { name: "Searching & Sorting", list: [16, 17, 41, 42, 43] },
       { name: "Searching — binary search", list: [94, 95, 96, 97] },
@@ -10761,6 +11098,37 @@ int main() {
       $("cout").innerHTML = step && step.out ? esc(step.out) : '<span class="cursor"></span>';
       $("stepnote").innerHTML = step ? step.note :
         "The highlighted line is always the statement the machine is <b>about to finish</b>. Step slowly on the lines that change a box — those are where mental models break.";
+      renderStepNote();
+    }
+
+    /* ---------------- Instructor step notes (student view) ----------------
+       A note saved for (exercise, step) in Session & instructor tools
+       shows under that step's explanation — only after the prediction
+       that covers the step has locked: the first lock opens the trace,
+       and for steps at or past the mid-trace checkpoint the covering
+       prediction is the second one, so the note waits for reLocked.
+       With no note saved, the element stays hidden: default state is
+       empty and invisible. What-if runs swap the step array, so notes
+       (keyed to the authored steps) stay hidden there. */
+    function stepNoteText(exIdx, stepIdx) {
+      if (typeof stepNotes === "undefined" || !Array.isArray(stepNotes)) return "";
+      for (var ni = 0; ni < stepNotes.length; ni++) if (stepNotes[ni].e === exIdx && stepNotes[ni].s === stepIdx) return stepNotes[ni].t;
+      return "";
+    }
+    function renderStepNote() {
+      var box = $("inst-step-note"), txt = $("inst-step-note-text");
+      if (!box || !txt) return;
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      var show = false, note = "";
+      if (s && s.locked && s.step >= 0 && !(typeof wiActiveHere === "function" && wiActiveHere())) {
+        note = stepNoteText(state.current, s.step);
+        if (note) {
+          show = true;
+          if (typeof rePredEligible === "function" && typeof rePredCp === "function" && rePredEligible(ex, s) && s.step >= rePredCp(ex) && !s.reLocked) show = false;
+        }
+      }
+      box.hidden = !show;
+      if (show) txt.textContent = note;
     }
 
     /* ---------------- Muddiest line ----------------
@@ -16029,7 +16397,7 @@ int main() {
     /* ================= Topic crosswalk =================
        Topics only — no section numbers anywhere: numbering varies by textbook
        title and course configuration, so exercises are matched by topic. */
-    var TOPIC_ORDER = ["Variables and assignments", "Branches", "Loops", "Functions", "Scope", "Arrays and vectors", "Strings and characters", "Structs", "Pointers", "Recursion", "Searching and sorting", "Classes and objects", "File input and output", "Console input", "Maps, sets and hashing", "Bits and bitwise operations", "Going further (beyond the first course)"];
+    var TOPIC_ORDER = ["Variables and assignments", "Branches", "Loops", "Functions", "Scope", "Arrays and vectors", "Strings and characters", "Structs", "Pointers", "Const correctness", "Recursion", "Searching and sorting", "Classes and objects", "File input and output", "Console input", "Maps, sets and hashing", "Bits and bitwise operations", "Going further (beyond the first course)"];
     function renderCrosswalk() {
       var box = $("crosswalk-list"); if (!box) return;
       box.innerHTML = "";
@@ -17498,6 +17866,8 @@ int main() {
         var params = [];
         if (!isOp(")")) {
           for (;;) {
+            var pConst = false;
+            if (isId("const")) { next(); pConst = true; }
             var pt = parseTypeName();
             if (pt === "void") fail(peek(), "a parameter cannot be void — give it a real type: int, double, or string.");
             var pref = false;
@@ -17505,7 +17875,7 @@ int main() {
             var pn = expectId();
             var pArr = false;
             if (isOp("[")) { next(); pArr = true; if (!isOp("]")) { var psz = peek(); if (psz.t === "num") next(); } expectOp("]"); }
-            params.push({ type: pt, name: pn.v, isArr: pArr, ref: pref });
+            params.push({ type: pt, name: pn.v, isArr: pArr, ref: pref, isConst: pConst });
             if (isOp(",")) { next(); continue; }
             break;
           }
@@ -17605,14 +17975,16 @@ int main() {
       }
       function parseDeclCore() {
         var tt = peek();
+        var vConst = false;
+        if (isId("const")) { next(); vConst = true; }
         var vtype0 = parseTypeName();
         var decls = [];
         for (;;) {
-          var dRef = false, dPtr = false;
+          var dRef = false, dPtr = false, dConstPtr = false;
           if (isOp("&")) { next(); dRef = true; }
-          else if (isOp("*")) { next(); dPtr = true; }
+          else if (isOp("*")) { next(); dPtr = true; if (isId("const")) { next(); dConstPtr = true; } }
           var nm = expectId();
-          var d = { name: nm.v, size: null, sizeExpr: null, init: null, initList: null, initArgs: null, ref: dRef, ptr: dPtr };
+          var d = { name: nm.v, size: null, sizeExpr: null, init: null, initList: null, initArgs: null, ref: dRef, ptr: dPtr, constPtr: dConstPtr };
           if (isOp("[")) {
             next();
             if (!isOp("]")) {
@@ -17645,7 +18017,7 @@ int main() {
           if (isOp(",")) { next(); continue; }
           break;
         }
-        return { kind: "decl", vtype: vtype0, decls: decls, line: tt.line };
+        return { kind: "decl", vtype: vtype0, vconst: vConst, decls: decls, line: tt.line };
       }
       function parseFor() {
         var t = next();
@@ -17667,7 +18039,7 @@ int main() {
         }
         var init = null;
         if (isOp(";")) next();
-        else if (isTypeStart()) { init = parseDeclCore(); expectOp(";"); }
+        else if (isId("const") || isTypeStart()) { init = parseDeclCore(); expectOp(";"); }
         else { var ie = parseExpr(); expectOp(";"); init = { kind: "expr", expr: ie, line: t.line }; }
         var cond = null;
         if (!isOp(";")) cond = parseExpr();
@@ -17684,7 +18056,7 @@ int main() {
         var t = peek();
         if (isOp("{")) return parseBlock();
         if (isOp(";")) { next(); return { kind: "empty", line: t.line }; }
-        if (isTypeStart()) { var d = parseDeclCore(); expectOp(";"); return d; }
+        if (isId("const") || isTypeStart()) { var d = parseDeclCore(); expectOp(";"); return d; }
         if (t.t === "id") {
           if (t.v === "if") {
             next(); expectOp("("); var c = parseExpr(); expectOp(")");
@@ -17784,7 +18156,7 @@ int main() {
         var t = peek();
         if (t.t === "op" && ["=", "+=", "-=", "*=", "/=", "%="].indexOf(t.v) >= 0) {
           next();
-          if (lhs.kind !== "var" && lhs.kind !== "index" && lhs.kind !== "member") fail(t, "the left side of '" + t.v + "' has to be a variable, an array slot, or an object member — the machine needs a box to write into.");
+          if (lhs.kind !== "var" && lhs.kind !== "index" && lhs.kind !== "member" && lhs.kind !== "deref") fail(t, "the left side of '" + t.v + "' has to be a variable, an array slot, or an object member — the machine needs a box to write into.");
           var rhs = parseAssign();
           return { kind: "assign", op: t.v, target: lhs, expr: rhs, line: t.line };
         }
@@ -17805,10 +18177,18 @@ int main() {
           next();
           return { kind: "un", op: t.v, expr: parseUnary(), line: t.line };
         }
+        if (t.t === "op" && t.v === "&") {
+          next();
+          return { kind: "addr", expr: parseUnary(), line: t.line };
+        }
+        if (t.t === "op" && t.v === "*") {
+          next();
+          return { kind: "deref", expr: parseUnary(), line: t.line };
+        }
         if (t.t === "op" && (t.v === "++" || t.v === "--")) {
           next();
           var operand = parseUnary();
-          if (operand.kind !== "var" && operand.kind !== "index") fail(t, "'" + t.v + "' needs a variable to change, like i++.");
+          if (operand.kind !== "var" && operand.kind !== "index" && operand.kind !== "deref") fail(t, "'" + t.v + "' needs a variable to change, like i++.");
           return { kind: "pre", op: t.v, target: operand, line: t.line };
         }
         return parsePostfix();
@@ -17860,7 +18240,7 @@ int main() {
           }
           if (t.t === "op" && (t.v === "++" || t.v === "--")) {
             next();
-            if (node.kind !== "var" && node.kind !== "index") fail(t, "'" + t.v + "' needs a variable to change, like i++.");
+            if (node.kind !== "var" && node.kind !== "index" && node.kind !== "deref") fail(t, "'" + t.v + "' needs a variable to change, like i++.");
             node = { kind: "post", op: t.v, target: node, line: t.line };
             continue;
           }
@@ -17910,6 +18290,7 @@ int main() {
       if (val.t === "int") return String(val.v);
       if (val.t === "double") return makeFmtDouble(val.v);
       if (val.t === "string") return val.v;
+      if (val.t === "ptr") return "→ " + (val.name || "?");
       if (val.t === "endl") return "\n";
       throw makeErr(line, "a void function hands nothing back, so there is no value here to use. Call it on its own line, as a statement by itself.");
     }
@@ -17945,6 +18326,7 @@ int main() {
       return val;
     }
     function makeNum(val, line, what) {
+      if (val.t === "ptr") throw makeErr(line, "pointer arithmetic is beyond this machine's subset — here a pointer may only be aimed at a box (with &) and followed (with *), never added to, subtracted from, or compared by number.");
       if (val.t === "string") throw makeErr(line, "the machine cannot use text " + what + " — that value is a string, not a number.");
       if (val.t === "void") throw makeErr(line, "a void function hands nothing back, so there is no number to use " + what + ".");
       if (val.t === "endl") throw makeErr(line, "endl belongs only inside a cout chain — it is not a number.");
@@ -17956,6 +18338,197 @@ int main() {
       return val.v !== 0;
     }
 
+    /* ---------------- const checking (compile-style, before any run) ----------------
+       A const violation in C++ is a compile error: the whole program is
+       rejected before anything runs, wherever the offending line sits —
+       even inside a branch that would never execute. So const is checked
+       by a static walk over the parsed program, before execution, and a
+       violation returns the same { ok: false, output: "" } shape a parse
+       error returns. The walk is gated on the program actually declaring
+       something const (the parser records vconst on declarations,
+       constPtr on declarators, isConst on parameters), so programs
+       without const — every program this machine ran before const
+       support — are never walked and cannot change behaviour.
+       Bindings tracked per scope: c — writes through this name are
+       forbidden; pointeeC — writes through *name are forbidden. A
+       non-const reference may not bind to a const target, at a
+       declaration or at a call. Runtime backstops (cells flagged
+       isConst, const-view cells for const references, targetRef) cover
+       paths a lexical walk cannot see, with the same verdict. */
+    function astHasConst(x) {
+      if (!x || typeof x !== "object") return false;
+      if (x.vconst === true || x.constPtr === true || x.isConst === true) return true;
+      for (var k in x) { if (Object.prototype.hasOwnProperty.call(x, k) && astHasConst(x[k])) return true; }
+      return false;
+    }
+    function makeConstCheck(funcs) {
+      var has = false;
+      Object.keys(funcs).forEach(function (n) { if (astHasConst(funcs[n])) has = true; });
+      if (!has) return null;
+      function err(line, msg) { return "Line " + line + ": " + msg; }
+      function lookup(scopes, name) {
+        for (var i = scopes.length - 1; i >= 0; i--) if (Object.prototype.hasOwnProperty.call(scopes[i], name)) return scopes[i][name];
+        return null;
+      }
+      function constWriteErr(line, name) {
+        return err(line, "'" + name + "' is const — it was given its value where it was declared, and nothing may assign to it afterwards. A program that tries does not compile, so it never runs.");
+      }
+      function checkTarget(scopes, node) {
+        if (!node) return null;
+        if (node.kind === "var") {
+          var b = lookup(scopes, node.name);
+          if (b && b.c) return constWriteErr(node.line, node.name);
+          return null;
+        }
+        if (node.kind === "deref") {
+          var p = node.expr;
+          if (p && p.kind === "var") {
+            var pb = lookup(scopes, p.name);
+            if (pb && pb.pointeeC) return err(node.line, "'" + p.name + "' was declared as a pointer to const — through it, the pointed-at box may be read but never written. (The pointer itself may still be aimed elsewhere; it is what it points at that is read-only.) A program that writes through it does not compile.");
+          }
+          return walkExpr(scopes, node.expr);
+        }
+        if (node.kind === "index") {
+          var base = node.arr;
+          if (base && base.kind === "var") {
+            var bb = lookup(scopes, base.name);
+            if (bb && bb.c) return constWriteErr(node.line, base.name);
+          }
+          var r1 = walkExpr(scopes, node.arr); if (r1) return r1;
+          return walkExpr(scopes, node.idx);
+        }
+        if (node.kind === "member") return walkExpr(scopes, node.obj);
+        return walkExpr(scopes, node);
+      }
+      function walkExpr(scopes, e) {
+        if (!e || typeof e !== "object") return null;
+        var r, i;
+        switch (e.kind) {
+          case "assign": r = checkTarget(scopes, e.target); if (r) return r; return walkExpr(scopes, e.expr);
+          case "pre": case "post": return checkTarget(scopes, e.target);
+          case "extract":
+            for (i = 0; i < e.targets.length; i++) { r = checkTarget(scopes, e.targets[i]); if (r) return r; }
+            return null;
+          case "call": {
+            var f = funcs[e.name];
+            for (i = 0; i < e.args.length; i++) {
+              var a = e.args[i], pr = f ? f.params[i] : null;
+              if (pr && pr.ref && !pr.isConst && a.kind === "var") {
+                var ab = lookup(scopes, a.name);
+                if (ab && ab.c) return err(e.line, "'" + a.name + "' is const, so it cannot be handed to the non-const reference parameter '" + pr.name + "' of '" + e.name + "' — that parameter is allowed to change what it names. The program does not compile.");
+              }
+              r = walkExpr(scopes, a); if (r) return r;
+            }
+            return null;
+          }
+          case "bin": r = walkExpr(scopes, e.l); if (r) return r; return walkExpr(scopes, e.r);
+          case "un": case "addr": case "deref": case "conv": return walkExpr(scopes, e.expr);
+          case "index": r = walkExpr(scopes, e.arr); if (r) return r; return walkExpr(scopes, e.idx);
+          case "member": return walkExpr(scopes, e.obj);
+          case "method":
+            r = walkExpr(scopes, e.obj); if (r) return r;
+            for (i = 0; i < e.args.length; i++) { r = walkExpr(scopes, e.args[i]); if (r) return r; }
+            return null;
+          default: return null;
+        }
+      }
+      function walkStmt(scopes, st) {
+        if (!st) return null;
+        var r, i;
+        switch (st.kind) {
+          case "block":
+            scopes.push({});
+            for (i = 0; i < st.stmts.length; i++) { r = walkStmt(scopes, st.stmts[i]); if (r) { scopes.pop(); return r; } }
+            scopes.pop();
+            return null;
+          case "decl": {
+            var scope = scopes[scopes.length - 1];
+            for (i = 0; i < st.decls.length; i++) {
+              var d = st.decls[i];
+              if (d.init) { r = walkExpr(scopes, d.init); if (r) return r; }
+              if (d.initList) for (var li = 0; li < d.initList.length; li++) { r = walkExpr(scopes, d.initList[li]); if (r) return r; }
+              if (d.initArgs) for (var ai = 0; ai < d.initArgs.length; ai++) { r = walkExpr(scopes, d.initArgs[ai]); if (r) return r; }
+              if (d.sizeExpr) { r = walkExpr(scopes, d.sizeExpr); if (r) return r; }
+              if (st.vconst && !d.ref && !d.ptr && st.vtype.indexOf("<") === -1 && st.vtype !== "ifstream" && st.vtype !== "ofstream" && !d.init && !d.initArgs && !d.initList)
+                return err(st.line, "'" + d.name + "' is declared const but is never given a value. A const variable must be filled where it is declared — nothing may fill it afterwards — so this program does not compile.");
+              if (d.constPtr && !d.init)
+                return err(st.line, "'" + d.name + "' is a const pointer — the pointer itself is const — but it is never given a box to point at. A const pointer must be aimed where it is declared, because nothing may re-aim it afterwards. The program does not compile.");
+              if (d.ref && d.init && d.init.kind === "var") {
+                var tb = lookup(scopes, d.init.name);
+                if (tb && tb.c && !st.vconst)
+                  return err(st.line, "a plain (non-const) reference cannot be bound to '" + d.init.name + "', because '" + d.init.name + "' is const — the reference would be a second, writable name for a read-only box. Make the reference const too. The program does not compile.");
+              }
+              var b = { c: false, pointeeC: false };
+              if (d.ptr) { b.pointeeC = !!st.vconst; b.c = !!d.constPtr; }
+              else b.c = !!st.vconst;
+              scope[d.name] = b;
+            }
+            return null;
+          }
+          case "expr": return walkExpr(scopes, st.expr);
+          case "if":
+            r = walkExpr(scopes, st.cond); if (r) return r;
+            r = walkStmt(scopes, st.then); if (r) return r;
+            return st.els ? walkStmt(scopes, st.els) : null;
+          case "while":
+            r = walkExpr(scopes, st.cond); if (r) return r;
+            return walkStmt(scopes, st.body);
+          case "for": {
+            scopes.push({});
+            if (st.init) { r = st.init.kind === "decl" ? walkStmt(scopes, st.init) : walkExpr(scopes, st.init.expr); if (r) { scopes.pop(); return r; } }
+            if (st.cond) { r = walkExpr(scopes, st.cond); if (r) { scopes.pop(); return r; } }
+            for (i = 0; i < st.updates.length; i++) { r = walkExpr(scopes, st.updates[i]); if (r) { scopes.pop(); return r; } }
+            r = walkStmt(scopes, st.body);
+            scopes.pop();
+            return r;
+          }
+          case "rangefor":
+            scopes.push({});
+            scopes[scopes.length - 1][st.name] = { c: false, pointeeC: false };
+            r = walkExpr(scopes, st.coll); if (r) { scopes.pop(); return r; }
+            r = walkStmt(scopes, st.body);
+            scopes.pop();
+            return r;
+          case "return": case "throw": return st.expr ? walkExpr(scopes, st.expr) : null;
+          case "try": {
+            r = walkStmt(scopes, st.body); if (r) return r;
+            for (i = 0; i < st.catches.length; i++) {
+              scopes.push({});
+              if (st.catches[i].name) scopes[scopes.length - 1][st.catches[i].name] = { c: false, pointeeC: false };
+              r = walkStmt(scopes, st.catches[i].body);
+              scopes.pop();
+              if (r) return r;
+            }
+            return null;
+          }
+          case "switch": {
+            r = walkExpr(scopes, st.disc); if (r) return r;
+            for (i = 0; i < st.sections.length; i++) {
+              if (st.sections[i].label) { r = walkExpr(scopes, st.sections[i].label); if (r) return r; }
+              for (var si = 0; si < st.sections[i].stmts.length; si++) { r = walkStmt(scopes, st.sections[i].stmts[si]); if (r) return r; }
+            }
+            return null;
+          }
+          case "cout": case "ostream":
+            for (i = 0; i < st.items.length; i++) { r = walkExpr(scopes, st.items[i]); if (r) return r; }
+            return null;
+          case "cin": case "istream":
+            for (i = 0; i < st.targets.length; i++) { r = checkTarget(scopes, st.targets[i]); if (r) return r; }
+            return null;
+          default: return null;
+        }
+      }
+      var bad = null;
+      Object.keys(funcs).forEach(function (n) {
+        if (bad) return;
+        var f = funcs[n];
+        var scopes = [{}];
+        (f.params || []).forEach(function (pr) { scopes[0][pr.name] = { c: !!pr.isConst, pointeeC: false }; });
+        bad = walkStmt(scopes, f.body);
+      });
+      return bad;
+    }
+
     function makeRunProgram(src, inputStr, opts) {
       opts = opts || {};
       var parsedAll;
@@ -17964,6 +18537,8 @@ int main() {
         if (e && e.makeError) return { ok: false, error: e.msg, output: "" };
         throw e;
       }
+      var constProblem = makeConstCheck(parsedAll.funcs);
+      if (constProblem) return { ok: false, error: constProblem, output: "" };
       var funcs = parsedAll.funcs;
       if (!funcs.main) return { ok: false, error: "There is no main() in this program. Every C++ program starts inside main — the skeleton has one; keep its shape and write inside its braces.", output: "" };
       var ctx = {
@@ -18048,6 +18623,7 @@ int main() {
         if (cell.isFileIn) return "ifstream " + (cell.val.name || "(not open)");
         if (cell.isFileOut) return "ofstream " + (cell.val.name || "(not open)");
         if (cell.uninit) return "?";
+        if (cell.val && cell.val.t === "ptr") return "→ " + (cell.val.name || "?");
         return makeFmtVal(cell.val, 1);
       }
       function snapVars(env) {
@@ -18112,12 +18688,33 @@ int main() {
         }
         fail(line, "'" + name + "' has never been declared — the machine only knows the boxes you create. Declare it first, for example: int " + name + " = 0;");
       }
+      /* A read-only view of another cell, for a const reference binding:
+         reads and writes of `val` forward to the target cell, so the
+         view always shows the target's current value, while targetRef
+         refuses writes addressed through the view's own name. The
+         target's own name keeps its own (possibly writable) binding. */
+      function constViewCell(cell, type) {
+        var v = { type: type || cell.type, isArr: false, isConstView: true, aliasOf: cell };
+        Object.defineProperty(v, "val", { enumerable: true, get: function () { return cell.val; }, set: function (nv) { cell.val = nv; } });
+        Object.defineProperty(v, "uninit", { enumerable: true, get: function () { return cell.uninit; }, set: function (nv) { cell.uninit = nv; } });
+        return v;
+      }
       function targetRef(env, node) {
         if (node.kind === "var") {
           var c = lookupCell(env, node.name, node.line);
           if (c.isArr) fail(node.line, "'" + node.name + "' is a whole array — name one slot, like " + node.name + "[0], so the machine knows which box to write into.");
           if (c.isObj || c.isMap || c.isSet || c.isFileIn || c.isFileOut) fail(node.line, "'" + node.name + "' is a whole " + (c.isObj ? "object" : "collection") + " — name the part you mean.");
+          if (c.isConst || c.isConstView) fail(node.line, "'" + node.name + "' is const — it was given its value where it was declared, and nothing may assign to it afterwards. A program that tries does not compile, so it never runs.");
           return { type: c.type, get: function () { return c.val; }, set: function (v) { c.val = v; c.uninit = false; } };
+        }
+        if (node.kind === "deref") {
+          var pv = evalExpr(env, node.expr);
+          if (!pv || pv.t !== "ptr" || !pv.cell) fail(node.line, "the '*' here has no pointer to follow — dereferencing needs a pointer variable that currently points at a box.");
+          var holderConst = false;
+          if (node.expr.kind === "var") { var hc = lookupCell(env, node.expr.name, node.line); holderConst = !!(hc && hc.pointeeConst); }
+          if (pv.pointeeConst || holderConst) fail(node.line, "this pointer was declared as pointing to const — through it, the pointed-at box may be read but never written. A program that writes through it does not compile.");
+          var pc = pv.cell;
+          return { type: pc.type, get: function () { return pc.val; }, set: function (v) { pc.val = v; pc.uninit = false; } };
         }
         if (node.kind === "member" && node.obj.kind === "var") {
           var oc = lookupCell(env, node.obj.name, node.line);
@@ -18171,6 +18768,17 @@ int main() {
           case "num": case "str": return node.val;
           case "conv": return makeConv(evalExpr(env, node.expr), node.type, node.line, "the value");
           case "endl": return { t: "endl", v: "\n" };
+          case "addr": {
+            if (node.expr.kind !== "var") fail(node.line, "the '&' here can only take the address of a named variable in this machine's subset, as in &score.");
+            var ac = lookupCell(env, node.expr.name, node.line);
+            if (ac.isArr || ac.isObj || ac.isMap || ac.isSet || ac.isVec || ac.isFileIn || ac.isFileOut) fail(node.line, "this machine's subset takes the address of a single value box — '&" + node.expr.name + "' names something bigger than one box.");
+            return { t: "ptr", cell: ac, name: node.expr.name, pointeeConst: !!(ac.isConst || ac.isConstView) };
+          }
+          case "deref": {
+            var dv = evalExpr(env, node.expr);
+            if (!dv || dv.t !== "ptr" || !dv.cell) fail(node.line, "the '*' here has no pointer to follow — dereferencing needs a pointer variable that currently points at a box.");
+            return dv.cell.val;
+          }
           case "var": {
             var c = lookupCell(env, node.name, node.line);
             if (c.isVec) return { t: "collRef", cell: c };
@@ -18612,10 +19220,28 @@ int main() {
                 cell = { type: node.vtype, isArr: true, val: elems };
                 scope[d.name] = cell;
                 if (d.initList) d.initList.forEach(function (e, ei) { elems[ei] = makeConv(evalExpr(env, e), node.vtype, node.line, d.name); });
+              } else if (d.ref) {
+                // A reference is another name for an existing box: the
+                // binding shares the target's cell, so a write through
+                // either name lands in the same box, and the target
+                // changing under its own name shows through the
+                // reference. A const reference binds through a read-only
+                // view of the cell instead — same box, no write access.
+                if (d.init && d.init.kind === "var") {
+                  var tcell = lookupCell(env, d.init.name, d.init.line);
+                  if (tcell.isArr || tcell.isObj || tcell.isMap || tcell.isSet || tcell.isVec) fail(node.line, "a reference here names one value box — '" + d.init.name + "' is bigger than one box.");
+                  scope[d.name] = node.vconst ? constViewCell(tcell, node.vtype) : tcell;
+                } else if (d.init) {
+                  var rcell = { type: node.vtype, isArr: false, val: makeConv(evalExpr(env, d.init), node.vtype, node.line, d.name), uninit: false };
+                  if (node.vconst) rcell.isConst = true;
+                  scope[d.name] = rcell;
+                } else fail(node.line, "a reference must be bound to a variable where it is declared, as in: int& alias = score;");
               } else {
-                cell = { type: node.vtype, isArr: false, val: makeDefault(node.vtype), uninit: !(d.init || (d.initArgs && d.initArgs.length)) };
+                cell = { type: d.ptr ? node.vtype + "*" : node.vtype, isArr: false, val: makeDefault(node.vtype), uninit: !(d.init || (d.initArgs && d.initArgs.length)) };
+                if (node.vconst && !d.ptr) cell.isConst = true;
+                if (d.ptr) { cell.isPtr = true; cell.pointeeConst = !!node.vconst; if (d.constPtr) cell.isConst = true; }
                 scope[d.name] = cell;
-                if (d.init) { cell.val = makeConv(evalExpr(env, d.init), node.vtype, node.line, d.name); cell.uninit = false; }
+                if (d.init) { var iv = evalExpr(env, d.init); cell.val = d.ptr ? iv : makeConv(iv, node.vtype, node.line, d.name); cell.uninit = false; }
               }
             });
             return;
@@ -18756,7 +19382,7 @@ int main() {
         fail(node.line, "the machine could not run that statement.");
       }
       function bindParam(scope, pr, arg, line, fname) {
-        if (arg && arg.t === "varRef") { scope[pr.name] = arg.cell; return; }
+        if (arg && arg.t === "varRef") { scope[pr.name] = pr.isConst ? constViewCell(arg.cell, pr.type) : arg.cell; return; }
         if (pr.isArr) {
           if (!arg || arg.t !== "arrayRef") fail(line, "the parameter '" + pr.name + "' of '" + fname + "' is an array — hand it an array, like " + pr.name + " itself, at the call.");
           scope[pr.name] = { type: pr.type, isArr: true, val: arg.cell.val };
@@ -18783,7 +19409,9 @@ int main() {
           return;
         }
         if (arg && (arg.t === "arrayRef" || arg.t === "objRef" || arg.t === "collRef")) fail(line, "the parameter '" + pr.name + "' of '" + fname + "' holds one value, but the call hands it a whole collection or object.");
-        scope[pr.name] = { type: pr.type, isArr: false, val: makeConv(arg, pr.type, line, pr.name) };
+        var pcell = { type: pr.type, isArr: false, val: makeConv(arg, pr.type, line, pr.name) };
+        if (pr.isConst) pcell.isConst = true;
+        scope[pr.name] = pcell;
       }
       function findMethod(clsName, mname) {
         var cur = clsName, guard = 0;
@@ -21838,6 +22466,15 @@ int main() {
           { q: "After int* p = &x; *p = 9; — what is x?", options: ["9", "Unchanged", "An address"], correct: 0, why: "*p is x itself, so storing 9 through p stores it in x." }
         ],
         drag: { q: "Complete the declaration so p points at x:", pre: "int* p = ", slot: "", post: "x;", tokens: ["&", "*", "neither"], correct: "&", why: "&x is the address of x — exactly what a pointer holds." } },
+      "Const & read-only access": { title: "Briefing: const — read-only by contract",
+        body: "<b>const</b> makes a name read-only, and the <b>compiler</b> enforces it over the whole program before anything runs: one illegal assignment anywhere, and the program does not compile at all. A const variable is filled once, where it is declared. A <b>const reference</b> (<code>const int&</code>) is a second name for a box that may be read but never written — yet the box itself stays writable through its own name, and the read-only name sees every change. With pointers, <b>placement</b> decides what is locked: <code>const int* p</code> locks the pointed-at int (p may be re-aimed); <code>int* const p</code> locks the pointer's aim (the box stays writable through it).",
+        example: ["int score = 10;", "const int& view = score;", "score = 42;", "cout << view;"], note: "Prints <b>42</b>: view is not a copy of score but a read-only name for the same box, so the write through score's own name shows straight through it.",
+        checks: [
+          { q: "const int limit = 100; is declared. Which of these lines is legal?", options: ["cout << limit;", "limit = 150;", "limit++;"], correct: 0, why: "Reading a const box is always allowed. Any write to it — assignment, ++, a read into it with cin — is refused by the compiler." },
+          { q: "Inside void show(const int& n), which line is legal?", options: ["cout << n;", "n = 0;", "n++;"], correct: 0, why: "The parameter is a read-only name for the caller's box: reads are its purpose, writes through it do not compile. The caller's own variable remains writable through its own name." },
+          { q: "Which pointer may be re-aimed at a different box?", options: ["const int* p — its pointee is read-only, the pointer is not", "int* const p — its pointee is writable, so the aim must be free too", "Both may — const never locks an aim"], correct: 0, why: "Placement decides: in const int* the const belongs to the int; in int* const the pointer itself is const, and re-aiming it is an assignment to a const box." }
+        ],
+        drag: { q: "Complete the declaration so view may read score but never write it:", pre: "", slot: "", post: " int& view = score;", tokens: ["const", "static", "virtual"], correct: "const", why: "const before the type makes the reference read-only: view becomes a window onto score, not a second pen." } },
       "Recursion": { title: "Briefing: Recursion",
         body: "A recursive function <b>calls itself</b> with a smaller argument. Two parts make it work: a <b>base case</b> that returns directly, and a recursive case that shrinks the problem. Nothing finishes on the way down — each call waits on the call stack with <b>its own boxes</b>, and the answers are assembled on the way back up, deepest call first.",
         example: ["int sumTo(int n) {", "    if (n <= 0) return 0;", "    return n + sumTo(n - 1);", "}", "cout << sumTo(3);"], note: "Prints <b>6</b>: sumTo(3) waits for sumTo(2), which waits for sumTo(1), which waits for sumTo(0) = 0; then 1, 3, 6 are assembled on the way back.",
@@ -23775,6 +24412,11 @@ int main() {
 
     var TF_KEY = "tracefirst-progress-v1";
     var catalogueImports = [];
+    /* Instructor step notes: [{ e: 0-based exercise index, s: 0-based
+       step index, t: note text }]. Additive field `stepNotes` in
+       tracefirst-progress-v1; absent in older saves. On-device only —
+       assignment codes carry no per-step data, so notes never travel. */
+    var stepNotes = [];
     var tfLastSaved = null;
     var tfLastTracer = -1;
     var tfStorageOk = true;
@@ -23895,6 +24537,8 @@ int main() {
       } catch (e) {}
       // Misconception catalogue imports (additive field; absent in older saves)
       try { if (typeof catalogueImports !== "undefined" && Array.isArray(catalogueImports)) data.catalogueImports = catalogueImports.map(function (r) { return { h: r.h, n: r.n, c: r.c }; }); } catch (e) {}
+      // Instructor step notes (additive field; absent in older saves)
+      try { if (typeof stepNotes !== "undefined" && Array.isArray(stepNotes)) data.stepNotes = stepNotes.map(function (r) { return { e: r.e, s: r.s, t: r.t }; }); } catch (e) {}
       return data;
     }
     function tfHasProgress(d) {
@@ -24200,6 +24844,15 @@ int main() {
             Object.keys(r.c).forEach(function (k) { if (typeof r.c[k] === "number" && r.c[k] > 0) c[k.slice(0, 120)] = Math.floor(r.c[k]); });
             return { h: r.h.slice(0, 40), n: (typeof r.n === "number" && r.n > 0) ? Math.floor(r.n) : 0, c: c };
           });
+        }
+      } catch (e) {}
+      // Instructor step notes (additive field; absent in older saves)
+      try {
+        if (Array.isArray(d.stepNotes)) {
+          stepNotes = d.stepNotes.filter(function (r) {
+            return r && typeof r.e === "number" && typeof r.s === "number" && typeof r.t === "string" &&
+              r.e >= 0 && r.e < EXERCISES.length && EXERCISES[r.e] && r.s >= 0 && r.s < EXERCISES[r.e].steps.length && r.t.trim();
+          }).slice(0, 500).map(function (r) { return { e: Math.floor(r.e), s: Math.floor(r.s), t: r.t.slice(0, 280) }; });
         }
       } catch (e) {}
       // Gap-build state (additive field; absent in older saves)
@@ -24979,6 +25632,185 @@ int main() {
       renderCatalogue(true);
       setInterval(function () { try { renderCatalogue(false); } catch (e) {} }, 1500);
     })();
+    /* ================= Class misconception heatmap (this device) =================
+       A per-exercise summary built ONLY from this device's saved
+       prediction record (state.ex): for each exercise with a locked
+       first prediction — attempts, correct, and confident-wrong
+       (confidence "sure" and missed). The saved record holds one locked
+       first prediction per exercise, so an attempted exercise shows one
+       attempt; rates are read straight off the record, never estimated.
+       Unattempted exercises are excluded from the table (never zeros)
+       and marked "no data" in the CSV. Nothing is uploaded. */
+    function heatRows() {
+      var rows = [];
+      EXERCISES.forEach(function (ex, i) {
+        var s = state.ex[i];
+        if (!s || !s.locked) return;
+        rows.push({ n: i + 1, label: ex.title + " (" + ex.concept + ")", attempts: 1, correct: s.correct ? 1 : 0, cw: (!s.correct && s.confidence === "sure") ? 1 : 0 });
+      });
+      return rows;
+    }
+    function heatBand(rate) {
+      if (rate <= 0) return 0;
+      if (rate <= 0.25) return 1;
+      if (rate <= 0.5) return 2;
+      if (rate <= 0.75) return 3;
+      return 4;
+    }
+    function renderHeatmap(force) {
+      var box = $("heatmap-box"); if (!box) return;
+      var rows = heatRows();
+      var sig = rows.map(function (r) { return r.n + ":" + r.correct + ":" + r.cw; }).join("|");
+      if (!force && sig === renderHeatmap._sig) return;
+      renderHeatmap._sig = sig;
+      var note = $("heatmap-source-note");
+      if (note) note.textContent = rows.length
+        ? "Built from this device's saved record: " + rows.length + " attempted exercise" + (rows.length === 1 ? "" : "s") + ". The record holds one locked first prediction per exercise, so each attempted exercise shows one attempt — the rates are read off that record, not estimated."
+        : "No predictions have been locked on this device yet, so the heatmap is empty — no rows, and no invented zeros.";
+      if (!rows.length) {
+        box.innerHTML = '<p class="cat-nodata">Nothing to heat-map yet. Work a tracer exercise on this device and its row will appear here with its real numbers.</p>';
+        return;
+      }
+      var html = '<div class="digest-table-wrap"><table class="digest-table heat-table"><thead><tr><th scope="col">Exercise</th><th scope="col">Attempts</th><th scope="col">Correct</th><th scope="col">Accuracy</th><th scope="col">Confident-wrong</th><th scope="col">Confident-wrong rate</th></tr></thead><tbody>';
+      rows.forEach(function (r) {
+        var acc = r.attempts ? Math.round((r.correct / r.attempts) * 100) : 0;
+        var rate = r.attempts ? r.cw / r.attempts : 0;
+        html += "<tr><td><strong>Exercise " + r.n + "</strong> — " + esc(r.label) + "</td><td>" + r.attempts + "</td><td>" + r.correct + "</td><td>" + acc + "%</td><td>" + r.cw + '</td><td class="heat-' + heatBand(rate) + '">' + Math.round(rate * 100) + "%</td></tr>";
+      });
+      html += "</tbody></table></div>";
+      box.innerHTML = html;
+    }
+    function heatCsvText() {
+      function q(v) { var s = String(v == null ? "" : v); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
+      var byN = {};
+      heatRows().forEach(function (r) { byN[r.n] = r; });
+      var rows = [["Exercise", "Title", "Attempts", "Correct", "Accuracy", "Confident-wrong", "Confident-wrong rate"]];
+      EXERCISES.forEach(function (ex, i) {
+        var r = byN[i + 1];
+        if (!r) { rows.push([i + 1, ex.title + " (" + ex.concept + ")", "no data", "", "", "", ""]); return; }
+        rows.push([r.n, r.label, r.attempts, r.correct, Math.round((r.correct / r.attempts) * 100) + "%", r.cw, Math.round((r.cw / r.attempts) * 100) + "%"]);
+      });
+      return rows.map(function (r) { return r.map(q).join(","); }).join("\r\n") + "\r\n";
+    }
+    (function wireHeatmap() {
+      var btn = $("heatmap-csv-btn");
+      if (btn) btn.addEventListener("click", function () {
+        var st = $("heatmap-status");
+        if (!heatRows().length) {
+          if (st) st.textContent = "Nothing to export yet — no exercise has been attempted on this device.";
+          announce("Nothing to export yet. No exercise has been attempted on this device.");
+          return;
+        }
+        var blob = new Blob([heatCsvText()], { type: "text/csv;charset=utf-8" });
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement("a");
+        link.href = url; link.download = "tracefirst-heatmap.csv";
+        document.body.appendChild(link); link.click();
+        setTimeout(function () { document.body.removeChild(link); URL.revokeObjectURL(url); }, 400);
+        if (st) st.textContent = "Exported tracefirst-heatmap.csv — attempted exercises carry this device's numbers; the rest are marked “no data”.";
+        announce("Heatmap CSV downloaded: attempted exercises carry this device's numbers; unattempted ones are marked no data.");
+      });
+      renderHeatmap(true);
+      setInterval(function () { try { renderHeatmap(false); } catch (e) {} }, 1500);
+    })();
+
+    /* ================= Instructor step notes (authoring) =================
+       Authored in Session & instructor tools (#stepnotes-section),
+       stored additively as `stepNotes` in tracefirst-progress-v1, and
+       shown to students by renderStepNote() in the trace. Assignment
+       codes carry only { title, due, exercise list }, so notes cannot
+       travel with them — the panel copy says so plainly. */
+    var snSelEx = 0;
+    function snFillSteps() {
+      var stepSel = $("stepnote-step"); if (!stepSel) return;
+      var ex = EXERCISES[snSelEx]; if (!ex) return;
+      var keep = stepSel.value;
+      stepSel.innerHTML = "";
+      ex.steps.forEach(function (st, si) {
+        var o = document.createElement("option");
+        o.value = String(si);
+        var lineTxt = (ex.code[st.line] || "").trim();
+        o.textContent = "Step " + (si + 1) + " of " + ex.steps.length + " · line " + (st.line + 1) + (lineTxt ? ": " + lineTxt : "");
+        stepSel.appendChild(o);
+      });
+      if (keep && stepSel.querySelector('option[value="' + keep + '"]')) stepSel.value = keep;
+      snPrefill();
+    }
+    function snPrefill() {
+      var ta = $("stepnote-text"), stepSel = $("stepnote-step");
+      if (!ta || !stepSel) return;
+      ta.value = stepNoteText(snSelEx, parseInt(stepSel.value || "0", 10));
+    }
+    function renderStepNoteList() {
+      var box = $("stepnote-list"); if (!box) return;
+      var sig = JSON.stringify(stepNotes || []);
+      if (sig === renderStepNoteList._sig) return;
+      renderStepNoteList._sig = sig;
+      if (!stepNotes.length) {
+        box.innerHTML = '<p class="cat-nodata">No step notes yet. Pick an exercise and a step above, write the note, and save — it will appear here and in that step\'s trace on this device.</p>';
+        return;
+      }
+      var sorted = stepNotes.slice().sort(function (a, b) { return a.e - b.e || a.s - b.s; });
+      box.innerHTML = "";
+      sorted.forEach(function (r) {
+        var ex = EXERCISES[r.e]; if (!ex) return;
+        var st = ex.steps[r.s]; if (!st) return;
+        var item = document.createElement("div");
+        item.className = "stepnote-item";
+        item.innerHTML = '<span><span class="sn-where">Exercise ' + (r.e + 1) + ", step " + (r.s + 1) + " (line " + (st.line + 1) + ")</span> — " + esc(r.t) + "</span>";
+        var del = document.createElement("button");
+        del.className = "btn ghost small"; del.type = "button"; del.textContent = "Delete";
+        del.setAttribute("aria-label", "Delete the note on Exercise " + (r.e + 1) + ", step " + (r.s + 1));
+        del.addEventListener("click", function () {
+          stepNotes = stepNotes.filter(function (x) { return !(x.e === r.e && x.s === r.s); });
+          try { tfSave(); } catch (e) {}
+          renderStepNoteList._sig = null; renderStepNoteList();
+          snPrefill();
+          var stEl = $("stepnote-status"); if (stEl) stEl.textContent = "Note deleted for Exercise " + (r.e + 1) + ", step " + (r.s + 1) + ".";
+          announce("Step note deleted.");
+        });
+        item.appendChild(del);
+        box.appendChild(item);
+      });
+    }
+    (function wireStepNotes() {
+      var exSel = $("stepnote-ex"), stepSel = $("stepnote-step"), ta = $("stepnote-text");
+      if (!exSel || !stepSel || !ta) return;
+      exSel.innerHTML = "";
+      EXERCISES.forEach(function (ex, i) {
+        var o = document.createElement("option");
+        o.value = String(i);
+        o.textContent = "Exercise " + (i + 1) + " — " + ex.concept + " — " + ex.title;
+        exSel.appendChild(o);
+      });
+      exSel.addEventListener("change", function () { snSelEx = parseInt(exSel.value, 10) || 0; snFillSteps(); });
+      stepSel.addEventListener("change", snPrefill);
+      snSelEx = 0; exSel.value = "0"; snFillSteps();
+      renderStepNoteList();
+      var saveBtn = $("stepnote-save-btn"), delBtn = $("stepnote-delete-btn"), stEl = $("stepnote-status");
+      if (saveBtn) saveBtn.addEventListener("click", function () {
+        var e = snSelEx, s = parseInt(stepSel.value || "0", 10), t = ta.value.trim().slice(0, 280);
+        if (!t) { if (stEl) stEl.textContent = "Write the note first — an empty note saves nothing."; return; }
+        stepNotes = stepNotes.filter(function (x) { return !(x.e === e && x.s === s); });
+        stepNotes.push({ e: e, s: s, t: t });
+        try { tfSave(); } catch (e2) {}
+        renderStepNoteList._sig = null; renderStepNoteList();
+        if (stEl) stEl.textContent = "Note saved for Exercise " + (e + 1) + ", step " + (s + 1) + ". Students on this device will see it after the covering prediction locks.";
+        announce("Step note saved for Exercise " + (e + 1) + ", step " + (s + 1) + ".");
+      });
+      if (delBtn) delBtn.addEventListener("click", function () {
+        var e = snSelEx, s = parseInt(stepSel.value || "0", 10);
+        var had = stepNotes.some(function (x) { return x.e === e && x.s === s; });
+        stepNotes = stepNotes.filter(function (x) { return !(x.e === e && x.s === s); });
+        try { tfSave(); } catch (e2) {}
+        renderStepNoteList._sig = null; renderStepNoteList();
+        snPrefill();
+        if (stEl) stEl.textContent = had ? "Note deleted for Exercise " + (e + 1) + ", step " + (s + 1) + "." : "There is no note on Exercise " + (e + 1) + ", step " + (s + 1) + " to delete.";
+        announce(had ? "Step note deleted." : "No note on that step to delete.");
+      });
+      setInterval(function () { try { renderStepNoteList(); } catch (e) {} }, 1500);
+    })();
+
     /* ================= Right answer, wrong program (Gym section) =================
        Seven programs that pass their sample test and fail elsewhere. Flow:
        pick the breaking input (retries allowed) -> predict the faulty
