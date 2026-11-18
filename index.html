@@ -600,6 +600,35 @@
       .stepnote-form { display: grid; gap: 10px; margin-top: 10px; }
       .stepnote-form select, .stepnote-form textarea { width: 100%; box-sizing: border-box; font: inherit; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--panel-2); color: var(--ink); margin-top: 4px; }
       .stepnote-form label { font-weight: 600; font-size: .92rem; }
+      /* Partial-credit scoring: box-by-box prediction inputs + verdict breakdown */
+      .boxpred { margin-top: 14px; border-top: 1px dashed var(--line); padding-top: 12px; }
+      .boxpred-head { font-weight: 700; font-size: .95rem; }
+      .boxpred-head span { font-weight: 500; color: var(--ink-soft); font-size: .85rem; }
+      .boxpred-note { font-size: .88rem; color: var(--ink-soft); margin-top: 4px; }
+      .boxpred-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+      .boxpred-item { display: grid; gap: 3px; font-family: "IBM Plex Mono", monospace; font-size: .8rem; font-weight: 600; color: var(--ink-soft); }
+      .boxpred-input { font-family: "IBM Plex Mono", monospace; font-size: .95rem; padding: 7px 9px; border: 1.5px solid var(--line); border-radius: 8px; background: var(--panel-2); color: var(--ink); width: 112px; box-sizing: border-box; }
+      .boxpred-input:focus { outline: 3px solid var(--amber); outline-offset: 1px; }
+      .boxpred-input:disabled { opacity: .6; }
+      .partial-block { margin-top: 14px; border-top: 1px dashed var(--line); padding-top: 12px; }
+      .partial-block h4 { font-size: .95rem; }
+      .partial-summary { margin-top: 5px; font-size: .93rem; }
+      .partial-list { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 5px; }
+      .partial-list li { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; border: 1px solid var(--line); background: var(--panel); border-radius: 8px; padding: 6px 10px; font-size: .9rem; }
+      .partial-list li .partial-label { font-family: "IBM Plex Mono", monospace; font-weight: 700; }
+      .partial-list li .partial-vals { font-family: "IBM Plex Mono", monospace; font-size: .85rem; color: var(--ink-soft); }
+      .partial-list li .partial-mark { margin-left: auto; font-weight: 700; }
+      .partial-list li.ok .partial-mark { color: var(--accent-strong); }
+      .partial-list li.bad .partial-mark { color: var(--rust); }
+      .partial-first { margin-top: 10px; font-size: .93rem; }
+      /* Class roster (instructor, on-device only) */
+      .roster-list { display: grid; gap: 8px; margin-top: 10px; }
+      .roster-row { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: baseline; justify-content: space-between; border: 1px solid var(--line); background: var(--panel-2); border-radius: 10px; padding: 9px 12px; font-size: .93rem; }
+      .roster-row .roster-name { font-weight: 700; }
+      .roster-row .roster-meta { color: var(--ink-soft); font-size: .88rem; }
+      .bystudent-block { margin-top: 14px; }
+      .bystudent-block h5 { font-size: .95rem; margin-top: 12px; }
+      .bystudent-block ul { margin: 5px 0 0; padding-left: 20px; font-size: .93rem; display: grid; gap: 3px; }
       .trans-fix { margin-top: 14px; }
       .fix-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
       .fix-box { border-radius: 10px; padding: 11px 12px; font-family: "IBM Plex Mono", monospace; font-size: .86rem; white-space: pre-wrap; word-break: break-word; line-height: 1.55; }
@@ -1779,7 +1808,7 @@
             <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Order code, then write a line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find and fix faults.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 104</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 110</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write your own programs.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
             <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
@@ -2118,7 +2147,7 @@ for (int i = 0; i < 3; i++) {
             <select class="lecture-select" id="lecture-ex-select" aria-label="Choose an exercise to project"></select>
             <button class="btn" type="button" id="lecture-project-btn">Project this exercise</button>
           </div>
-          <p class="lecture-pick-note">Any of the 104 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
+          <p class="lecture-pick-note">Any of the 110 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
         </div>
 
         <div id="lecture-project" hidden>
@@ -2291,6 +2320,11 @@ for (int i = 0; i < 3; i++) {
             <div class="rationale-row">
               <label for="rationale-input">Why I predicted this <span>(one sentence, optional)</span></label>
               <input class="rationale-input" type="text" id="rationale-input" maxlength="140" placeholder="e.g. because integer division throws the fraction away" autocomplete="off">
+            </div>
+            <div class="boxpred" id="boxpred-wrap" hidden>
+              <p class="boxpred-head">Predict box by box <span>(optional — for partial credit)</span></p>
+              <p class="boxpred-note">Fill in what you think each box — and each line of output — will hold when the program ends. At the verdict, every element you filled in is scored on its own, so a prediction can be partly right, and the verdict names the first box or line where your model parted from the machine. Leaving this blank changes nothing: the prediction above still locks on its own.</p>
+              <div class="boxpred-grid" id="boxpred-grid"></div>
             </div>
             <div class="lockrow">
               <button class="btn" id="lock-btn" disabled>
@@ -2649,8 +2683,23 @@ for (int i = 0; i < 3; i++) {
           <button class="btn ghost" type="button" id="catalogue-clear-btn">Clear imported counts</button>
           <span class="journal-status" id="catalogue-status" role="status"></span>
         </div>
-        <h4 style="margin-top:22px;font-size:.95rem;">Class misconception heatmap — this device's record</h4>
-        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:4px;">One row per exercise <strong>attempted on this device</strong>: attempts, first-prediction accuracy, and how many misses were <strong>confident-wrong</strong> (marked “Sure”, then missed) — the misses that mark a carried misconception rather than a guess. Shading follows the confident-wrong rate. Exercises nobody on this device has attempted are not listed and are never shown as zeros: they are marked “no data” in the export. This is this browser's saved record only — it is not a whole class unless this device is the class's device.</p>
+        <h4 style="margin-top:22px;font-size:.95rem;">Class roster — named students, kept on this device</h4>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:4px;">Paste several students' TFP1: progress codes at once — <strong>one student per line, their name first, then their code</strong> — and TraceFirst keeps a named roster in this browser. The catalogue gains a per-student breakdown below, and the heatmap can be switched to any roster student. Each code is decoded here and never leaves this device: there are no accounts and nothing is uploaded. The roster is separate from the imported counts above — a code on the roster is not double-counted there.</p>
+        <label style="font-weight:600;font-size:.92rem;display:block;margin-top:10px;" for="roster-paste">Names and TFP1: codes — one student per line</label>
+        <textarea class="digest-textarea" id="roster-paste" rows="4" placeholder="Ada — TFP1:…" aria-label="Paste students' names and TFP1 progress codes, one student per line" style="margin-top:6px;"></textarea>
+        <div class="journal-actions">
+          <button class="btn" type="button" id="roster-add-btn">Add to roster</button>
+          <button class="btn ghost" type="button" id="roster-clear-btn">Clear roster</button>
+          <span class="journal-status" id="roster-status" role="status"></span>
+        </div>
+        <div class="roster-list" id="roster-list"></div>
+        <div id="catalogue-bystudent"></div>
+        <h4 style="margin-top:22px;font-size:.95rem;">Class misconception heatmap</h4>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:4px;">One row per exercise <strong>attempted on this device</strong>: attempts, first-prediction accuracy, and how many misses were <strong>confident-wrong</strong> (marked “Sure”, then missed) — the misses that mark a carried misconception rather than a guess. Shading follows the confident-wrong rate. Exercises nobody on this device has attempted are not listed and are never shown as zeros: they are marked “no data” in the export. This is this browser's saved record only — it is not a whole class unless this device is the class's device. Switch the heatmap to a roster student below to see that student's own record from their progress code instead.</p>
+        <div class="journal-actions" style="margin-top:10px;">
+          <label style="font-weight:600;font-size:.92rem;" for="heatmap-student-select">Heatmap shows</label>
+          <select id="heatmap-student-select" style="font:inherit;font-size:.95rem;padding:7px 10px;border:1.5px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink);"><option value="-1">This device's record</option></select>
+        </div>
         <p style="font-size:.92rem;color:var(--ink-soft);margin-top:8px;" id="heatmap-source-note" role="status"></p>
         <div id="heatmap-box"></div>
         <div class="journal-actions">
@@ -3211,12 +3260,12 @@ int main() {
         <div id="instructors-body" hidden>
           <div class="lecture-inst-entry">
             <h4>Lecture mode — run a tracer exercise in front of the class</h4>
-            <p>A single projected screen: pick any of the 104 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
+            <p>A single projected screen: pick any of the 110 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
             <div class="journal-actions"><button class="btn small" type="button" id="lecture-open-btn-2">Open Lecture mode</button></div>
           </div>
                     <div class="studio" id="inst-studio">
             <h4>Instructor exercise studio</h4>
-            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 104 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
+            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 110 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
             <div class="authored-field">
               <label for="inst-title">Exercise title</label>
               <input class="authored-input" type="text" id="inst-title" maxlength="80" placeholder="e.g. The average that is not an average" autocomplete="off">
@@ -9973,6 +10022,302 @@ int main() {
           correct: 0,
           explain: "The added line assigns to <b>p itself</b> — and in <b>int* const p</b>, p is the const one. One assignment to a const box refuses the whole program: <b>it does not compile</b>, and the legal write above it never runs."
         }
+      },
+      {
+        concept: "Two-dimensional arrays · reading a cell",
+        topic: "Two-dimensional arrays",
+        title: "One cell, two indexes",
+        goal: "A two-dimensional array is reached with <b>two indexes</b>: <b>grid[row][column]</b> — the first chooses the row, the second the cell inside it, and both count from <b>0</b>.",
+        stories: {
+          health:   "A clinic chart stores nine readings in a grid of <strong>three rows and three columns</strong>: 4, 7, 1 on the first row, 8, 3, 9 on the second, and 5, 2, 6 on the third. A program prints the single reading at <strong>row 1, column 2</strong>.",
+          psych:    "A results table stores nine scores in a grid of <strong>three rows and three columns</strong>: 4, 7, 1 on the first row, 8, 3, 9 on the second, and 5, 2, 6 on the third. A program prints the single score at <strong>row 1, column 2</strong>.",
+          business: "A sales grid stores nine figures in <strong>three rows and three columns</strong>: 4, 7, 1 on the first row, 8, 3, 9 on the second, and 5, 2, 6 on the third. A program prints the single figure at <strong>row 1, column 2</strong>.",
+          arts:     "A programme grid stores nine marks in <strong>three rows and three columns</strong>: 4, 7, 1 on the first row, 8, 3, 9 on the second, and 5, 2, 6 on the third. A program prints the single mark at <strong>row 1, column 2</strong>."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int grid[3][3] = {{4, 7, 1}, {8, 3, 9}, {5, 2, 6}};",
+          "    cout << grid[1][2] << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["9", "2", "3", "1"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "<b>Named misconception: the first index chooses the column.</b> You read the indexes in the order [column][row], so you landed on grid[2][1] — row 2, column 1 — which holds 2. The order is <b>[row][column]</b>: at the parting step the machine takes row 1 first — the second row, {8, 3, 9} — and only then picks column 2 inside it, which is 9." },
+          2: { step: 1, text: "3 is the cell at <b>[1][1]</b> — the centre of the grid. The second index here is 2, not 1: inside row 1 ({8, 3, 9}), column 2 is the <em>third</em> cell, 9. One index right, one cell over." },
+          3: { step: 1, text: "<b>Named misconception: indexes count from 1.</b> You treated row 1 as the <em>first</em> row, so you read row 0's last cell, 1. Rows count from 0 like every index in C++: row 1 is the <em>second</em> row, {8, 3, 9}, and its column 2 is 9." }
+        },
+        steps: [
+          { line: 4, vars: { grid: ["int[3][3]", "{{4, 7, 1}, {8, 3, 9}, {5, 2, 6}}"] }, boxes: [{ name: "grid", type: "int[3][3]", wide: true, grid: [["4", "7", "1"], ["8", "3", "9"], ["5", "2", "6"]] }], out: "", note: "One array, <b>three rows of three</b>. Every cell has two indexes: the row first, then the column — <b>grid[row][column]</b> — and both count from 0, so the rows are 0, 1, 2 from the top." },
+          { line: 5, vars: { grid: ["int[3][3]", "{{4, 7, 1}, {8, 3, 9}, {5, 2, 6}}"] }, boxes: [{ name: "grid", type: "int[3][3]", wide: true, grid: [["4", "7", "1"], ["8", "3", "9"], ["5", "2", "6"]], gridMark: [1, 2] }], out: "9", note: "<b>The parting step.</b> <b>grid[1][2]</b>: row 1 is the <em>second</em> row, {8, 3, 9}, and column 2 is its third cell — <b>9</b>. Row first, then column." },
+          { line: 6, vars: { grid: ["int[3][3]", "{{4, 7, 1}, {8, 3, 9}, {5, 2, 6}}"] }, boxes: [{ name: "grid", type: "int[3][3]", wide: true, grid: [["4", "7", "1"], ["8", "3", "9"], ["5", "2", "6"]] }], out: "9", note: "The program ends. Final answer: <b>9</b> — one cell, found by row, then column." }
+        ],
+        modify: {
+          prompt: "The indexes change: the program now prints grid[2][0]. The grid itself is untouched. What prints now?",
+          code: 'int grid[3][3] = {{4, 7, 1}, {8, 3, 9}, {5, 2, 6}};\ncout << grid[<mark>2</mark>][<mark>0</mark>] << endl;',
+          options: ["5", "8", "4", "6"],
+          correct: 0,
+          explain: "Row 2 is the <em>third</em> row, {5, 2, 6}, and column 0 is its first cell: <b>5</b>."
+        }
+      },
+      {
+        concept: "Two-dimensional arrays · one row's total",
+        topic: "Two-dimensional arrays",
+        title: "Just the second row",
+        goal: "A loop can walk <b>one row</b> of a grid: hold the row index <b>fixed</b> and let the column index run. <b>grid[1][c]</b> visits every cell of row 1 — and no cell of any other row.",
+        stories: {
+          health:   "A clinic grid stores six readings in <strong>two rows and three columns</strong>: 3, 5, 2 on the first row and 7, 1, 4 on the second. A program adds up <strong>only the second row</strong> and prints the total.",
+          psych:    "A study grid stores six scores in <strong>two rows and three columns</strong>: 3, 5, 2 on the first row and 7, 1, 4 on the second. A program adds up <strong>only the second row</strong> and prints the total.",
+          business: "A sales grid stores six figures in <strong>two rows and three columns</strong>: 3, 5, 2 on the first row and 7, 1, 4 on the second. A program adds up <strong>only the second row</strong> and prints the total.",
+          arts:     "A marks grid stores six marks in <strong>two rows and three columns</strong>: 3, 5, 2 on the first row and 7, 1, 4 on the second. A program adds up <strong>only the second row</strong> and prints the total."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int grid[2][3] = {{3, 5, 2}, {7, 1, 4}};",
+          "    int total = 0;",
+          "    for (int c = 0; c < 3; c++) {",
+          "        total += grid[1][c];",
+          "    }",
+          "    cout << total << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["12", "10", "22", "4"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "<b>Named misconception: indexes count from 1.</b> 10 is the <em>first</em> row's total — 3 + 5 + 2. You read row 1 as the first row, but rows count from 0: at the parting step the loop fixes the row index at 1, which is the <em>second</em> row, {7, 1, 4}. Its total is 12, not 10." },
+          2: { step: 5, text: "22 is the <b>whole grid</b> — both rows added together. But the row index never moves: <b>grid[1][c]</b> holds the 1 still while c runs, so the loop can only ever touch row 1's three cells. Row 0 is never visited, and its 10 is never added." },
+          3: { step: 5, text: "4 is just the <b>last cell</b> of the row. The body says <b>total += grid[1][c]</b> — each pass <em>adds</em> the cell it visits to everything collected so far: 7, then 8, then 12. The accumulator keeps all three cells, not only the final one." }
+        },
+        steps: [
+          { line: 4, vars: { grid: ["int[2][3]", "{{3, 5, 2}, {7, 1, 4}}"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["3", "5", "2"], ["7", "1", "4"]] }], out: "", note: "The grid: <b>two rows, three columns</b>. Row 0 is {3, 5, 2}; row 1 is {7, 1, 4}." },
+          { line: 5, vars: { grid: ["int[2][3]", "{{3, 5, 2}, {7, 1, 4}}"], total: ["int", "0"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["3", "5", "2"], ["7", "1", "4"]] }, { name: "total", type: "int", value: "0" }], out: "", note: "The accumulator <b>total</b> starts at 0." },
+          { line: 6, vars: { grid: ["int[2][3]", "{{3, 5, 2}, {7, 1, 4}}"], total: ["int", "0"], c: ["int", "0"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["3", "5", "2"], ["7", "1", "4"]] }, { name: "total", type: "int", value: "0" }, { name: "c", type: "int", value: "0" }], out: "", note: "<b>The parting step.</b> The loop's moving index is <b>c</b>, the column. The row index in <b>grid[1][c]</b> is the literal 1 — the <em>second</em> row — and it never changes." },
+          { line: 7, vars: { grid: ["int[2][3]", "{{3, 5, 2}, {7, 1, 4}}"], total: ["int", "7"], c: ["int", "0"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["3", "5", "2"], ["7", "1", "4"]], gridMark: [1, 0] }, { name: "total", type: "int", value: "7" }, { name: "c", type: "int", value: "0" }], out: "", note: "Pass 1: grid[1][0] is <b>7</b>. total becomes 7." },
+          { line: 7, vars: { grid: ["int[2][3]", "{{3, 5, 2}, {7, 1, 4}}"], total: ["int", "8"], c: ["int", "1"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["3", "5", "2"], ["7", "1", "4"]], gridMark: [1, 1] }, { name: "total", type: "int", value: "8" }, { name: "c", type: "int", value: "1" }], out: "", note: "Pass 2: grid[1][1] is <b>1</b>. total becomes 8 — still inside row 1, one column over." },
+          { line: 7, vars: { grid: ["int[2][3]", "{{3, 5, 2}, {7, 1, 4}}"], total: ["int", "12"], c: ["int", "2"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["3", "5", "2"], ["7", "1", "4"]], gridMark: [1, 2] }, { name: "total", type: "int", value: "12" }, { name: "c", type: "int", value: "2" }], out: "", note: "Pass 3: grid[1][2] is <b>4</b>. total becomes 12. The row is finished — and row 0 was never touched." },
+          { line: 9, vars: { grid: ["int[2][3]", "{{3, 5, 2}, {7, 1, 4}}"], total: ["int", "12"], c: ["int", "3"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["3", "5", "2"], ["7", "1", "4"]] }, { name: "total", type: "int", value: "12" }, { name: "c", type: "int", value: "3" }], out: "12", note: "c reaches 3, the test fails, and the program prints <b>12</b> — the second row's total, and only that." },
+          { line: 10, vars: { grid: ["int[2][3]", "{{3, 5, 2}, {7, 1, 4}}"], total: ["int", "12"], c: ["int", "3"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["3", "5", "2"], ["7", "1", "4"]] }, { name: "total", type: "int", value: "12" }, { name: "c", type: "int", value: "3" }], out: "12", note: "The program ends. Final answer: <b>12</b>." }
+        ],
+        modify: {
+          prompt: "One change: the loop now walks the other row — the body reads grid[0][c]. Everything else is untouched. What prints now?",
+          code: 'int grid[2][3] = {{3, 5, 2}, {7, 1, 4}};\nint total = 0;\nfor (int c = 0; c < 3; c++) {\n    total += grid[<mark>0</mark>][c];\n}\ncout << total << endl;',
+          options: ["10", "12", "22", "3"],
+          correct: 0,
+          explain: "The fixed row is now row 0, {3, 5, 2}: 3 + 5 + 2 = <b>10</b>. Changing the held-still index changes which row the loop can see."
+        }
+      },
+      {
+        concept: "Two-dimensional arrays · one column's total",
+        topic: "Two-dimensional arrays",
+        title: "Down the first column",
+        goal: "To walk a <b>column</b>, swap which index moves: hold the column fixed and let the row run — <b>grid[r][0]</b> visits one cell in every row, straight down the grid.",
+        stories: {
+          health:   "A clinic grid stores six readings in <strong>three rows and two columns</strong>: 6, 1 on the first row, 4, 8 on the second, and 5, 3 on the third. A program adds up <strong>the first column, top to bottom</strong>, and prints the total.",
+          psych:    "A study grid stores six scores in <strong>three rows and two columns</strong>: 6, 1 on the first row, 4, 8 on the second, and 5, 3 on the third. A program adds up <strong>the first column, top to bottom</strong>, and prints the total.",
+          business: "A sales grid stores six figures in <strong>three rows and two columns</strong>: 6, 1 on the first row, 4, 8 on the second, and 5, 3 on the third. A program adds up <strong>the first column, top to bottom</strong>, and prints the total.",
+          arts:     "A marks grid stores six marks in <strong>three rows and two columns</strong>: 6, 1 on the first row, 4, 8 on the second, and 5, 3 on the third. A program adds up <strong>the first column, top to bottom</strong>, and prints the total."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int grid[3][2] = {{6, 1}, {4, 8}, {5, 3}};",
+          "    int total = 0;",
+          "    for (int r = 0; r < 3; r++) {",
+          "        total += grid[r][0];",
+          "    }",
+          "    cout << total << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["15", "7", "12", "10"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 3, text: "<b>Named misconception: a column walk reads across a row.</b> 7 is the <em>first row</em> added across — 6 + 1. But the moving index here is the <b>first</b> one: <b>grid[r][0]</b> changes the row on every pass while the column stays at 0, so at the parting step the walk goes <em>down</em> — 6, then 4, then 5 — not across." },
+          2: { step: 4, text: "12 is the <b>second column's</b> total — 1 + 8 + 3. The fixed index is the second one, and it is 0: <b>grid[r][0]</b> holds column 0 still on every pass. Column 1 is never visited." },
+          3: { step: 5, text: "10 is the total after <b>two</b> passes — 6 + 4. The test is <b>r &lt; 3</b>, so the loop takes a third pass at r = 2 and adds the bottom cell, 5, on its way to 15. The last row counts." }
+        },
+        steps: [
+          { line: 4, vars: { grid: ["int[3][2]", "{{6, 1}, {4, 8}, {5, 3}}"] }, boxes: [{ name: "grid", type: "int[3][2]", wide: true, grid: [["6", "1"], ["4", "8"], ["5", "3"]] }], out: "", note: "The grid: <b>three rows, two columns</b>. Column 0, top to bottom, is 6, 4, 5." },
+          { line: 5, vars: { grid: ["int[3][2]", "{{6, 1}, {4, 8}, {5, 3}}"], total: ["int", "0"] }, boxes: [{ name: "grid", type: "int[3][2]", wide: true, grid: [["6", "1"], ["4", "8"], ["5", "3"]] }, { name: "total", type: "int", value: "0" }], out: "", note: "The accumulator <b>total</b> starts at 0." },
+          { line: 6, vars: { grid: ["int[3][2]", "{{6, 1}, {4, 8}, {5, 3}}"], total: ["int", "0"], r: ["int", "0"] }, boxes: [{ name: "grid", type: "int[3][2]", wide: true, grid: [["6", "1"], ["4", "8"], ["5", "3"]] }, { name: "total", type: "int", value: "0" }, { name: "r", type: "int", value: "0" }], out: "", note: "This time the loop's moving index is <b>r</b> — the <em>first</em> index, the row. In <b>grid[r][0]</b> the column is the literal 0, held still." },
+          { line: 7, vars: { grid: ["int[3][2]", "{{6, 1}, {4, 8}, {5, 3}}"], total: ["int", "6"], r: ["int", "0"] }, boxes: [{ name: "grid", type: "int[3][2]", wide: true, grid: [["6", "1"], ["4", "8"], ["5", "3"]], gridMark: [0, 0] }, { name: "total", type: "int", value: "6" }, { name: "r", type: "int", value: "0" }], out: "", note: "<b>The parting step.</b> Pass 1: grid[0][0] is <b>6</b> — the top of column 0. total becomes 6." },
+          { line: 7, vars: { grid: ["int[3][2]", "{{6, 1}, {4, 8}, {5, 3}}"], total: ["int", "10"], r: ["int", "1"] }, boxes: [{ name: "grid", type: "int[3][2]", wide: true, grid: [["6", "1"], ["4", "8"], ["5", "3"]], gridMark: [1, 0] }, { name: "total", type: "int", value: "10" }, { name: "r", type: "int", value: "1" }], out: "", note: "Pass 2: r moves to 1, so the walk steps <em>down</em> to grid[1][0], <b>4</b>. total becomes 10. Same column, next row." },
+          { line: 7, vars: { grid: ["int[3][2]", "{{6, 1}, {4, 8}, {5, 3}}"], total: ["int", "15"], r: ["int", "2"] }, boxes: [{ name: "grid", type: "int[3][2]", wide: true, grid: [["6", "1"], ["4", "8"], ["5", "3"]], gridMark: [2, 0] }, { name: "total", type: "int", value: "15" }, { name: "r", type: "int", value: "2" }], out: "", note: "Pass 3: grid[2][0] is <b>5</b>, the bottom of the column. total becomes 15." },
+          { line: 9, vars: { grid: ["int[3][2]", "{{6, 1}, {4, 8}, {5, 3}}"], total: ["int", "15"], r: ["int", "3"] }, boxes: [{ name: "grid", type: "int[3][2]", wide: true, grid: [["6", "1"], ["4", "8"], ["5", "3"]] }, { name: "total", type: "int", value: "15" }, { name: "r", type: "int", value: "3" }], out: "15", note: "r reaches 3, the test fails, and the program prints <b>15</b> — the whole first column, top to bottom." },
+          { line: 10, vars: { grid: ["int[3][2]", "{{6, 1}, {4, 8}, {5, 3}}"], total: ["int", "15"], r: ["int", "3"] }, boxes: [{ name: "grid", type: "int[3][2]", wide: true, grid: [["6", "1"], ["4", "8"], ["5", "3"]] }, { name: "total", type: "int", value: "15" }, { name: "r", type: "int", value: "3" }], out: "15", note: "The program ends. Final answer: <b>15</b>." }
+        ],
+        modify: {
+          prompt: "One change: the held-still index becomes 1 — the body reads grid[r][1]. Everything else is untouched. What prints now?",
+          code: 'int grid[3][2] = {{6, 1}, {4, 8}, {5, 3}};\nint total = 0;\nfor (int r = 0; r < 3; r++) {\n    total += grid[r][<mark>1</mark>];\n}\ncout << total << endl;',
+          options: ["12", "15", "7", "3"],
+          correct: 0,
+          explain: "The walk now goes down column 1: 1 + 8 + 3 = <b>12</b>. The moving index still chooses the row; the fixed one chooses which column is walked."
+        }
+      },
+      {
+        concept: "Two-dimensional arrays · the last column",
+        topic: "Two-dimensional arrays",
+        title: "The boundary column counts",
+        goal: "Loop bounds are where grids lose cells. <b>c &lt;= 2</b> <em>includes</em> column 2 — the test passes at the boundary — so a row of three columns is walked in full.",
+        stories: {
+          health:   "A clinic grid stores six readings in <strong>two rows and three columns</strong>: 2, 9, 4 on the first row and 6, 3, 8 on the second. A program adds up <strong>the first row</strong>, walking its columns with a loop whose test is <strong>c &lt;= 2</strong>, and prints the total.",
+          psych:    "A study grid stores six scores in <strong>two rows and three columns</strong>: 2, 9, 4 on the first row and 6, 3, 8 on the second. A program adds up <strong>the first row</strong>, walking its columns with a loop whose test is <strong>c &lt;= 2</strong>, and prints the total.",
+          business: "A sales grid stores six figures in <strong>two rows and three columns</strong>: 2, 9, 4 on the first row and 6, 3, 8 on the second. A program adds up <strong>the first row</strong>, walking its columns with a loop whose test is <strong>c &lt;= 2</strong>, and prints the total.",
+          arts:     "A marks grid stores six marks in <strong>two rows and three columns</strong>: 2, 9, 4 on the first row and 6, 3, 8 on the second. A program adds up <strong>the first row</strong>, walking its columns with a loop whose test is <strong>c &lt;= 2</strong>, and prints the total."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int grid[2][3] = {{2, 9, 4}, {6, 3, 8}};",
+          "    int sum = 0;",
+          "    for (int c = 0; c <= 2; c++) {",
+          "        sum += grid[0][c];",
+          "    }",
+          "    cout << sum << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["15", "11", "13", "19"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 5, text: "<b>Named misconception: the loop stops before the boundary index.</b> 11 is the total after two passes — 2 + 9 — as if the walk ended at column 1. But the test is <b>c &lt;= 2</b>, and at the parting step c <em>is</em> 2: 2 &lt;= 2 is <b>true</b>, so the loop takes the boundary pass and adds column 2's 4. Less-than-or-equal includes its boundary." },
+          2: { step: 3, text: "13 is the row <em>without its first cell</em> — 9 + 4. The counter starts at <b>c = 0</b>, so the very first pass adds grid[0][0], the 2. Nothing is skipped at the start of the row." },
+          3: { step: 5, text: "19 borrows the <b>8 from the second row</b> (2 + 9 + 8). The row index is the literal 0 on every pass — <b>grid[0][c]</b> — so the walk never leaves row 0, and its last cell is 4, not 8." }
+        },
+        steps: [
+          { line: 4, vars: { grid: ["int[2][3]", "{{2, 9, 4}, {6, 3, 8}}"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["2", "9", "4"], ["6", "3", "8"]] }], out: "", note: "The grid: <b>two rows, three columns</b> — so each row's columns are numbered 0, 1, 2. The last column is index 2." },
+          { line: 5, vars: { grid: ["int[2][3]", "{{2, 9, 4}, {6, 3, 8}}"], sum: ["int", "0"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["2", "9", "4"], ["6", "3", "8"]] }, { name: "sum", type: "int", value: "0" }], out: "", note: "The accumulator <b>sum</b> starts at 0." },
+          { line: 6, vars: { grid: ["int[2][3]", "{{2, 9, 4}, {6, 3, 8}}"], sum: ["int", "0"], c: ["int", "0"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["2", "9", "4"], ["6", "3", "8"]] }, { name: "sum", type: "int", value: "0" }, { name: "c", type: "int", value: "0" }], out: "", note: "The loop walks row 0. Read its test carefully: <b>c &lt;= 2</b> — less than <em>or equal</em>. The boundary is part of the walk." },
+          { line: 7, vars: { grid: ["int[2][3]", "{{2, 9, 4}, {6, 3, 8}}"], sum: ["int", "2"], c: ["int", "0"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["2", "9", "4"], ["6", "3", "8"]], gridMark: [0, 0] }, { name: "sum", type: "int", value: "2" }, { name: "c", type: "int", value: "0" }], out: "", note: "Pass 1: grid[0][0] is <b>2</b>. sum becomes 2." },
+          { line: 7, vars: { grid: ["int[2][3]", "{{2, 9, 4}, {6, 3, 8}}"], sum: ["int", "11"], c: ["int", "1"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["2", "9", "4"], ["6", "3", "8"]], gridMark: [0, 1] }, { name: "sum", type: "int", value: "11" }, { name: "c", type: "int", value: "1" }], out: "", note: "Pass 2: grid[0][1] is <b>9</b>. sum becomes 11. One column remains — watch whether the test lets the loop reach it." },
+          { line: 7, vars: { grid: ["int[2][3]", "{{2, 9, 4}, {6, 3, 8}}"], sum: ["int", "15"], c: ["int", "2"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["2", "9", "4"], ["6", "3", "8"]], gridMark: [0, 2] }, { name: "sum", type: "int", value: "15" }, { name: "c", type: "int", value: "2" }], out: "", note: "<b>The parting step.</b> c is now 2, and the test asks: is 2 &lt;= 2? <b>True</b> — the boundary pass runs, grid[0][2] adds its <b>4</b>, and sum becomes 15." },
+          { line: 9, vars: { grid: ["int[2][3]", "{{2, 9, 4}, {6, 3, 8}}"], sum: ["int", "15"], c: ["int", "3"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["2", "9", "4"], ["6", "3", "8"]] }, { name: "sum", type: "int", value: "15" }, { name: "c", type: "int", value: "3" }], out: "15", note: "Only when c reaches 3 does the test fail — 3 &lt;= 2 is false, and column 3 does not exist anyway. The program prints <b>15</b>: the full first row, edge included." },
+          { line: 10, vars: { grid: ["int[2][3]", "{{2, 9, 4}, {6, 3, 8}}"], sum: ["int", "15"], c: ["int", "3"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["2", "9", "4"], ["6", "3", "8"]] }, { name: "sum", type: "int", value: "15" }, { name: "c", type: "int", value: "3" }], out: "15", note: "The program ends. Final answer: <b>15</b>." }
+        ],
+        modify: {
+          prompt: "One change: the loop test becomes c < 2. The grid and everything else are untouched. What prints now?",
+          code: 'int grid[2][3] = {{2, 9, 4}, {6, 3, 8}};\nint sum = 0;\nfor (int c = 0; c <mark><</mark> 2; c++) {\n    sum += grid[0][c];\n}\ncout << sum << endl;',
+          options: ["11", "15", "13", "4"],
+          correct: 0,
+          explain: "With <b>c &lt; 2</b> the test fails <em>at</em> c = 2, so the boundary column is never visited: 2 + 9 = <b>11</b>. The equals sign in &lt;= was carrying the last column."
+        }
+      },
+      {
+        concept: "Two-dimensional arrays · writing a cell",
+        topic: "Two-dimensional arrays",
+        title: "The write lands in one cell",
+        goal: "Assignment works on grid cells exactly as on single boxes: <b>grid[0][1] = 9</b> overwrites <b>one</b> cell — the one at row 0, column 1 — and every other cell keeps its value.",
+        stories: {
+          health:   "A clinic grid stores four readings in <strong>two rows and two columns</strong>: 1, 2 on the first row and 3, 4 on the second. A corrected reading arrives, and a program <strong>overwrites the cell at row 0, column 1 with 9</strong>, then prints that cell and the cell below the grid's start, at row 1, column 0.",
+          psych:    "A study grid stores four scores in <strong>two rows and two columns</strong>: 1, 2 on the first row and 3, 4 on the second. A corrected score arrives, and a program <strong>overwrites the cell at row 0, column 1 with 9</strong>, then prints that cell and the cell at row 1, column 0.",
+          business: "A stock grid stores four figures in <strong>two rows and two columns</strong>: 1, 2 on the first row and 3, 4 on the second. A corrected figure arrives, and a program <strong>overwrites the cell at row 0, column 1 with 9</strong>, then prints that cell and the cell at row 1, column 0.",
+          arts:     "A marks grid stores four marks in <strong>two rows and two columns</strong>: 1, 2 on the first row and 3, 4 on the second. A corrected mark arrives, and a program <strong>overwrites the cell at row 0, column 1 with 9</strong>, then prints that cell and the cell at row 1, column 0."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int grid[2][2] = {{1, 2}, {3, 4}};",
+          "    grid[0][1] = 9;",
+          "    cout << grid[0][1] << \" \" << grid[1][0] << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["9 3", "9 9", "2 3", "9 4"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "<b>Named misconception: a write lands in the mirrored cell.</b> You expected the write at [0][1] to show up at [1][0] as well, as if the grid were symmetric. It is not: at the parting step <b>grid[0][1] = 9;</b> overwrites exactly one cell — row 0, column 1. The mirrored cell, grid[1][0], is a different box and keeps its 3." },
+          2: { step: 1, text: "2 is the value the cell held <em>before</em> the write. Assignment replaces: the line <b>grid[0][1] = 9;</b> runs before the print, so by the time the print reads the cell, the 2 is gone and the cell holds 9." },
+          3: { step: 2, text: "The second value printed is <b>grid[1][0]</b> — row 1, column 0 — which is 3. 4 sits at [1][1], the grid's far corner; the print never asks for it." }
+        },
+        steps: [
+          { line: 4, vars: { grid: ["int[2][2]", "{{1, 2}, {3, 4}}"] }, boxes: [{ name: "grid", type: "int[2][2]", wide: true, grid: [["1", "2"], ["3", "4"]] }], out: "", note: "The grid starts as {{1, 2}, {3, 4}}: cell [0][1] holds 2, and its mirror across the diagonal, cell [1][0], holds 3." },
+          { line: 5, vars: { grid: ["int[2][2]", "{{1, 9}, {3, 4}}"] }, boxes: [{ name: "grid", type: "int[2][2]", wide: true, grid: [["1", "9"], ["3", "4"]], gridMark: [0, 1] }], out: "", note: "<b>The parting step.</b> <b>grid[0][1] = 9;</b> overwrites the one cell at row 0, column 1. Nothing else in the grid moves: [1][0] still holds its 3." },
+          { line: 6, vars: { grid: ["int[2][2]", "{{1, 9}, {3, 4}}"] }, boxes: [{ name: "grid", type: "int[2][2]", wide: true, grid: [["1", "9"], ["3", "4"]], gridMark: [1, 0] }], out: "9 3", note: "The print reads the written cell first — <b>9</b> — then grid[1][0], the untouched cell below the start: <b>3</b>. Output: <b>9 3</b>." },
+          { line: 7, vars: { grid: ["int[2][2]", "{{1, 9}, {3, 4}}"] }, boxes: [{ name: "grid", type: "int[2][2]", wide: true, grid: [["1", "9"], ["3", "4"]] }], out: "9 3", note: "The program ends. Final answer: <b>9 3</b> — one cell written, one cell read as it always was." }
+        ],
+        modify: {
+          prompt: "One change: the write goes to the mirrored cell instead — grid[1][0] = 9;. The print line is untouched. What prints now?",
+          code: 'int grid[2][2] = {{1, 2}, {3, 4}};\ngrid[<mark>1</mark>][<mark>0</mark>] = 9;\ncout << grid[0][1] << " " << grid[1][0] << endl;',
+          options: ["2 9", "9 3", "2 3", "9 9"],
+          correct: 0,
+          explain: "Now the write lands at row 1, column 0, so the second printed cell is the changed one: grid[0][1] still holds its original <b>2</b>, and grid[1][0] holds <b>9</b>. Output: <b>2 9</b>."
+        }
+      },
+      {
+        concept: "Two-dimensional arrays · the largest cell",
+        topic: "Two-dimensional arrays",
+        title: "The largest cell in the grid",
+        goal: "A nested loop visits <b>every</b> cell — the inner loop runs in full for <em>each</em> row — so a running maximum checked against every cell ends up holding the largest value in the <b>whole grid</b>, not just the first row.",
+        stories: {
+          health:   "A clinic grid stores six readings in <strong>two rows and three columns</strong>: 5, 8, 7 on the first row and 9, 4, 11 on the second. A program hunts for <strong>the largest reading anywhere in the grid</strong> and prints it.",
+          psych:    "A study grid stores six scores in <strong>two rows and three columns</strong>: 5, 8, 7 on the first row and 9, 4, 11 on the second. A program hunts for <strong>the largest score anywhere in the grid</strong> and prints it.",
+          business: "A sales grid stores six figures in <strong>two rows and three columns</strong>: 5, 8, 7 on the first row and 9, 4, 11 on the second. A program hunts for <strong>the largest figure anywhere in the grid</strong> and prints it.",
+          arts:     "A marks grid stores six marks in <strong>two rows and three columns</strong>: 5, 8, 7 on the first row and 9, 4, 11 on the second. A program hunts for <strong>the largest mark anywhere in the grid</strong> and prints it."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int grid[2][3] = {{5, 8, 7}, {9, 4, 11}};",
+          "    int best = grid[0][0];",
+          "    for (int r = 0; r < 2; r++) {",
+          "        for (int c = 0; c < 3; c++) {",
+          "            if (grid[r][c] > best) {",
+          "                best = grid[r][c];",
+          "            }",
+          "        }",
+          "    }",
+          "    cout << best << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["11", "8", "9", "7"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 5, text: "<b>Named misconception: the search stops after the first row.</b> 8 is the largest cell of <em>row 0</em> — the best the hunt has found when the first row ends. But the outer loop has a second pass: at the parting step r becomes 1 and the inner loop runs <em>again, in full</em>, over row 1, where 9 and then 11 beat the 8. A nested search is finished only when the outer loop is." },
+          2: { step: 7, text: "9 is the <b>first improvement found in row 1</b> — it beats 8, so best becomes 9, but the hunt does not stop there. The inner loop walks on to the row's last cell, 11, which beats 9 in turn. best holds the largest cell <em>seen so far</em>, and the last cell has the final say." },
+          3: { step: 4, text: "7 is the <b>last cell of row 0</b> — and it never becomes best at all, because 7 is not greater than the 8 already held. A cell only replaces best when it <em>beats</em> it; merely being visited is not enough." }
+        },
+        steps: [
+          { line: 4, vars: { grid: ["int[2][3]", "{{5, 8, 7}, {9, 4, 11}}"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["5", "8", "7"], ["9", "4", "11"]] }], out: "", note: "The grid: row 0 is {5, 8, 7}, row 1 is {9, 4, 11}. The largest cell overall is hiding in the second row." },
+          { line: 5, vars: { grid: ["int[2][3]", "{{5, 8, 7}, {9, 4, 11}}"], best: ["int", "5"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["5", "8", "7"], ["9", "4", "11"]] }, { name: "best", type: "int", value: "5" }], out: "", note: "<b>best</b> starts at the first cell, grid[0][0] — <b>5</b>. Every other cell must beat it to take its place." },
+          { line: 8, vars: { grid: ["int[2][3]", "{{5, 8, 7}, {9, 4, 11}}"], best: ["int", "5"], r: ["int", "0"], c: ["int", "0"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["5", "8", "7"], ["9", "4", "11"]], gridMark: [0, 0] }, { name: "best", type: "int", value: "5" }, { name: "r", type: "int", value: "0" }, { name: "c", type: "int", value: "0" }], out: "", note: "Cell [0][0]: is 5 &gt; 5? <b>No</b> — a cell does not beat itself. best stays 5." },
+          { line: 9, vars: { grid: ["int[2][3]", "{{5, 8, 7}, {9, 4, 11}}"], best: ["int", "8"], r: ["int", "0"], c: ["int", "1"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["5", "8", "7"], ["9", "4", "11"]], gridMark: [0, 1] }, { name: "best", type: "int", value: "8" }, { name: "r", type: "int", value: "0" }, { name: "c", type: "int", value: "1" }], out: "", note: "Cell [0][1]: 8 &gt; 5, so <b>best becomes 8</b>." },
+          { line: 8, vars: { grid: ["int[2][3]", "{{5, 8, 7}, {9, 4, 11}}"], best: ["int", "8"], r: ["int", "0"], c: ["int", "2"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["5", "8", "7"], ["9", "4", "11"]], gridMark: [0, 2] }, { name: "best", type: "int", value: "8" }, { name: "r", type: "int", value: "0" }, { name: "c", type: "int", value: "2" }], out: "", note: "Cell [0][2]: is 7 &gt; 8? <b>No.</b> Row 0 is finished, and best holds its largest cell, 8 — for now." },
+          { line: 9, vars: { grid: ["int[2][3]", "{{5, 8, 7}, {9, 4, 11}}"], best: ["int", "9"], r: ["int", "1"], c: ["int", "0"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["5", "8", "7"], ["9", "4", "11"]], gridMark: [1, 0] }, { name: "best", type: "int", value: "9" }, { name: "r", type: "int", value: "1" }, { name: "c", type: "int", value: "0" }], out: "", note: "<b>The parting step.</b> The outer loop's second pass: r becomes 1 and the inner loop starts again over row 1. Its first cell, 9, beats 8 — <b>best becomes 9</b>. The search was never finished with row 0." },
+          { line: 8, vars: { grid: ["int[2][3]", "{{5, 8, 7}, {9, 4, 11}}"], best: ["int", "9"], r: ["int", "1"], c: ["int", "1"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["5", "8", "7"], ["9", "4", "11"]], gridMark: [1, 1] }, { name: "best", type: "int", value: "9" }, { name: "r", type: "int", value: "1" }, { name: "c", type: "int", value: "1" }], out: "", note: "Cell [1][1]: is 4 &gt; 9? <b>No.</b> best stays 9." },
+          { line: 9, vars: { grid: ["int[2][3]", "{{5, 8, 7}, {9, 4, 11}}"], best: ["int", "11"], r: ["int", "1"], c: ["int", "2"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["5", "8", "7"], ["9", "4", "11"]], gridMark: [1, 2] }, { name: "best", type: "int", value: "11" }, { name: "r", type: "int", value: "1" }, { name: "c", type: "int", value: "2" }], out: "", note: "Cell [1][2]: 11 &gt; 9, so <b>best becomes 11</b> — the grid's last cell, and its largest." },
+          { line: 13, vars: { grid: ["int[2][3]", "{{5, 8, 7}, {9, 4, 11}}"], best: ["int", "11"], r: ["int", "2"], c: ["int", "3"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["5", "8", "7"], ["9", "4", "11"]] }, { name: "best", type: "int", value: "11" }, { name: "r", type: "int", value: "2" }, { name: "c", type: "int", value: "3" }], out: "11", note: "Both loops are done — every one of the six cells was checked — and the program prints <b>11</b>." },
+          { line: 14, vars: { grid: ["int[2][3]", "{{5, 8, 7}, {9, 4, 11}}"], best: ["int", "11"], r: ["int", "2"], c: ["int", "3"] }, boxes: [{ name: "grid", type: "int[2][3]", wide: true, grid: [["5", "8", "7"], ["9", "4", "11"]] }, { name: "best", type: "int", value: "11" }, { name: "r", type: "int", value: "2" }, { name: "c", type: "int", value: "3" }], out: "11", note: "The program ends. Final answer: <b>11</b>." }
+        ],
+        modify: {
+          prompt: "One change: the last cell of the grid drops from 11 to 6 — row 1 becomes {9, 4, 6}. Everything else is untouched. What prints now?",
+          code: 'int grid[2][3] = {{5, 8, 7}, {9, 4, <mark>6</mark>}};\nint best = grid[0][0];\nfor (int r = 0; r < 2; r++) {\n    for (int c = 0; c < 3; c++) {\n        if (grid[r][c] > best) {\n            best = grid[r][c];\n        }\n    }\n}\ncout << best << endl;',
+          options: ["9", "11", "8", "6"],
+          correct: 0,
+          explain: "With the 11 gone, the hunt's last improvement is row 1's first cell: best climbs 5 → 8 → <b>9</b>, and nothing after it — 4, then 6 — beats 9. Output: <b>9</b>."
+        }
       }
     ];
 
@@ -9983,7 +10328,7 @@ int main() {
                pair: false, pairASelected: -1, pairALocked: false,
                pairBSelected: -1, pairBLocked: false, jointSelected: -1, jointLocked: false, rationale: "", muddy: 0,
                confidence: "", followSel: -1, followLocked: false, followCorrect: null,
-               teachBack: "", lastDuel: "", reSel: -1, reLocked: false, reCorrect: null, reAtStep: -1 };
+               teachBack: "", lastDuel: "", reSel: -1, reLocked: false, reCorrect: null, reAtStep: -1, boxPred: {} };
     }
     var state = {
       skin: "health",
@@ -10178,6 +10523,7 @@ int main() {
       { name: "Foundations", list: [0, 1, 2] },
       { name: "Loops & Functions", list: [3, 4, 5, 6, 23, 24, 28, 44] },
       { name: "Arrays & Strings", list: [7, 8, 25, 26, 29, 45, 46, 52] },
+      { name: "Two-dimensional arrays", list: [104, 105, 106, 107, 108, 109] },
       { name: "Vectors — size & capacity", list: [81, 82, 83, 84, 85] },
       { name: "Pointers", list: [9, 10, 11, 12, 59] },
       { name: "Const & read-only access", list: [98, 99, 100, 101, 102, 103] },
@@ -10439,6 +10785,7 @@ int main() {
         cSure.disabled = !!s.locked; cUnsure.disabled = !!s.locked;
         if (cRow) cRow.style.display = s.locked && !s.confidence ? "none" : "";
       }
+      renderBoxPred();
     }
     (function wireConfidence() {
       var cSure = $("conf-sure"), cUnsure = $("conf-unsure");
@@ -10485,7 +10832,7 @@ int main() {
       var base = box.name + ", type " + box.type;
       if (box.fields) return base + ", " + box.fields.map(function (f) { return f[0] + " is " + f[1]; }).join(", ");
       if (box.elems) return base + (box.elems.length ? ", elements " + box.elems.map(function (v) { return fmtElem(v); }).join(", ") + ", size " + box.elems.length : ", empty, size 0") + (typeof box.cap === "number" ? ", capacity " + box.cap : "") + (box.marks ? ", " + Object.keys(box.marks).map(function (k) { return "index " + k + " is " + box.marks[k]; }).join(", ") : "");
-      if (box.grid) return base + ", rows: " + box.grid.map(function (r) { return r.map(function (v) { return fmtElem(v); }).join(" "); }).join("; ");
+      if (box.grid) return base + ", rows: " + box.grid.map(function (r) { return r.map(function (v) { return fmtElem(v); }).join(" "); }).join("; ") + (box.gridMark ? ", currently at row " + box.gridMark[0] + ", column " + box.gridMark[1] + ", value " + fmtElem(box.grid[box.gridMark[0]][box.gridMark[1]]) : "");
       return base + ", value " + fmtBoxValue(box.type, box.value || "").spoken;
     }
 
@@ -10735,7 +11082,8 @@ int main() {
       } else if (box.grid) {
         html += '<div class="mem-grid2">' + box.grid.map(function (row, ri) {
           return '<div class="mem-grid-row">' + row.map(function (v, ci) {
-            return '<span class="mem-elem' + fmtElemCls(v) + '">' + esc(fmtElem(v)) + "<small>[" + ri + "][" + ci + "]</small></span>";
+            var isMark = box.gridMark && box.gridMark[0] === ri && box.gridMark[1] === ci;
+            return '<span class="mem-elem' + fmtElemCls(v) + (isMark ? " marked" : "") + '">' + esc(fmtElem(v)) + "<small>[" + ri + "][" + ci + "]" + (isMark ? " · here" : "") + "</small></span>";
           }).join("") + "</div>";
         }).join("") + "</div>";
       } else if (isPtr) {
@@ -11482,6 +11830,141 @@ int main() {
       });
     }
 
+    /* ---------------- Partial-credit prediction scoring ----------------
+       The Stage 1 prediction stays a single locked choice — but a student
+       may also predict the final state element by element (box by box:
+       each memory box in the trace's final step, each cell of a grid or
+       array, and each output line) in the optional panel under the
+       options. Those element predictions live additively as `boxPred`
+       on the exercise's existing progress record. At the verdict every
+       filled element is scored on its own (whitespace-insensitive, and
+       numeric-tolerant so 42 and 42.0 agree), the verdict names the
+       first element where the student's model parted from the machine,
+       and multi-line outputs are always compared line by line. With no
+       elements filled and a missed prediction, the verdict names the
+       first divergence the diagnosis already knows: the parting step and
+       the first box that changes there. Element results travel in the
+       prediction journal ("Element:" lines) so the instructor digest can
+       aggregate per-box accuracy across a class. No points, no badges:
+       the counts describe the prediction, nothing more. */
+    function partialElements(ex) {
+      var last = ex.steps[ex.steps.length - 1];
+      if (!last) return [];
+      var els = [];
+      memBoxesOf(last).forEach(function (box) {
+        if (/ifstream|ofstream/.test(box.type)) return;
+        if (box.fields) {
+          box.fields.forEach(function (f) { els.push({ key: "f:" + box.name + "." + f[0], label: box.name + "." + f[0], actual: String(f[1]) }); });
+        } else if (box.grid) {
+          box.grid.forEach(function (row, ri) { row.forEach(function (v, ci) { els.push({ key: "g:" + box.name + ":" + ri + ":" + ci, label: box.name + "[" + ri + "][" + ci + "]", actual: String(v) }); }); });
+        } else if (box.elems) {
+          box.elems.forEach(function (v, ei) { els.push({ key: "e:" + box.name + ":" + ei, label: box.name + "[" + ei + "]", actual: String(v) }); });
+        } else {
+          var val = String(box.value == null ? "" : box.value);
+          if (val.indexOf("→") !== -1) return;
+          els.push({ key: "b:" + box.name, label: box.name, actual: val });
+        }
+      });
+      var outLines = String(last.out == null ? "" : last.out).split("\n");
+      if (outLines.length && outLines[outLines.length - 1] === "") outLines.pop();
+      outLines.forEach(function (ln, li) { els.push({ key: "o:" + li, label: "output line " + (li + 1), actual: ln }); });
+      return els.slice(0, 24);
+    }
+    function partialNorm(v) { return String(v == null ? "" : v).trim().replace(/\s+/g, " "); }
+    function partialEq(a, b) {
+      var x = partialNorm(a), y = partialNorm(b);
+      if (x === y) return true;
+      if (x === "" || y === "") return false;
+      var nx = Number(x), ny = Number(y);
+      return isFinite(nx) && isFinite(ny) && nx === ny;
+    }
+    function scorePartial(ex, s) {
+      var filled = [];
+      partialElements(ex).forEach(function (el) {
+        var p = s && s.boxPred ? s.boxPred[el.key] : "";
+        if (p == null || String(p).trim() === "") return;
+        filled.push({ key: el.key, label: el.label, pred: String(p), actual: el.actual, ok: partialEq(p, el.actual) });
+      });
+      var got = 0, firstDiv = null;
+      filled.forEach(function (f) { if (f.ok) got++; else if (!firstDiv) firstDiv = f; });
+      return { filled: filled, got: got, total: filled.length, firstDiv: firstDiv };
+    }
+    function outputLineScore(ex, s) {
+      if (!s || s.selected < 0) return null;
+      var mine = String(ex.options[s.selected]).split("\n");
+      var actual = String(ex.options[ex.correct]).split("\n");
+      if (mine.length <= 1 && actual.length <= 1) return null;
+      var n = Math.max(mine.length, actual.length), rows = [];
+      for (var i = 0; i < n; i++) rows.push({ label: "output line " + (i + 1), pred: i < mine.length ? mine[i] : "(no line)", actual: i < actual.length ? actual[i] : "(no line)", ok: i < mine.length && i < actual.length && partialEq(mine[i], actual[i]) });
+      return rows;
+    }
+    function partialVerdictHtml(ex, s) {
+      var sc = scorePartial(ex, s);
+      var lines = outputLineScore(ex, s);
+      var html = "";
+      if (sc.total) {
+        html += '<div class="partial-block"><h4>Element by element — partial credit</h4>' +
+          '<p class="partial-summary">You predicted ' + sc.total + ' element' + (sc.total === 1 ? '' : 's') + ' box by box: <b>' + sc.got + ' of ' + sc.total + ' right</b>.</p>' +
+          '<ul class="partial-list">' + sc.filled.map(function (f) {
+            return '<li class="' + (f.ok ? 'ok' : 'bad') + '"><span class="partial-label">' + esc(f.label) + '</span><span class="partial-vals">you: <b>' + esc(f.pred) + '</b> · machine: <b>' + esc(f.actual) + '</b></span><span class="partial-mark">' + (f.ok ? '✓' : '✗') + '</span></li>';
+          }).join("") + '</ul>' +
+          (sc.firstDiv ? '<p class="partial-first">First divergence: <b>' + esc(sc.firstDiv.label) + '</b> — you predicted ' + esc(sc.firstDiv.pred) + ', the machine has ' + esc(sc.firstDiv.actual) + '. That is the first element where your model and the machine part company.</p>' : '<p class="partial-first">Every element you predicted matches the machine.</p>') +
+          '</div>';
+      } else if (!s.correct) {
+        var d = ex.diagnoses[s.selected];
+        if (d && ex.steps[d.step]) {
+          var stp = ex.steps[d.step], prv = d.step > 0 ? ex.steps[d.step - 1] : null;
+          var changed = [];
+          memBoxesOf(stp).forEach(function (box) {
+            var pb = prv ? memBoxesOf(prv).filter(function (x) { return x.name === box.name; })[0] : null;
+            if (!pb || JSON.stringify(pb) !== JSON.stringify(box)) changed.push(box.name);
+          });
+          html += '<p class="partial-first">First divergence: <b>step ' + (d.step + 1) + '</b> (line ' + (stp.line + 1) + ')' + (changed.length ? ' — watch <b>' + esc(changed[0]) + '</b>' : '') + ': that is where the machine first does something your prediction did not expect.</p>';
+        }
+      }
+      if (lines) {
+        html += '<div class="partial-block"><h4>The output, line by line</h4><ul class="partial-list">' + lines.map(function (r) {
+          return '<li class="' + (r.ok ? 'ok' : 'bad') + '"><span class="partial-label">' + esc(r.label) + '</span><span class="partial-vals">you: <b>' + esc(r.pred) + '</b> · machine: <b>' + esc(r.actual) + '</b></span><span class="partial-mark">' + (r.ok ? '✓' : '✗') + '</span></li>';
+        }).join("") + '</ul></div>';
+      }
+      return html;
+    }
+    var boxPredSig = "__none__";
+    function renderBoxPred() {
+      var wrap = $("boxpred-wrap"), grid = $("boxpred-grid");
+      if (!wrap || !grid) return;
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      if (!ex || !s) { wrap.hidden = true; return; }
+      var els = partialElements(ex);
+      var sig = state.current + "|" + (s.locked ? "L" : "O") + "|" + els.length;
+      if (sig === boxPredSig) return;
+      boxPredSig = sig;
+      if (!els.length) { wrap.hidden = true; return; }
+      wrap.hidden = false;
+      grid.innerHTML = "";
+      els.forEach(function (el) {
+        var lab = document.createElement("label");
+        lab.className = "boxpred-item";
+        lab.innerHTML = '<span class="boxpred-label">' + esc(el.label) + '</span>';
+        var inp = document.createElement("input");
+        inp.type = "text"; inp.className = "boxpred-input";
+        inp.value = s.boxPred && s.boxPred[el.key] != null ? s.boxPred[el.key] : "";
+        inp.disabled = !!s.locked;
+        inp.setAttribute("data-bp-key", el.key);
+        inp.setAttribute("aria-label", "Your prediction for " + el.label);
+        inp.setAttribute("autocomplete", "off");
+        inp.addEventListener("input", function () {
+          var ss = state.ex[state.current];
+          if (!ss || ss.locked) return;
+          if (!ss.boxPred) ss.boxPred = {};
+          ss.boxPred[el.key] = inp.value.slice(0, 40);
+          try { tfSave(); } catch (e) {}
+        });
+        lab.appendChild(inp);
+        grid.appendChild(lab);
+      });
+    }
+
     function renderInvestigate() {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
       var card = $("investigate-card");
@@ -11494,13 +11977,13 @@ int main() {
       if (s.correct) {
         v.innerHTML = '<div class="verdict good"><h3>Your model matched the machine.</h3>' +
           '<div class="vs"><div><span>You predicted</span>' + esc(mine) + '</div><div><span>The program printed</span>' + esc(actual) + "</div></div>" +
-          "<p>A correct prediction is evidence your mental model of this concept is sound — for these values. Stage 4 changes a value to check the model, not the memory.</p>" + reHtml + ratEcho + teachBackHtml(s) + "</div>";
+          "<p>A correct prediction is evidence your mental model of this concept is sound — for these values. Stage 4 changes a value to check the model, not the memory.</p>" + reHtml + ratEcho + partialVerdictHtml(ex, s) + teachBackHtml(s) + "</div>";
       } else {
         var d = ex.diagnoses[s.selected];
         var confNote = s.confidence === "sure" ? '<p class="confident-note">You marked this prediction “Sure” — a confident miss, and the kind worth a second look: the model felt solid and still parted from the machine.</p>' : "";
         v.innerHTML = '<div class="verdict bad"><h3>Your model and the machine parted company.</h3>' +
           '<div class="vs"><div><span>You predicted</span>' + esc(mine) + '</div><div><span>The program printed</span>' + esc(actual) + "</div></div>" +
-          "<p>" + d.text + "</p>" + reHtml + confNote + ratEcho + '<button class="btn small ghost jump" id="jump-btn" type="button">Jump to the parting step</button>' +
+          "<p>" + d.text + "</p>" + reHtml + confNote + ratEcho + partialVerdictHtml(ex, s) + '<button class="btn small ghost jump" id="jump-btn" type="button">Jump to the parting step</button>' +
           '<div id="followup-box"></div><p class="suggest-next" id="suggest-next"></p>' + teachBackHtml(s) + "</div>";
         $("jump-btn").addEventListener("click", function () {
           stopPlayback();
@@ -17973,6 +18456,23 @@ int main() {
         expectOp("}");
         return { kind: "block", stmts: stmts, line: t.line };
       }
+      function parseInitList() {
+        // Parses "{ ... }" where each item is an expression or a nested
+        // "{ ... }" list (a row of a two-dimensional array). Returns an
+        // array whose items are expression nodes or nested arrays.
+        expectOp("{");
+        var list = [];
+        if (!isOp("}")) {
+          for (;;) {
+            if (isOp("{")) list.push(parseInitList());
+            else list.push(parseExpr());
+            if (isOp(",")) { next(); if (isOp("}")) break; continue; }
+            break;
+          }
+        }
+        expectOp("}");
+        return list;
+      }
       function parseDeclCore() {
         var tt = peek();
         var vConst = false;
@@ -17984,7 +18484,7 @@ int main() {
           if (isOp("&")) { next(); dRef = true; }
           else if (isOp("*")) { next(); dPtr = true; if (isId("const")) { next(); dConstPtr = true; } }
           var nm = expectId();
-          var d = { name: nm.v, size: null, sizeExpr: null, init: null, initList: null, initArgs: null, ref: dRef, ptr: dPtr, constPtr: dConstPtr };
+          var d = { name: nm.v, size: null, sizeExpr: null, size2: null, size2Expr: null, init: null, initList: null, initArgs: null, ref: dRef, ptr: dPtr, constPtr: dConstPtr };
           if (isOp("[")) {
             next();
             if (!isOp("]")) {
@@ -17993,17 +18493,20 @@ int main() {
               else d.sizeExpr = parseExpr();
             }
             expectOp("]");
+            if (isOp("[")) {
+              next();
+              if (!isOp("]")) {
+                var sz2 = peek();
+                if (sz2.t === "num" && !sz2.isDbl) { d.size2 = parseInt(sz2.v, 10); next(); }
+                else d.size2Expr = parseExpr();
+              }
+              expectOp("]");
+            }
           }
           if (isOp("=")) {
             next();
             if (isOp("{")) {
-              next();
-              var list = [];
-              if (!isOp("}")) {
-                for (;;) { list.push(parseExpr()); if (isOp(",")) { next(); continue; } break; }
-              }
-              expectOp("}");
-              d.initList = list;
+              d.initList = parseInitList();
             } else d.init = parseExpr();
           } else if (isOp("(")) {
             next();
@@ -18619,6 +19122,7 @@ int main() {
         }
         if (cell.isMap) { return "{" + sortedKeys(cell).map(function (k) { return makeFmtVal(keyVal(cell, k), 1) + ": " + makeFmtVal(cell.val.entries[k], 1); }).join(", ") + "}"; }
         if (cell.isSet) { return "{" + sortedKeys(cell).map(function (k) { return makeFmtVal(keyVal(cell, k), 1); }).join(", ") + "}"; }
+        if (cell.is2D) return "{" + cell.val.map(function (row) { return "{" + row.map(function (e) { return makeFmtVal(e, 1); }).join(", ") + "}"; }).join(", ") + "}";
         if (cell.isArr) return "{" + cell.val.map(function (e) { return makeFmtVal(e, 1); }).join(", ") + "}" + (cell.isVec ? " (size " + cell.val.length + ", capacity " + (cell.cap || 0) + ")" : "");
         if (cell.isFileIn) return "ifstream " + (cell.val.name || "(not open)");
         if (cell.isFileOut) return "ofstream " + (cell.val.name || "(not open)");
@@ -18699,6 +19203,28 @@ int main() {
         Object.defineProperty(v, "uninit", { enumerable: true, get: function () { return cell.uninit; }, set: function (nv) { cell.uninit = nv; } });
         return v;
       }
+      /* Two-dimensional indexing: grid[r][c] parses as index(index(grid, r), c).
+         indexChainOf unwinds such a chain to its root variable and its index
+         expressions (row first); gridCellRef resolves a two-index chain
+         against a 2D cell with honest bounds errors, and is shared by reads
+         (evalExpr) and writes (targetRef) so both agree exactly. */
+      function indexChainOf(node) {
+        var idxs = [], cur = node;
+        while (cur && cur.kind === "index") { idxs.unshift(cur.idx); cur = cur.arr; }
+        if (!cur || cur.kind !== "var") return null;
+        return { name: cur.name, idxs: idxs, line: node.line };
+      }
+      function gridCellRef(env, node) {
+        var ch = indexChainOf(node);
+        if (!ch || ch.idxs.length !== 2) return null;
+        var cell = lookupCell(env, ch.name, node.line);
+        if (!cell.is2D) return null;
+        var r = Math.trunc(makeNum(evalExpr(env, ch.idxs[0]), node.line, "as a row number"));
+        var c = Math.trunc(makeNum(evalExpr(env, ch.idxs[1]), node.line, "as a column number"));
+        if (r < 0 || r >= cell.val.length) fail(node.line, "row " + r + " of '" + ch.name + "' does not exist — the grid has " + cell.val.length + " row" + (cell.val.length === 1 ? "" : "s") + ", numbered 0 to " + (cell.val.length - 1) + ".");
+        if (c < 0 || c >= cell.val[r].length) fail(node.line, "column " + c + " of '" + ch.name + "' does not exist — each row has " + cell.val[r].length + " column" + (cell.val[r].length === 1 ? "" : "s") + ", numbered 0 to " + (cell.val[r].length - 1) + ".");
+        return { cell: cell, r: r, c: c };
+      }
       function targetRef(env, node) {
         if (node.kind === "var") {
           var c = lookupCell(env, node.name, node.line);
@@ -18722,6 +19248,12 @@ int main() {
           var fc = oc.val.fields[node.name];
           if (!fc) fail(node.line, "the class " + oc.val.className + " has no member named '" + node.name + "'.");
           return { type: fc.type, get: function () { return fc.val; }, set: function (v) { fc.val = v; fc.uninit = false; } };
+        }
+        if (node.kind === "index" && node.arr.kind === "index") {
+          var gref3 = gridCellRef(env, node);
+          if (!gref3) fail(node.line, "the machine needs a two-dimensional array slot on the left of an assignment, like grid[0][1] = 9 — the value before the brackets here is not a two-dimensional array.");
+          var gcell = gref3.cell, gr2 = gref3.r, gc2 = gref3.c;
+          return { type: gcell.type, get: function () { return gcell.val[gr2][gc2]; }, set: function (v) { gcell.val[gr2][gc2] = v; } };
         }
         if (node.kind === "index" && node.arr.kind === "var") {
           var mc = lookupCell(env, node.arr.name, node.line);
@@ -18789,6 +19321,11 @@ int main() {
             return c.val;
           }
           case "index": {
+            if (node.arr.kind === "index") {
+              var gref2 = gridCellRef(env, node);
+              if (gref2) return gref2.cell.val[gref2.r][gref2.c];
+              fail(node.line, "two pairs of square brackets reach into a two-dimensional array, like grid[row][column] — the value before them here is not one.");
+            }
             if (node.arr.kind === "var") {
               var c2 = lookupCell(env, node.arr.name, node.line);
               if (c2.isMap) {
@@ -19210,7 +19747,23 @@ int main() {
             var scope = env[env.length - 1];
             node.decls.forEach(function (d) {
               var cell;
-              if (d.size !== null || d.sizeExpr || d.initList) {
+              if (d.size2 !== null || d.size2Expr || (d.initList && d.initList.length && Array.isArray(d.initList[0]))) {
+                var rows2 = d.size !== null ? d.size : (d.sizeExpr ? Math.trunc(makeNum(evalExpr(env, d.sizeExpr), node.line, "as an array size")) : d.initList.length);
+                var firstRow = (d.initList && d.initList.length && Array.isArray(d.initList[0])) ? d.initList[0] : null;
+                var cols2 = d.size2 !== null ? d.size2 : (d.size2Expr ? Math.trunc(makeNum(evalExpr(env, d.size2Expr), node.line, "as an array size")) : (firstRow ? firstRow.length : 0));
+                if (rows2 < 0 || cols2 < 0) fail(node.line, "an array size cannot be negative — '" + d.name + "' was asked for a negative number of rows or columns.");
+                if (rows2 > 1000 || cols2 > 1000 || rows2 * cols2 > 10000) fail(node.line, "that grid size is far larger than these programs need — check the sizes used for '" + d.name + "'.");
+                if (d.initList && d.initList.length > rows2) fail(node.line, "the list for '" + d.name + "' has " + d.initList.length + " rows, but the array only has " + rows2 + " rows.");
+                var grid2 = [];
+                for (var gr = 0; gr < rows2; gr++) { var grow = []; for (var gc = 0; gc < cols2; gc++) grow.push(makeDefault(node.vtype)); grid2.push(grow); }
+                cell = { type: node.vtype, isArr: true, is2D: true, val: grid2 };
+                scope[d.name] = cell;
+                if (d.initList) d.initList.forEach(function (rowInit, ri) {
+                  if (!Array.isArray(rowInit)) fail(node.line, "each row of '" + d.name + "' needs its own list in braces, like {{1, 2}, {3, 4}} — row " + (ri + 1) + " is not a list.");
+                  if (rowInit.length > cols2) fail(node.line, "row " + (ri + 1) + " of '" + d.name + "' has " + rowInit.length + " values, but the array only has " + cols2 + " columns.");
+                  rowInit.forEach(function (e2, ci2) { if (Array.isArray(e2)) fail(node.line, "the values inside a row of '" + d.name + "' are single values, not further lists."); grid2[ri][ci2] = makeConv(evalExpr(env, e2), node.vtype, node.line, d.name); });
+                });
+              } else if (d.size !== null || d.sizeExpr || d.initList) {
                 var sz = d.size !== null ? d.size : (d.sizeExpr ? Math.trunc(makeNum(evalExpr(env, d.sizeExpr), node.line, "as an array size")) : d.initList.length);
                 if (sz < 0) fail(node.line, "an array size cannot be negative — '" + d.name + "' was asked for " + sz + " slots.");
                 if (sz > 10000) fail(node.line, "that array size is far larger than these programs need — check the value used as the size of '" + d.name + "'.");
@@ -19219,7 +19772,7 @@ int main() {
                 for (var k = 0; k < sz; k++) elems.push(makeDefault(node.vtype));
                 cell = { type: node.vtype, isArr: true, val: elems };
                 scope[d.name] = cell;
-                if (d.initList) d.initList.forEach(function (e, ei) { elems[ei] = makeConv(evalExpr(env, e), node.vtype, node.line, d.name); });
+                if (d.initList) d.initList.forEach(function (e, ei) { if (Array.isArray(e)) fail(node.line, "the list for '" + d.name + "' mixes single values and braced rows — a one-dimensional array takes a flat list, like {1, 2, 3}."); elems[ei] = makeConv(evalExpr(env, e), node.vtype, node.line, d.name); });
               } else if (d.ref) {
                 // A reference is another name for an existing box: the
                 // binding shares the target's cell, so a write through
@@ -20767,6 +21320,11 @@ int main() {
           var d = ex.diagnoses[s.selected];
           if (d) lines.push("Parting step: Step " + (d.step + 1));
         }
+        var scJ = scorePartial(ex, s);
+        if (scJ.total) {
+          lines.push("Partial credit: " + scJ.got + " of " + scJ.total + " elements");
+          scJ.filled.forEach(function (f) { lines.push("Element: Ex " + (i + 1) + " · " + f.label + " | predicted " + String(f.pred).replace(/\n/g, " ") + " | actual " + String(f.actual).replace(/\n/g, " ") + " | " + (f.ok ? "right" : "wrong")); });
+        }
         lines.push("");
       });
       return lines.join("\n");
@@ -20803,7 +21361,7 @@ int main() {
        by that hydration and dropped by the next tfCollect save; missing
        optional sections default the same way an older save's would). */
     var TF_PROGRESS_ARRAY_KEYS = ["tracer", "gym", "refactor", "bridge", "order", "make", "authoredExercises", "instructorExercises", "assignments"];
-    var TF_PROGRESS_KNOWN_KEYS = ["v", "bitsFormat", "playbackSpeed", "bgTheme", "reduceMotionPref", "largeTextPref", "readAloudPref", "primerRead", "boltTourSeen", "tracer", "bolt", "gym", "refactor", "bridge", "order", "make", "challenges", "authoredExercises", "instructorExercises", "assignments", "quiz", "gap", "lastTracer", "testOut", "variants", "diagPair"];
+    var TF_PROGRESS_KNOWN_KEYS = ["v", "bitsFormat", "playbackSpeed", "bgTheme", "reduceMotionPref", "largeTextPref", "readAloudPref", "primerRead", "boltTourSeen", "tracer", "bolt", "gym", "refactor", "bridge", "order", "make", "challenges", "authoredExercises", "instructorExercises", "assignments", "quiz", "gap", "lastTracer", "testOut", "variants", "diagPair", "classRoster"];
     function tfIsPlainObj(x) { return !!x && typeof x === "object" && !Array.isArray(x); }
     function tfCloneJson(x) { return JSON.parse(JSON.stringify(x)); }
     function tfValidateProgressFile(d) {
@@ -21132,6 +21690,8 @@ int main() {
         if (plm && cur._agg && cur._wrong) { cur._agg.parting[plm[1].trim()] = (cur._agg.parting[plm[1].trim()]||0)+1; return; }
         var mlm = L.match(/^Muddiest line\s*:\s*Line\s+(\d+)\s*:\s*(.*)$/i);
         if (mlm && cur) { var aM = ensure(cur.num); var mKey = mlm[1] + "|" + mlm[2].trim(); aM.muddy[mKey] = (aM.muddy[mKey]||0)+1; aM.muddyTotal = (aM.muddyTotal||0)+1; return; }
+        var elm = L.match(/^Element\s*:\s*Ex\s*(\d+)\s*·\s*(.+?)\s*\|\s*predicted\s*(.*?)\s*\|\s*actual\s*(.*?)\s*\|\s*(right|wrong)\s*$/i);
+        if (elm && cur) { var aE = ensure(parseInt(elm[1], 10)); if (!aE.elements) aE.elements = {}; var eKey = "Ex " + elm[1] + " · " + elm[2].trim(); if (!aE.elements[eKey]) aE.elements[eKey] = { att: 0, right: 0 }; aE.elements[eKey].att++; if (/right/i.test(elm[5])) aE.elements[eKey].right++; return; }
         // tolerant: prediction without verdict — count at next exercise handled implicitly; ignore other lines
       });
       if (journalCount === 0 && entries > 0) journalCount = 1;
@@ -21223,6 +21783,17 @@ int main() {
           });
         });
         html += '<div class="digest-why"><h4>Teach-backs</h4>' + tbHtml + "</div>";
+      }
+      // ---- Per-element accuracy: box-by-box partial credit ----
+      var elemAgg = {};
+      nums.forEach(function (n) { var a5 = parsed.agg[n]; if (!a5.elements) return; Object.keys(a5.elements).forEach(function (k) { if (!elemAgg[k]) elemAgg[k] = { att: 0, right: 0 }; elemAgg[k].att += a5.elements[k].att; elemAgg[k].right += a5.elements[k].right; }); });
+      var elemKeys = Object.keys(elemAgg);
+      if (elemKeys.length) {
+        elemKeys.sort(function (a, b) { var pa = elemAgg[a].right / elemAgg[a].att, pb = elemAgg[b].right / elemAgg[b].att; return pa - pb || (a < b ? -1 : 1); });
+        html += '<div class="digest-why"><h4>Per-element accuracy — box by box</h4><p class="digest-summary">From the box-by-box predictions in these journals: each element a student chose to predict, scored on its own rather than as one whole prediction. Weakest elements first — the box or output line where students\u2019 models most often part from the machine.</p>';
+        html += '<div class="digest-table-wrap"><table class="digest-table"><thead><tr><th scope="col">Element</th><th scope="col">Predictions</th><th scope="col">Right</th><th scope="col">Accuracy</th></tr></thead><tbody>';
+        elemKeys.forEach(function (k) { var e5 = elemAgg[k]; html += '<tr><td><strong>' + esc(k) + '</strong></td><td>' + e5.att + '</td><td>' + e5.right + '</td><td>' + Math.round((e5.right / e5.att) * 100) + '%</td></tr>'; });
+        html += '</tbody></table></div></div>';
       }
       // ---- Muddiest lines: ranked by flag count across all journals ----
       var muddyRows = [];
@@ -22475,6 +23046,15 @@ int main() {
           { q: "Which pointer may be re-aimed at a different box?", options: ["const int* p — its pointee is read-only, the pointer is not", "int* const p — its pointee is writable, so the aim must be free too", "Both may — const never locks an aim"], correct: 0, why: "Placement decides: in const int* the const belongs to the int; in int* const the pointer itself is const, and re-aiming it is an assignment to a const box." }
         ],
         drag: { q: "Complete the declaration so view may read score but never write it:", pre: "", slot: "", post: " int& view = score;", tokens: ["const", "static", "virtual"], correct: "const", why: "const before the type makes the reference read-only: view becomes a window onto score, not a second pen." } },
+      "Two-dimensional arrays": { title: "Briefing: two-dimensional arrays — rows, then columns",
+        body: "A two-dimensional array is a <b>grid</b>: one name, and every cell reached by <b>two indexes</b> — <code>grid[row][column]</code>. The <b>first index chooses the row</b>, the second the cell inside it, and both count from <b>0</b>, so grid[1][2] is the <em>second</em> row's <em>third</em> cell. Which index a loop moves decides the walk: hold the row still and run the column to cross <b>one row</b>; hold the column still and run the row to go <b>down one column</b>; nest the two loops and the inner loop runs <b>in full for every row</b>, visiting every cell. The edges are where cells get lost: a row of three columns has indexes 0, 1, 2, so <code>c &lt; 3</code> and <code>c &lt;= 2</code> walk it all, while <code>c &lt; 2</code> quietly drops the last column. Writing works cell by cell — <code>grid[0][1] = 9;</code> overwrites that one cell and no other.",
+        example: ["int grid[2][3] = {{2, 4, 6}, {1, 3, 5}};", "cout << grid[1][0] << \" \" << grid[0][2];"], note: "Prints <b>1 6</b>: grid[1][0] is the second row's first cell, and grid[0][2] is the first row's last cell — row first, then column, every time.",
+        checks: [
+          { q: "In grid[2][1], the first index chooses…", options: ["The row — row 2, the third row", "The column", "The diagonal"], correct: 0, why: "Two-dimensional indexes are [row][column], both counting from 0: the first picks the row, the second the cell inside it." },
+          { q: "A loop runs total += grid[r][0]; with r running over every row. What is total adding up?", options: ["One column, top to bottom", "One row, left to right", "The whole grid"], correct: 0, why: "The moving index is the row and the column is held at 0, so each pass takes one cell from the next row down — a column walk." },
+          { q: "A row has columns 0, 1, 2. Which loop test walks the whole row, last column included?", options: ["c <= 2", "c < 2", "c <= 1"], correct: 0, why: "c <= 2 passes at the boundary column 2 itself; c < 2 fails there and drops the last column." }
+        ],
+        drag: { q: "Complete the access so it reads the cell in row 1, column 2: grid[1][ ___ ]", tokens: ["2", "1", "0"], correct: "2", why: "The second index is the column: row 1, column 2 is grid[1][2]." } },
       "Recursion": { title: "Briefing: Recursion",
         body: "A recursive function <b>calls itself</b> with a smaller argument. Two parts make it work: a <b>base case</b> that returns directly, and a recursive case that shrinks the problem. Nothing finishes on the way down — each call waits on the call stack with <b>its own boxes</b>, and the answers are assembled on the way back up, deepest call first.",
         example: ["int sumTo(int n) {", "    if (n <= 0) return 0;", "    return n + sumTo(n - 1);", "}", "cout << sumTo(3);"], note: "Prints <b>6</b>: sumTo(3) waits for sumTo(2), which waits for sumTo(1), which waits for sumTo(0) = 0; then 1, 3, 6 are assembled on the way back.",
@@ -24412,6 +24992,16 @@ int main() {
 
     var TF_KEY = "tracefirst-progress-v1";
     var catalogueImports = [];
+    /* Class roster: named students decoded from their TFP1: progress
+       codes, kept on this device only. Additive field `classRoster` in
+       tracefirst-progress-v1; absent in older saves. Each entry:
+       { name, h (code hash, dedupe), n (exercises in the code),
+         c (fired named-misconception counts, keyed like the catalogue),
+         t (slim code entries [exercise, correct01, predictedText]) }.
+       Roster data is kept separate from catalogueImports so a roster
+       code is never double-counted in the imported counts. Codes are
+       decoded on the device and never leave it. */
+    var classRoster = [];
     /* Instructor step notes: [{ e: 0-based exercise index, s: 0-based
        step index, t: note text }]. Additive field `stepNotes` in
        tracefirst-progress-v1; absent in older saves. On-device only —
@@ -24428,6 +25018,14 @@ int main() {
         window.localStorage.removeItem(t);
         return window.localStorage;
       } catch (e) { tfStorageOk = false; return null; }
+    }
+    function tfBoxPredClean(src) {
+      var out = {};
+      if (!src || typeof src !== "object" || Array.isArray(src)) return out;
+      Object.keys(src).slice(0, 40).forEach(function (k) {
+        if (typeof src[k] === "string" && src[k].trim()) out[k] = src[k].slice(0, 40);
+      });
+      return out;
     }
     function tfCollect() {
       var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", playbackSpeed: playbackSpeed, bgTheme: bgTheme, reduceMotionPref: !!reduceMotionPref, largeTextPref: !!largeTextPref, readAloudPref: (typeof readAloudPref !== "undefined" && !!readAloudPref), primerRead: !!primerRead, boltTourSeen: (typeof boltTourSeen !== "undefined" && !!boltTourSeen), tracer: [], bolt: null, gym: [], refactor: [], bridge: [], order: [], make: [], challenges: null, authoredExercises: [], instructorExercises: [],
@@ -24455,7 +25053,8 @@ int main() {
           reSel: (typeof s.reSel === "number" ? s.reSel : -1),
           reLocked: !!s.reLocked,
           reCorrect: (s.reCorrect === true || s.reCorrect === false) ? s.reCorrect : null,
-          reAtStep: (typeof s.reAtStep === "number" ? s.reAtStep : -1)
+          reAtStep: (typeof s.reAtStep === "number" ? s.reAtStep : -1),
+          boxPred: tfBoxPredClean(s.boxPred)
         });
       });
       try {
@@ -24537,6 +25136,7 @@ int main() {
       } catch (e) {}
       // Misconception catalogue imports (additive field; absent in older saves)
       try { if (typeof catalogueImports !== "undefined" && Array.isArray(catalogueImports)) data.catalogueImports = catalogueImports.map(function (r) { return { h: r.h, n: r.n, c: r.c }; }); } catch (e) {}
+      try { if (typeof classRoster !== "undefined" && Array.isArray(classRoster)) data.classRoster = classRoster.map(function (r) { return { name: r.name, h: r.h, n: r.n, c: r.c, t: r.t }; }); } catch (e) {}
       // Instructor step notes (additive field; absent in older saves)
       try { if (typeof stepNotes !== "undefined" && Array.isArray(stepNotes)) data.stepNotes = stepNotes.map(function (r) { return { e: r.e, s: r.s, t: r.t }; }); } catch (e) {}
       return data;
@@ -24632,6 +25232,7 @@ int main() {
           s.reLocked = !!sv.reLocked && s.locked;
           s.reCorrect = (sv.reCorrect === true || sv.reCorrect === false) ? sv.reCorrect : null;
           if (typeof sv.reAtStep === "number") s.reAtStep = sv.reAtStep;
+          s.boxPred = tfBoxPredClean(sv.boxPred);
           s.jointLocked = !!sv.jointLocked;
           if (s.locked || s.modDone) state.ex[i] = s;
         });
@@ -24843,6 +25444,17 @@ int main() {
             var c = {};
             Object.keys(r.c).forEach(function (k) { if (typeof r.c[k] === "number" && r.c[k] > 0) c[k.slice(0, 120)] = Math.floor(r.c[k]); });
             return { h: r.h.slice(0, 40), n: (typeof r.n === "number" && r.n > 0) ? Math.floor(r.n) : 0, c: c };
+          });
+        }
+      } catch (e) {}
+      // Class roster (additive field; absent in older saves)
+      try {
+        if (Array.isArray(d.classRoster)) {
+          classRoster = d.classRoster.filter(function (r) { return r && typeof r.name === "string" && typeof r.h === "string" && Array.isArray(r.t); }).slice(0, 200).map(function (r) {
+            var c = {};
+            if (r.c && typeof r.c === "object" && !Array.isArray(r.c)) Object.keys(r.c).forEach(function (k) { if (typeof r.c[k] === "number" && r.c[k] > 0) c[k.slice(0, 120)] = Math.floor(r.c[k]); });
+            return { name: r.name.slice(0, 60), h: r.h.slice(0, 40), n: (typeof r.n === "number" && r.n > 0) ? Math.floor(r.n) : r.t.length, c: c,
+              t: r.t.filter(function (e) { return Array.isArray(e) && typeof e[0] === "number"; }).map(function (e) { return [e[0], e[1] === 1 ? 1 : 0, typeof e[2] === "string" ? e[2].slice(0, 120) : ""]; }) };
           });
         }
       } catch (e) {}
@@ -25632,6 +26244,127 @@ int main() {
       renderCatalogue(true);
       setInterval(function () { try { renderCatalogue(false); } catch (e) {} }, 1500);
     })();
+    /* ================= Class roster from TFP1 codes (instructor) ======
+       The instructor pastes several students' TFP1: progress codes at
+       once — one per line, the student's name before the code on the
+       same line — and TraceFirst keeps a named roster in this browser
+       (additive field `classRoster`; see the declaration near TF_KEY).
+       Each code is decoded with the same strict decoder as the
+       catalogue import, deduped by code hash, and stored with the same
+       fired-misconception derivation the catalogue uses, plus slim
+       entries for the heatmap. Roster data stays separate from
+       catalogueImports: a roster code never double-counts there. The
+       catalogue gains a per-student breakdown (#catalogue-bystudent)
+       and the heatmap below can be switched to any roster student.
+       Codes are decoded on the device and never leave it. */
+    function rosterCountsFor(obj) {
+      var counts = {}, fired = 0;
+      obj.t.forEach(function (e) {
+        if (e[1] !== 0) return;
+        var ex = EXERCISES[e[0] - 1]; if (!ex || !ex.diagnoses) return;
+        var optIdx = ex.options.indexOf(e[5]);
+        if (optIdx === -1 || !ex.diagnoses[optIdx]) return;
+        var nm = catNamedName(ex.diagnoses[optIdx].text);
+        if (!nm) return;
+        var key = nm.toLowerCase(); counts[key] = (counts[key] || 0) + 1; fired++;
+      });
+      return { counts: counts, fired: fired };
+    }
+    function rosterParseBulk(text) {
+      var added = 0, invalid = 0, dupes = 0;
+      var re = /TFP1:[A-Za-z0-9_-]+/g, m, matches = [];
+      while ((m = re.exec(text)) !== null) matches.push({ code: m[0], at: m.index });
+      matches.forEach(function (mt) {
+        var lineStart = text.lastIndexOf("\n", Math.max(0, mt.at - 1)) + 1;
+        var before = text.slice(lineStart, mt.at).trim().replace(/[\s—–\-|:,;]+$/, "").replace(/^(student|name)\s*[:\-]?\s*/i, "").trim();
+        var obj = (typeof tfpDecode === "function") ? tfpDecode(mt.code) : null;
+        if (!obj) { invalid++; return; }
+        var h = catHash(mt.code);
+        if (classRoster.some(function (r) { return r.h === h; })) { dupes++; return; }
+        var name = before || ("Student " + (classRoster.length + 1));
+        var rc = rosterCountsFor(obj);
+        classRoster.push({ name: name.slice(0, 60), h: h, n: obj.t.length, c: rc.counts, t: obj.t.map(function (e) { return [e[0], e[1], e[5]]; }) });
+        added++;
+      });
+      return { added: added, invalid: invalid, dupes: dupes, found: matches.length };
+    }
+    function renderCatByStudent(force) {
+      var box = $("catalogue-bystudent"); if (!box) return;
+      var sig = classRoster.map(function (r) { return r.h + ":" + r.name; }).join("|");
+      if (!force && sig === renderCatByStudent._sig) return;
+      renderCatByStudent._sig = sig;
+      if (!classRoster.length) { box.innerHTML = ""; return; }
+      var byKey = {};
+      catBuild().forEach(function (row) { byKey[row.name.toLowerCase()] = row.name; });
+      var html = '<div class="bystudent-block"><h4 style="font-size:.95rem;">Per-student breakdown — the roster</h4><p style="font-size:.92rem;color:var(--ink-soft);margin-top:4px;">Each roster student\u2019s own fired misconceptions, from their own progress code. A misconception not listed for a student did not fire in that student\u2019s code — it is not a claim about exercises they never attempted.</p>';
+      classRoster.forEach(function (r) {
+        var corr = r.t.filter(function (e) { return e[1] === 1; }).length;
+        var keys = Object.keys(r.c || {});
+        html += "<h5>" + esc(r.name) + " — " + r.t.length + " attempted, " + corr + " correct</h5>";
+        if (!keys.length) html += '<p style="font-size:.92rem;color:var(--ink-soft);">No named misconceptions fired in this student\u2019s code.</p>';
+        else html += "<ul>" + keys.sort().map(function (k) { return "<li><strong>" + esc(byKey[k] || k) + "</strong> — fired " + r.c[k] + " time" + (r.c[k] === 1 ? "" : "s") + "</li>"; }).join("") + "</ul>";
+      });
+      html += "</div>";
+      box.innerHTML = html;
+    }
+    function renderRoster(force) {
+      var box = $("roster-list"); if (!box) return;
+      var sig = classRoster.map(function (r) { return r.h; }).join("|");
+      if (!force && sig === renderRoster._sig) return;
+      renderRoster._sig = sig;
+      if (!classRoster.length) {
+        box.innerHTML = '<p class="cat-nodata">No roster yet. Paste students\u2019 names and codes above — one student per line — and the roster stays on this device.</p>';
+      } else {
+        box.innerHTML = classRoster.map(function (r, ri) {
+          var corr = r.t.filter(function (e) { return e[1] === 1; }).length;
+          return '<div class="roster-row"><span><span class="roster-name">' + esc(r.name) + '</span> <span class="roster-meta">' + r.t.length + ' attempted · ' + corr + ' correct</span></span><button class="btn ghost small" type="button" data-roster-remove="' + ri + '">Remove</button></div>';
+        }).join("");
+      }
+      renderCatByStudent(true);
+      if (typeof renderHeatmap === "function") renderHeatmap(true);
+    }
+    (function wireRoster() {
+      var addBtn = $("roster-add-btn"), clearBtn = $("roster-clear-btn"), listBox = $("roster-list");
+      if (addBtn) addBtn.addEventListener("click", function () {
+        var st = $("roster-status");
+        var raw = $("roster-paste") ? $("roster-paste").value : "";
+        if (!raw || raw.indexOf("TFP1:") === -1) { if (st) st.textContent = "No TFP1: code found in the box — paste one student per line, name first, then their code."; return; }
+        var res = rosterParseBulk(raw);
+        try { tfSave(); } catch (e) {}
+        renderRoster(true);
+        var parts = [];
+        if (res.added) parts.push(res.added + " student" + (res.added === 1 ? "" : "s") + " added");
+        if (res.dupes) parts.push(res.dupes + " already on the roster (skipped)");
+        if (res.invalid) parts.push(res.invalid + " code" + (res.invalid === 1 ? "" : "s") + " could not be read (skipped)");
+        if (st) st.textContent = parts.length ? parts.join("; ") + ". The roster now holds " + classRoster.length + " student" + (classRoster.length === 1 ? "" : "s") + "." : "Nothing was added.";
+        announce("Roster updated. " + classRoster.length + " students on this device.");
+        var ta = $("roster-paste"); if (ta && res.added) ta.value = "";
+      });
+      if (clearBtn) clearBtn.addEventListener("click", function () {
+        classRoster = [];
+        try { tfSave(); } catch (e) {}
+        renderRoster(true);
+        var st = $("roster-status");
+        if (st) st.textContent = "Roster cleared. The catalogue's own counts and your record are unchanged.";
+        announce("Class roster cleared.");
+      });
+      if (listBox) listBox.addEventListener("click", function (ev) {
+        var b = ev.target && ev.target.closest ? ev.target.closest("[data-roster-remove]") : null;
+        if (!b) return;
+        var ri = parseInt(b.getAttribute("data-roster-remove"), 10);
+        if (isNaN(ri) || !classRoster[ri]) return;
+        var nm = classRoster[ri].name;
+        classRoster.splice(ri, 1);
+        try { tfSave(); } catch (e) {}
+        renderRoster(true);
+        var st = $("roster-status");
+        if (st) st.textContent = nm + " removed from the roster.";
+        announce(nm + " removed from the roster.");
+      });
+      renderRoster(true);
+      setInterval(function () { try { renderRoster(false); } catch (e) {} }, 1500);
+    })();
+
     /* ================= Class misconception heatmap (this device) =================
        A per-exercise summary built ONLY from this device's saved
        prediction record (state.ex): for each exercise with a locked
@@ -25650,6 +26383,27 @@ int main() {
       });
       return rows;
     }
+    /* A roster student's rows come from their stored progress-code
+       entries: one attempt per exercise the code lists. Progress codes
+       carry no confidence marks, so cw is 0 — the note under the table
+       says plainly that this means "not recorded", not "never sure". */
+    function heatRowsStudent(r) {
+      var rows = [];
+      (r.t || []).forEach(function (e) {
+        var ex = EXERCISES[e[0] - 1]; if (!ex) return;
+        rows.push({ n: e[0], label: ex.title + " (" + ex.concept + ")", attempts: 1, correct: e[1] === 1 ? 1 : 0, cw: 0 });
+      });
+      return rows;
+    }
+    function heatSource() {
+      var sel = $("heatmap-student-select");
+      var v = sel ? parseInt(sel.value, 10) : -1;
+      return (v >= 0 && classRoster[v]) ? v : -1;
+    }
+    function heatRowsActive() {
+      var v = heatSource();
+      return v === -1 ? heatRows() : heatRowsStudent(classRoster[v]);
+    }
     function heatBand(rate) {
       if (rate <= 0) return 0;
       if (rate <= 0.25) return 1;
@@ -25659,16 +26413,36 @@ int main() {
     }
     function renderHeatmap(force) {
       var box = $("heatmap-box"); if (!box) return;
-      var rows = heatRows();
-      var sig = rows.map(function (r) { return r.n + ":" + r.correct + ":" + r.cw; }).join("|");
+      var sel = $("heatmap-student-select");
+      if (sel) {
+        var want = classRoster.map(function (r, ri) { return ri + ":" + r.name; }).join("|");
+        if (sel.getAttribute("data-roster-sig") !== want) {
+          var curSel = sel.value;
+          sel.innerHTML = '<option value="-1">This device\u2019s record</option>' + classRoster.map(function (r, ri) { return '<option value="' + ri + '">' + esc(r.name) + ' (from their progress code)</option>'; }).join("");
+          sel.setAttribute("data-roster-sig", want);
+          if (curSel && sel.querySelector('option[value="' + curSel + '"]')) sel.value = curSel;
+        }
+      }
+      var srcIdx = heatSource();
+      var rows = heatRowsActive();
+      var sig = srcIdx + "|" + rows.map(function (r) { return r.n + ":" + r.correct + ":" + r.cw; }).join("|");
       if (!force && sig === renderHeatmap._sig) return;
       renderHeatmap._sig = sig;
       var note = $("heatmap-source-note");
-      if (note) note.textContent = rows.length
-        ? "Built from this device's saved record: " + rows.length + " attempted exercise" + (rows.length === 1 ? "" : "s") + ". The record holds one locked first prediction per exercise, so each attempted exercise shows one attempt — the rates are read off that record, not estimated."
-        : "No predictions have been locked on this device yet, so the heatmap is empty — no rows, and no invented zeros.";
+      if (note) {
+        if (srcIdx >= 0) {
+          var stu = classRoster[srcIdx];
+          note.textContent = rows.length
+            ? "Built from " + stu.name + "'s progress code, held on this device: " + rows.length + " attempted exercise" + (rows.length === 1 ? "" : "s") + ". Progress codes carry no confidence marks, so the confident-wrong column reads 0 throughout — that means \u201cnot recorded in the code\u201d, not \u201cnever confident\u201d."
+            : stu.name + "'s progress code lists no exercises, so this student's heatmap is empty — no rows, and no invented zeros.";
+        } else {
+          note.textContent = rows.length
+            ? "Built from this device's saved record: " + rows.length + " attempted exercise" + (rows.length === 1 ? "" : "s") + ". The record holds one locked first prediction per exercise, so each attempted exercise shows one attempt — the rates are read off that record, not estimated."
+            : "No predictions have been locked on this device yet, so the heatmap is empty — no rows, and no invented zeros.";
+        }
+      }
       if (!rows.length) {
-        box.innerHTML = '<p class="cat-nodata">Nothing to heat-map yet. Work a tracer exercise on this device and its row will appear here with its real numbers.</p>';
+        box.innerHTML = '<p class="cat-nodata">' + (srcIdx >= 0 ? "Nothing to heat-map yet: this student's progress code lists no exercises." : "Nothing to heat-map yet. Work a tracer exercise on this device and its row will appear here with its real numbers.") + '</p>';
         return;
       }
       var html = '<div class="digest-table-wrap"><table class="digest-table heat-table"><thead><tr><th scope="col">Exercise</th><th scope="col">Attempts</th><th scope="col">Correct</th><th scope="col">Accuracy</th><th scope="col">Confident-wrong</th><th scope="col">Confident-wrong rate</th></tr></thead><tbody>';
@@ -25683,7 +26457,7 @@ int main() {
     function heatCsvText() {
       function q(v) { var s = String(v == null ? "" : v); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
       var byN = {};
-      heatRows().forEach(function (r) { byN[r.n] = r; });
+      heatRowsActive().forEach(function (r) { byN[r.n] = r; });
       var rows = [["Exercise", "Title", "Attempts", "Correct", "Accuracy", "Confident-wrong", "Confident-wrong rate"]];
       EXERCISES.forEach(function (ex, i) {
         var r = byN[i + 1];
@@ -25694,11 +26468,13 @@ int main() {
     }
     (function wireHeatmap() {
       var btn = $("heatmap-csv-btn");
+      var selEl = $("heatmap-student-select");
+      if (selEl) selEl.addEventListener("change", function () { renderHeatmap(true); });
       if (btn) btn.addEventListener("click", function () {
         var st = $("heatmap-status");
-        if (!heatRows().length) {
-          if (st) st.textContent = "Nothing to export yet — no exercise has been attempted on this device.";
-          announce("Nothing to export yet. No exercise has been attempted on this device.");
+        if (!heatRowsActive().length) {
+          if (st) st.textContent = "Nothing to export yet — the heatmap is empty for the selected record.";
+          announce("Nothing to export yet. The heatmap is empty for the selected record.");
           return;
         }
         var blob = new Blob([heatCsvText()], { type: "text/csv;charset=utf-8" });
@@ -25707,8 +26483,8 @@ int main() {
         link.href = url; link.download = "tracefirst-heatmap.csv";
         document.body.appendChild(link); link.click();
         setTimeout(function () { document.body.removeChild(link); URL.revokeObjectURL(url); }, 400);
-        if (st) st.textContent = "Exported tracefirst-heatmap.csv — attempted exercises carry this device's numbers; the rest are marked “no data”.";
-        announce("Heatmap CSV downloaded: attempted exercises carry this device's numbers; unattempted ones are marked no data.");
+        if (st) st.textContent = "Exported tracefirst-heatmap.csv — attempted exercises carry the numbers in the heatmap above; the rest are marked “no data”.";
+        announce("Heatmap CSV downloaded: attempted exercises carry the numbers shown; unattempted ones are marked no data.");
       });
       renderHeatmap(true);
       setInterval(function () { try { renderHeatmap(false); } catch (e) {} }, 1500);
