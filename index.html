@@ -189,6 +189,16 @@
       .cline .ln { width: 42px; flex: none; text-align: right; padding-right: 14px; color: var(--code-dim); user-select: none; }
       .cline.active { background: var(--code-active); box-shadow: inset 3px 0 0 var(--amber); }
       .cline.done-line { opacity: .75; }
+      /* Keyword glossary: tappable keyword tokens inside the tracer code view */
+      .cline .kw { font: inherit; background: none; border: none; padding: 0; margin: 0; color: inherit; font-weight: 700; text-decoration: underline dotted; text-underline-offset: 3px; cursor: pointer; }
+      .cline .kw:hover { color: var(--amber); }
+      .cline .kw:focus-visible { outline: 2px solid var(--amber); outline-offset: 1px; }
+      .kw-hint { margin-top: 9px; font-size: .85rem; color: var(--ink-soft); }
+      .gloss-panel { margin-top: 9px; border: 1.5px solid var(--accent); background: var(--accent-soft); border-radius: 10px; padding: 10px 13px; font-size: .93rem; display: flex; gap: 10px; align-items: baseline; }
+      .gloss-panel[hidden] { display: none; }
+      .gloss-panel .gloss-word { font-family: "IBM Plex Mono", monospace; font-weight: 700; color: var(--accent-strong); flex: none; }
+      .gloss-panel .gloss-def { flex: 1 1 auto; }
+      .gloss-panel .gloss-close { background: none; border: none; font-size: 1.15rem; line-height: 1; color: var(--accent-strong); padding: 2px 4px; flex: none; }
 
       /* Prediction */
       .predict-q { font-weight: 600; margin-top: 4px; }
@@ -1808,7 +1818,7 @@
             <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Order code, then write a line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find and fix faults.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 110</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 116</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write your own programs.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
             <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
@@ -2147,7 +2157,7 @@ for (int i = 0; i < 3; i++) {
             <select class="lecture-select" id="lecture-ex-select" aria-label="Choose an exercise to project"></select>
             <button class="btn" type="button" id="lecture-project-btn">Project this exercise</button>
           </div>
-          <p class="lecture-pick-note">Any of the 110 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
+          <p class="lecture-pick-note">Any of the 116 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
         </div>
 
         <div id="lecture-project" hidden>
@@ -2303,7 +2313,13 @@ for (int i = 0; i < 3; i++) {
               <svg class="flow-svg" id="flow-svg" aria-hidden="true" focusable="false"><path id="flow-arc" d=""></path></svg>
               <div class="flow-marker" id="flow-marker" aria-hidden="true"></div>
             </div>
-              
+            <p class="kw-hint">New to C++? Tap a bold word in the program — <strong>int</strong>, <strong>for</strong>, <strong>return</strong> and their kin — for a one-line meaning.</p>
+            <div class="gloss-panel" id="gloss-panel" hidden>
+              <span class="gloss-word" id="gloss-word"></span>
+              <span class="gloss-def" id="gloss-def"></span>
+              <button class="gloss-close" id="gloss-close" type="button" aria-label="Close keyword definition">&times;</button>
+            </div>
+
           </section>
 
           <section class="card" aria-labelledby="predict-h">
@@ -2636,6 +2652,37 @@ for (int i = 0; i < 3; i++) {
           <span class="journal-status" id="assign-csv-note" role="status"></span>
         </div>
         <div id="assign-view" hidden style="margin-top:14px;border:1.5px solid var(--accent);border-radius:12px;padding:16px;" aria-live="polite"></div>
+      </section>
+<section class="card" id="exitticket-section" style="margin-top:18px;" aria-labelledby="exitticket-h">
+        <h3 id="exitticket-h">Exit ticket — one exercise, one prediction</h3>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">An end-of-class check built from the pieces above: designate <strong>one</strong> tracer exercise as the exit ticket and share its code or link (it is an assignment code, flagged as an exit ticket). Each student opens it, works that one exercise and locks one prediction — the normal Stage 1 flow — then hands back their progress code (TFP1:, from <strong>Office-hours progress code</strong> above). Paste the returned codes here, or pull them from the class roster, and this panel builds the split: how many were correct, and how many chose each wrong answer. <strong>There is no live server:</strong> the split is built only from codes and roster entries collected on this device, exactly like the heatmap and the roster — nothing is uploaded, and nothing appears here until codes are collected here. The summary also appears at the top of the instructor digest below.</p>
+        <h4 style="margin-top:16px;font-size:.95rem;">Designate the exit-ticket exercise</h4>
+        <div style="display:grid;gap:10px;margin-top:8px;">
+          <label style="font-weight:600;font-size:.92rem;">Exercise<br><select id="exit-ex-select" class="digest-textarea" style="min-height:0;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:.95rem;margin-top:4px;" aria-label="Exit ticket exercise"></select></label>
+        </div>
+        <div class="journal-actions">
+          <button class="btn" type="button" id="exit-make-btn">Designate &amp; make its code</button>
+          <span class="journal-status" id="exit-make-status" role="status"></span>
+        </div>
+        <div id="exit-created" hidden style="margin-top:12px;">
+          <label style="font-weight:600;font-size:.92rem;" for="exit-code-out">Exit-ticket code — post this, or send the link</label>
+          <textarea class="digest-textarea" id="exit-code-out" rows="3" readonly style="margin-top:6px;"></textarea>
+          <div class="journal-actions">
+            <button class="btn ghost small" type="button" id="exit-copy-code-btn">Copy code</button>
+            <button class="btn ghost small" type="button" id="exit-copy-link-btn">Copy exit-ticket link</button>
+            <span class="journal-status" id="exit-copy-status" role="status"></span>
+          </div>
+        </div>
+        <h4 style="margin-top:18px;font-size:.95rem;">Collect results on this device</h4>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:4px;">Paste students' returned progress codes — one per line, the student's name first if you have it (Ada — TFP1:…) — or add every roster student who has attempted the ticket exercise.</p>
+        <textarea class="digest-textarea" id="exit-paste" rows="4" placeholder="Ada — TFP1:…" aria-label="Paste students' returned TFP1 progress codes" style="margin-top:6px;"></textarea>
+        <div class="journal-actions">
+          <button class="btn" type="button" id="exit-collect-btn">Add these results</button>
+          <button class="btn ghost" type="button" id="exit-roster-btn">Add roster students</button>
+          <button class="btn ghost" type="button" id="exit-clear-btn">Clear collected results</button>
+          <span class="journal-status" id="exit-collect-status" role="status"></span>
+        </div>
+        <div id="exit-split" style="margin-top:14px;" aria-live="polite"></div>
       </section>
 <section class="card" id="quiz-section" style="margin-top:18px;" aria-labelledby="quiz-h">
         <h3 id="quiz-h">Prediction quiz — five locks, then the verdicts</h3>
@@ -3260,12 +3307,12 @@ int main() {
         <div id="instructors-body" hidden>
           <div class="lecture-inst-entry">
             <h4>Lecture mode — run a tracer exercise in front of the class</h4>
-            <p>A single projected screen: pick any of the 110 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
+            <p>A single projected screen: pick any of the 116 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
             <div class="journal-actions"><button class="btn small" type="button" id="lecture-open-btn-2">Open Lecture mode</button></div>
           </div>
                     <div class="studio" id="inst-studio">
             <h4>Instructor exercise studio</h4>
-            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 110 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
+            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 116 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
             <div class="authored-field">
               <label for="inst-title">Exercise title</label>
               <input class="authored-input" type="text" id="inst-title" maxlength="80" placeholder="e.g. The average that is not an average" autocomplete="off">
@@ -10318,6 +10365,351 @@ int main() {
           correct: 0,
           explain: "With the 11 gone, the hunt's last improvement is row 1's first cell: best climbs 5 → 8 → <b>9</b>, and nothing after it — 4, then 6 — beats 9. Output: <b>9</b>."
         }
+      },
+      {
+        concept: "Structs · definition & the dot",
+        topic: "Structs",
+        title: "One point, two fields",
+        goal: "A <b>struct</b> definition describes a new kind of box: a list of named fields. <b>Point p;</b> makes one such box, and the <b>dot</b> reaches a field inside it — <b>p.x</b> is the x field of the one record p.",
+        stories: {
+          health:   "A clinic app records one patient's position on a chart as a <strong>point</strong>: an x of <strong>3</strong> and a y of <strong>4</strong>, stored as two fields of a single record. The program prints the sum of the two fields.",
+          psych:    "A study app records one response position as a <strong>point</strong>: an x of <strong>3</strong> and a y of <strong>4</strong>, stored as two fields of a single record. The program prints the sum of the two fields.",
+          business: "A sales app records one branch's position on a map grid as a <strong>point</strong>: an x of <strong>3</strong> and a y of <strong>4</strong>, stored as two fields of a single record. The program prints the sum of the two fields.",
+          arts:     "A design app records one marker's position on a canvas as a <strong>point</strong>: an x of <strong>3</strong> and a y of <strong>4</strong>, stored as two fields of a single record. The program prints the sum of the two fields."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "struct Point {",
+          "    int x;",
+          "    int y;",
+          "};",
+          "",
+          "int main() {",
+          "    Point p;",
+          "    p.x = 3;",
+          "    p.y = 4;",
+          "    cout << p.x + p.y << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["7", "34", "It does not compile", "3 4"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 3, text: "<b>Named misconception: plus glues values like text.</b> 34 is the two field values written side by side, as if + joined them into one piece of text. But x and y are ints, and + on ints is arithmetic: at the parting step the machine adds the field values it reads through the dot — 3 + 4 = <b>7</b>." },
+          2: { step: 0, text: "<b>Named misconception: the closing brace ends the definition.</b> It does not — the brace closes the field list, and the <b>semicolon after it</b> ends the definition. Look at the definition again: it ends <b>};</b>, with the semicolon present, so the program compiles and runs. Forgetting that semicolon is a real and common error — it is just not this program's error." },
+          3: { step: 3, text: "The print is <b>one expression</b>, not two: <b>p.x + p.y</b> is worked out to a single value before anything is printed, and there is only one cout. The two fields never reach the output separately — their sum does: <b>7</b>." }
+        },
+        steps: [
+          { line: 9, vars: { p: ["Point", "x: —, y: —"] }, boxes: [{ name: "p", type: "Point", fields: [["x", "—"], ["y", "—"]] }], out: "", note: "<b>Point p;</b> creates <b>one</b> box of the new kind: inside it, two labelled fields, <b>x</b> and <b>y</b>. The struct definition above main only described the shape — this line is where a record actually exists. Neither field holds a value yet." },
+          { line: 10, vars: { p: ["Point", "x: 3, y: —"] }, boxes: [{ name: "p", type: "Point", fields: [["x", "3"], ["y", "—"]] }], out: "", note: "<b>p.x = 3;</b> writes into the x field of p — read the dot as “the x field inside this record”. The y field is still unset." },
+          { line: 11, vars: { p: ["Point", "x: 3, y: 4"] }, boxes: [{ name: "p", type: "Point", fields: [["x", "3"], ["y", "4"]] }], out: "", note: "<b>p.y = 4;</b> fills the second field. The record now reads: x 3, y 4." },
+          { line: 12, vars: { p: ["Point", "x: 3, y: 4"] }, boxes: [{ name: "p", type: "Point", fields: [["x", "3"], ["y", "4"]] }], out: "7", note: "<b>The parting step.</b> The print reads both fields through the dot and adds them: 3 + 4 = <b>7</b>. One expression, one value printed." },
+          { line: 13, vars: { p: ["Point", "x: 3, y: 4"] }, boxes: [{ name: "p", type: "Point", fields: [["x", "3"], ["y", "4"]] }], out: "7", note: "The program ends. Final answer: <b>7</b>." }
+        ],
+        modify: {
+          prompt: "One change: the semicolon after the struct definition's closing brace is deleted — the definition now ends with a bare }. Everything else is untouched. What happens now?",
+          code: 'struct Point {\n    int x;\n    int y;\n<mark>}</mark>\nPoint p;\np.x = 3;\np.y = 4;\ncout << p.x + p.y << endl;',
+          options: ["It does not compile — a struct definition must end with a semicolon", "7", "34", "3 4"],
+          correct: 0,
+          explain: "A struct definition ends with <b>};</b> — the brace closes the field list and the semicolon ends the definition itself. Without it, the machine reads on into <b>Point p;</b> still waiting for the definition to finish, and refuses the program before anything runs: <b>it does not compile</b>."
+        }
+      },
+      {
+        concept: "Structs · reading & writing fields",
+        topic: "Structs",
+        title: "Fill it, then read it back",
+        goal: "Fields are written and read through the dot, one at a time: <b>b.pages = 412;</b> stores into the record, and later expressions read the same field back out. A value computed from a field lives in its <b>own</b> new box.",
+        stories: {
+          health:   "A clinic library app keeps one <strong>book record</strong>: the title <strong>Dune</strong> and <strong>412</strong> pages. It works out how many pages remain after the first 12 and prints the title and that number.",
+          psych:    "A reading app keeps one <strong>book record</strong>: the title <strong>Dune</strong> and <strong>412</strong> pages. It works out how many pages remain after the first 12 and prints the title and that number.",
+          business: "A stock app keeps one <strong>book record</strong>: the title <strong>Dune</strong> and <strong>412</strong> pages. It works out how many pages remain after the first 12 and prints the title and that number.",
+          arts:     "A bookshop app keeps one <strong>book record</strong>: the title <strong>Dune</strong> and <strong>412</strong> pages. It works out how many pages remain after the first 12 and prints the title and that number."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "struct Book {",
+          "    string title;",
+          "    int pages;",
+          "};",
+          "",
+          "int main() {",
+          "    Book b;",
+          "    b.title = \"Dune\";",
+          "    b.pages = 412;",
+          "    int left = b.pages - 12;",
+          "    cout << b.title << \" \" << left << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["Dune 400", "Dune 412", "Dune 424", "400 Dune"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 3, text: "412 is the value stored in the field — but the print never names <b>b.pages</b>. It names <b>left</b>, the separate box computed at the parting step: <b>b.pages - 12</b> = 412 - 12 = <b>400</b>. Reading a field to compute a new value does not change the field, and the print uses the computed box." },
+          2: { step: 3, text: "424 adds the 12. The expression is <b>b.pages - 12</b> — subtraction: 412 - 12 = <b>400</b>. The story agrees: pages <em>remaining</em> after the first 12 is fewer than the whole book, never more." },
+          3: { step: 4, text: "The values are right; the order is swapped. The cout names the fields in order — <b>b.title</b> first, then <b>left</b> — so the title prints first: <b>Dune 400</b>." }
+        },
+        steps: [
+          { line: 10, vars: { b: ["Book", "title: —, pages: —"] }, boxes: [{ name: "b", type: "Book", fields: [["title", "—"], ["pages", "—"]] }], out: "", note: "<b>Book b;</b> creates one record with two fields: <b>title</b> (a string) and <b>pages</b> (an int). Neither holds a value yet." },
+          { line: 11, vars: { b: ["Book", "title: \"Dune\", pages: —"] }, boxes: [{ name: "b", type: "Book", fields: [["title", "\"Dune\""], ["pages", "—"]] }], out: "", note: "<b>b.title = \"Dune\";</b> writes the text into the title field, through the dot." },
+          { line: 12, vars: { b: ["Book", "title: \"Dune\", pages: 412"] }, boxes: [{ name: "b", type: "Book", fields: [["title", "\"Dune\""], ["pages", "412"]] }], out: "", note: "<b>b.pages = 412;</b> fills the second field. The record now reads: title Dune, pages 412." },
+          { line: 13, vars: { b: ["Book", "title: \"Dune\", pages: 412"], left: ["int", "400"] }, boxes: [{ name: "b", type: "Book", fields: [["title", "\"Dune\""], ["pages", "412"]] }, { name: "left", type: "int", value: "400" }], out: "", note: "<b>The parting step.</b> <b>int left = b.pages - 12;</b> <em>reads</em> the pages field (412), subtracts 12, and stores <b>400</b> in a new, separate box, <b>left</b>. The field itself still holds 412 — reading never writes." },
+          { line: 14, vars: { b: ["Book", "title: \"Dune\", pages: 412"], left: ["int", "400"] }, boxes: [{ name: "b", type: "Book", fields: [["title", "\"Dune\""], ["pages", "412"]] }, { name: "left", type: "int", value: "400" }], out: "Dune 400", note: "The print reads <b>b.title</b>, then <b>left</b>: <b>Dune 400</b>." },
+          { line: 15, vars: { b: ["Book", "title: \"Dune\", pages: 412"], left: ["int", "400"] }, boxes: [{ name: "b", type: "Book", fields: [["title", "\"Dune\""], ["pages", "412"]] }, { name: "left", type: "int", value: "400" }], out: "Dune 400", note: "The program ends. Final answer: <b>Dune 400</b>." }
+        ],
+        modify: {
+          prompt: "The book's page count changes from 412 to 380. Everything else is untouched. What prints now?",
+          code: 'Book b;\nb.title = "Dune";\nb.pages = <mark>380</mark>;\nint left = b.pages - 12;\ncout << b.title << " " << left << endl;',
+          options: ["Dune 368", "Dune 380", "Dune 400", "Dune 392"],
+          correct: 0,
+          explain: "The computation reads the new field value: 380 - 12 = <b>368</b>, so the print is <b>Dune 368</b>. The stored field (380) is still never what prints — left is."
+        }
+      },
+      {
+        concept: "Structs · assignment copies",
+        topic: "Structs",
+        title: "The copy is its own record",
+        goal: "Assigning one struct to another — <b>b = a;</b> — <b>copies every field's value</b> into the target's own fields. From that moment the two records are independent: writing into one never shows in the other.",
+        stories: {
+          health:   "A clinic app keeps a chart <strong>point</strong> a, at x <strong>1</strong>, y <strong>2</strong>. It copies the record into a second point b, then moves b's x to <strong>9</strong>. The program prints a's x, then b's x.",
+          psych:    "A study app keeps a response <strong>point</strong> a, at x <strong>1</strong>, y <strong>2</strong>. It copies the record into a second point b, then moves b's x to <strong>9</strong>. The program prints a's x, then b's x.",
+          business: "A sales app keeps a grid <strong>point</strong> a, at x <strong>1</strong>, y <strong>2</strong>. It copies the record into a second point b, then moves b's x to <strong>9</strong>. The program prints a's x, then b's x.",
+          arts:     "A design app keeps a canvas <strong>point</strong> a, at x <strong>1</strong>, y <strong>2</strong>. It copies the record into a second point b, then moves b's x to <strong>9</strong>. The program prints a's x, then b's x."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "struct Point {",
+          "    int x;",
+          "    int y;",
+          "};",
+          "",
+          "int main() {",
+          "    Point a;",
+          "    a.x = 1;",
+          "    a.y = 2;",
+          "    Point b;",
+          "    b = a;",
+          "    b.x = 9;",
+          "    cout << a.x << \" \" << b.x << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["1 9", "9 9", "1 1", "9 1"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 5, text: "<b>Named misconception: assignment shares the fields.</b> You expected b = a to make b another name for a's fields, so the write b.x = 9 would land in a too. It does not: at the copy step, a's field <em>values</em> were copied into b's <b>own</b> fields. From then on the records are separate boxes — the parting step, <b>b.x = 9;</b>, changes b alone, and a.x is still <b>1</b>." },
+          2: { step: 5, text: "The write is real, and it is b's. <b>b.x = 9;</b> stores 9 in the x field of b's own record, and nothing later overwrites it — the print reads b.x as <b>9</b>. A 1 for b.x would need the copy to keep re-reading a's fields at every use; a copy is taken once, at the assignment, and then the records go their separate ways." },
+          3: { step: 6, text: "The values are right; the order is swapped. The cout names <b>a.x</b> first, then <b>b.x</b> — so a's untouched 1 prints before b's 9: <b>1 9</b>." }
+        },
+        steps: [
+          { line: 9, vars: { a: ["Point", "x: —, y: —"] }, boxes: [{ name: "a", type: "Point", fields: [["x", "—"], ["y", "—"]] }], out: "", note: "<b>Point a;</b> creates the first record: fields x and y, both unset." },
+          { line: 10, vars: { a: ["Point", "x: 1, y: —"] }, boxes: [{ name: "a", type: "Point", fields: [["x", "1"], ["y", "—"]] }], out: "", note: "<b>a.x = 1;</b> fills a's x field." },
+          { line: 11, vars: { a: ["Point", "x: 1, y: 2"] }, boxes: [{ name: "a", type: "Point", fields: [["x", "1"], ["y", "2"]] }], out: "", note: "<b>a.y = 2;</b> completes the record: x 1, y 2." },
+          { line: 12, vars: { a: ["Point", "x: 1, y: 2"], b: ["Point", "x: —, y: —"] }, boxes: [{ name: "a", type: "Point", fields: [["x", "1"], ["y", "2"]] }, { name: "b", type: "Point", fields: [["x", "—"], ["y", "—"]] }], out: "", note: "<b>Point b;</b> creates a <b>second, separate</b> record — its own x and y fields, both unset. Two records, four fields." },
+          { line: 13, vars: { a: ["Point", "x: 1, y: 2"], b: ["Point", "x: 1, y: 2"] }, boxes: [{ name: "a", type: "Point", fields: [["x", "1"], ["y", "2"]] }, { name: "b", type: "Point", fields: [["x", "1"], ["y", "2"]] }], out: "", note: "<b>The parting step.</b> <b>b = a;</b> copies a's field <em>values</em> into b's own fields: b now reads x 1, y 2. The values match — but they live in <b>different boxes</b>. Nothing is shared." },
+          { line: 14, vars: { a: ["Point", "x: 1, y: 2"], b: ["Point", "x: 9, y: 2"] }, boxes: [{ name: "a", type: "Point", fields: [["x", "1"], ["y", "2"]] }, { name: "b", type: "Point", fields: [["x", "9"], ["y", "2"]] }], out: "", note: "<b>b.x = 9;</b> writes into b's x field only. Watch the boxes: b's x becomes 9, and <b>a's x stays 1</b> — the copy made them independent." },
+          { line: 15, vars: { a: ["Point", "x: 1, y: 2"], b: ["Point", "x: 9, y: 2"] }, boxes: [{ name: "a", type: "Point", fields: [["x", "1"], ["y", "2"]] }, { name: "b", type: "Point", fields: [["x", "9"], ["y", "2"]] }], out: "1 9", note: "The print reads a.x, then b.x: <b>1 9</b>." },
+          { line: 16, vars: { a: ["Point", "x: 1, y: 2"], b: ["Point", "x: 9, y: 2"] }, boxes: [{ name: "a", type: "Point", fields: [["x", "1"], ["y", "2"]] }, { name: "b", type: "Point", fields: [["x", "9"], ["y", "2"]] }], out: "1 9", note: "The program ends. Final answer: <b>1 9</b> — one copy, two independent records." }
+        ],
+        modify: {
+          prompt: "One change: after the copy, the write moves to the other record — the line b.x = 9; becomes a.x = 7;. Everything else is untouched. What prints now?",
+          code: 'Point a;\na.x = 1;\na.y = 2;\nPoint b;\nb = a;\n<mark>a.x = 7;</mark>\ncout << a.x << " " << b.x << endl;',
+          options: ["7 1", "7 7", "1 7", "1 1"],
+          correct: 0,
+          explain: "The copy already happened, so the records are independent in both directions: <b>a.x = 7;</b> changes a alone, and b keeps the <b>1</b> it copied. Output: <b>7 1</b>."
+        }
+      },
+      {
+        concept: "Structs · passing by value",
+        topic: "Structs",
+        title: "Passing the whole record",
+        goal: "A struct parameter declared <b>without &amp;</b> receives a <b>copy</b> of the whole record: the function works on its own fields, and the caller's record is untouched by anything the function writes.",
+        stories: {
+          health:   "A clinic app holds a chart <strong>point</strong> p at x <strong>3</strong>, y <strong>4</strong>. A function stretches a point's x tenfold and reports x + y for the point it was handed. The program prints the function's answer, then p's own x.",
+          psych:    "A study app holds a response <strong>point</strong> p at x <strong>3</strong>, y <strong>4</strong>. A function stretches a point's x tenfold and reports x + y for the point it was handed. The program prints the function's answer, then p's own x.",
+          business: "A sales app holds a grid <strong>point</strong> p at x <strong>3</strong>, y <strong>4</strong>. A function stretches a point's x tenfold and reports x + y for the point it was handed. The program prints the function's answer, then p's own x.",
+          arts:     "A design app holds a canvas <strong>point</strong> p at x <strong>3</strong>, y <strong>4</strong>. A function stretches a point's x tenfold and reports x + y for the point it was handed. The program prints the function's answer, then p's own x."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "struct Point {",
+          "    int x;",
+          "    int y;",
+          "};",
+          "",
+          "int stretch(Point q) {",
+          "    q.x = q.x * 10;",
+          "    return q.x + q.y;",
+          "}",
+          "",
+          "int main() {",
+          "    Point p;",
+          "    p.x = 3;",
+          "    p.y = 4;",
+          "    int r = stretch(p);",
+          "    cout << r << \" \" << p.x << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["34 3", "34 30", "7 3", "7 30"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 4, text: "<b>Named misconception: a struct argument is shared, not copied.</b> You expected the function's write to q.x to land in p, because the function was handed p. But the parameter <b>Point q</b> — no &amp; — receives a <b>copy</b> of the whole record at the call. The parting step, <b>q.x = q.x * 10;</b>, rewrites the copy's field; p's x is still <b>3</b> when main prints it." },
+          2: { step: 4, text: "7 is the sum of the fields <em>as handed over</em> — 3 + 4. But inside stretch, the first line runs before the return: <b>q.x = q.x * 10;</b> makes the copy's x 30, and only then does the return add: 30 + 4 = <b>34</b>. The function's own write is part of its answer." },
+          3: { step: 4, text: "Both slips at once: the returned value misses the stretch (it is 34, not 7), and p.x is untouched by it (it is 3, not 30). The parameter is a copy: the function may do what it likes to its own fields, and none of it travels home." }
+        },
+        steps: [
+          { line: 14, vars: { p: ["Point", "x: —, y: —"] }, boxes: [{ name: "p", type: "Point", fields: [["x", "—"], ["y", "—"]] }], out: "", note: "<b>Point p;</b> creates main's record: fields x and y, both unset." },
+          { line: 15, vars: { p: ["Point", "x: 3, y: —"] }, boxes: [{ name: "p", type: "Point", fields: [["x", "3"], ["y", "—"]] }], out: "", note: "<b>p.x = 3;</b> fills the x field." },
+          { line: 16, vars: { p: ["Point", "x: 3, y: 4"] }, boxes: [{ name: "p", type: "Point", fields: [["x", "3"], ["y", "4"]] }], out: "", note: "<b>p.y = 4;</b> completes the record: x 3, y 4." },
+          { line: 17, vars: { p: ["Point", "x: 3, y: 4"], q: ["Point", "x: 3, y: 4"] }, boxes: [{ name: "p", type: "Point", fields: [["x", "3"], ["y", "4"]] }, { name: "q", type: "Point", fields: [["x", "3"], ["y", "4"]] }], out: "", note: "The call <b>stretch(p)</b> hands the record over — and the parameter <b>q</b> is a <b>fresh record</b> whose fields are <b>copies</b> of p's: x 3, y 4. Two records again, with matching values in different boxes." },
+          { line: 9, vars: { p: ["Point", "x: 3, y: 4"], q: ["Point", "x: 30, y: 4"] }, boxes: [{ name: "p", type: "Point", fields: [["x", "3"], ["y", "4"]] }, { name: "q", type: "Point", fields: [["x", "30"], ["y", "4"]] }], out: "", note: "<b>The parting step.</b> Inside stretch, <b>q.x = q.x * 10;</b> rewrites the <em>copy's</em> x: 30. Watch main's box as it happens — <b>p.x stays 3</b>. The write never leaves the function." },
+          { line: 10, vars: { p: ["Point", "x: 3, y: 4"], q: ["Point", "x: 30, y: 4"] }, boxes: [{ name: "p", type: "Point", fields: [["x", "3"], ["y", "4"]] }, { name: "q", type: "Point", fields: [["x", "30"], ["y", "4"]] }], out: "", note: "The return adds the copy's fields: 30 + 4 = <b>34</b>. That single number travels back to main; the copy itself is discarded." },
+          { line: 17, vars: { p: ["Point", "x: 3, y: 4"], r: ["int", "34"] }, boxes: [{ name: "p", type: "Point", fields: [["x", "3"], ["y", "4"]] }, { name: "r", type: "int", value: "34" }], out: "", note: "Back in main, <b>r</b> holds <b>34</b> — and p is exactly as it was before the call: x 3, y 4." },
+          { line: 18, vars: { p: ["Point", "x: 3, y: 4"], r: ["int", "34"] }, boxes: [{ name: "p", type: "Point", fields: [["x", "3"], ["y", "4"]] }, { name: "r", type: "int", value: "34" }], out: "34 3", note: "The print reads r, then p.x: <b>34 3</b>." },
+          { line: 19, vars: { p: ["Point", "x: 3, y: 4"], r: ["int", "34"] }, boxes: [{ name: "p", type: "Point", fields: [["x", "3"], ["y", "4"]] }, { name: "r", type: "int", value: "34" }], out: "34 3", note: "The program ends. Final answer: <b>34 3</b> — the function stretched its copy; the original never moved." }
+        ],
+        modify: {
+          prompt: "The point's y changes from 4 to 5 before the call. The function is untouched. What prints now?",
+          code: 'int stretch(Point q) {\n    q.x = q.x * 10;\n    return q.x + q.y;\n}\nPoint p;\np.x = 3;\np.y = <mark>5</mark>;\nint r = stretch(p);\ncout << r << " " << p.x << endl;',
+          options: ["35 3", "35 30", "8 3", "30 3"],
+          correct: 0,
+          explain: "The copy now starts from y 5: the stretch still makes its x 30, and the return adds 30 + 5 = <b>35</b>. p.x itself is still the untouched <b>3</b>. Output: <b>35 3</b>."
+        }
+      },
+      {
+        concept: "Structs · arrays of structs",
+        topic: "Structs",
+        title: "A shelf of records",
+        goal: "An <b>array of structs</b> is a row of records under one name. <b>shelf[i]</b> picks one record; the dot then picks a field inside it — <b>shelf[i].qty</b>. A loop can walk the records and work field by field.",
+        stories: {
+          health:   "A clinic store keeps a <strong>shelf</strong> of three item records: <strong>pen</strong> with quantity <strong>2</strong>, <strong>pad</strong> with <strong>5</strong>, and <strong>mug</strong> with <strong>3</strong>. The program adds up the quantity field of every record on the shelf.",
+          psych:    "A lab store keeps a <strong>shelf</strong> of three item records: <strong>pen</strong> with quantity <strong>2</strong>, <strong>pad</strong> with <strong>5</strong>, and <strong>mug</strong> with <strong>3</strong>. The program adds up the quantity field of every record on the shelf.",
+          business: "A shop keeps a <strong>shelf</strong> of three item records: <strong>pen</strong> with quantity <strong>2</strong>, <strong>pad</strong> with <strong>5</strong>, and <strong>mug</strong> with <strong>3</strong>. The program adds up the quantity field of every record on the shelf.",
+          arts:     "A studio store keeps a <strong>shelf</strong> of three item records: <strong>pen</strong> with quantity <strong>2</strong>, <strong>pad</strong> with <strong>5</strong>, and <strong>mug</strong> with <strong>3</strong>. The program adds up the quantity field of every record on the shelf."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "struct Item {",
+          "    string name;",
+          "    int qty;",
+          "};",
+          "",
+          "int main() {",
+          "    Item shelf[3];",
+          "    shelf[0].name = \"pen\";",
+          "    shelf[0].qty = 2;",
+          "    shelf[1].name = \"pad\";",
+          "    shelf[1].qty = 5;",
+          "    shelf[2].name = \"mug\";",
+          "    shelf[2].qty = 3;",
+          "    int total = 0;",
+          "    for (int i = 0; i < 3; i++) {",
+          "        total += shelf[i].qty;",
+          "    }",
+          "    cout << total << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["10", "5", "3", "2"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 9, text: "5 is <b>one record's</b> qty — shelf[1]'s. The loop does not stop at any single record: at the parting step it is on its second pass, adding shelf[1].qty to what shelf[0].qty already put in, and a third pass adds shelf[2].qty as well: 2 + 5 + 3 = <b>10</b>. A middle value is a stop on the way, not the total." },
+          2: { step: 8, text: "<b>Named misconception: the loop counts boxes, not contents.</b> 3 is how many records the shelf holds. But the loop body says <b>total += shelf[i].qty;</b> — each pass adds the <em>value</em> in that record's qty field, not 1 for the visit: 2, then 5, then 3, for a total of <b>10</b>." },
+          3: { step: 10, text: "2 is where the total stands after the <b>first</b> pass only. The loop's test is i &lt; 3, so it runs for i = 0, 1, and 2 — all three records. Stopping the count after one pass drops the 5 and the 3 the later passes add." }
+        },
+        steps: [
+          { line: 10, vars: { shelf: ["Item[3]", "3 records"] }, boxes: [{ name: "shelf[0]", type: "Item", fields: [["name", "—"], ["qty", "—"]] }, { name: "shelf[1]", type: "Item", fields: [["name", "—"], ["qty", "—"]] }, { name: "shelf[2]", type: "Item", fields: [["name", "—"], ["qty", "—"]] }], out: "", note: "<b>Item shelf[3];</b> creates <b>three records</b> in a row, at indexes 0, 1, 2. Each is a full Item — its own name and qty fields, all unset." },
+          { line: 11, vars: { shelf: ["Item[3]", "shelf[0]: pen"] }, boxes: [{ name: "shelf[0]", type: "Item", fields: [["name", "\"pen\""], ["qty", "—"]] }, { name: "shelf[1]", type: "Item", fields: [["name", "—"], ["qty", "—"]] }, { name: "shelf[2]", type: "Item", fields: [["name", "—"], ["qty", "—"]] }], out: "", note: "<b>shelf[0].name = \"pen\";</b> — the index picks the record, the dot picks the field inside it: record 0's name becomes pen." },
+          { line: 12, vars: { shelf: ["Item[3]", "shelf[0]: pen, 2"] }, boxes: [{ name: "shelf[0]", type: "Item", fields: [["name", "\"pen\""], ["qty", "2"]] }, { name: "shelf[1]", type: "Item", fields: [["name", "—"], ["qty", "—"]] }, { name: "shelf[2]", type: "Item", fields: [["name", "—"], ["qty", "—"]] }], out: "", note: "<b>shelf[0].qty = 2;</b> completes record 0: pen, 2." },
+          { line: 13, vars: { shelf: ["Item[3]", "shelf[1]: pad"] }, boxes: [{ name: "shelf[0]", type: "Item", fields: [["name", "\"pen\""], ["qty", "2"]] }, { name: "shelf[1]", type: "Item", fields: [["name", "\"pad\""], ["qty", "—"]] }, { name: "shelf[2]", type: "Item", fields: [["name", "—"], ["qty", "—"]] }], out: "", note: "Record 1's name becomes <b>pad</b> — the write lands in shelf[1] only; record 0 is untouched." },
+          { line: 14, vars: { shelf: ["Item[3]", "shelf[1]: pad, 5"] }, boxes: [{ name: "shelf[0]", type: "Item", fields: [["name", "\"pen\""], ["qty", "2"]] }, { name: "shelf[1]", type: "Item", fields: [["name", "\"pad\""], ["qty", "5"]] }, { name: "shelf[2]", type: "Item", fields: [["name", "—"], ["qty", "—"]] }], out: "", note: "Record 1's qty becomes <b>5</b>." },
+          { line: 15, vars: { shelf: ["Item[3]", "shelf[2]: mug"] }, boxes: [{ name: "shelf[0]", type: "Item", fields: [["name", "\"pen\""], ["qty", "2"]] }, { name: "shelf[1]", type: "Item", fields: [["name", "\"pad\""], ["qty", "5"]] }, { name: "shelf[2]", type: "Item", fields: [["name", "\"mug\""], ["qty", "—"]] }], out: "", note: "Record 2's name becomes <b>mug</b>." },
+          { line: 16, vars: { shelf: ["Item[3]", "shelf[2]: mug, 3"] }, boxes: [{ name: "shelf[0]", type: "Item", fields: [["name", "\"pen\""], ["qty", "2"]] }, { name: "shelf[1]", type: "Item", fields: [["name", "\"pad\""], ["qty", "5"]] }, { name: "shelf[2]", type: "Item", fields: [["name", "\"mug\""], ["qty", "3"]] }], out: "", note: "Record 2's qty becomes <b>3</b>. The shelf is full: quantities 2, 5, 3." },
+          { line: 17, vars: { shelf: ["Item[3]", "2, 5, 3"], total: ["int", "0"] }, boxes: [{ name: "shelf[0]", type: "Item", fields: [["name", "\"pen\""], ["qty", "2"]] }, { name: "shelf[1]", type: "Item", fields: [["name", "\"pad\""], ["qty", "5"]] }, { name: "shelf[2]", type: "Item", fields: [["name", "\"mug\""], ["qty", "3"]] }, { name: "total", type: "int", value: "0" }], out: "", note: "The accumulator <b>total</b> starts at 0." },
+          { line: 19, vars: { shelf: ["Item[3]", "2, 5, 3"], total: ["int", "2"], i: ["int", "0"] }, boxes: [{ name: "shelf[0]", type: "Item", fields: [["name", "\"pen\""], ["qty", "2"]] }, { name: "shelf[1]", type: "Item", fields: [["name", "\"pad\""], ["qty", "5"]] }, { name: "shelf[2]", type: "Item", fields: [["name", "\"mug\""], ["qty", "3"]] }, { name: "total", type: "int", value: "2" }], out: "", note: "i = 0: <b>shelf[0].qty</b> is 2 — the index picks record 0, the dot picks its qty. total = <b>2</b>." },
+          { line: 19, vars: { shelf: ["Item[3]", "2, 5, 3"], total: ["int", "7"], i: ["int", "1"] }, boxes: [{ name: "shelf[0]", type: "Item", fields: [["name", "\"pen\""], ["qty", "2"]] }, { name: "shelf[1]", type: "Item", fields: [["name", "\"pad\""], ["qty", "5"]] }, { name: "shelf[2]", type: "Item", fields: [["name", "\"mug\""], ["qty", "3"]] }, { name: "total", type: "int", value: "7" }], out: "", note: "<b>The parting step.</b> i = 1: <b>shelf[1].qty</b> is 5, added on top: total = 2 + 5 = <b>7</b>. The loop is walking <em>every</em> record — no single record's qty is the answer." },
+          { line: 19, vars: { shelf: ["Item[3]", "2, 5, 3"], total: ["int", "10"], i: ["int", "2"] }, boxes: [{ name: "shelf[0]", type: "Item", fields: [["name", "\"pen\""], ["qty", "2"]] }, { name: "shelf[1]", type: "Item", fields: [["name", "\"pad\""], ["qty", "5"]] }, { name: "shelf[2]", type: "Item", fields: [["name", "\"mug\""], ["qty", "3"]] }, { name: "total", type: "int", value: "10" }], out: "", note: "i = 2: <b>shelf[2].qty</b> is 3. total = 7 + 3 = <b>10</b>. Every record has now been added." },
+          { line: 21, vars: { shelf: ["Item[3]", "2, 5, 3"], total: ["int", "10"], i: ["int", "3"] }, boxes: [{ name: "shelf[0]", type: "Item", fields: [["name", "\"pen\""], ["qty", "2"]] }, { name: "shelf[1]", type: "Item", fields: [["name", "\"pad\""], ["qty", "5"]] }, { name: "shelf[2]", type: "Item", fields: [["name", "\"mug\""], ["qty", "3"]] }, { name: "total", type: "int", value: "10" }], out: "10", note: "The loop ends (i reached 3) and the program prints <b>total</b>: <b>10</b>." },
+          { line: 22, vars: { shelf: ["Item[3]", "2, 5, 3"], total: ["int", "10"], i: ["int", "3"] }, boxes: [{ name: "shelf[0]", type: "Item", fields: [["name", "\"pen\""], ["qty", "2"]] }, { name: "shelf[1]", type: "Item", fields: [["name", "\"pad\""], ["qty", "5"]] }, { name: "shelf[2]", type: "Item", fields: [["name", "\"mug\""], ["qty", "3"]] }, { name: "total", type: "int", value: "10" }], out: "10", note: "The program ends. Final answer: <b>10</b> — the qty of every record on the shelf." }
+        ],
+        modify: {
+          prompt: "The last record's quantity changes from 3 to 4 — shelf[2].qty = 4. Everything else is untouched. What prints now?",
+          code: 'Item shelf[3];\nshelf[0].name = "pen";\nshelf[0].qty = 2;\nshelf[1].name = "pad";\nshelf[1].qty = 5;\nshelf[2].name = "mug";\nshelf[2].qty = <mark>4</mark>;\nint total = 0;\nfor (int i = 0; i < 3; i++) {\n    total += shelf[i].qty;\n}\ncout << total << endl;',
+          options: ["11", "10", "12", "7"],
+          correct: 0,
+          explain: "The loop still adds every record's qty: 2 + 5 + <b>4</b> = <b>11</b>."
+        }
+      },
+      {
+        concept: "Structs · index, dot & precedence",
+        topic: "Structs",
+        title: "Index first, then the field",
+        goal: "In <b>shelf[1].qty</b> the access resolves <b>outside-in</b>: the index picks the record, then the dot picks the field inside it — and the whole access is finished before any arithmetic around it begins. The <b>*</b> in the expression still binds before the <b>+</b>.",
+        stories: {
+          health:   "A clinic store keeps two item records: a <strong>pen</strong> with quantity <strong>4</strong> and a <strong>pad</strong> with quantity <strong>6</strong>. The program prints the pen's quantity plus twice the pad's quantity.",
+          psych:    "A lab store keeps two item records: a <strong>pen</strong> with quantity <strong>4</strong> and a <strong>pad</strong> with quantity <strong>6</strong>. The program prints the pen's quantity plus twice the pad's quantity.",
+          business: "A shop keeps two item records: a <strong>pen</strong> with quantity <strong>4</strong> and a <strong>pad</strong> with quantity <strong>6</strong>. The program prints the pen's quantity plus twice the pad's quantity.",
+          arts:     "A studio store keeps two item records: a <strong>pen</strong> with quantity <strong>4</strong> and a <strong>pad</strong> with quantity <strong>6</strong>. The program prints the pen's quantity plus twice the pad's quantity."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "struct Item {",
+          "    string name;",
+          "    int qty;",
+          "};",
+          "",
+          "int main() {",
+          "    Item shelf[2];",
+          "    shelf[0].name = \"pen\";",
+          "    shelf[0].qty = 4;",
+          "    shelf[1].name = \"pad\";",
+          "    shelf[1].qty = 6;",
+          "    cout << shelf[0].qty + shelf[1].qty * 2 << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["16", "20", "14", "10"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 3, text: "<b>Named misconception: the dot and brackets wait their turn.</b> 20 adds first and doubles second — (4 + 6) * 2 — as if the accesses were loose values waiting in a queue. They are not: each access resolves <b>completely, first</b> — shelf[0].qty is 4, shelf[1].qty is 6 — and then the ordinary precedence of the expression applies: <b>* before +</b>, so 4 + 6 * 2 = 4 + 12 = <b>16</b>. There are no invisible parentheses around the addition." },
+          2: { step: 3, text: "14 doubles the wrong record: it is 6 + 4 * 2, doubling <b>shelf[0]</b>'s qty. The * 2 sits immediately after <b>shelf[1].qty</b>, so it doubles the pad's 6: 12. Then the addition: 4 + 12 = <b>16</b>. Which record an operator belongs to is decided by where it stands, and it stands with shelf[1]." },
+          3: { step: 3, text: "10 adds the two fields and stops — but the expression does not end at the +: <b>shelf[1].qty * 2</b> is one term of it. The pad's qty is doubled before anything is added: 4 + 12 = <b>16</b>." }
+        },
+        steps: [
+          { line: 10, vars: { shelf: ["Item[2]", "2 records"] }, boxes: [{ name: "shelf[0]", type: "Item", fields: [["name", "—"], ["qty", "—"]] }, { name: "shelf[1]", type: "Item", fields: [["name", "—"], ["qty", "—"]] }], out: "", note: "<b>Item shelf[2];</b> creates two records in a row, indexes 0 and 1, each with its own name and qty fields." },
+          { line: 12, vars: { shelf: ["Item[2]", "shelf[0]: pen, 4"] }, boxes: [{ name: "shelf[0]", type: "Item", fields: [["name", "\"pen\""], ["qty", "4"]] }, { name: "shelf[1]", type: "Item", fields: [["name", "—"], ["qty", "—"]] }], out: "", note: "Record 0 is filled: name <b>pen</b>, qty <b>4</b> — each write went index first (which record), then dot (which field)." },
+          { line: 14, vars: { shelf: ["Item[2]", "shelf[1]: pad, 6"] }, boxes: [{ name: "shelf[0]", type: "Item", fields: [["name", "\"pen\""], ["qty", "4"]] }, { name: "shelf[1]", type: "Item", fields: [["name", "\"pad\""], ["qty", "6"]] }], out: "", note: "Record 1 is filled: name <b>pad</b>, qty <b>6</b>." },
+          { line: 15, vars: { shelf: ["Item[2]", "pen 4, pad 6"] }, boxes: [{ name: "shelf[0]", type: "Item", fields: [["name", "\"pen\""], ["qty", "4"]] }, { name: "shelf[1]", type: "Item", fields: [["name", "\"pad\""], ["qty", "6"]] }], out: "16", note: "<b>The parting step.</b> The print resolves each access first — <b>shelf[0].qty</b> is 4, <b>shelf[1].qty</b> is 6 — then the arithmetic runs by precedence: the * lands before the +: 6 * 2 = 12, and 4 + 12 = <b>16</b>." },
+          { line: 16, vars: { shelf: ["Item[2]", "pen 4, pad 6"] }, boxes: [{ name: "shelf[0]", type: "Item", fields: [["name", "\"pen\""], ["qty", "4"]] }, { name: "shelf[1]", type: "Item", fields: [["name", "\"pad\""], ["qty", "6"]] }], out: "16", note: "The program ends. Final answer: <b>16</b>." }
+        ],
+        modify: {
+          prompt: "The multiplier changes from 2 to 3: the print becomes shelf[0].qty + shelf[1].qty * 3. Everything else is untouched. What prints now?",
+          code: 'Item shelf[2];\nshelf[0].name = "pen";\nshelf[0].qty = 4;\nshelf[1].name = "pad";\nshelf[1].qty = 6;\ncout << shelf[0].qty + shelf[1].qty * <mark>3</mark> << endl;',
+          options: ["22", "30", "16", "10"],
+          correct: 0,
+          explain: "The accesses still resolve first (4 and 6), and * still binds before +: 6 * 3 = 18, and 4 + 18 = <b>22</b>. (30 would be (4 + 6) * 3 — the left-to-right reading again.)"
+        }
       }
     ];
 
@@ -10524,6 +10916,7 @@ int main() {
       { name: "Loops & Functions", list: [3, 4, 5, 6, 23, 24, 28, 44] },
       { name: "Arrays & Strings", list: [7, 8, 25, 26, 29, 45, 46, 52] },
       { name: "Two-dimensional arrays", list: [104, 105, 106, 107, 108, 109] },
+      { name: "Structs — grouped data", list: [110, 111, 112, 113, 114, 115] },
       { name: "Vectors — size & capacity", list: [81, 82, 83, 84, 85] },
       { name: "Pointers", list: [9, 10, 11, 12, 59] },
       { name: "Const & read-only access", list: [98, 99, 100, 101, 102, 103] },
@@ -10628,6 +11021,102 @@ int main() {
       var topicEl = $("ex-topic"); if (topicEl) topicEl.textContent = ex.topic ? ("Topic: " + ex.topic) : "";
     }
 
+    /* ---------------- Keyword glossary (tracer code view) ----------------
+       Display-only: keyword tokens in the rendered program become small
+       buttons; tapping one shows a one-line plain-English definition in
+       the panel under the code box. Tokenising respects string/char
+       literals and // comments, so words inside them are never tappable.
+       The glossary touches no exercise state: opening, switching and
+       closing it leave prediction, lock and playback exactly as they were. */
+    var KW_DEFS = {
+      "int": "A whole number with no fraction — 3, -7, 0.",
+      "double": "A number that can hold a fraction — 3.5, 0.25.",
+      "char": "A single character — one letter or symbol, written in single quotes, like 'a'.",
+      "string": "A piece of text — a word, a name, a sentence — written in double quotes.",
+      "bool": "A value that is only ever true or false — a yes/no switch.",
+      "if": "Runs its block only when the test in its parentheses comes out true.",
+      "else": "The block that runs when the matching if test came out false.",
+      "switch": "Chooses one labelled path by matching a single value exactly.",
+      "case": "One labelled entry point inside a switch — a value to match.",
+      "break": "Leaves the nearest loop or switch at once.",
+      "default": "The switch path taken when no case label matches.",
+      "for": "A loop with a built-in counter: set up once, test before each pass, step after each pass.",
+      "while": "A loop that repeats while its test stays true, testing before every pass.",
+      "do": "Starts a do-while loop, which runs its body once before testing.",
+      "return": "Ends the function now and hands a value back to whoever called it.",
+      "void": "Marks a function that hands nothing back — it does its work and ends.",
+      "const": "Read-only: the value is set once, and the compiler refuses any later change to it.",
+      "struct": "A recipe for a record — one box bundling named fields of data.",
+      "class": "A recipe for an object — data bundled with the functions that work on it.",
+      "public": "Marks class members that code outside the class may use.",
+      "private": "Marks class members that only the class's own code may use.",
+      "new": "Builds a fresh box on the heap and hands back a pointer to it.",
+      "delete": "Frees a heap box that new built, when it is no longer needed.",
+      "true": "The yes value of a true/false test.",
+      "false": "The no value of a true/false test.",
+      "cout": "The output stream — the program's way of printing to the screen.",
+      "cin": "The input stream — the program's way of reading what is typed.",
+      "endl": "Ends the current line of output and starts a new one.",
+      "using": "Borrows names from a namespace so they can be written in their short form.",
+      "namespace": "A named shelf that groups names — std is the standard library's shelf.",
+      "include": "Pulls a ready-made library file into the top of the program.",
+      "main": "The function where every program starts running.",
+      "static": "On a local variable: made once, and it remembers its value between calls.",
+      "unsigned": "A whole-number type that is never negative — it starts at 0.",
+      "long": "A whole-number type with a wider range than int.",
+      "auto": "Lets the compiler work out a variable's type from the value first put in it.",
+      "this": "Inside a class, a pointer to the very object the function was called on.",
+      "virtual": "Marks a function whose answer is chosen by the object itself, not by the declared type.",
+      "try": "Starts a guarded block: if code inside it throws, a matching catch takes over.",
+      "catch": "The block that receives a value thrown inside its try block.",
+      "vector": "A list that grows as you add to it — an array whose size changes."
+    };
+    function kwHtml(line) {
+      var out = "", i = 0, n = line.length;
+      while (i < n) {
+        var c = line.charAt(i);
+        if (c === "/" && line.charAt(i + 1) === "/") { out += esc(line.slice(i)); break; }
+        if (c === '"' || c === "'") {
+          var q = c, j = i + 1;
+          while (j < n) { if (line.charAt(j) === "\\") { j += 2; continue; } if (line.charAt(j) === q) { j++; break; } j++; }
+          out += esc(line.slice(i, j)); i = j; continue;
+        }
+        if (/[A-Za-z_]/.test(c)) {
+          var j2 = i;
+          while (j2 < n && /[A-Za-z0-9_]/.test(line.charAt(j2))) j2++;
+          var w = line.slice(i, j2);
+          if (Object.prototype.hasOwnProperty.call(KW_DEFS, w)) out += '<button type="button" class="kw" data-kw="' + w + '" aria-label="Meaning of the keyword ' + w + '">' + esc(w) + "</button>";
+          else out += esc(w);
+          i = j2; continue;
+        }
+        out += esc(c); i++;
+      }
+      return out;
+    }
+    var glossKw = "";
+    function closeGloss() {
+      var panel = $("gloss-panel"); if (panel) panel.hidden = true;
+      glossKw = "";
+    }
+    function openGloss(kw) {
+      var panel = $("gloss-panel"); if (!panel || !KW_DEFS[kw]) return;
+      if (glossKw === kw && !panel.hidden) { closeGloss(); return; }
+      glossKw = kw;
+      $("gloss-word").textContent = kw;
+      $("gloss-def").textContent = KW_DEFS[kw];
+      panel.hidden = false;
+    }
+    (function wireGloss() {
+      var pre = $("code");
+      if (pre) pre.addEventListener("click", function (ev) {
+        var b = ev.target && ev.target.closest ? ev.target.closest(".kw") : null;
+        if (b) openGloss(b.getAttribute("data-kw"));
+      });
+      var closeBtn = $("gloss-close");
+      if (closeBtn) closeBtn.addEventListener("click", closeGloss);
+      document.addEventListener("keydown", function (ev) { if (ev.key === "Escape") closeGloss(); });
+    })();
+
     function renderCode(activeLine, uptoStep) {
       var ex = EXERCISES[state.current];
       var pre = $("code"); pre.innerHTML = "";
@@ -10635,7 +11124,7 @@ int main() {
       ex.code.forEach(function (line, i) {
         var div = document.createElement("div");
         div.className = "cline" + (i === activeLine ? " active" : "");
-        div.innerHTML = '<span class="ln">' + (i + 1) + "</span><span>" + (esc(line) || " ") + "</span>";
+        div.innerHTML = '<span class="ln">' + (i + 1) + "</span><span>" + (kwHtml(line) || " ") + "</span>";
         if (st && st.muddy === i + 1) {
           div.classList.add("muddy-line");
           var tag = document.createElement("span");
@@ -11665,6 +12154,15 @@ int main() {
       { key: "sortf", label: "one pass puts one value in its final place — it does not finish the sort", match: /Sorting/,
         code: ["#include <iostream>", "using namespace std;", "", "int main() {", "    int a[3] = {4, 2, 3};", "    int m = 0;", "    if (a[1] < a[m]) m = 1;", "    if (a[2] < a[m]) m = 2;", "    int t = a[0]; a[0] = a[m]; a[m] = t;", "    cout << a[0] << \" \" << a[1] << \" \" << a[2] << endl;", "    return 0;", "}"],
         correct: "2 4 3", wrong: "2 3 4" },
+      { key: "structcopy", label: "a struct copy is its own record — assignment and by-value passing copy the fields, never share them", match: /Structs · (assignment copies|passing by value)/, hand: true,
+        code: ["#include <iostream>", "using namespace std;", "", "struct Pt { int x; int y; };", "", "int main() {", "    Pt a;", "    a.x = 1;", "    a.y = 2;", "    Pt b;", "    b = a;", "    b.x = 9;", "    cout << a.x << \" \" << b.x << endl;", "    return 0;", "}"],
+        correct: "1 9", wrong: "9 9" },
+      { key: "structarr", label: "the index picks the record, then the dot picks the field inside it", match: /Structs · (arrays of structs|index, dot & precedence)/, hand: true,
+        code: ["#include <iostream>", "using namespace std;", "", "struct It { int qty; };", "", "int main() {", "    It shelf[2];", "    shelf[0].qty = 2;", "    shelf[1].qty = 5;", "    int total = 0;", "    for (int i = 0; i < 2; i++) {", "        total += shelf[i].qty;", "    }", "    cout << total << endl;", "    return 0;", "}"],
+        correct: "7", wrong: "2" },
+      { key: "structdot", label: "the dot reaches a field inside the one record", match: /Structs ·/, hand: true,
+        code: ["#include <iostream>", "using namespace std;", "", "struct Pt { int x; int y; };", "", "int main() {", "    Pt p;", "    p.x = 3;", "    p.y = 4;", "    cout << p.x + p.y << endl;", "    return 0;", "}"],
+        correct: "7", wrong: "34" },
       { key: "structf", label: "the dot reaches a field inside the one object", match: /Structured data/, hand: true,
         code: ["#include <iostream>", "using namespace std;", "", "struct Pt { int x; int y; };", "", "int main() {", "    Pt p;", "    p.x = 3;", "    p.y = 4;", "    cout << p.x + p.y << endl;", "    return 0;", "}"],
         correct: "7", wrong: "3" },
@@ -18430,7 +18928,7 @@ int main() {
         var funcs = {};
         while (peek().t !== "eof") {
           if (isId("using")) { while (peek().t !== "eof" && !isOp(";")) p++; if (isOp(";")) p++; continue; }
-          if (isId("class")) { parseClassDef(); continue; }
+          if (isId("class") || isId("struct")) { parseClassDef(); continue; }
           var f = parseFunction();
           funcs[f.name] = f;
         }
@@ -19249,6 +19747,17 @@ int main() {
           if (!fc) fail(node.line, "the class " + oc.val.className + " has no member named '" + node.name + "'.");
           return { type: fc.type, get: function () { return fc.val; }, set: function (v) { fc.val = v; fc.uninit = false; } };
         }
+        if (node.kind === "member" && node.obj.kind === "index" && node.obj.arr.kind === "var") {
+          var ac9 = lookupCell(env, node.obj.arr.name, node.line);
+          if (!ac9.isArr) fail(node.line, "'" + node.obj.arr.name + "' is not an array, so it has no slots to reach with [ ].");
+          var aidx = Math.trunc(makeNum(evalExpr(env, node.obj.idx), node.line, "as an array slot number"));
+          if (aidx < 0 || aidx >= ac9.val.length) fail(node.line, "slot " + aidx + " of '" + node.obj.arr.name + "' does not exist — the array has " + ac9.val.length + " slots, numbered 0 to " + (ac9.val.length - 1) + ".");
+          var aelem = ac9.val[aidx];
+          if (!aelem || !aelem.fields) fail(node.line, "the value before the dot here is not an object.");
+          var afc = aelem.fields[node.name];
+          if (!afc) fail(node.line, "the class " + aelem.className + " has no member named '" + node.name + "'.");
+          return { type: afc.type, get: function () { return afc.val; }, set: function (v) { afc.val = v; afc.uninit = false; } };
+        }
         if (node.kind === "index" && node.arr.kind === "index") {
           var gref3 = gridCellRef(env, node);
           if (!gref3) fail(node.line, "the machine needs a two-dimensional array slot on the left of an assignment, like grid[0][1] = 9 — the value before the brackets here is not a two-dimensional array.");
@@ -19349,6 +19858,18 @@ int main() {
             break;
           }
           case "assign": {
+            if (node.op === "=" && node.target.kind === "var") {
+              var ocell2 = lookupCell(env, node.target.name, node.line);
+              if (ocell2.isObj) {
+                var orv = evalExpr(env, node.expr);
+                if (!orv || orv.t !== "objRef") fail(node.line, "a " + ocell2.type + " variable can only be assigned another " + ocell2.type + " — whole records copy field by field, and the value here is not one.");
+                classFieldDefs(ocell2.type).forEach(function (f) {
+                  var sf = orv.cell.val.fields[f.name];
+                  ocell2.val.fields[f.name] = sf ? { type: f.type, val: sf.val, uninit: sf.uninit } : { type: f.type, val: makeDefault(f.type), uninit: !f.init };
+                });
+                return orv;
+              }
+            }
             var ref = targetRef(env, node.target);
             var rv = evalExpr(env, node.expr);
             var stored;
@@ -19430,6 +19951,11 @@ int main() {
               }
             }
             var mov = evalExpr(env, node.obj);
+            if (mov && mov.fields) {
+              var mf2 = mov.fields[node.name];
+              if (!mf2) fail(node.line, "the class " + mov.className + " has no member named '" + node.name + "'.");
+              return mf2.val;
+            }
             if (mov.t === "pair") {
               if (node.name === "first") return mov.first;
               if (node.name === "second") return mov.second;
@@ -19944,7 +20470,6 @@ int main() {
         if (MAKE_CLASS_NAMES[pr.type]) {
           if (!arg || arg.t !== "objRef") fail(line, "the parameter '" + pr.name + "' of '" + fname + "' is a " + pr.type + " object — hand it an object of that class.");
           if (pr.ref) { scope[pr.name] = { type: pr.type, isObj: true, val: arg.cell.val, viewType: pr.type }; return; }
-          if (arg.cell.val.className === pr.type) { scope[pr.name] = arg.cell; return; }
           var pfields = {};
           classFieldDefs(pr.type).forEach(function (f) {
             var sf = arg.cell.val.fields[f.name];
@@ -20080,6 +20605,42 @@ int main() {
           }
           if (ctx.classes[vt]) {
             var def = ctx.classes[vt];
+            if (d.size !== null || d.sizeExpr) {
+              var asz = d.size !== null ? d.size : Math.trunc(makeNum(evalExpr(env, d.sizeExpr), node.line, "as an array size"));
+              if (asz < 0 || asz > 10000) fail(node.line, "that array size is not sensible here — check the value used as the size of '" + d.name + "'.");
+              if (d.initList && d.initList.length > asz) fail(node.line, "the list for '" + d.name + "' has " + d.initList.length + " values, but the array only has " + asz + " slots.");
+              var aelems = [];
+              for (var ak = 0; ak < asz; ak++) {
+                var afields = {};
+                classFieldDefs(vt).forEach(function (f) { afields[f.name] = { type: f.type, val: makeDefault(f.type), uninit: !f.init }; });
+                aelems.push({ className: vt, fields: afields });
+              }
+              scope[d.name] = { type: vt, isArr: true, isObjArr: true, val: aelems };
+              if (d.initList) d.initList.forEach(function (e, ei) {
+                var tgt = aelems[ei];
+                if (Array.isArray(e)) {
+                  classFieldDefs(vt).forEach(function (f, fi) { if (fi < e.length) { tgt.fields[f.name].val = makeConv(evalExpr(env, e[fi]), f.type, node.line, d.name); tgt.fields[f.name].uninit = false; } });
+                } else {
+                  var ev = evalExpr(env, e);
+                  if (!ev || ev.t !== "objRef") fail(node.line, "each value in the list for '" + d.name + "' must be a " + vt + " or a brace list of its fields, like {1, 2}.");
+                  classFieldDefs(vt).forEach(function (f) { var sf = ev.cell.val.fields[f.name]; if (sf) { tgt.fields[f.name].val = sf.val; tgt.fields[f.name].uninit = sf.uninit; } });
+                }
+              });
+              return;
+            }
+            if (d.initList) {
+              var bfields = {};
+              classFieldDefs(vt).forEach(function (f) { bfields[f.name] = { type: f.type, val: makeDefault(f.type), uninit: !f.init }; });
+              scope[d.name] = { type: vt, isObj: true, val: { className: vt, fields: bfields } };
+              classFieldDefs(vt).forEach(function (f, fi) {
+                if (fi < d.initList.length) {
+                  var bv = evalExpr(env, d.initList[fi]);
+                  bfields[f.name].val = makeConv(bv, f.type, node.line, d.name);
+                  bfields[f.name].uninit = false;
+                } else if (f.init) { bfields[f.name].val = makeConv(evalExpr(env, f.init), f.type, node.line, f.name); bfields[f.name].uninit = false; }
+              });
+              return;
+            }
             if (d.ptr) fail(node.line, "pointers to objects are beyond this machine's subset — use a reference (with &) to look at an object through a base class here.");
             if (d.init && !d.initArgs) {
               var srcV = (d.init.kind === "var") ? (function () { var sc = lookupCell(env, d.init.name, d.init.line); return sc.isObj ? { t: "objRef", cell: sc } : evalExpr(env, d.init); })() : evalExpr(env, d.init);
@@ -21361,7 +21922,7 @@ int main() {
        by that hydration and dropped by the next tfCollect save; missing
        optional sections default the same way an older save's would). */
     var TF_PROGRESS_ARRAY_KEYS = ["tracer", "gym", "refactor", "bridge", "order", "make", "authoredExercises", "instructorExercises", "assignments"];
-    var TF_PROGRESS_KNOWN_KEYS = ["v", "bitsFormat", "playbackSpeed", "bgTheme", "reduceMotionPref", "largeTextPref", "readAloudPref", "primerRead", "boltTourSeen", "tracer", "bolt", "gym", "refactor", "bridge", "order", "make", "challenges", "authoredExercises", "instructorExercises", "assignments", "quiz", "gap", "lastTracer", "testOut", "variants", "diagPair", "classRoster"];
+    var TF_PROGRESS_KNOWN_KEYS = ["v", "bitsFormat", "playbackSpeed", "bgTheme", "reduceMotionPref", "largeTextPref", "readAloudPref", "primerRead", "boltTourSeen", "tracer", "bolt", "gym", "refactor", "bridge", "order", "make", "challenges", "authoredExercises", "instructorExercises", "assignments", "quiz", "gap", "lastTracer", "testOut", "variants", "diagPair", "classRoster", "exitTicket"];
     function tfIsPlainObj(x) { return !!x && typeof x === "object" && !Array.isArray(x); }
     function tfCloneJson(x) { return JSON.parse(JSON.stringify(x)); }
     function tfValidateProgressFile(d) {
@@ -21862,6 +22423,7 @@ int main() {
         html += '</div>';
       }
       if (!wrongNums.length) html += '</div>';
+      if (typeof exitDigestHtml === "function") { var xh = exitDigestHtml(); if (xh) html = xh + html; }
       resultBox.innerHTML = html;
       // Store plain text for copy + wire button
       resultBox._cardsText = cardsText;
@@ -21989,6 +22551,7 @@ int main() {
         '<p style="font-size:.93rem;color:var(--ink-soft);margin-top:4px;">Due: ' + (a.due ? esc(a.due) : "no due date") +
         (pastDue ? ' <strong style="color:var(--rust);">· past due</strong>' : "") +
         " · " + doneN + " of " + a.exs.length + " attempted in this browser's record.</p>" +
+        (a.title.indexOf("Exit ticket") === 0 ? '<p style="font-size:.93rem;margin-top:6px;border:1.5px dashed var(--accent);border-radius:10px;padding:10px 12px;">This is an <strong>exit ticket</strong>: work the one exercise below, lock your prediction, then hand your instructor your progress code (TFP1:) from <strong>Office-hours progress code</strong> in these tools. That code is how your prediction gets back — nothing is sent anywhere by the page itself.</p>' : "") +
         '<ul style="list-style:none;padding:0;margin:12px 0 0;display:grid;gap:8px;">' + rowsHtml + "</ul>" +
         '<div class="journal-actions"><button class="btn" type="button" id="assign-view-csv">Export assignment CSV</button>' +
         '<span style="font-size:.88rem;color:var(--ink-soft);">Built from this browser\'s saved record — it does not sync anywhere.</span></div>';
@@ -22125,6 +22688,196 @@ int main() {
       }
     })();
 
+
+    /* ---------------- Exit ticket (TFA1: designation + TFP1: returns) ----------------
+       Server-free, like everything in these tools. The instructor
+       designates ONE existing tracer exercise; designation creates a
+       normal assignment whose title is flagged "Exit ticket — …", so
+       the share code/link is the assignment mechanism (TFA1: / #assign-)
+       and opening it presents exactly that one exercise. The student
+       works it through the normal Stage 1 prediction flow and hands
+       back their TFP1: progress code — the existing code-based return
+       flow. The instructor pastes returned codes here (or pulls roster
+       students), and the split is aggregated ON THIS DEVICE ONLY from
+       those codes: there is no live collection, and the panel says so.
+       State persists additively as `exitTicket` in
+       tracefirst-progress-v1: { ex: 0-based index, entries: [{n, p, c,
+       h}] } — n a display name, p the predicted option's text, c 1/0
+       correct, h the source code's hash (dedupe). The summary also
+       lands at the top of the instructor digest (see exitDigestHtml,
+       called by the digest builder). */
+    var exitTicket = { ex: -1, entries: [] };
+    function exitEntryFor(obj) {
+      if (!obj || exitTicket.ex < 0) return null;
+      for (var i = 0; i < obj.t.length; i++) {
+        if (obj.t[i][0] === exitTicket.ex + 1) return { p: obj.t[i][5] || "", c: obj.t[i][1] === 1 ? 1 : 0 };
+      }
+      return null;
+    }
+    function exitUpsert(name, h, entry) {
+      for (var i = 0; i < exitTicket.entries.length; i++) {
+        if (exitTicket.entries[i].h === h) { exitTicket.entries[i] = { n: name, p: entry.p, c: entry.c, h: h }; return false; }
+      }
+      exitTicket.entries.push({ n: name, p: entry.p, c: entry.c, h: h });
+      return true;
+    }
+    function exitSplitData() {
+      if (exitTicket.ex < 0 || !EXERCISES[exitTicket.ex]) return null;
+      var ex = EXERCISES[exitTicket.ex];
+      var counts = ex.options.map(function () { return 0; });
+      var other = 0, correct = 0;
+      exitTicket.entries.forEach(function (r) {
+        var oi = ex.options.indexOf(r.p);
+        if (oi === -1) other++; else counts[oi]++;
+        if (r.c === 1) correct++;
+      });
+      return { ex: ex, counts: counts, other: other, correct: correct, total: exitTicket.entries.length };
+    }
+    function exitSummaryText() {
+      var d = exitSplitData();
+      if (!d || !d.total) return "";
+      return "Exit ticket — Exercise " + (exitTicket.ex + 1) + " (" + EXERCISES[exitTicket.ex].title + "): " +
+        d.correct + " of " + d.total + " collected predictions correct on this device.";
+    }
+    function exitDigestHtml() {
+      var d = exitSplitData();
+      if (!d || !d.total) return "";
+      var ex = d.ex;
+      var rows = ex.options.map(function (opt, oi) {
+        return "<li><strong>" + esc(opt) + "</strong> — " + d.counts[oi] + (oi === ex.correct ? " (the correct answer)" : "") + "</li>";
+      }).join("");
+      if (d.other) rows += "<li>A prediction not in the current option list — " + d.other + "</li>";
+      return '<div class="digest-why"><h4>Exit ticket — Exercise ' + (exitTicket.ex + 1) + ": " + esc(ex.title) + '</h4>' +
+        '<p class="digest-summary">' + d.correct + " of " + d.total + " collected predictions correct. Split of predictions collected on this device:</p>" +
+        '<ul class="digest-why-list">' + rows + "</ul></div>";
+    }
+    function renderExitPanel() {
+      var box = $("exit-split"); if (!box) return;
+      var sel = $("exit-ex-select");
+      if (sel && !sel.options.length) {
+        sel.innerHTML = EXERCISES.map(function (ex, i) { return '<option value="' + i + '">Exercise ' + (i + 1) + " — " + esc(ex.title) + " · " + esc(ex.concept) + "</option>"; }).join("");
+      }
+      if (sel && exitTicket.ex >= 0) sel.value = String(exitTicket.ex);
+      if (exitTicket.ex < 0 || !EXERCISES[exitTicket.ex]) {
+        box.innerHTML = '<p style="font-size:.93rem;color:var(--ink-soft);">No exit ticket designated yet on this device. Designate an exercise above to make its shareable code.</p>';
+        return;
+      }
+      var ex = EXERCISES[exitTicket.ex];
+      var head = '<h4 style="font-size:.95rem;">Exit ticket: Exercise ' + (exitTicket.ex + 1) + " — " + esc(ex.title) + '</h4>';
+      if (!exitTicket.entries.length) {
+        box.innerHTML = head + '<p style="font-size:.93rem;color:var(--ink-soft);margin-top:6px;">No results collected yet on this device. The split is built only from progress codes (TFP1:) pasted above, or from roster students added above — there is no live server, so nothing appears here until codes are collected here.</p>';
+        return;
+      }
+      var d = exitSplitData();
+      var rows = ex.options.map(function (opt, oi) {
+        var pct = d.total ? Math.round((d.counts[oi] / d.total) * 100) : 0;
+        return '<li style="display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline;justify-content:space-between;border:1px solid var(--line);background:var(--panel-2);border-radius:10px;padding:8px 12px;">' +
+          '<span><strong>' + esc(opt) + "</strong>" + (oi === ex.correct ? ' <span style="color:var(--accent-strong);font-weight:700;">· correct answer</span>' : "") + "</span>" +
+          '<span style="font-family:\'IBM Plex Mono\',monospace;font-size:.88rem;">' + d.counts[oi] + " · " + pct + "%</span></li>";
+      }).join("");
+      if (d.other) rows += '<li style="border:1px dashed var(--line);border-radius:10px;padding:8px 12px;">A prediction not in the current option list — ' + d.other + "</li>";
+      var students = exitTicket.entries.map(function (r) {
+        return '<li><strong>' + esc(r.n) + "</strong> — predicted &ldquo;" + esc(r.p) + "&rdquo; · " + (r.c === 1 ? '<span style="color:var(--accent-strong);font-weight:700;">correct</span>' : '<span style="color:var(--rust);font-weight:700;">not correct</span>') + "</li>";
+      }).join("");
+      box.innerHTML = head +
+        '<p style="font-size:.95rem;margin-top:6px;"><strong>' + d.correct + " of " + d.total + "</strong> collected predictions correct (" + (d.total ? Math.round((d.correct / d.total) * 100) : 0) + '%), from codes and roster entries on this device only.</p>' +
+        '<ul style="list-style:none;padding:0;margin:10px 0 0;display:grid;gap:6px;">' + rows + "</ul>" +
+        '<h5 style="font-size:.92rem;margin-top:14px;">Per student</h5>' +
+        '<ul style="margin:6px 0 0;padding-left:20px;font-size:.93rem;display:grid;gap:3px;">' + students + "</ul>" +
+        '<p style="font-size:.88rem;color:var(--ink-soft);margin-top:10px;">This summary also appears at the top of the instructor digest below when a digest is built.</p>';
+    }
+    (function initExitTicket() {
+      renderExitPanel();
+      var makeBtn = $("exit-make-btn");
+      if (makeBtn) makeBtn.addEventListener("click", function () {
+        var sel = $("exit-ex-select");
+        var idx = sel ? parseInt(sel.value, 10) : -1;
+        var status = $("exit-make-status");
+        if (isNaN(idx) || !EXERCISES[idx]) { if (status) status.textContent = "Choose an exercise first."; return; }
+        if (exitTicket.ex !== idx) exitTicket.entries = [];
+        exitTicket.ex = idx;
+        var a = { title: ("Exit ticket — Exercise " + (idx + 1) + ": " + EXERCISES[idx].title).slice(0, 120), due: "", exs: [idx] };
+        assignments.push(a);
+        var code = assignEncode(a);
+        var out = $("exit-code-out"); if (out) out.value = code;
+        var created = $("exit-created"); if (created) created.hidden = false;
+        if (typeof renderAssignSaved === "function") renderAssignSaved();
+        if (typeof tfSave === "function") tfSave();
+        renderExitPanel();
+        if (status) status.textContent = "Designated Exercise " + (idx + 1) + " — its exit-ticket code is below, and it is also saved in the Assignments list above.";
+        announce("Exit ticket designated: Exercise " + (idx + 1) + ".");
+      });
+      function exitCopy(text, okMsg) {
+        var status = $("exit-copy-status");
+        function done(ok) { if (status) status.textContent = ok ? okMsg : "Copy failed — select the text and copy it manually."; }
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+        else done(false);
+      }
+      var cc = $("exit-copy-code-btn");
+      if (cc) cc.addEventListener("click", function () { var out = $("exit-code-out"); if (out && out.value) exitCopy(out.value, "Exit-ticket code copied."); });
+      var cl = $("exit-copy-link-btn");
+      if (cl) cl.addEventListener("click", function () { var out = $("exit-code-out"); if (out && out.value) exitCopy(location.href.split("#")[0] + "#assign-" + out.value, "Exit-ticket link copied."); });
+      var collectBtn = $("exit-collect-btn");
+      if (collectBtn) collectBtn.addEventListener("click", function () {
+        var status = $("exit-collect-status");
+        if (exitTicket.ex < 0) { if (status) status.textContent = "Designate the exit-ticket exercise first — results are read against it."; return; }
+        var text = ($("exit-paste") ? $("exit-paste").value : "") || "";
+        var re = /TFP1:[A-Za-z0-9_-]+/g, m, matches = [];
+        while ((m = re.exec(text)) !== null) matches.push({ code: m[0], at: m.index });
+        if (!matches.length) { if (status) status.textContent = "No TFP1: codes found in the box — paste the codes students handed back, one per line."; return; }
+        var added = 0, updated = 0, noPred = 0, invalid = 0;
+        matches.forEach(function (mt) {
+          var obj = (typeof tfpDecode === "function") ? tfpDecode(mt.code) : null;
+          if (!obj) { invalid++; return; }
+          var entry = exitEntryFor(obj);
+          if (!entry) { noPred++; return; }
+          var h = (typeof catHash === "function") ? catHash(mt.code) : mt.code;
+          var lineStart = text.lastIndexOf("\n", Math.max(0, mt.at - 1)) + 1;
+          var before = text.slice(lineStart, mt.at).trim().replace(/[\s—–\-|:,;]+$/, "").replace(/^(student|name)\s*[:\-]?\s*/i, "").trim();
+          var name = before;
+          if (!name && typeof classRoster !== "undefined") {
+            for (var ri = 0; ri < classRoster.length; ri++) if (classRoster[ri].h === h) { name = classRoster[ri].name; break; }
+          }
+          if (!name) name = "Student " + (exitTicket.entries.length + 1);
+          if (exitUpsert(name.slice(0, 60), h, entry)) added++; else updated++;
+        });
+        if (typeof tfSave === "function") tfSave();
+        renderExitPanel();
+        var parts = [];
+        if (added) parts.push(added + " result" + (added === 1 ? "" : "s") + " added");
+        if (updated) parts.push(updated + " updated");
+        if (noPred) parts.push(noPred + " code" + (noPred === 1 ? "" : "s") + " had no prediction for Exercise " + (exitTicket.ex + 1));
+        if (invalid) parts.push(invalid + " could not be read");
+        if (status) status.textContent = parts.length ? parts.join("; ") + ". Collected on this device: " + exitTicket.entries.length + "." : "Nothing was added.";
+        announce("Exit-ticket results updated: " + exitTicket.entries.length + " collected on this device.");
+      });
+      var rosterBtn = $("exit-roster-btn");
+      if (rosterBtn) rosterBtn.addEventListener("click", function () {
+        var status = $("exit-collect-status");
+        if (exitTicket.ex < 0) { if (status) status.textContent = "Designate the exit-ticket exercise first — results are read against it."; return; }
+        if (typeof classRoster === "undefined" || !classRoster.length) { if (status) status.textContent = "The roster on this device is empty — build it in the misconception catalogue above, or paste codes instead."; return; }
+        var added = 0, updated = 0, skipped = 0;
+        classRoster.forEach(function (r) {
+          var found = null;
+          (r.t || []).forEach(function (e) { if (e[0] === exitTicket.ex + 1) found = { p: e[2] || "", c: e[1] === 1 ? 1 : 0 }; });
+          if (!found) { skipped++; return; }
+          if (exitUpsert(r.name, r.h, found)) added++; else updated++;
+        });
+        if (typeof tfSave === "function") tfSave();
+        renderExitPanel();
+        if (status) status.textContent = "Roster: " + added + " added, " + updated + " already collected, " + skipped + " had not attempted Exercise " + (exitTicket.ex + 1) + ". Collected on this device: " + exitTicket.entries.length + ".";
+        announce("Exit-ticket split updated from the roster.");
+      });
+      var clearBtn = $("exit-clear-btn");
+      if (clearBtn) clearBtn.addEventListener("click", function () {
+        exitTicket.entries = [];
+        if (typeof tfSave === "function") tfSave();
+        renderExitPanel();
+        var status = $("exit-collect-status");
+        if (status) status.textContent = "Collected results cleared. The designation and its code are unchanged.";
+        announce("Exit-ticket results cleared.");
+      });
+    })();
 
     /* ---------------- Prediction quiz: five locks, then the verdicts ----------------
        A low-stakes, test-conditions run over five EXISTING tracer exercises
@@ -23046,6 +23799,15 @@ int main() {
           { q: "Which pointer may be re-aimed at a different box?", options: ["const int* p — its pointee is read-only, the pointer is not", "int* const p — its pointee is writable, so the aim must be free too", "Both may — const never locks an aim"], correct: 0, why: "Placement decides: in const int* the const belongs to the int; in int* const the pointer itself is const, and re-aiming it is an assignment to a const box." }
         ],
         drag: { q: "Complete the declaration so view may read score but never write it:", pre: "", slot: "", post: " int& view = score;", tokens: ["const", "static", "virtual"], correct: "const", why: "const before the type makes the reference read-only: view becomes a window onto score, not a second pen." } },
+      "Structs — grouped data": { title: "Briefing: structs — one box, named fields",
+        body: "A <b>struct</b> definition describes a new kind of box: a fixed list of named <b>fields</b>, each with its own type. The definition itself makes nothing — <code>Point p;</code> is what creates one record, with every field inside the single box p. The definition ends with <b>};</b> — the brace closes the field list, the semicolon ends the definition, and forgetting it is a compile error. Fields are reached with the <b>dot</b>: <code>p.x</code> is the x field inside p, written and read like any other box. Structs <b>copy by value</b>: <code>b = a;</code> copies every field's value into b's own fields, and a parameter declared without <code>&amp;</code> receives a copy of the whole record — in both cases the two records are independent from that moment, and a write to one never shows in the other. An <b>array of structs</b> is a row of records: <code>shelf[i]</code> picks one record, and the dot then picks a field inside it — <code>shelf[i].qty</code>, index first, then field.",
+        example: ["struct Point { int x; int y; };", "Point p;", "p.x = 3;", "p.y = 4;", "cout << p.x + p.y;"], note: "Prints <b>7</b>: the dot reads each field out of the one record, and the + adds the two values it finds.",
+        checks: [
+          { q: "After struct Point { int x; int y; }; and Point p; — what exists?", options: ["One box, p, with two fields inside it: x and y", "Two separate variables named x and y", "Nothing, until a field is first written"], correct: 0, why: "The definition only describes the shape. Point p; creates one record whose fields live together inside it, reached as p.x and p.y." },
+          { q: "Point a holds x 1. Then: Point b; b = a; b.x = 9; — what is a.x now?", options: ["1 — the assignment copied the values; the records are independent", "9 — b and a share their fields", "0 — the copy emptied a"], correct: 0, why: "b = a copies each field's value into b's own fields. After that moment the records are separate boxes: writing b.x changes b alone." },
+          { q: "A function is declared int total(Item it) — no &. Inside, it changes it.qty. What happens to the caller's record?", options: ["Nothing — the parameter is a copy of the whole record", "Its qty changes with the copy's", "The program does not compile"], correct: 0, why: "Without &, a struct parameter receives a copy of the whole record. The function may rewrite its own fields freely; none of it travels back." }
+        ],
+        drag: { q: "Complete the access so it reads the qty field of the record at index 1:", pre: "shelf[1]", slot: "", post: " qty", tokens: [".", "->", "::"], correct: ".", why: "The dot reaches a field inside a record: index first to pick the record — shelf[1] — then the dot for the field: shelf[1].qty." } },
       "Two-dimensional arrays": { title: "Briefing: two-dimensional arrays — rows, then columns",
         body: "A two-dimensional array is a <b>grid</b>: one name, and every cell reached by <b>two indexes</b> — <code>grid[row][column]</code>. The <b>first index chooses the row</b>, the second the cell inside it, and both count from <b>0</b>, so grid[1][2] is the <em>second</em> row's <em>third</em> cell. Which index a loop moves decides the walk: hold the row still and run the column to cross <b>one row</b>; hold the column still and run the row to go <b>down one column</b>; nest the two loops and the inner loop runs <b>in full for every row</b>, visiting every cell. The edges are where cells get lost: a row of three columns has indexes 0, 1, 2, so <code>c &lt; 3</code> and <code>c &lt;= 2</code> walk it all, while <code>c &lt; 2</code> quietly drops the last column. Writing works cell by cell — <code>grid[0][1] = 9;</code> overwrites that one cell and no other.",
         example: ["int grid[2][3] = {{2, 4, 6}, {1, 3, 5}};", "cout << grid[1][0] << \" \" << grid[0][2];"], note: "Prints <b>1 6</b>: grid[1][0] is the second row's first cell, and grid[0][2] is the first row's last cell — row first, then column, every time.",
@@ -25137,6 +25899,7 @@ int main() {
       // Misconception catalogue imports (additive field; absent in older saves)
       try { if (typeof catalogueImports !== "undefined" && Array.isArray(catalogueImports)) data.catalogueImports = catalogueImports.map(function (r) { return { h: r.h, n: r.n, c: r.c }; }); } catch (e) {}
       try { if (typeof classRoster !== "undefined" && Array.isArray(classRoster)) data.classRoster = classRoster.map(function (r) { return { name: r.name, h: r.h, n: r.n, c: r.c, t: r.t }; }); } catch (e) {}
+      try { if (typeof exitTicket !== "undefined" && exitTicket) data.exitTicket = { ex: exitTicket.ex, entries: exitTicket.entries.map(function (r) { return { n: r.n, p: r.p, c: r.c, h: r.h }; }) }; } catch (e) {}
       // Instructor step notes (additive field; absent in older saves)
       try { if (typeof stepNotes !== "undefined" && Array.isArray(stepNotes)) data.stepNotes = stepNotes.map(function (r) { return { e: r.e, s: r.s, t: r.t }; }); } catch (e) {}
       return data;
@@ -25456,6 +26219,18 @@ int main() {
             return { name: r.name.slice(0, 60), h: r.h.slice(0, 40), n: (typeof r.n === "number" && r.n > 0) ? Math.floor(r.n) : r.t.length, c: c,
               t: r.t.filter(function (e) { return Array.isArray(e) && typeof e[0] === "number"; }).map(function (e) { return [e[0], e[1] === 1 ? 1 : 0, typeof e[2] === "string" ? e[2].slice(0, 120) : ""]; }) };
           });
+        }
+      } catch (e) {}
+      // Exit ticket (additive field; absent in older saves)
+      try {
+        if (d.exitTicket && typeof exitTicket !== "undefined") {
+          if (typeof d.exitTicket.ex === "number" && d.exitTicket.ex >= 0 && d.exitTicket.ex < EXERCISES.length) exitTicket.ex = Math.floor(d.exitTicket.ex);
+          if (Array.isArray(d.exitTicket.entries)) {
+            exitTicket.entries = d.exitTicket.entries.filter(function (r) { return r && typeof r.p === "string" && typeof r.h === "string"; }).slice(0, 500).map(function (r) {
+              return { n: (typeof r.n === "string" && r.n) ? r.n.slice(0, 60) : "Student", p: r.p.slice(0, 120), c: r.c === 1 ? 1 : 0, h: r.h.slice(0, 40) };
+            });
+          }
+          if (typeof renderExitPanel === "function") renderExitPanel();
         }
       } catch (e) {}
       // Instructor step notes (additive field; absent in older saves)
@@ -27587,7 +28362,7 @@ int main() {
       try { reducedMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); } catch (e) {}
 
       function currentMode() {
-        var order = ["bolt", "tracer", "gym", "refactor", "translator", "challenges", "bridge", "make"];
+        var order = ["bolt", "tracer", "gym", "refactor", "translator", "challenges", "bridge", "order", "make"];
         for (var i = 0; i < order.length; i++) {
           var b = byId("mode-" + order[i]);
           if (b && b.getAttribute("aria-selected") === "true") return order[i];
