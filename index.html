@@ -583,6 +583,13 @@
       .trans-head .ttitle { font-weight: 700; font-size: 1rem; line-height: 1.25; }
       .trans-stage { display: inline-block; font-family: "IBM Plex Mono", monospace; font-size: .66rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border-radius: 999px; padding: 2px 8px; margin-left: 8px; vertical-align: 2px; background: var(--panel-2); border: 1px solid var(--line); color: var(--ink-soft); white-space: nowrap; }
       .trans-stage.link { background: var(--amber-soft); border-color: var(--amber); color: var(--amber); }
+      .trans-stage.warning { background: var(--amber-soft); border-color: var(--amber); color: var(--amber); }
+      .trap-note { margin-top: 10px; border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; background: var(--panel-2); font-size: .92rem; text-align: left; }
+      .trap-note summary { cursor: pointer; font-weight: 700; }
+      .trap-note p { margin-top: 6px; }
+      .trap-note-cell { margin-top: 6px; font-size: .9rem; font-weight: 400; }
+      .trap-note-cell summary { cursor: pointer; font-weight: 700; color: var(--accent-strong); }
+      .trap-note-cell p { margin-top: 4px; }
       .trans-head .traw-short { font-family: "IBM Plex Mono", monospace; font-size: .82rem; color: var(--rust); margin-top: 3px; word-break: break-word; }
       .trans-head .tchev { margin-left: auto; flex: none; color: var(--ink-soft); font-size: 1.1rem; line-height: 1; padding-top: 2px; }
       .trans-body { border-top: 1px dashed var(--line); padding: 16px; display: none; }
@@ -2636,6 +2643,15 @@ for (int i = 0; i < 3; i++) {
             <span class="journal-status" id="assign-copy-status" role="status"></span>
           </div>
         </div>
+        <h4 style="margin-top:18px;font-size:.95rem;">Create by trap — one misconception family</h4>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:4px;">Pick a misconception family from the catalogue (the same families listed in the <strong>Misconception catalogue</strong> below, derived from the tracer's own diagnoses) and this collects <strong>every tracer exercise where that trap can fire</strong> into a normal assignment — same TFA1: code, same #assign- link, same saved list — titled automatically <em>Trap — &lt;family&gt;</em>, using the due date from the form above. The count beside each family is honest: it is exactly how many exercises that family collects, and some families fire on only one or two exercises.</p>
+        <div style="display:grid;gap:10px;margin-top:8px;">
+          <label style="font-weight:600;font-size:.92rem;">Misconception family<br><select id="assign-trap-select" class="digest-textarea" style="min-height:0;padding:10px 12px;font-size:.95rem;margin-top:4px;" aria-label="Misconception family for a trap assignment"></select></label>
+        </div>
+        <div class="journal-actions">
+          <button class="btn" type="button" id="assign-trap-btn">Create trap assignment &amp; make its code</button>
+          <span class="journal-status" id="assign-trap-status" role="status"></span>
+        </div>
         <h4 style="margin-top:18px;font-size:.95rem;">Assignments saved in this browser</h4>
         <div id="assign-saved-list" style="margin-top:8px;"></div>
         <h4 style="margin-top:18px;font-size:.95rem;">Open an assignment</h4>
@@ -2718,7 +2734,7 @@ for (int i = 0; i < 3; i++) {
       </section>
 <section class="card" id="catalogue-section" style="margin-top:18px;" aria-labelledby="catalogue-h">
         <h3 id="catalogue-h">Misconception catalogue — every named trap in the tracer</h3>
-        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">Every misconception the tracer's diagnoses name, in one place: what it is, and the exercises where it can fire. The list is built from the diagnoses themselves, so it covers the whole exercise set. Where data is loaded on this device, the catalogue also shows how often each misconception has actually fired in that data — and says whose data the counts come from.</p>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">Every misconception the tracer's diagnoses name, in one place: what it is, and the exercises where it can fire. The list is built from the diagnoses themselves, so it covers the whole exercise set. Each family also carries a one-paragraph <strong>concept note</strong> in plain language — open “Concept note” beside its name. The same note is linked from the verdict a student receives when that trap fires, and the picker above (Create by trap) can turn any family into an assignment. Where data is loaded on this device, the catalogue also shows how often each misconception has actually fired in that data — and says whose data the counts come from.</p>
         <p style="font-size:.92rem;color:var(--ink-soft);margin-top:8px;" id="catalogue-source-note" role="status"></p>
         <div id="catalogue-list"></div>
         <h4 style="margin-top:18px;font-size:.95rem;">Count a student's progress code</h4>
@@ -2976,7 +2992,7 @@ for (int i = 0; i < 3; i++) {
       <div id="translator-mode" role="tabpanel" tabindex="0" hidden>
         <section class="trans-intro">
           <h2>Read the error. It is telling you where to look.</h2>
-          <p>A compiler message is not a verdict. It is a note from the program that checks your code, written in shorthand. <strong>Pick the error you just hit, or search for a word in it,</strong> and TraceFirst will translate it into plain English: what it means, what in your code causes it, and how to fix it. Every entry also carries the meaning in plain Spanish, directly under the English. Most entries are <strong>compiler errors</strong> — one file, checked on its own. A few, labelled <strong>Linker error</strong>, are different: every file compiled, but the pieces could not be assembled into one program.</p>
+          <p>A compiler message is not a verdict. It is a note from the program that checks your code, written in shorthand. <strong>Pick the error you just hit, or search for a word in it,</strong> and TraceFirst will translate it into plain English: what it means, what in your code causes it, and how to fix it. Every entry also carries the meaning in plain Spanish, directly under the English. Most entries are <strong>compiler errors</strong> — one file, checked on its own. A few, labelled <strong>Linker error</strong>, are different: every file compiled, but the pieces could not be assembled into one program. Five entries, labelled <strong>Warning</strong>, are different again: a warning is not an error — the program still compiles and runs. They are gathered in the warnings round below.</p>
         </section>
 
         <section class="card" id="translator-sample" style="margin-top:18px;" aria-labelledby="sample-h">
@@ -2995,15 +3011,25 @@ for (int i = 0; i < 3; i++) {
           <p style="font-size:.9rem;color:var(--ink-soft);margin-top:12px;">Fix them in order. Fix Error 1, compile again, and the list gets shorter. That loop — read, fix one, recompile — is the whole method.</p>
         </section>
 
+        <section class="card" id="translator-warnings" style="margin-top:18px;" aria-labelledby="warnings-h">
+          <span class="concept-tag">The warnings round · Not errors</span>
+          <h2 id="warnings-h" style="font-size:1.25rem;">Warnings: the program still compiles and runs</h2>
+          <p class="story">Everything else in this translator is an error — the compiler refuses, and no program is built. A <strong>warning</strong> is different, and the difference matters: <strong>a warning does not stop the build. The program still compiles, and it still runs.</strong> The compiler is not refusing your program; it is pointing at a line and saying <em>this compiles, but it probably does not do what you mean</em>. Beginners learn to ignore warnings precisely because the program runs anyway — and then spend hours debugging behaviour the compiler had already pointed at. This round covers the warnings beginners meet most: an <strong>unused variable</strong> (entry 49), a <strong>signed/unsigned comparison</strong> (entry 50), <strong>reading a variable before it has been given a value</strong> (entry 51), a <strong>missing return in a non-void function</strong> (entry 32), and a stray semicolon on an <strong>#include</strong> line (entry 20). Each warning is translated in the same format as the errors: the code, what the compiler says, why it happens, and the fix.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px;">
+            <button class="btn" type="button" id="trans-warnings-btn">Show the warnings round — 5 warnings</button>
+            <span class="journal-status" id="trans-warnings-status" role="status"></span>
+          </div>
+        </section>
+
         <div class="trans-searchbar" id="translator-search">
           <div>
             <label for="trans-search">Search the translator</label>
             <div class="trans-search-row" style="margin-top:8px;">
               <input type="search" id="trans-search" placeholder="Try: semicolon, cout, string, brace, include…" autocomplete="off">
-              <button class="btn ghost small" type="button" id="trans-clear">Show all 48</button>
+              <button class="btn ghost small" type="button" id="trans-clear">Show all 51</button>
             </div>
           </div>
-          <p class="trans-count" id="trans-count" role="status">Showing all 48 errors — ordered by how early beginners usually meet them.</p>
+          <p class="trans-count" id="trans-count" role="status">Showing all 51 entries — ordered by how early beginners usually meet them.</p>
         </div>
 
         <div class="trans-list" id="trans-list" aria-label="Compiler error catalogue"></div>
@@ -3011,7 +3037,7 @@ for (int i = 0; i < 3; i++) {
 
         <div class="trans-method"><strong>The method:</strong> an error message names the line where the compiler gave up, which is not always the line where the mistake is; read the first error first, fix it, compile again.</div>
 
-        <p class="foot"><strong>How to use this translator well:</strong> do not hunt through all 48. Copy two or three distinctive words from the message you actually got into the search box. The raw messages here use the wording of g++, the compiler in most introductory courses; other compilers phrase the same problems slightly differently, but the cause and the fix do not change.</p>
+        <p class="foot"><strong>How to use this translator well:</strong> do not hunt through all 51. Copy two or three distinctive words from the message you actually got into the search box. The raw messages here use the wording of g++, the compiler in most introductory courses; other compilers phrase the same problems slightly differently, but the cause and the fix do not change.</p>
       </div><!-- /translator-mode -->
 
       <div id="challenges-mode" role="tabpanel" tabindex="0" hidden>
@@ -12481,7 +12507,7 @@ int main() {
         var confNote = s.confidence === "sure" ? '<p class="confident-note">You marked this prediction “Sure” — a confident miss, and the kind worth a second look: the model felt solid and still parted from the machine.</p>' : "";
         v.innerHTML = '<div class="verdict bad"><h3>Your model and the machine parted company.</h3>' +
           '<div class="vs"><div><span>You predicted</span>' + esc(mine) + '</div><div><span>The program printed</span>' + esc(actual) + "</div></div>" +
-          "<p>" + d.text + "</p>" + reHtml + confNote + ratEcho + partialVerdictHtml(ex, s) + '<button class="btn small ghost jump" id="jump-btn" type="button">Jump to the parting step</button>' +
+          "<p>" + d.text + "</p>" + trapNoteHtmlForDiag(d.text) + reHtml + confNote + ratEcho + partialVerdictHtml(ex, s) + '<button class="btn small ghost jump" id="jump-btn" type="button">Jump to the parting step</button>' +
           '<div id="followup-box"></div><p class="suggest-next" id="suggest-next"></p>' + teachBackHtml(s) + "</div>";
         $("jump-btn").addEventListener("click", function () {
           stopPlayback();
@@ -16154,6 +16180,7 @@ int main() {
       var entry = null;
       for (var i = 0; i < TRANS.length; i++) if (TRANS[i].id === id) entry = TRANS[i];
       setMode("translator");
+      transStage = "";
       $("trans-search").value = "";
       transOpen = {}; transOpen[id] = true;
       renderTrans("");
@@ -16194,7 +16221,7 @@ int main() {
       { id:17, title:"Keyword used as a variable name", raw:"error: expected unqualified-id before 'int'\n  — same family: expected unqualified-id before 'class'", meaning:"You tried to name a variable with a word the language has already reserved. int, class, return, for, while and their kin are the language's own vocabulary and cannot be reused as names.", cause:"A declaration like int class = 3; or int int = 3; puts a keyword where a name belongs. Choose a name that describes the value instead: score, classSize, intValue.", before:"int class = 3;\ncout << class;", after:"int classSize = 3;\ncout << classSize;", es: "Intentaste nombrar una variable con una palabra que el lenguaje ya reservó. int, class, return, for, while y sus parientes son el vocabulario propio del lenguaje y no se pueden reutilizar como nombres.", keys:"keyword unqualified-id expected before int class reserved word variable name" },
       { id:18, title:"Case sensitivity — Cout is not cout", raw:"error: 'Cout' was not declared in this scope", meaning:"Cout and cout are two different names as far as C++ is concerned. C++ is case-sensitive: capitals are not decoration, they change the name.", cause:"A capital letter crept in — Cout, Cin, Endl, Int, String. Every standard name in an introductory program is lowercase: cout, cin, endl, int, string. Match the case exactly.", before:"Cout << \"Hi\" << Endl;", after:"cout << \"Hi\" << endl;", es: "Cout y cout son dos nombres distintos para C++. C++ distingue mayúsculas y minúsculas: las mayúsculas no son decoración, cambian el nombre.", keys:"case Cout capital sensitive not declared scope uppercase lowercase" },
       { id:19, title:"Missing > on an include", raw:"error: missing terminating > character", meaning:"The include's angle brackets work like quotes: < opens a header name and > must close it. Without the >, the compiler reads past the end of the line looking for the close.", cause:"The include line is short its closing >. While you are there, check its partner too: #include lines take angle brackets and no semicolon — see the next entry.", before:"#include <iostream\nusing namespace std;", after:"#include <iostream>\nusing namespace std;", es: "Los paréntesis angulares de un include funcionan como comillas: < abre el nombre de un encabezado y > debe cerrarlo. Sin el >, el compilador sigue leyendo más allá del final de la línea buscando el cierre.", keys:"missing terminating > include angle bracket character header" },
-      { id:20, title:"Semicolon after the #include line", raw:"warning: extra tokens at end of #include directive\n  — the line looks like: #include <iostream>;", meaning:"Nothing on a #include line may follow the closing >. The ; is an extra token, and the compiler is warning you it does not belong there. The include line takes no semicolon.", cause:"A semicolon habit applied one line too early. #include is a preprocessor directive, not a C++ statement, so it is not ended with ;. (using namespace std; does take one — the directive does not.)", before:"#include <iostream>;\nusing namespace std;", after:"#include <iostream>\nusing namespace std;", es: "Nada en una línea #include puede seguir al > de cierre. El punto y coma es un token extra, y el compilador te avisa que no pertenece ahí. La línea de include no lleva punto y coma.", keys:"extra tokens include directive semicolon preprocessor warning tokens end" },
+      { id:20, stage:"warning", title:"Semicolon after the #include line", raw:"warning: extra tokens at end of #include directive\n  — the line looks like: #include <iostream>;", meaning:"Nothing on a #include line may follow the closing >. The ; is an extra token, and the compiler is warning you it does not belong there. The include line takes no semicolon.", cause:"A semicolon habit applied one line too early. #include is a preprocessor directive, not a C++ statement, so it is not ended with ;. (using namespace std; does take one — the directive does not.)", before:"#include <iostream>;\nusing namespace std;", after:"#include <iostream>\nusing namespace std;", es: "Nada en una línea #include puede seguir al > de cierre. El punto y coma es un token extra, y el compilador te avisa que no pertenece ahí. La línea de include no lleva punto y coma.", keys:"extra tokens include directive semicolon preprocessor warning tokens end" },
       { id:21, title:"pow not declared — missing <cmath>", raw:"error: 'pow' was not declared in this scope", meaning:"pow is a real function, but the compiler has never been introduced to it in this file. As far as this program is concerned, the name pow does not exist yet.", cause:"The maths functions — pow, sqrt, fabs — live in the <cmath> header, not <iostream>. cout travelled with iostream; power does not. Each family of tools has its own header, and the function only exists once its header is included.", before:"#include <iostream>\nusing namespace std;\ncout << pow(2, 3);", after:"#include <iostream>\n#include <cmath>\nusing namespace std;\ncout << pow(2, 3);", es: "pow es una función real, pero el compilador nunca fue presentado a ella en este archivo. Para este programa, el nombre pow todavía no existe.", keys:"pow not declared scope cmath math sqrt power function include header" },
       { id:22, title:"Missing operator between two values", raw:"error: expected ',' or ';' before numeric constant", meaning:"The compiler reached a number at a point where it expected the statement to end, or a comma to separate two items. Two values are sitting side by side with nothing between them, and the compiler does not know what to do with the second one.", cause:"C++ never implies an operation: 2 x is not 2 times x, however obvious it looks from algebra. Every operation must be written out — *, +, and so on. The same error appears when a value follows a closing parenthesis or another variable with no operator between them.", before:"int x = 3;\ncout << 2 x;", after:"int x = 3;\ncout << 2 * x;", es: "El compilador llegó a un número en un punto donde esperaba que la instrucción terminara, o una coma que separara dos elementos. Dos valores están lado a lado sin nada entre ellos, y el compilador no sabe qué hacer con el segundo.", keys:"expected ',' or ';' before numeric constant operator missing multiplication implied 2x juxtaposed" },
       { id:23, title:"Assigning a string to an int", raw:"error: cannot convert 'std::string' to 'int' in assignment", meaning:"The value on the right of the = is text, and the box on the left holds whole numbers. The compiler will not silently turn text into a number — if a conversion is wanted, it has to be asked for by name.", cause:"The types on the two sides of an assignment must match, or be converted deliberately. Text that merely looks like a number is still text. Read it as a string, then convert with stoi (or stod for decimals) at the moment you mean it as a number.", before:"string entry = \"42\";\nint count = entry;", after:"string entry = \"42\";\nint count = stoi(entry); // deliberate conversion", es: "El valor a la derecha del = es texto, y la caja de la izquierda guarda números enteros. El compilador no convertirá texto en número en silencio: si se quiere una conversión, hay que pedirla por su nombre.", keys:"cannot convert string int assignment stoi stod type mismatch conversion text number" },
@@ -16206,7 +16233,7 @@ int main() {
       { id:29, title:"Missing value after <<", raw:"error: expected primary-expression before ';' token", meaning:"The statement ends where a value should be. After << the compiler waits for something to print — a value, a variable, a piece of text — and instead it met the semicolon that ends the statement.", cause:"An operand was left out of the output statement: cout << ; prints nothing because nothing was ever named. The value the line meant to print was deleted or never written.", before:"cout << ;", after:"cout << x;", es: "La instrucción termina donde debería ir un valor. Después de << el compilador espera algo para imprimir — un valor, una variable, un texto — y en su lugar encontró el punto y coma que cierra la instrucción.", keys:"expected primary-expression before token missing value operand cout << empty" },
       { id:30, title:"String literal assigned to a char", raw:"error: invalid conversion from 'const char*' to 'char'", meaning:"Double quotes make a string — a whole sequence of characters — not a single character. A char holds exactly one character, and the compiler will not squeeze a string into a one-character box.", cause:"The value was written with double quotes: char c = \"A\"; makes \"A\" a string (the letter plus an invisible end marker). Single characters take single quotes: 'A'.", before:"char c = \"A\";", after:"char c = 'A';", es: "Las comillas dobles crean una cadena: una secuencia completa de caracteres, no un solo carácter. Un char guarda exactamente un carácter, y el compilador no apretará una cadena en una caja de un carácter.", keys:"invalid conversion const char* char string literal double quotes single character" },
       { id:31, title:"Smart quotes and stray characters from pasted code", raw:"error: extended character \" is not valid in an identifier\n  — also seen as: error: stray '\\342' in program", meaning:"The code contains a typographic character — usually a curly (“smart”) quote copied from a word processor, a web page, or a PDF. The compiler only accepts plain ASCII characters in code, and it reports the foreign character's byte codes (like \\342) instead of the character itself.", cause:"The program was pasted from somewhere that autocorrects quotes: word processors and many web pages silently replace straight quotes with curly ones. The fix is mechanical: delete each curly quote in the file and retype it on the keyboard as a straight ' or \".", before:"cout << “Hello”;", after:"cout << \"Hello\";", es: "El código contiene un carácter tipográfico, por lo general una comilla curva (“inteligente”) copiada de un procesador de textos, una página web o un PDF. El compilador solo acepta caracteres ASCII simples en el código, y reporta los códigos de bytes del carácter extraño (como \\342) en lugar del carácter mismo.", keys:"smart quotes curly stray 342 extended character pasted word processor non-ascii identifier" },
-      { id:32, title:"Missing return in a non-void function — a warning", raw:"warning: no return statement in function returning non-void", meaning:"This one is a warning, not an error: the program may still build and run. But the function promised its caller a value, and it can finish without providing one — so the caller receives whatever garbage happened to be in the machine at that moment, and the results are unpredictable.", cause:"A path through the function reaches its closing brace without meeting a return statement — often a return that only exists inside an if, with nothing after it for the other case. Every path through a non-void function must end with return ...;.", before:"int doubleIt(int x) {\n    if (x > 0) return x * 2;\n}", after:"int doubleIt(int x) {\n    if (x > 0) return x * 2;\n    return 0;\n}", es: "Esto es una advertencia, no un error: el programa puede compilarse y ejecutarse. Pero la función prometió un valor a quien la llamó y puede terminar sin entregarlo, así que quien llama recibe lo que haya quedado en la máquina en ese momento, y los resultados son impredecibles.", keys:"warning no return statement function returning non-void missing return garbage value path" },
+      { id:32, stage:"warning", title:"Missing return in a non-void function — a warning", raw:"warning: no return statement in function returning non-void", meaning:"This one is a warning, not an error: the program may still build and run. But the function promised its caller a value, and it can finish without providing one — so the caller receives whatever garbage happened to be in the machine at that moment, and the results are unpredictable.", cause:"A path through the function reaches its closing brace without meeting a return statement — often a return that only exists inside an if, with nothing after it for the other case. Every path through a non-void function must end with return ...;.", before:"int doubleIt(int x) {\n    if (x > 0) return x * 2;\n}", after:"int doubleIt(int x) {\n    if (x > 0) return x * 2;\n    return 0;\n}", es: "Esto es una advertencia, no un error: el programa puede compilarse y ejecutarse. Pero la función prometió un valor a quien la llamó y puede terminar sin entregarlo, así que quien llama recibe lo que haya quedado en la máquina en ese momento, y los resultados son impredecibles.", keys:"warning no return statement function returning non-void missing return garbage value path" },
       { id:33, title:"endl not declared in this scope", raw:"error: 'endl' was not declared in this scope", meaning:"endl is a real name — the newline-and-flush marker used at the end of a cout chain — but the compiler has never been introduced to it in this file. As far as this file is concerned, the name endl does not exist yet, exactly as with an undeclared variable.", cause:"endl lives in the standard namespace, std. It reaches a file through #include <iostream> together with using namespace std; (or by being written in full as std::endl). Leave out the include or the using line and the name is unknown, even though cout's other uses may look identical to working programs.", before:"#include <iostream>\nint main() {\n    std::cout << \"Hi\" << endl;\n}", after:"#include <iostream>\nusing namespace std;\nint main() {\n    cout << \"Hi\" << endl;\n}", es: "endl es un nombre real — el marcador de nueva línea y vaciado que se usa al final de una cadena cout — pero el compilador nunca fue presentado a él en este archivo. Para este archivo, el nombre endl todavía no existe, igual que con una variable no declarada.", keys:"endl was not declared in this scope namespace std using include iostream undeclared newline" },
       { id:34, title:"Remainder on a decimal — % needs whole numbers", raw:"error: invalid operands of types 'double' and 'int' to binary 'operator%'", meaning:"The % operator is remainder after whole-number division: it answers 'what is left over when this is shared out in whole groups'. A decimal value cannot be shared out that way, so C++ simply has no % for a double — the operation itself does not exist for those types, and the compiler refuses to invent one.", cause:"One side of the % is a double — often a price, a measurement, or the result of an earlier / division — while the code thinks in remainders. Either keep the value whole from the start (store whole cents in an int), or convert deliberately before the remainder: (int)price % 2. Silently expecting C-style behaviour from another language is how this one usually arrives.", before:"double price = 7.5;\ncout << price % 2;", after:"int price = 7;\ncout << price % 2;", es: "El operador % es el resto de la división entera: responde cuánto sobra cuando algo se reparte en grupos enteros. Un valor decimal no se puede repartir así, por lo que C++ simplemente no tiene % para un double: la operación en sí no existe para esos tipos, y el compilador se niega a inventar una.", keys:"invalid operands double int binary operator% remainder modulus percent decimal whole numbers" },
       { id:35, title:"'else' without a previous 'if'", raw:"error: 'else' was not declared in this scope\n  — the message that names the real fault reads: error: 'else' without a previous 'if'", meaning:"An else is not a statement that can stand alone: it is the second half of one if statement, and it must follow the if's body immediately. The compiler met an else with no if directly above it to belong to — so as far as the grammar is concerned, the else is homeless.", cause:"The if half went missing: its line was deleted or commented out, a semicolon after the if condition ended the if early and detached its body, or stray code was left between the if's closing brace and the else. Read upwards from the else: the line it expects to find is an if whose body ends exactly there.", before:"int score = 40;\ncout << \"Checking\" << endl;\nelse {\n    cout << \"Retry\" << endl;\n}", after:"int score = 40;\nif (score >= 50) {\n    cout << \"Pass\" << endl;\n}\nelse {\n    cout << \"Retry\" << endl;\n}", es: "Un else no es una instrucción que pueda estar sola: es la segunda mitad de una instrucción if, y debe seguir inmediatamente al cuerpo del if. El compilador encontró un else sin un if justo encima al que pertenecer, así que, para la gramática, el else no tiene casa.", keys:"else without a previous if orphan else branch if statement homeless detached semicolon" },
@@ -16222,7 +16249,10 @@ int main() {
       { id:45, stage:"link", title:"A variable defined in a header — duplicated wherever the header is included (a linker error)", raw:"error: multiple definition of 'score'\ncollect2: error: ld returned 1 exit status", meaning:"This is a link error, and every file compiled cleanly — because the header did not just describe the variable, it created it. Each file that includes the header therefore defines its own copy of the variable, and the linker, assembling the program, finds the same variable defined several times over and refuses to choose between the copies.", cause:"A definition like int score; was written in a header (score.h) that two or more .cpp files include. Headers are for declarations — promises, not things. The header should promise the variable with extern, and exactly one .cpp file should keep the promise with the single real definition.", before:"// score.h — included by main.cpp AND helpers.cpp\nint score;\n// two files include it, so score is defined twice", after:"// score.h — a promise only\nextern int score;\n// helpers.cpp — the one real definition\nint score;", es: "Esto es un error de enlace, y cada archivo compiló sin problemas, porque el encabezado no solo describió la variable: la creó. Cada archivo que incluye el encabezado define por tanto su propia copia de la variable, y el enlazador, al armar el programa, encuentra la misma variable definida varias veces y se niega a elegir entre las copias.", keys:"multiple definition header variable extern duplicate symbol included twice linker ld collect2" },
       { id:46, stage:"runtime", title:"Segmentation fault — the program touched memory it does not own (a runtime crash)", raw:"Segmentation fault (core dumped)\n— the program may print some output first, then die. No compiler message, and no line number.", meaning:"This is a runtime crash, not a compiler or linker error: the program compiled, started running, and then touched a memory address it has no right to — the operating system killed it on the spot. The message names no line, because by the time the OS steps in, the machine is reporting an address, not your source. Any line number you are given for a crash like this is a guess; do not trust one.", cause:"Check in this order. (1) What printed last? Output stops where the crash happened, so the guilty statement is at or just after the last thing that printed. (2) Which index or pointer was in play there? The usual suspects: an array or vector index that ran past the last element (a loop using <= instead of < is the classic), a pointer that was never set to point at anything, or a pointer still being used after its target is gone. Fix the index or the pointer — never the symptom.", before:"int a[3] = {4, 8, 15};\nfor (int i = 0; i <= 3; i++) {\n    cout << a[i] << \" \";\n}  // i reaches 3 — one past the last slot", after:"int a[3] = {4, 8, 15};\nfor (int i = 0; i < 3; i++) {\n    cout << a[i] << \" \";\n}  // slots are 0, 1, 2 — the loop stops in time", es: "Esto es un fallo en tiempo de ejecución, no un error de compilador ni de enlazador: el programa compiló, empezó a correr y tocó una dirección de memoria que no le pertenece; el sistema operativo lo terminó en el acto. El mensaje no nombra ninguna línea, porque cuando el sistema operativo interviene, la máquina reporta una dirección, no tu código fuente. Cualquier número de línea que te den para un fallo como este es una suposición; no confíes en él.", keys:"segmentation fault segfault core dumped crash runtime died memory access violation bus error" },
       { id:47, stage:"runtime", title:"Division by zero — the divisor reached zero while running (a runtime crash)", raw:"Floating point exception (core dumped)\n— on some systems the program simply stops, or prints inf / nan for doubles. No line number is reported.", meaning:"Integer division (or %) by zero is a runtime crash: the program compiled because the compiler cannot know what value the divisor will hold when the line runs — a count that came from data, a size that turned out to be 0. The crash message names no line: the processor raised the fault, not your source file. For doubles the same mistake usually does not crash at all — it quietly produces inf or nan and poisons every later result.", cause:"Check in this order. (1) Which division ran last before the crash? (2) What feeds its divisor — a count, a length, a difference — and what input or data made it 0? An average over an empty list is the classic: total / count with count still 0. (3) Guard before you divide: if the divisor can be 0, decide what the program should do instead (skip, print a message, return early) and test that case on purpose.", before:"int total = 60;\nint count = 0;  // no scores were read\ncout << total / count << endl;  // crash", after:"int total = 60;\nint count = 3;  // the three scores actually read\ncout << total / count << endl;  // prints 20", es: "La división entera (o %) entre cero es un fallo en tiempo de ejecución: el programa compiló porque el compilador no puede saber qué valor tendrá el divisor cuando la línea se ejecute — un conteo que vino de datos, un tamaño que resultó ser 0. El mensaje de fallo no nombra ninguna línea: el procesador levantó la falta, no tu archivo fuente. Con doubles, el mismo error por lo general no falla: produce en silencio inf o nan y envenena cada resultado posterior.", keys:"division by zero divide zero floating point exception runtime crash inf nan modulo average count" },
-      { id:48, stage:"runtime", title:"Out-of-bounds access — an index past the end (a runtime error, often silent)", raw:"Often NO message at all: the program prints garbage, or crashes three statements later.\nWith sanitizers on: runtime error: index 5 out of bounds for type 'int [5]'", meaning:"Reading or writing a[i] where i is outside 0..size-1 is undefined behaviour: the machine does not promise an error — it may hand back whatever happens to sit in that memory, which is why this bug can look like it works. That is also why there is usually no trustworthy line number: the damage is spotted far from the cause, if it is spotted at all. The sanitizer message above is the honest version — it exists only when the program was built with checks on.", cause:"Check in this order. (1) Find every index computed just before the wrong behaviour: a[i], v[i], word[i]. (2) Work out the index's largest possible value and compare it with the last legal one, size - 1: a loop bounded by <= size, or a hand-set index equal to size, is one too far — counting elements (size) is not naming the last slot (size - 1). (3) Check the same for negative values. Fix the bound or the index, then re-run with the edge inputs: first element, last element, empty.", before:"int a[4] = {3, 6, 9, 12};\nint i = 4;  // the size — not a slot\ncout << a[i] << endl;  // out of bounds", after:"int a[4] = {3, 6, 9, 12};\nint i = 3;  // the last slot\ncout << a[i] << endl;  // prints 12", es: "Leer o escribir a[i] donde i está fuera de 0..tamaño-1 es comportamiento indefinido: la máquina no promete un error; puede entregar lo que haya en esa memoria, y por eso este error puede parecer que funciona. También por eso casi nunca hay un número de línea confiable: el daño se nota lejos de la causa, si es que se nota. El mensaje del sanitizador de arriba es la versión honesta: existe solo cuando el programa se construyó con verificaciones activadas.", keys:"out of bounds index subscript array vector runtime undefined behaviour sanitizer overflow past end size" }
+      { id:48, stage:"runtime", title:"Out-of-bounds access — an index past the end (a runtime error, often silent)", raw:"Often NO message at all: the program prints garbage, or crashes three statements later.\nWith sanitizers on: runtime error: index 5 out of bounds for type 'int [5]'", meaning:"Reading or writing a[i] where i is outside 0..size-1 is undefined behaviour: the machine does not promise an error — it may hand back whatever happens to sit in that memory, which is why this bug can look like it works. That is also why there is usually no trustworthy line number: the damage is spotted far from the cause, if it is spotted at all. The sanitizer message above is the honest version — it exists only when the program was built with checks on.", cause:"Check in this order. (1) Find every index computed just before the wrong behaviour: a[i], v[i], word[i]. (2) Work out the index's largest possible value and compare it with the last legal one, size - 1: a loop bounded by <= size, or a hand-set index equal to size, is one too far — counting elements (size) is not naming the last slot (size - 1). (3) Check the same for negative values. Fix the bound or the index, then re-run with the edge inputs: first element, last element, empty.", before:"int a[4] = {3, 6, 9, 12};\nint i = 4;  // the size — not a slot\ncout << a[i] << endl;  // out of bounds", after:"int a[4] = {3, 6, 9, 12};\nint i = 3;  // the last slot\ncout << a[i] << endl;  // prints 12", es: "Leer o escribir a[i] donde i está fuera de 0..tamaño-1 es comportamiento indefinido: la máquina no promete un error; puede entregar lo que haya en esa memoria, y por eso este error puede parecer que funciona. También por eso casi nunca hay un número de línea confiable: el daño se nota lejos de la causa, si es que se nota. El mensaje del sanitizador de arriba es la versión honesta: existe solo cuando el programa se construyó con verificaciones activadas.", keys:"out of bounds index subscript array vector runtime undefined behaviour sanitizer overflow past end size" },
+      { id:49, stage:"warning", title:"Unused variable — declared but never used (a warning)", raw:"warning: unused variable 'count' [-Wunused-variable]", meaning:"This is a warning, not an error: the program still compiles and runs. The compiler is pointing at a variable that is declared — given a box, and maybe a value — and then never read anywhere. Nothing breaks; the compiler is asking whether you meant to use it, or meant to write a different name somewhere.", cause:"A variable is declared and then forgotten: a leftover from an earlier draft, a value computed into one name and printed from another, or a total that was meant to feed a later calculation and never does. Because the program still runs, the real risk is silent — the value you meant to use never reaches the output, and no error ever announces it.", before:"int count = 3;\nint total = 60;\ncout << total << endl;", after:"int total = 60;\ncout << total << endl;", es: "Esto es una advertencia, no un error: el programa aun así compila y se ejecuta. El compilador señala una variable que se declara — se le da una caja, y quizá un valor — y luego nunca se lee en ninguna parte. Nada se rompe; el compilador pregunta si querías usarla o si querías escribir otro nombre en alguna parte.", keys:"unused variable declared never used warning Wunused-variable leftover declared but" },
+      { id:50, stage:"warning", title:"Comparing signed and unsigned values — sign-compare (a warning)", raw:"warning: comparison of integer expressions of different signedness: 'int' and 'unsigned int' [-Wsign-compare]", meaning:"This is a warning, not an error: the program still compiles and runs. The comparison mixes a signed value (an int, which can be negative) with an unsigned one (which never is). To compare them, the compiler first converts the signed side to unsigned — and a negative value converts into a huge positive one, so on the values where the two sides differ in sign the comparison can answer the opposite of what you expect.", cause:"Most often a loop counter declared int is compared with a size: for (int i = 0; i < scores.size(); i++). size() and length() return an unsigned type (size_t), so the counter and the bound are different signedness. It usually survives because the counter stays non-negative — the warning is about the cases where it would not.", before:"for (int i = 0; i < scores.size(); i++) {\n    cout << scores[i];\n}", after:"for (size_t i = 0; i < scores.size(); i++) {\n    cout << scores[i];\n}", es: "Esto es una advertencia, no un error: el programa aun así compila y se ejecuta. La comparación mezcla un valor con signo (un int, que puede ser negativo) con uno sin signo (que nunca lo es). Para compararlos, el compilador primero convierte el lado con signo a sin signo, y un valor negativo se convierte en uno positivo enorme, así que la comparación puede responder lo contrario de lo esperado.", keys:"sign compare signed unsigned comparison size_t size length warning Wsign-compare loop counter" },
+      { id:51, stage:"warning", title:"Reading a variable before it is given a value (a warning)", raw:"warning: 'total' may be used uninitialized in this function [-Wmaybe-uninitialized]", meaning:"This is a warning, not an error: the program still compiles and runs. But the variable being read has never been given a value on the path the compiler is looking at — the box exists, and whatever bits happen to be sitting in that memory are what gets read. The program can print a different number on every run, and no error will ever announce why.", cause:"A declaration with no initial value, followed by a read: an accumulator that was never started at 0, or a variable assigned only inside an if and read after it, on the path where the if did not run. Declaring a variable creates the box; it does not put anything in it.", before:"int total;\ncout << total << endl;", after:"int total = 0;\ncout << total << endl;", es: "Esto es una advertencia, no un error: el programa aun así compila y se ejecuta. Pero la variable que se lee nunca recibió un valor en el camino que el compilador examina: la caja existe, y lo que se lee es lo que haya en esa memoria. El programa puede imprimir un número distinto en cada ejecución, y ningún error anunciará por qué.", keys:"uninitialized may be used warning Wmaybe-uninitialized Wuninitialized no value garbage declared" }
 
     ];
     /* ================= Error Translator: fix-it rounds =================
@@ -16237,7 +16267,10 @@ int main() {
        keyword name, setprecision/pow header faults — the machine knows
        cout, string and setprecision natively, strips # lines, and never
        checks declarations twice) stay explanation-only, as do the
-       warning-only entry and the entry whose catalogue fix (stoi) names
+       warning entries (20, 32, 49, 50 and 51 — this machine emits no
+       warnings, and a warned-about program already runs clean on it, so
+       it has no verdict to give on a warning fix) and the entry whose
+       catalogue fix (stoi) names
        a function this machine does not have. Of the later entries: the
        endl entry (33) stays explanation-only for the same native-name
        reason — this machine knows endl — and the pointer-comparison
@@ -16431,11 +16464,13 @@ int main() {
     });
 
     var transOpen = {};
+    var transStage = "";
     function renderTrans(filter) {
       var q = (filter || "").trim().toLowerCase();
       var list = $("trans-list"); list.innerHTML = "";
       var shown = 0;
       TRANS.forEach(function (e) {
+        if (transStage === "warning" && e.stage !== "warning") return;
         var hay = (e.title + " " + e.raw + " " + e.meaning + " " + e.cause + " " + e.keys).toLowerCase();
         if (q && hay.indexOf(q) === -1) {
           // allow multi-word search: every word must appear
@@ -16450,7 +16485,7 @@ int main() {
         var head = document.createElement("button");
         head.type = "button"; head.className = "trans-head";
         head.setAttribute("aria-expanded", transOpen[e.id] ? "true" : "false");
-        head.innerHTML = '<span class="tnum">' + e.id + '</span><span style="flex:1 1 auto;min-width:0;"><span class="ttitle">' + e.title + '</span>' + (e.stage === "link" ? '<span class="trans-stage link">Linker error</span>' : e.stage === "runtime" ? '<span class="trans-stage runtime">Runtime error</span>' : '<span class="trans-stage">Compiler error</span>') + '<span class="tsummary">' + esc(e.meaning.split(". ")[0] + ".") + '</span></span><span class="tchev" aria-hidden="true">' + (transOpen[e.id] ? "−" : "+") + "</span>";
+        head.innerHTML = '<span class="tnum">' + e.id + '</span><span style="flex:1 1 auto;min-width:0;"><span class="ttitle">' + e.title + '</span>' + (e.stage === "link" ? '<span class="trans-stage link">Linker error</span>' : e.stage === "runtime" ? '<span class="trans-stage runtime">Runtime error</span>' : e.stage === "warning" ? '<span class="trans-stage warning">Warning — not an error</span>' : '<span class="trans-stage">Compiler error</span>') + '<span class="tsummary">' + esc(e.meaning.split(". ")[0] + ".") + '</span></span><span class="tchev" aria-hidden="true">' + (transOpen[e.id] ? "−" : "+") + "</span>";
         head.addEventListener("click", function () {
           var willOpen = !transOpen[e.id]; transOpen = {}; if (willOpen) transOpen[e.id] = true; renderTrans($("trans-search").value);
           if (transOpen[e.id]) announce("Opened: " + e.title);
@@ -16465,7 +16500,7 @@ int main() {
         list.appendChild(item);
       });
       $("trans-empty").classList.toggle("show", shown === 0);
-      $("trans-count").textContent = q ? ("Showing " + shown + " of " + TRANS.length + " errors matching \u201C" + filter.trim() + "\u201D.") : "Showing all " + TRANS.length + " errors — ordered by how early beginners usually meet them.";
+      $("trans-count").textContent = q ? ("Showing " + shown + " of " + TRANS.length + " entries matching \u201C" + filter.trim() + "\u201D.") : transStage === "warning" ? ("Showing the warnings round — " + shown + " warnings. A warning is not an error: every program in this round still compiles and runs.") : "Showing all " + TRANS.length + " entries — ordered by how early beginners usually meet them.";
     }
     document.querySelectorAll(".sample-err-btn").forEach(function (b) {
       b.addEventListener("click", function () {
@@ -16476,8 +16511,18 @@ int main() {
         announce("Jumped to translation number " + id + ".");
       });
     });
-    $("trans-search").addEventListener("input", function () { renderTrans(this.value); });
-    $("trans-clear").addEventListener("click", function () { $("trans-search").value = ""; renderTrans(""); $("trans-search").focus(); });
+    $("trans-search").addEventListener("input", function () { transStage = ""; renderTrans(this.value); });
+    $("trans-clear").addEventListener("click", function () { transStage = ""; $("trans-search").value = ""; renderTrans(""); $("trans-search").focus(); });
+    var warnBtn = $("trans-warnings-btn");
+    if (warnBtn) warnBtn.addEventListener("click", function () {
+      transStage = "warning";
+      $("trans-search").value = "";
+      transOpen = {};
+      renderTrans("");
+      var wst = $("trans-warnings-status"); if (wst) wst.textContent = "Showing the 5 warnings in the list below — remember, each of these programs still compiles and runs.";
+      var tl = $("trans-list"); if (tl) tl.scrollIntoView({ behavior: "smooth", block: "start" });
+      announce("Warnings round: showing the 5 warning entries. Warnings are not errors — these programs still compile and run.");
+    });
     renderTrans("");
 
     /* ================= Challenges ================= */
@@ -22797,14 +22842,25 @@ int main() {
         if (exitTicket.ex !== idx) exitTicket.entries = [];
         exitTicket.ex = idx;
         var a = { title: ("Exit ticket — Exercise " + (idx + 1) + ": " + EXERCISES[idx].title).slice(0, 120), due: "", exs: [idx] };
-        assignments.push(a);
+        /* Re-designating the same exercise replaces its saved entry
+           instead of appending a duplicate: an exit-ticket entry is the
+           saved assignment whose title is flagged "Exit ticket" and
+           whose exercise set is exactly this one exercise. */
+        var replacedAt = -1;
+        for (var ai = 0; ai < assignments.length; ai++) {
+          var oldA = assignments[ai];
+          if (oldA && typeof oldA.title === "string" && oldA.title.indexOf("Exit ticket") === 0 && Array.isArray(oldA.exs) && oldA.exs.length === 1 && oldA.exs[0] === idx) { replacedAt = ai; break; }
+        }
+        if (replacedAt >= 0) assignments[replacedAt] = a; else assignments.push(a);
         var code = assignEncode(a);
         var out = $("exit-code-out"); if (out) out.value = code;
         var created = $("exit-created"); if (created) created.hidden = false;
         if (typeof renderAssignSaved === "function") renderAssignSaved();
         if (typeof tfSave === "function") tfSave();
         renderExitPanel();
-        if (status) status.textContent = "Designated Exercise " + (idx + 1) + " — its exit-ticket code is below, and it is also saved in the Assignments list above.";
+        if (status) status.textContent = replacedAt >= 0
+          ? "Designated Exercise " + (idx + 1) + " — its exit-ticket code is below, and its saved entry in the Assignments list above was updated. Re-designating replaces the entry; no duplicate is added."
+          : "Designated Exercise " + (idx + 1) + " — its exit-ticket code is below, and it is also saved in the Assignments list above.";
         announce("Exit ticket designated: Exercise " + (idx + 1) + ".");
       });
       function exitCopy(text, okMsg) {
@@ -26864,6 +26920,145 @@ int main() {
     renderMyTraps();
     setInterval(function () { try { renderMyTraps(); } catch (e) {} }, 1200);
 
+    /* ================= Misconception concept notes =================
+       One plain-language paragraph per named-misconception family,
+       written from the diagnoses themselves: what the machine actually
+       does, stated as a rule. Keyed by the family name (normalised by
+       trapNoteKey, so capitalisation and curly quotes do not matter).
+       The same note is offered in two places: linked from the verdict a
+       student receives when that trap fires (renderInvestigate, via
+       trapNoteHtmlForDiag), and beside the family's name in the
+       misconception catalogue (renderCatalogue). A family with no note
+       here simply shows neither — the catalogue description still
+       stands on its own. */
+    function trapNoteKey(name) {
+      return String(name || "").toLowerCase().replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"').replace(/\u2212/g, "-").replace(/\s+/g, " ").replace(/\.\s*$/, "").trim();
+    }
+    var TRAP_NOTES = {
+      "one name, one variable": "A name means whichever box is in scope where the name is used. A local inside one function and a global with the same spelling are two different boxes: inside a function that declares its own local, the name means the local; in a function without one, the same spelling means the global. The same spelling never merges two boxes into one.",
+      "every call starts fresh": "An ordinary local variable is rebuilt on every call and forgets the previous call completely. A local declared static is the exception: it is created once, on the first call, and keeps its value between calls — which is how a static counter remembers where it left off.",
+      "the parameter is the caller's box": "A parameter passed by value is a fresh box holding a copy of the argument; changing it never touches the caller's variable. Only a reference parameter (written with &) is another name for the caller's own box, so only through a reference can a function change what the caller holds.",
+      "the block leaks": "A declaration inside a block creates a new box that lives only until the closing brace, even when it has the same name as a variable outside. Inside the block the new box shadows the outer one; when the block ends, the inner box is destroyed and the outer box — untouched — is what later lines see.",
+      "positions count from 1": "Indexes count from 0. The first value sits at index 0, the second at index 1, and the fourth value at index 3. When a search reports where it found something, it reports the index — the position counted from 0 — not the position counted from 1.",
+      "nested loops add": "A loop inside a loop multiplies, not adds: the inner loop runs its full count once for every single pass of the outer loop. Four outer passes with four inner passes each make sixteen inner runs, not eight.",
+      "words equal spaces": "Words and the spaces between them differ by one: a line holding two spaces between its words holds three words. Counting separators is not counting items — the last word has no space after it, so the word count is the space count plus one (for a line that has words at all).",
+      "shift means +1 or -1": "Shifting moves every bit one column, and each column is worth twice the one before it. A left shift by 1 doubles the value (6 becomes 12); it never just adds 1. A right shift by 1 halves the value, discarding the bit that falls off.",
+      "first in, first out": "That rule belongs to a queue. A stack has only one working end — the top: push adds there and pop takes from there, so the last value pushed is the first one popped. Nothing is served from the bottom or the front of a stack.",
+      "last in, first out": "That rule belongs to a stack. A queue serves from the head, where the longest-waiting value sits: the first value to arrive is the first one served, no matter what arrived after it.",
+      "every argument is copied": "Single values passed to a function are copied — but an array is not: an array parameter is another name for the caller's own array. Writes through it land in the original, which is exactly how array functions can sort or fill the caller's data.",
+      "counting swaps instead of comparisons": "Read where the counter actually sits. A counter placed before the test rises on every comparison, whether or not a swap follows; only a counter sitting on the swap line itself counts swaps. The line a counter lives on decides what it counts.",
+      "counting swaps instead of passes that move nothing": "Selection sort swaps at most once per pass — and only when the minimum it found is not already in place. A pass whose minimum already sits at the front moves nothing and swaps nothing.",
+      "insertion sort is always slow": "Insertion sort's cost depends on the data. Its inner loop stops at the first neighbour that is not bigger than the key, so nearly sorted data is cheap — a key already in place costs a single comparison. The expensive worst case belongs to reversed data, not to every input.",
+      "the pivot stays where it started": "In quicksort's partition, the pivot is parked out of the scan's way, but the step is not finished until a final swap trades the pivot into its boundary place. After that swap the pivot sits at its fully sorted position, with smaller values to its left and larger-or-equal values to its right.",
+      "partition sorts the sides": "Partition does not sort either side. It guarantees only two things: everything left of the pivot is smaller, and everything right of it is larger or equal — each side in whatever order the swaps left it. Sorting the sides is the recursive calls' work, still to come.",
+      "same input, same cost": "The same input can cost very different amounts under different algorithms. What an algorithm does with the data — test every neighbouring pair on every pass, or only ever compare the fronts of two sorted runs — sets the count, not the input alone.",
+      "scope frees the heap": "The end of a scope destroys stack boxes, including a pointer variable itself. The heap box it pointed at is not on the stack and is not freed by scope: heap memory is released only by delete. A pointer going out of scope without a delete leaves the heap box allocated and unreachable — a leak.",
+      "the single chain": "fib(n) = fib(n - 1) + fib(n - 2) makes two calls, not one: every call branches into two children, and the returned values combine pairwise on the way back up. Counting down a single chain — one call per step, adding 1 — misses the second branch entirely.",
+      "the shifted ladder": "The Fibonacci ladder is anchored at fib(0) = 0 and fib(1) = 1, and every value above them is fixed by those two anchors. Starting the ladder one rung too high (1, 2) shifts every later value up a place.",
+      "one base case is enough": "A recursion that reaches back two steps needs both of its base cases, exactly as written: fib(0) returns 0 and fib(1) returns 1. Treating fib(0) as 1 reseeds the whole ladder (1, 1, 2, 3, 5), and every value above it shifts with it.",
+      "stop at the first match": "A recursive count does not end at the first match. A line like return 1 + count(rest) banks the match and still recurses on the remainder; the walk ends only at the base case, and every match along the way adds its 1.",
+      "the last character is already counted": "The walk covers every index of the string, the last one included. Index length - 1 is a real character with a real frame and the same match test as every other index; stopping one early drops whatever sits there.",
+      "every character counts": "Examining a character is not the same as counting it. Only characters that pass the match test add to the tally; the others are looked at and passed over, contributing nothing.",
+      "a partial sum is the answer": "A sum returned by a deep frame is not the final answer while frames above it are still waiting. Each waiting frame adds its own piece as the returns unwind, so the total exists only when the very first call returns.",
+      "% and / swapped": "On the same division, / and % give the two halves of the answer: n / 10 drops the last digit (the quotient), and n % 10 peels that digit off (the remainder). Digit work lives on keeping the two straight: pass the quotient down, keep the remainder.",
+      "digits combine in peel order": "Recursive returns unwind deepest first. The frame nearest the base case completes first, and its value is folded into every partial result above it — so digits combine starting from the deepest frame, not in the order they were peeled off.",
+      "a bad token reads as zero": "A failed extraction does not convert the bad token to 0, and it does not skip it either. The stream enters its fail state, the value is not read, and everything behind the bad token stays unread until the failure is dealt with.",
+      "the body runs once for the failure": "When the extraction is the loop test, a failed read makes the test false and the body is skipped entirely — the failed pass adds no value and no count. The body runs once per successful read, and only for those.",
+      "count counts what is in the file": "A counter inside a loop body counts the passes that actually ran — the successful reads — not the tokens sitting in the file. Tokens never reached, because a read failed earlier, were never counted, however many the file holds.",
+      "eof means \"the last thing was just read\"": "eof() does not turn true when the last item is read. It turns true only when a read tries to go past the end and fails. A loop that tests eof() in its header therefore runs one extra pass after the last good read — the pass whose read fails.",
+      "the trailing newline swallows the last line": "A file's final newline ends the last line; it does not erase it. The line before that newline is read like any other. What a while (!eof()) loop adds is a phantom pass after the last real line, not a lost line before it.",
+      "eof starts out true": "eof() starts out false: no read has failed, because no read has happened yet. A while (!eof()) header passes on its first test and the first read runs. This loop's flaw is the extra pass at the end, not a stillbirth at the start.",
+      "a failed read zeroes the box": "Zeroing is not what this failed read does: the extraction writes nothing, the box keeps the value it already held, and only the stream's state changes. A failed read can be a non-event for the box — which is exactly why a stale value survives to be printed.",
+      "clear() skips the bad token": "clear() resets only the stream's state flags; it does not move the reading position and it does not remove anything. The bad token is still the next thing in the stream after clear() — actually skipping it takes a read, or an ignore().",
+      "the stream converts the word to a number": "A stream never converts a word into a number for you. Asking a numeric extraction to read a word fails outright: the box is handed 0, and the word stays in the stream — still text — until it is read as text or thrown away.",
+      "getline always reads the next line": "getline reads from where the stream is currently standing to the end of that line — not from the start of the next line. After a >> extraction, the stream stands at the end of the current line, so the next getline returns the rest of that line: often the empty remainder.",
+      "the reads stand or fall together": "Neighbouring reads do not share one fate. The extraction that succeeded keeps its value; only the read that actually meets the problem fails. Work out each read's result separately, from where the stream stands at the moment that read runs.",
+      "getline hunts for the next word": "getline does not skip ahead hunting for a word. It copies everything from the stream's current position to the end of the line, verbatim — and if the current position is already at a line's end, what it copies is the empty remainder, not a word from the next line.",
+      "the file's end is the only end": "A sentinel value is a second, agreed end to the data. The loop's value test stops at the marker (such as -1) exactly as surely as the physical end of the file would; values stored after the marker are never read at all.",
+      "skipping the sentinel is enough": "A sentinel does not mean 'leave this one value out and carry on'. When the header test meets the marker, the loop ends — everything after the marker stays unread, not merely unadded.",
+      "the header runs once": "A loop header runs before every pass, not once at the start. Each pass begins by testing again — here, by reading again — and the loop ends on the header run that fails, after all the successful passes have banked their values.",
+      "getline tidies the line up": "getline trims nothing. It copies its stretch of line exactly as it stands, leading spaces included. The >> operator skips whitespace when hunting for a token; getline, reading the rest of a line, preserves it.",
+      "the spaces are just spacing and vanish": "Spaces inside a line are characters like any others. >> steps over them while hunting for the next token, but getline copies its stretch verbatim — spaces, capitals, everything — so they survive into the box and into the output.",
+      "only the bad read fails": "A failed read jams the whole stream. From the moment one extraction fails, every later extraction on that stream is refused without even looking at the input, until the failure is cleared. One bad token can silence all the reads after it.",
+      "a failed read changes nothing and the program carries on": "A failed read is not a shrug. The extraction that fails hands its target 0, and the stream's fail state then refuses every later read — the program does not simply carry on to the next statement's input as if nothing had happened.",
+      "a failed read leaves its box alone": "Two different things happen to two different boxes. The extraction that itself fails hands its box 0; a later extraction attempted on the already-failed stream is refused outright and leaves its box untouched. Which box you are asking about decides which rule applies.",
+      "the first value a box holds is the one that prints": "Printing reads the box as it stands at the print, not as it first stood. If a later statement — including a later, successful read — overwrote the box, the newer value is what prints. The last write wins.",
+      "a failed read stores the bad input": "Letters can never be stored in an int box. A failed numeric read hands the box 0 and leaves the letters sitting in the stream, not in any variable; a later ignore() throws them away entirely. No box ever holds the bad input itself.",
+      "two reads into one box add up or join": "A second read into the same box replaces the first value; reads do not add up, and they do not join together. A box holds one value at a time, and the most recent successful write is the one that survives.",
+      "a bad token is skipped and reading carries on": "Nothing skips a bad token automatically. When the read in a loop header meets it, the read fails, the test is false, and the loop ends on the spot; everything typed behind the bad token is never reached.",
+      "the loop reads to the end of the line whatever happens": "A loop whose header is a read lives and dies by that read. The first failure ends the loop before the body runs — there is no pass in which later input is even attempted, whatever remains on the line.",
+      "when a read fails, the last good value is added once more": "A failed read runs the body zero additional times. The last good value was banked once, by its own successful pass; after that, the failure simply stops the adding. Failure repeats nothing.",
+      "erase only hides a key": "map::erase removes the whole pair — key and value together. After an erase, count for that key is 0 and the map's size has dropped; nothing about the entry survives, hidden or otherwise.",
+      "a lookup is harmless": "count() only looks, but operator[] does not: asking counts[key] for a missing key inserts that key first, with value 0, and only then reads it. A 'lookup' written with [] can grow the map; when you only mean to look, use count() or find().",
+      "unordered_map is just a faster map, output included": "A map and an unordered_map hold the same pairs but promise different orders. A map walks its pairs in sorted key order; an unordered_map promises only that each pair is visited once — its visiting order is an accident of the hash buckets, not sorted order.",
+      "the reference's type always decides": "That is true for ordinary functions — but a virtual function changes the contract: a call through a base-class reference or pointer runs the version belonging to the object's real type. Declare the function virtual, and the object, not the reference's type, decides.",
+      "the object always decides": "The object decides only when the function is virtual. A non-virtual function is chosen by the type of the reference or pointer used to make the call; a derived class's version merely hides the base one for calls made through the derived type.",
+      "the class you name is built first": "Construction runs base-first. When a derived object is built, its base part is constructed before the derived constructor's body runs — the base constructor initialises (and prints) first, and only then does the derived part build on top of it.",
+      "throw is a note the program reads later": "A throw is a jump, executed the moment it is reached. Control leaves the try block immediately for a matching catch, and statements after the throw inside the try never run. Nothing is noted down to be read later.",
+      "catch catches anything": "A catch is typed like a parameter: catch (int) can only receive an int. A thrown value whose type does not match the catch's type is not caught by it — the handler is a net woven for one kind of value.",
+      "capacity equals size": "Size is how many elements a vector holds; capacity is how many it has room for. When a push finds the vector full, capacity grows first (typically doubling), so from then on capacity is larger than size, with spare slots waiting.",
+      "reserve fills the vector": "reserve(n) books room only: it sets aside capacity, creates no elements, and leaves size at 0. Elements appear only when something actually puts them there, such as push_back.",
+      "every case stops on its own": "Only a break stops a case. Without one, execution falls through the next case label and runs its statements too. A case label is an entry door, not a wall between cases.",
+      "switch bands work like ranges": "A switch tests exact equality against its labels; it has no bands, no ranges, and no nearest match. If the value equals no label, default runs — being close to a label counts for nothing.",
+      "both sides of && always run": "&& short-circuits: if the left side is false, the whole expression is already false and the right side never runs — including any function call sitting there. Side effects on the right of && happen only when the left side is true.",
+      "both sides of || always run": "|| short-circuits the other way: if the left side is true, the whole expression is already true and the right side never runs — including any function call sitting there. Side effects on the right of || happen only when the left side is false.",
+      "! waits for the whole comparison": "! binds more tightly than ==: it applies to the value immediately beside it first. !signal is computed (any nonzero value negates to 0), and only then does the comparison run. To negate a whole comparison, write the parentheses: !(a == b).",
+      "= inside a condition still compares": "= inside a condition is still assignment, even there. It overwrites the variable first, and the condition's value is the value just assigned — nonzero means true. Comparison is ==; a single = in a test is a write wearing a test's clothing.",
+      "only the successful probe counts": "A counter at the top of a loop body counts every pass, misses included. A probe that finds nothing still ran, still moved a bound, and still raised the counter; counting only the successful probe undercounts the search's work.",
+      "the bound stays put": "Binary search makes progress because each pass moves a bound past the probed cell: lo = mid + 1 or hi = mid - 1. The live range shrinks on every pass, which is what guarantees the search ends. (Leaving the probed cell in range — lo = mid — is the version that can loop forever.)",
+      "the final index counts from 1": "The last cell of a nine-value array is index 8, because indexes count from 0. When a search stores the index it landed on, that 0-based index is what prints; the position counted from 1 is one higher, and it is a different number.",
+      "const is only a starting value": "const is a lock, not a label on a starting value. The value given at the declaration is the only write a const box may ever receive; any later assignment to it is refused by the compiler — and with it, the whole program.",
+      "the compiler skips the bad line": "Compilers do not edit programs. One illegal line — an assignment to a const box, anywhere — refuses the entire program: the legal lines are checked, but they never run. There is no version of the program with the bad line quietly dropped.",
+      "a compile error is a stop sign partway through a run": "A compile error happens before there is a program to run: nothing executes — not the lines before the error, not a partial run. That is what distinguishes it from a runtime error, where the program starts and stops partway.",
+      "a const reference takes a snapshot": "A reference is a second name for the same box, not a photograph of it. A const reference forbids writing through that name, but it holds no copy: when the box changes through its other name, reads through the reference see the new value.",
+      "const on one name freezes the box": "const restricts the name it is attached to, not the box that name refers to. A write through the const name is refused; a write through the box's own non-const name is perfectly legal, and the box changes.",
+      "the parameter froze the caller's variable": "A parameter's const lives on the parameter's name, inside the function only. It does not travel back to the caller's variable, which keeps whatever const-ness its own declaration gave it — usually none.",
+      "a const parameter is a locked door": "A const reference parameter is a door for reading: handing a function a value it may inspect without copying is exactly what const& is for. What the lock forbids is writing through that parameter — inspection is its whole purpose.",
+      "const on a parameter is a promise the compiler trusts": "const is enforced, not trusted. A write through a const parameter makes the compiler reject the whole program before anything runs — the same refusal as any other const write, however harmless the intent behind it.",
+      "the call is quietly ignored": "A function containing an illegal write is not quietly skipped, and neither is a call to it. The illegal line refuses the entire program at compile time: no call runs, no other output prints, nothing is salvaged.",
+      "the const froze the pointer": "In const int* p, the const sits with the int: the pointed-at value is read-only through p, but p itself is an ordinary pointer and may be re-aimed at another box. Placement decides what is frozen.",
+      "any const near a pointer locks the whole declaration": "One const locks exactly one thing, and its placement says which: const int* locks the pointee (read-only through this pointer; the pointer is free to move), while int* const locks the pointer (aim fixed; the pointee stays writable through it).",
+      "a const pointer freezes the pointed-at value": "In int* const p, the const sits with the pointer: p's aim is frozen, but the box it aims at was never declared const, so writing through *p is legal and changes that box.",
+      "const anywhere in the declaration locks everything it touches": "One const locks one thing — in int* const p, the aim. Re-aiming p would fail; writing through the fixed aim is the pointer's whole job, and it is allowed. Read the placement before deciding what a declaration forbids.",
+      "the first index chooses the column": "Grid indexes run [row][column], in that order: the first index picks the row, and the second picks the column within it. grid[1][2] is row 1, column 2 — reading the pair the other way round lands in a different cell.",
+      "indexes count from 1": "Every index in C++ counts from 0 — rows and columns included. Row 1 is the second row and column 2 is the third column; counting either of them from 1 reads a neighbouring cell.",
+      "a column walk reads across a row": "Which index moves decides the direction of a walk. grid[r][0] with r changing walks down a column — the row changes while the column stays 0. A walk across a row holds the row fixed and moves the column index instead.",
+      "the loop stops before the boundary index": "<= includes its boundary: under the test c <= 2, the pass at c == 2 runs, because 2 <= 2 is true. A loop stops before its boundary only under a strict < test.",
+      "a write lands in the mirrored cell": "grid[0][1] and grid[1][0] are different boxes. A write to one cell changes exactly that cell; the grid is not symmetric, and the mirrored position keeps its own value.",
+      "the search stops after the first row": "A nested-loop search does not end with the first row: the outer loop's next pass runs the inner loop again, in full, over the next row. The best value found in row 0 is only the best so far, until every row has been walked.",
+      "plus glues values like text": "+ follows the types of its operands. On strings it joins text; on ints it is ordinary arithmetic. Two int fields read through the dot add as numbers — 3 + 4 is 7, not the text '34'.",
+      "the closing brace ends the definition": "A struct definition ends with }; — the brace closes the field list, and the semicolon after it ends the definition. Both parts belong to a complete definition; forgetting that semicolon is the classic struct error.",
+      "assignment shares the fields": "Assigning one struct to another copies every field's value into the target's own fields. From that moment the two records are independent boxes: writing into one never shows in the other.",
+      "a struct argument is shared, not copied": "A struct passed by value is copied whole into the parameter, like any other by-value argument. The function's writes land in its copy, and the caller's record is untouched. Only a reference parameter (&) shares the original.",
+      "the loop counts boxes, not contents": "A loop adds what its body says. total += shelf[i].qty adds each record's qty value — 2, then 5, then 3 — not 1 per visit. Counting the records and summing a field inside them are different bodies, with different totals.",
+      "the dot and brackets wait their turn": "Member access resolves first, and completely: shelf[0].qty is one value (4) and shelf[1].qty is another (6) before any arithmetic happens. Only then do the ordinary rules of precedence apply to those values.",
+      ">> reads the whole line": ">> reads one token: it skips leading whitespace, then stops at the next whitespace. It never takes the whole line — taking the rest of a line, spaces and all, is getline's job."
+    };
+    function trapNoteFor(name) {
+      try {
+        if (typeof TRAP_NOTES === "undefined" || !TRAP_NOTES) return null;
+        return TRAP_NOTES[trapNoteKey(name)] || null;
+      } catch (e) { return null; }
+    }
+    function trapNoteDetailsHtml(name) {
+      var note = trapNoteFor(name);
+      if (!note) return "";
+      return '<details class="trap-note"><summary>Concept note — ' + esc(name) + '</summary><p>' + esc(note) + '</p></details>';
+    }
+    function trapNoteHtmlForDiag(diagText) {
+      try {
+        var t = String(diagText || "").replace(/<[^>]+>/g, "").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, '"').replace(/&#39;|&rsquo;/g, "\u2019").replace(/&amp;/g, "&");
+        var i = t.indexOf("Named misconception:");
+        if (i === -1) return "";
+        var rest = t.slice(i + "Named misconception:".length).replace(/^\s+/, "");
+        var dot = rest.indexOf(".");
+        if (dot === -1) return "";
+        var name = rest.slice(0, dot).replace(/\s+/g, " ").trim();
+        if (rest.charAt(dot + 1) === "\u201D") name += "\u201D";
+        return trapNoteDetailsHtml(name);
+      } catch (e) { return ""; }
+    }
+
     /* ================= Misconception catalogue (instructor) =================
        One panel inside Session & instructor tools (see #catalogue-section).
        The catalogue itself is derived at render from the tracer diagnoses:
@@ -26966,7 +27161,7 @@ int main() {
         (hasOwn ? '<th scope="col">Fired in your record</th>' : "") + (hasImp ? '<th scope="col">Fired in imported codes</th>' : "") + "</tr></thead><tbody>";
       cat.forEach(function (row) {
         var key = row.name.toLowerCase();
-        html += "<tr><td><strong>" + esc(row.name) + "</strong></td><td>" + esc(row.desc) + "</td><td>" +
+        html += "<tr><td><strong>" + esc(row.name) + "</strong>" + (function () { var n = trapNoteFor(row.name); return n ? '<details class="trap-note-cell"><summary>Concept note</summary><p>' + esc(n) + "</p></details>" : ""; })() + "</td><td>" + esc(row.desc) + "</td><td>" +
           row.exs.map(function (n) { return "Exercise " + n; }).join(", ") + "</td>" +
           (hasOwn ? "<td>" + (own.counts[key] || 0) + "</td>" : "") +
           (hasImp ? "<td>" + (imp.counts[key] || 0) + "</td>" : "") + "</tr>";
@@ -27138,6 +27333,49 @@ int main() {
       });
       renderRoster(true);
       setInterval(function () { try { renderRoster(false); } catch (e) {} }, 1500);
+    })();
+
+    /* ================= Assign by trap (instructor) =================
+       A second door into the same assignment machinery: the picker is
+       the misconception catalogue itself (catBuild — the families the
+       tracer's diagnoses name, with the exercises where each can fire),
+       so there is no parallel tagging to drift out of date. Picking a
+       family collects exactly those exercises into a normal assignment
+       { title, due, exs } — same TFA1: code, same #assign- link, same
+       saved list, same persistence as a hand-picked set. The picker
+       shows each family's exercise count as it stands, few included. */
+    (function initAssignByTrap() {
+      var sel = $("assign-trap-select");
+      var btn = $("assign-trap-btn");
+      if (!sel || !btn) return;
+      var cat = [];
+      try { cat = catBuild(); } catch (e) { cat = []; }
+      if (!cat.length) {
+        sel.innerHTML = '<option value="">No misconception families found</option>';
+        btn.disabled = true;
+        return;
+      }
+      sel.innerHTML = cat.map(function (row, i) {
+        return '<option value="' + i + '">' + esc(row.name) + " — " + row.exs.length + (row.exs.length === 1 ? " exercise" : " exercises") + "</option>";
+      }).join("");
+      btn.addEventListener("click", function () {
+        var status = $("assign-trap-status");
+        var i = parseInt(sel.value, 10);
+        var row = cat[i];
+        if (!row || !row.exs.length) { if (status) status.textContent = "Pick a misconception family first."; return; }
+        var dueEl = $("assign-due");
+        var due = dueEl ? (dueEl.value || "") : "";
+        if (!due) { if (status) status.textContent = "Pick a due date in the form above first — a trap assignment uses the same title-and-due-date form as any other assignment."; return; }
+        var a = { title: ("Trap — " + row.name).slice(0, 120), due: due, exs: row.exs.map(function (n) { return n - 1; }) };
+        assignments.push(a);
+        if (typeof tfSave === "function") tfSave();
+        if (typeof renderAssignSaved === "function") renderAssignSaved();
+        var code = assignEncode(a);
+        var out = $("assign-code-out"); if (out) out.value = code;
+        var created = $("assign-created"); if (created) created.hidden = false;
+        if (status) status.textContent = "Created \u201C" + a.title + "\u201D — " + a.exs.length + (a.exs.length === 1 ? " exercise" : " exercises") + " (Exercises " + row.exs.join(", ") + "), due " + due + ". Its TFA1: code is in the share box above, and it is saved in the Assignments list.";
+        announce("Trap assignment created: " + a.title + " — " + a.exs.length + " exercises, due " + due + ".");
+      });
     })();
 
     /* ================= Class misconception heatmap (this device) =================
