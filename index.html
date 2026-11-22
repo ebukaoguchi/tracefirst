@@ -15,7 +15,7 @@
     <title>TraceFirst Prediction Tracer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
     <style>
       :root {
         --bg: #ffffff;
@@ -1297,6 +1297,26 @@
       :root[data-textsize="large"] { font-size: 18.5px; }
       :root[data-textsize="large"] body { font-size: 18.5px; }
 
+      /* ---------- Reading comfort: dyslexia-friendly reading ----------
+         A further view preference beside Reduce motion and Larger text,
+         persisted additively as `dyslexiaPref` inside
+         tracefirst-progress-v1 (see the persistence block). Sets
+         data-reading="dyslexia" on the root: prose switches to Atkinson
+         Hyperlegible with wider letter and word spacing and a looser line
+         height; code keeps its mono face but gains wider letter spacing
+         and line height; and inside any code box that has a current line,
+         that line (.cline.active in the tracer, .gline.pending in the
+         gym) stays fully lit while the other lines dim, so the eye has
+         one place to land. It composes with the other comfort switches:
+         each preference owns its own root attribute, and Larger text's
+         root font-size scaling applies on top unchanged. */
+      :root[data-reading="dyslexia"] body { font-family: "Atkinson Hyperlegible", "Verdana", sans-serif; letter-spacing: .03em; word-spacing: .07em; line-height: 1.75; }
+      :root[data-reading="dyslexia"] .cline, :root[data-reading="dyslexia"] .gline { letter-spacing: .045em; line-height: 1.95; }
+      :root[data-reading="dyslexia"] .codebox:has(.cline.active) .cline { opacity: .45; }
+      :root[data-reading="dyslexia"] .codebox:has(.cline.active) .cline.active { opacity: 1; box-shadow: inset 4px 0 0 var(--amber), 0 0 0 1.5px var(--amber); font-weight: 600; }
+      :root[data-reading="dyslexia"] #gym-code:has(.gline.pending) .gline { opacity: .45; }
+      :root[data-reading="dyslexia"] #gym-code:has(.gline.pending) .gline.pending { opacity: 1; font-weight: 600; }
+
       /* ---------- Gap builds: briefings, review, ladders, trace view, diagnostics, culminating ---------- */
       .brief-panel{margin-top:14px;border:1.5px solid var(--accent)}
       .brief-body{font-size:.95rem;margin-top:8px}
@@ -1582,6 +1602,7 @@
       /* Challenges: compact task stack */
       #ch-tasks { display: grid; gap: 12px; }
       #ch-tasks .card { margin-top: 0; }
+      .sprint-meta { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
       /* ---------- Resume strip ---------- */
       .resume-strip { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; justify-content: space-between; background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 10px; padding: 10px 14px; margin-bottom: 16px; }
       .resume-strip[hidden] { display: none; }
@@ -1765,6 +1786,7 @@
               <button type="button" class="bg-btn comfort-btn" id="motion-toggle" aria-pressed="false"><span class="cdot" aria-hidden="true"></span>Reduce motion</button>
               <button type="button" class="bg-btn comfort-btn" id="textsize-toggle" aria-pressed="false"><span class="cdot" aria-hidden="true"></span>Larger text</button>
               <button type="button" class="bg-btn comfort-btn" id="readaloud-toggle" aria-pressed="false"><span class="cdot" aria-hidden="true"></span>Read trace aloud</button>
+              <button type="button" class="bg-btn comfort-btn" id="reading-toggle" aria-pressed="false"><span class="cdot" aria-hidden="true"></span>Dyslexia-friendly reading</button>
             </div>
             <p class="display-note" id="readaloud-note" hidden>Read-aloud needs speech synthesis, which this browser does not provide. Trace steps are still announced on screen as text as you step.</p>
             <p class="display-note">Display choices are saved in this browser, on this device.</p>
@@ -1825,7 +1847,7 @@
             <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Order code, then write a line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find and fix faults.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 116</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 122</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write your own programs.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
             <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
@@ -2164,7 +2186,7 @@ for (int i = 0; i < 3; i++) {
             <select class="lecture-select" id="lecture-ex-select" aria-label="Choose an exercise to project"></select>
             <button class="btn" type="button" id="lecture-project-btn">Project this exercise</button>
           </div>
-          <p class="lecture-pick-note">Any of the 116 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
+          <p class="lecture-pick-note">Any of the 122 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
         </div>
 
         <div id="lecture-project" hidden>
@@ -3043,7 +3065,7 @@ for (int i = 0; i < 3; i++) {
       <div id="challenges-mode" role="tabpanel" tabindex="0" hidden>
         <section class="ch-intro">
           <h2>Tasks, projects, and an exam — at your level.</h2>
-          <p>Pick a level and work in three parts: <strong>short tasks</strong> checked instantly, <strong>guided projects</strong> with milestones and a prediction-first test bench, and a <strong>six-question exam</strong> scored at the end. Start where you are honest, not where you wish you were — the levels share ideas, so finishing one prepares the next.</p>
+          <p>Pick a level and work in three parts: <strong>short tasks</strong> checked instantly, <strong>guided projects</strong> with milestones and a prediction-first test bench, and a <strong>six-question exam</strong> scored at the end. Start where you are honest, not where you wish you were — the levels share ideas, so finishing one prepares the next. Below the exam sits a level-free <strong>prediction sprint</strong>: five tracer programs against the clock, accuracy first and time second.</p>
         </section>
         <div class="ch-levels" id="ch-levels" role="group" aria-label="Choose your level"></div>
         <section class="toolbar" style="margin-top:16px;" aria-label="Your Challenges record">
@@ -3092,6 +3114,17 @@ for (int i = 0; i < 3; i++) {
           <div id="ch-exam" style="margin-top:14px;"></div>
           <div class="exam-score" id="ch-exam-score" role="status"></div>
           <div class="lockrow"><button class="btn ghost" type="button" id="ch-exam-restart">Retake this exam</button></div>
+            </section>
+          </div>
+        </details>
+        <details class="ch-collapse" id="ch-sprint-wrap">
+          <summary>Prediction sprint <span class="gcount">Five predictions against the clock &#9662;</span></summary>
+          <div class="ch-collapse-inner">
+            <p class="ch-section-sub">Five short programs drawn from the Prediction Tracer, one at a time, against a running clock. There is no feedback between questions: each tap locks the answer and moves on. At the end, <strong>accuracy is reported first and total time second</strong> — a slower clean run beats a fast sloppy one. Sprint answers live only in the sprint: they never touch the tracer record, the accuracy counts, or the journal. Your best sprint on this device is kept in the panel.</p>
+            <section class="card" style="margin-top:10px;" aria-labelledby="ch-sprint-title">
+              <span class="concept-tag">Prediction sprint · 5 questions</span>
+              <h2 id="ch-sprint-title" style="font-size:1.25rem;">Prediction sprint</h2>
+              <div id="ch-sprint" style="margin-top:14px;"></div>
             </section>
           </div>
         </details>
@@ -3333,12 +3366,12 @@ int main() {
         <div id="instructors-body" hidden>
           <div class="lecture-inst-entry">
             <h4>Lecture mode — run a tracer exercise in front of the class</h4>
-            <p>A single projected screen: pick any of the 116 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
+            <p>A single projected screen: pick any of the 122 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
             <div class="journal-actions"><button class="btn small" type="button" id="lecture-open-btn-2">Open Lecture mode</button></div>
           </div>
                     <div class="studio" id="inst-studio">
             <h4>Instructor exercise studio</h4>
-            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 116 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
+            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 122 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
             <div class="authored-field">
               <label for="inst-title">Exercise title</label>
               <input class="authored-input" type="text" id="inst-title" maxlength="80" placeholder="e.g. The average that is not an average" autocomplete="off">
@@ -10736,6 +10769,277 @@ int main() {
           correct: 0,
           explain: "The accesses still resolve first (4 and 6), and * still binds before +: 6 * 3 = 18, and 4 + 18 = <b>22</b>. (30 would be (4 + 6) * 3 — the left-to-right reading again.)"
         }
+      },
+      {
+        concept: "Strings · find",
+        topic: "Strings and characters",
+        title: "Where the word inside starts",
+        goal: "<b>find</b> answers <em>where</em>: it returns the index at which the searched text starts inside the string — counted from 0, like every index.",
+        stories: {
+          health:   "A clinic app keeps the label <strong>notebook</strong> in a string and searches it for the part <strong>book</strong>, printing the position where that part starts.",
+          psych:    "A study app keeps the word <strong>notebook</strong> in a string and searches it for the part <strong>book</strong>, printing the position where that part starts.",
+          business: "A stock app keeps the label <strong>notebook</strong> in a string and searches it for the part <strong>book</strong>, printing the position where that part starts.",
+          arts:     "A media app keeps the label <strong>notebook</strong> in a string and searches it for the part <strong>book</strong>, printing the position where that part starts."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    string word = \"notebook\";",
+          "    int pos = word.find(\"book\");",
+          "    cout << pos << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["4", "5", "3", "0"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "<b>Named misconception: positions count from 1.</b> The b of book is the <em>fifth</em> character a person counts — but find returns an <b>index</b>, and indexes count from 0: n is 0, o is 1, t is 2, e is 3, so b sits at index <b>4</b>. The parting step is the find itself: pos becomes 4, not 5." },
+          2: { step: 1, text: "3 is one letter too early: index 3 is the <b>e</b> of note, the letter just before the match begins. find reports the index of the match's <em>first</em> letter — the b at index <b>4</b>." },
+          3: { step: 1, text: "0 would mean the match starts at the very first character — that is where <b>note</b> starts, not <b>book</b>. find scans from the left and reports the first place the whole searched text fits: index <b>4</b>." }
+        },
+        steps: [
+          { line: 5, vars: { word: ["string", "\"notebook\""] }, out: "", note: "The box <b>word</b> is created holding <b>notebook</b> — eight letters, at indexes 0 to 7." },
+          { line: 6, vars: { word: ["string", "\"notebook\""], pos: ["int", "4"] }, out: "", note: "<b>The parting step.</b> find scans word for <b>book</b> and finds it starting at the b — index <b>4</b>. A second box, <b>pos</b>, is created holding 4." },
+          { line: 7, vars: { word: ["string", "\"notebook\""], pos: ["int", "4"] }, out: "4", note: "cout prints the box: <b>4</b>." },
+          { line: 8, vars: { word: ["string", "\"notebook\""], pos: ["int", "4"] }, out: "4", note: "The program ends. Final answer: <b>4</b>." }
+        ],
+        modify: {
+          prompt: "The searched text changes from \"book\" to \"note\". Nothing else changes. What prints now?",
+          code: 'string word = "notebook";\nint pos = word.find(<mark>"note"</mark>);\ncout << pos << endl;',
+          options: ["0", "1", "4", "-1"],
+          correct: 0,
+          explain: "note starts at the very first character, so find returns index <b>0</b>. A successful search can return 0 — 0 is a position, not a failure."
+        }
+      },
+      {
+        concept: "Strings · find & npos",
+        topic: "Strings and characters",
+        title: "The search that found nothing",
+        goal: "When <b>find</b> cannot find its text, it returns <b>string::npos</b> — a special 'no position' value, not −1 and not 0.",
+        stories: {
+          health:   "A clinic app keeps the label <strong>notebook</strong> in a string and searches it for the part <strong>pen</strong>, printing whatever the search returns.",
+          psych:    "A study app keeps the word <strong>notebook</strong> in a string and searches it for the part <strong>pen</strong>, printing whatever the search returns.",
+          business: "A stock app keeps the label <strong>notebook</strong> in a string and searches it for the part <strong>pen</strong>, printing whatever the search returns.",
+          arts:     "A media app keeps the label <strong>notebook</strong> in a string and searches it for the part <strong>pen</strong>, printing whatever the search returns."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    string word = \"notebook\";",
+          "    cout << word.find(\"pen\") << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["18446744073709551615", "-1", "0", "8"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "<b>Named misconception: a failed find returns -1.</b> −1 is the value this result becomes <em>if you store it into an int box</em> — the storage wraps it. Printed straight from find, the value is <b>string::npos</b>: the largest value the result type can hold, <b>18446744073709551615</b>. The parting step is the print itself: nothing was ever stored in a signed box." },
+          2: { step: 1, text: "0 is a real index — the first character's position — and find returns it when a match really does start there. For a failed search find does not fall back to 0; it returns its no-position value, <b>npos</b>." },
+          3: { step: 1, text: "8 is the string's length — one past the last index. find does not report the length on failure; it returns <b>npos</b>, the same no-position value whatever the string's length." }
+        },
+        steps: [
+          { line: 5, vars: { word: ["string", "\"notebook\""] }, out: "", note: "The box <b>word</b> is created holding <b>notebook</b>. Nothing has printed yet." },
+          { line: 6, vars: { word: ["string", "\"notebook\""] }, out: "18446744073709551615", note: "<b>The parting step.</b> pen never appears in notebook, so find returns <b>string::npos</b> — and cout prints it in full: <b>18446744073709551615</b>." },
+          { line: 7, vars: { word: ["string", "\"notebook\""] }, out: "18446744073709551615", note: "The program ends. Final answer: <b>18446744073709551615</b> — the no-position value, printed whole." }
+        ],
+        modify: {
+          prompt: "The word changes from \"notebook\" to \"pencil\". The search is still for \"pen\". What prints now?",
+          code: 'string word = <mark>"pencil"</mark>;\ncout << word.find("pen") << endl;',
+          options: ["0", "1", "-1", "18446744073709551615"],
+          correct: 0,
+          explain: "This time the text is there: pen starts the word, so find returns index <b>0</b>. npos appears only when the search fails."
+        }
+      },
+      {
+        concept: "Strings · substr",
+        topic: "Strings and characters",
+        title: "Three letters, starting at two",
+        goal: "<b>substr(pos, len)</b> takes a starting index and a <em>count</em> of characters: it copies len characters beginning at pos.",
+        stories: {
+          health:   "A clinic app keeps the label <strong>notebook</strong> in a string, cuts a short piece out of it with substr, and prints the piece.",
+          psych:    "A study app keeps the word <strong>notebook</strong> in a string, cuts a short piece out of it with substr, and prints the piece.",
+          business: "A stock app keeps the label <strong>notebook</strong> in a string, cuts a short piece out of it with substr, and prints the piece.",
+          arts:     "A media app keeps the label <strong>notebook</strong> in a string, cuts a short piece out of it with substr, and prints the piece."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    string word = \"notebook\";",
+          "    string part = word.substr(2, 3);",
+          "    cout << part << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["teb", "te", "ebo", "tebook"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "<b>Named misconception: substr's second number is the end index.</b> Reading (2, 3) as 'from index 2 to index 3' gives te — but the second number is not an index at all. It is a <b>count</b>: start at index 2 and take <b>3</b> characters: t, e, b. The parting step is the substr call itself." },
+          2: { step: 1, text: "ebo starts one letter late — at index 3 — as if the first number counted positions from 1. Indexes count from 0 here too: index 2 is the <b>t</b>, and the slice starts there." },
+          3: { step: 1, text: "tebook takes everything from index 2 to the end of the word — the count was ignored. The second number limits the slice to exactly <b>3</b> characters: teb." }
+        },
+        steps: [
+          { line: 5, vars: { word: ["string", "\"notebook\""] }, out: "", note: "The box <b>word</b> is created holding <b>notebook</b> — indexes 0 to 7." },
+          { line: 6, vars: { word: ["string", "\"notebook\""], part: ["string", "\"teb\""] }, out: "", note: "<b>The parting step.</b> substr(2, 3) starts at index 2 (the t) and takes <b>3</b> characters: t, e, b. A second box, <b>part</b>, is created holding <b>teb</b>. word itself is unchanged — substr copies, it does not cut." },
+          { line: 7, vars: { word: ["string", "\"notebook\""], part: ["string", "\"teb\""] }, out: "teb", note: "cout prints the piece: <b>teb</b>." },
+          { line: 8, vars: { word: ["string", "\"notebook\""], part: ["string", "\"teb\""] }, out: "teb", note: "The program ends. Final answer: <b>teb</b>." }
+        ],
+        modify: {
+          prompt: "The substr call changes from substr(2, 3) to substr(0, 4). Nothing else changes. What prints now?",
+          code: 'string word = "notebook";\nstring part = word.substr(<mark>0, 4</mark>);\ncout << part << endl;',
+          options: ["note", "teb", "notebook", "not"],
+          correct: 0,
+          explain: "Start at index 0 and take <b>4</b> characters: n, o, t, e — <b>note</b>. The first number is the start, the second is the count."
+        }
+      },
+      {
+        concept: "Strings · comparing with == and <",
+        topic: "Strings and characters",
+        title: "Equal, but not less",
+        goal: "<b>==</b> and <b>&lt;</b> ask different questions of two strings: == asks whether the text is identical; &lt; asks whether the left string sorts <em>before</em> the right one. Equal text answers the first yes and the second no.",
+        stories: {
+          health:   "A clinic app stores the word <strong>melon</strong> in two separate strings and prints the results of comparing them two ways: with == and with &lt;.",
+          psych:    "A study app stores the word <strong>melon</strong> in two separate strings and prints the results of comparing them two ways: with == and with &lt;.",
+          business: "A stock app stores the word <strong>melon</strong> in two separate strings and prints the results of comparing them two ways: with == and with &lt;.",
+          arts:     "A media app stores the word <strong>melon</strong> in two separate strings and prints the results of comparing them two ways: with == and with &lt;."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    string a = \"melon\";",
+          "    string b = \"melon\";",
+          "    cout << (a == b) << \" \" << (a < b) << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["1 0", "1 1", "0 0", "0 1"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "<b>Named misconception: less-than lets equals through.</b> The first 1 is right: the texts are identical, so == holds. But &lt; is <b>strict</b> — melon does not sort before itself. The operator that lets equals through is &lt;=. The parting step is the second comparison in the print." },
+          2: { step: 2, text: "<b>Named misconception: == compares the boxes, not the letters.</b> a and b are two separate boxes — but == on strings never asks that. It compares the <b>contents</b>, letter by letter: both spell melon, so == gives <b>1</b>. (The second value, 0, you had right.)" },
+          3: { step: 2, text: "The two answers are swapped. The first printed value belongs to ==: identical text, so <b>1</b>. The second belongs to &lt;: equal strings do not sort before each other, so <b>0</b>. Read the print left to right and match each value to its operator." }
+        },
+        steps: [
+          { line: 5, vars: { a: ["string", "\"melon\""] }, out: "", note: "The box <b>a</b> is created holding <b>melon</b>." },
+          { line: 6, vars: { a: ["string", "\"melon\""], b: ["string", "\"melon\""] }, out: "", note: "A second box, <b>b</b>, is created holding <b>melon</b> too — same text, separate box." },
+          { line: 7, vars: { a: ["string", "\"melon\""], b: ["string", "\"melon\""] }, out: "1 0", note: "<b>The parting step.</b> Two comparisons run inside the one print. <b>a == b</b>: the texts are identical, so it gives <b>1</b> (true prints as 1). <b>a &lt; b</b>: melon does not sort before melon, so it gives <b>0</b>. The program prints <b>1 0</b>." },
+          { line: 8, vars: { a: ["string", "\"melon\""], b: ["string", "\"melon\""] }, out: "1 0", note: "The program ends. Final answer: <b>1 0</b>." }
+        ],
+        modify: {
+          prompt: "The second string changes from \"melon\" to \"lemon\". The print is untouched. What prints now?",
+          code: 'string a = "melon";\nstring b = <mark>"lemon"</mark>;\ncout << (a == b) << " " << (a < b) << endl;',
+          options: ["0 0", "0 1", "1 0", "1 1"],
+          correct: 0,
+          explain: "The texts now differ, so == gives <b>0</b>. And melon does not sort before lemon — at the first letter, m comes after l — so &lt; gives <b>0</b> too: <b>0 0</b>."
+        }
+      },
+      {
+        concept: "Strings · ordering",
+        topic: "Strings and characters",
+        title: "Decided at the fourth letter",
+        goal: "Strings sort <b>letter by letter</b>: the comparison stops at the first position where the two strings differ, and that one letter decides the order — length is never consulted.",
+        stories: {
+          health:   "A clinic app holds two labels, <strong>banana</strong> and <strong>band</strong>, and prints which one sorts first.",
+          psych:    "A study app holds two words, <strong>banana</strong> and <strong>band</strong>, and prints which one sorts first.",
+          business: "A stock app holds two labels, <strong>banana</strong> and <strong>band</strong>, and prints which one sorts first.",
+          arts:     "A media app holds two labels, <strong>banana</strong> and <strong>band</strong>, and prints which one sorts first."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    string first = \"banana\";",
+          "    string second = \"band\";",
+          "    if (first < second) {",
+          "        cout << \"first\" << endl;",
+          "    } else {",
+          "        cout << \"second\" << endl;",
+          "    }",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["first", "second", "first second", "nothing"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "<b>Named misconception: the longer string compares bigger.</b> banana has six letters and band has four — but the comparison never counts them. It walks both strings together: b matches b, a matches a, n matches n, and at index 3 the letters finally differ: <b>a</b> against <b>d</b>. a sorts before d, so banana sorts before band and the if branch runs. The parting step is the condition itself." },
+          2: { step: 2, text: "An if / else runs exactly one branch. The condition is true, so the else branch is skipped entirely — only <b>first</b> prints." },
+          3: { step: 2, text: "The condition is a real comparison and it has a definite answer: banana sorts before band, so the condition is true and the first branch prints. One of the two words always prints." }
+        },
+        steps: [
+          { line: 5, vars: { first: ["string", "\"banana\""] }, out: "", note: "The box <b>first</b> is created holding <b>banana</b> — six letters." },
+          { line: 6, vars: { first: ["string", "\"banana\""], second: ["string", "\"band\""] }, out: "", note: "The box <b>second</b> is created holding <b>band</b> — four letters." },
+          { line: 7, vars: { first: ["string", "\"banana\""], second: ["string", "\"band\""] }, out: "", note: "<b>The parting step.</b> The comparison walks the two strings together: b = b, a = a, n = n — then index 3: <b>a</b> in banana against <b>d</b> in band. a sorts before d, so <b>first &lt; second is true</b>. The remaining letters are never looked at." },
+          { line: 8, vars: { first: ["string", "\"banana\""], second: ["string", "\"band\""] }, out: "first", note: "The if branch runs and prints <b>first</b>. The else branch is skipped entirely." },
+          { line: 12, vars: { first: ["string", "\"banana\""], second: ["string", "\"band\""] }, out: "first", note: "The program ends. Final answer: <b>first</b>." }
+        ],
+        modify: {
+          prompt: "The first string changes from \"banana\" to \"banter\". The second is still \"band\", and the rest of the program is untouched. What prints now?",
+          code: 'string first = <mark>"banter"</mark>;\nstring second = "band";\nif (first < second) {\n    cout << "first" << endl;\n} else {\n    cout << "second" << endl;\n}',
+          options: ["second", "first", "first second", "nothing"],
+          correct: 0,
+          explain: "banter against band is again decided at index 3 — but now the letters are <b>t</b> against <b>d</b>, and t sorts after d. The condition fails, the else branch runs, and the program prints <b>second</b>."
+        }
+      },
+      {
+        concept: "Strings · indexing the end",
+        topic: "Strings and characters",
+        title: "The character that prints as nothing",
+        goal: "A string of length 3 has characters at indexes 0, 1, 2 — and one more readable slot: index <b>length()</b> itself, which always holds the string's terminating null character, the character with value 0.",
+        stories: {
+          health:   "A clinic app stores the short label <strong>cat</strong> in a string and prints the character at index 3, between two brackets so the printout shows exactly what came out.",
+          psych:    "A study app stores the short word <strong>cat</strong> in a string and prints the character at index 3, between two brackets so the printout shows exactly what came out.",
+          business: "A stock app stores the short label <strong>cat</strong> in a string and prints the character at index 3, between two brackets so the printout shows exactly what came out.",
+          arts:     "A media app stores the short label <strong>cat</strong> in a string and prints the character at index 3, between two brackets so the printout shows exactly what came out."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    string word = \"cat\";",
+          "    cout << \"[\" << word[3] << \"]\" << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["[]", "[t]", "[ ]", "The program crashes"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "t is the third letter a person counts — but indexes count from 0, so t sits at index <b>2</b>. Index 3 is one past the last letter, and what lives there is not t." },
+          2: { step: 1, text: "The slot past the last letter does not hold a space. It holds the <b>null character</b> — the terminator every string carries — and printing it puts <em>nothing</em> between the brackets, not even a gap." },
+          3: { step: 1, text: "<b>Named misconception: one past the last index must crash.</b> For std::string this one slot is defined and safe: index == length() reads the terminating null character, guaranteed since C++11. The crash story belongs to <b>at()</b>, which throws for an index past the end, and to indexes <em>beyond</em> length(), which are undefined. Index 3 on a length-3 string is neither — the program prints <b>[]</b> and ends normally." }
+        },
+        steps: [
+          { line: 5, vars: { word: ["string", "\"cat\""] }, out: "", note: "The box <b>word</b> is created holding <b>cat</b> — three letters, at indexes 0, 1, 2, with the terminating null character sitting at index 3." },
+          { line: 6, vars: { word: ["string", "\"cat\""] }, out: "[]", note: "<b>The parting step.</b> word[3] reads the slot at index 3 — exactly length() — and finds the <b>null character</b>. Printing it adds nothing between the brackets: the output is <b>[]</b>." },
+          { line: 7, vars: { word: ["string", "\"cat\""] }, out: "[]", note: "The program ends normally. Final answer: <b>[]</b>." }
+        ],
+        modify: {
+          prompt: "The word changes from \"cat\" to \"cats\". The index in the print is still 3. What prints now?",
+          code: 'string word = <mark>"cats"</mark>;\ncout << "[" << word[3] << "]" << endl;',
+          options: ["[s]", "[]", "[t]", "[ ]"],
+          correct: 0,
+          explain: "With four letters the indexes run 0 to 3, so index 3 is a real character again: the <b>s</b>. The slot that prints as nothing has moved to index 4."
+        }
       }
     ];
 
@@ -10961,7 +11265,8 @@ int main() {
       { name: "Bits & Shifts", list: [47, 48] },
       { name: "Stacks & Queues", list: [49, 50] },
       { name: "Sorting & cost", list: [53, 54, 55, 56, 57, 58] },
-      { name: "Going Further \u2014 beyond the first course", list: [73, 74, 75, 76, 77, 78, 79, 80] }
+      { name: "Going Further \u2014 beyond the first course", list: [73, 74, 75, 76, 77, 78, 79, 80] },
+      { name: "Strings \u2014 find, slice & compare", list: [116, 117, 118, 119, 120, 121] }
     ];
     function renderExNav() {
       var box = $("exnav"); box.innerHTML = ""; box.className = "ex-groups";
@@ -16909,6 +17214,7 @@ int main() {
           (sc === lv.exam.length ? "A clean paper at this level. The next level is ready when you are." : sc >= 4 ? "A strong pass. Re-read the explanations for the questions you missed, then retake when ready." : "Below the line for now. The tasks above cover exactly these ideas — work them, then retake.") +
           (d.exam.best !== null ? " Best score: " + d.exam.best + " / " + lv.exam.length + "." : "");
       } else { scoreBox.className = "exam-score"; scoreBox.innerHTML = ""; }
+      renderSprint();
     }
     $("ch-exam-restart").addEventListener("click", function () {
       var d = chLevelState(ch.level);
@@ -16916,6 +17222,151 @@ int main() {
       renderChallenges();
       announce(CH_LEVELS[ch.level].name + " exam reset. Question 1 is ready.");
     });
+
+    /* ================= Challenges: prediction sprint =================
+       Five short Prediction Tracer exercises against a running clock.
+       The pool is the built-in exercises whose whole program fits the
+       sprint shape (6–12 code lines, options already written); five are
+       drawn at random each run. One question at a time; a tap locks the
+       answer and moves on with no feedback in between, so the run tests
+       fluency rather than teaching. The result reports accuracy first
+       and total time second, and the device best is kept on that same
+       ordering: more correct wins; equal accuracy goes to the faster
+       run. Sprint answers live only here — nothing reads or writes the
+       tracer records, accuracy counts or the journal. The best persists
+       additively as `sprintBest` inside tracefirst-progress-v1. */
+    var SPRINT_N = 5;
+    var sprintBest = null;   // { correct, ms }
+    var sprint = { active: false, qs: [], cur: 0, answers: [], startedAt: 0, timer: null, lastMs: 0 };
+    function sprintPool() {
+      var pool = [];
+      EXERCISES.forEach(function (ex, i) {
+        if (ex.code && ex.code.length >= 6 && ex.code.length <= 12 && ex.options && ex.options.length >= 2) pool.push(i);
+      });
+      return pool;
+    }
+    function sprintFmt(ms) {
+      var t = ms / 1000;
+      if (t < 60) return t.toFixed(1) + "s";
+      var m = Math.floor(t / 60), s = (t - m * 60).toFixed(1);
+      return m + "m " + s + "s";
+    }
+    function sprintDraw() {
+      var pool = sprintPool().slice();
+      var qs = [];
+      while (qs.length < SPRINT_N && pool.length) {
+        qs.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+      }
+      return qs;
+    }
+    function sprintStopTimer() { if (sprint.timer) { clearInterval(sprint.timer); sprint.timer = null; } }
+    function sprintStart() {
+      sprintStopTimer();
+      sprint.qs = sprintDraw();
+      sprint.cur = 0;
+      sprint.answers = [];
+      sprint.active = true;
+      sprint.startedAt = Date.now();
+      sprint.timer = setInterval(function () {
+        var el = $("sprint-clock");
+        if (el) el.textContent = sprintFmt(Date.now() - sprint.startedAt);
+      }, 200);
+      announce("Prediction sprint started. Question 1 of " + sprint.qs.length + ". The clock is running.");
+      renderSprint();
+    }
+    function sprintAnswer(idx) {
+      if (!sprint.active) return;
+      sprint.answers.push(idx);
+      sprint.cur++;
+      if (sprint.cur >= sprint.qs.length) {
+        sprint.active = false;
+        sprint.lastMs = Date.now() - sprint.startedAt;
+        sprintStopTimer();
+        var correct = sprint.qs.filter(function (q, i) { return sprint.answers[i] === EXERCISES[q].correct; }).length;
+        if (!sprintBest || correct > sprintBest.correct || (correct === sprintBest.correct && sprint.lastMs < sprintBest.ms)) {
+          sprintBest = { correct: correct, ms: sprint.lastMs };
+        }
+        try { tfSave(); } catch (e) {}
+        announce("Sprint complete. " + correct + " of " + sprint.qs.length + " correct, in " + sprintFmt(sprint.lastMs) + ".");
+      } else {
+        announce("Locked. Question " + (sprint.cur + 1) + " of " + sprint.qs.length + ".");
+      }
+      renderSprint();
+    }
+    function sprintOptionBtns(ex, onPick) {
+      var wrap = document.createElement("div"); wrap.className = "options";
+      ex.options.forEach(function (opt, i) {
+        var b = document.createElement("button");
+        b.className = "opt-btn"; b.type = "button";
+        b.setAttribute("aria-pressed", "false");
+        b.innerHTML = '<span class="key">' + "ABCD"[i] + "</span><span>" + esc(opt) + "</span>";
+        (function (idx2) { b.addEventListener("click", function () { onPick(idx2); }); })(i);
+        wrap.appendChild(b);
+      });
+      return wrap;
+    }
+    function renderSprint() {
+      var box = $("ch-sprint"); if (!box) return;
+      box.innerHTML = "";
+      if (!sprint.active && sprint.qs.length && sprint.cur >= sprint.qs.length) {
+        var correct = sprint.qs.filter(function (q, i) { return sprint.answers[i] === EXERCISES[q].correct; }).length;
+        var head = document.createElement("div");
+        head.className = "exam-score show";
+        head.innerHTML = "<b>Sprint complete: " + correct + " of " + sprint.qs.length + " correct</b>, in " + sprintFmt(sprint.lastMs) + ". Accuracy counts first; the time only separates runs with the same score." +
+          (sprintBest ? " Best on this device: " + sprintBest.correct + " of " + sprint.qs.length + " in " + sprintFmt(sprintBest.ms) + "." : "");
+        box.appendChild(head);
+        sprint.qs.forEach(function (q, i) {
+          var ex = EXERCISES[q];
+          var good = sprint.answers[i] === ex.correct;
+          var div = document.createElement("div");
+          div.className = "exam-q";
+          div.innerHTML = '<div class="eqnum">Question ' + (i + 1) + " · Tracer Exercise " + (q + 1) + " — " + esc(ex.concept) + '</div><div class="eqtext">' + esc(ex.question) + "</div>";
+          div.appendChild(chCodeBox(ex.code));
+          div.appendChild(chFeedback(good, good ? "<b>Correct.</b>" : "<b>Not correct.</b> You predicted <b>" + esc(ex.options[sprint.answers[i]]) + "</b>; the program prints <b>" + esc(ex.options[ex.correct]) + "</b>. Work it untimed as Tracer Exercise " + (q + 1) + " to see the trace."));
+          box.appendChild(div);
+        });
+        var again = document.createElement("div"); again.className = "lockrow";
+        var ab = document.createElement("button"); ab.className = "btn"; ab.type = "button"; ab.textContent = "Run another sprint";
+        ab.addEventListener("click", sprintStart);
+        again.appendChild(ab);
+        box.appendChild(again);
+        return;
+      }
+      if (sprint.active) {
+        var ex = EXERCISES[sprint.qs[sprint.cur]];
+        var meta = document.createElement("div");
+        meta.className = "sprint-meta";
+        meta.innerHTML = '<span class="eqnum">Question ' + (sprint.cur + 1) + " of " + sprint.qs.length + " · Tracer Exercise " + (sprint.qs[sprint.cur] + 1) + '</span><span class="diag-timer" id="sprint-clock" aria-label="Elapsed time">' + sprintFmt(Date.now() - sprint.startedAt) + "</span>";
+        box.appendChild(meta);
+        var qdiv = document.createElement("div");
+        qdiv.className = "exam-q";
+        qdiv.innerHTML = '<div class="eqtext">' + esc(ex.question) + "</div>";
+        qdiv.appendChild(chCodeBox(ex.code));
+        qdiv.appendChild(sprintOptionBtns(ex, sprintAnswer));
+        box.appendChild(qdiv);
+        var quit = document.createElement("div"); quit.className = "lockrow";
+        var qb = document.createElement("button"); qb.className = "btn ghost small"; qb.type = "button"; qb.textContent = "Abandon this sprint";
+        qb.addEventListener("click", function () { sprint.active = false; sprint.qs = []; sprint.cur = 0; sprint.answers = []; sprintStopTimer(); announce("Sprint abandoned. No score was recorded."); renderSprint(); });
+        quit.appendChild(qb);
+        box.appendChild(quit);
+        return;
+      }
+      var p = document.createElement("p");
+      p.className = "story";
+      p.innerHTML = "Five short programs from the Prediction Tracer, drawn at random. Tap an answer to lock it and move on — no feedback until the end. <strong>Accuracy first, then time.</strong>";
+      box.appendChild(p);
+      if (sprintBest) {
+        var bp = document.createElement("p");
+        bp.className = "duel-note";
+        bp.textContent = "Best on this device: " + sprintBest.correct + " of " + SPRINT_N + " correct in " + sprintFmt(sprintBest.ms) + ".";
+        box.appendChild(bp);
+      }
+      var row = document.createElement("div"); row.className = "lockrow";
+      var sb = document.createElement("button"); sb.className = "btn"; sb.type = "button"; sb.textContent = "Start the sprint";
+      sb.addEventListener("click", sprintStart);
+      row.appendChild(sb);
+      box.appendChild(row);
+    }
 
     /* ================= Student-authored prediction exercises =================
        Authoring reuses the Make-mode interpreter (makeRunProgram) — there is
@@ -17226,6 +17677,16 @@ int main() {
        and a plain note explains; the on-screen announcements continue.
        Persisted additively as `readAloudPref`, a view preference only. */
     var readAloudPref = false;
+    /* Dyslexia-friendly reading: a fourth reading-comfort preference, in
+       the same Display popover. When on, the root carries
+       data-reading="dyslexia" (see the CSS block): prose switches to
+       Atkinson Hyperlegible with wider letter/word spacing and looser
+       lines, code gains the same wider spacing, and the current step's
+       line in each code box stays lit while the other lines dim. It is
+       independent of Reduce motion and Larger text and composes with
+       both. Persisted additively as `dyslexiaPref`, a view preference
+       only. */
+    var dyslexiaPref = false;
     var speechOk = false;
     try { speechOk = ("speechSynthesis" in window) && (typeof window.SpeechSynthesisUtterance === "function"); } catch (e) { speechOk = false; }
     function speakTrace(text) {
@@ -17254,6 +17715,9 @@ int main() {
         if (!speechOk) rt.disabled = true;
       }
       var rn = $("readaloud-note"); if (rn) rn.hidden = speechOk;
+      if (dyslexiaPref) document.documentElement.setAttribute("data-reading", "dyslexia");
+      else document.documentElement.removeAttribute("data-reading");
+      var dt = $("reading-toggle"); if (dt) dt.setAttribute("aria-pressed", dyslexiaPref ? "true" : "false");
     }
     function setReduceMotionPref(on) {
       if (reduceMotionPref === !!on) { applyComfort(); return; }
@@ -17286,6 +17750,15 @@ int main() {
         : "Read-aloud off. Trace steps will no longer be spoken; on-screen step announcements are unchanged.");
       try { tfSave(); } catch (e) {}
     }
+    function setDyslexiaPref(on) {
+      if (dyslexiaPref === !!on) { applyComfort(); return; }
+      dyslexiaPref = !!on;
+      applyComfort();
+      announce(dyslexiaPref
+        ? "Dyslexia-friendly reading on. Text uses a plainer font with wider spacing, and the current line of each program is lit while the other lines dim. Nothing else about your work has changed."
+        : "Dyslexia-friendly reading off. Font, spacing and line focus are back to the standard display. Nothing else about your work has changed.");
+      try { tfSave(); } catch (e) {}
+    }
     (function wireComfort() {
       var mt = $("motion-toggle");
       if (mt) mt.addEventListener("click", function () { setReduceMotionPref(!reduceMotionPref); });
@@ -17293,6 +17766,8 @@ int main() {
       if (tt) tt.addEventListener("click", function () { setLargeTextPref(!largeTextPref); });
       var rt = $("readaloud-toggle");
       if (rt) rt.addEventListener("click", function () { setReadAloudPref(!readAloudPref); });
+      var dt = $("reading-toggle");
+      if (dt) dt.addEventListener("click", function () { setDyslexiaPref(!dyslexiaPref); });
       applyComfort();
     })();
 
@@ -25846,7 +26321,7 @@ int main() {
       return out;
     }
     function tfCollect() {
-      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", playbackSpeed: playbackSpeed, bgTheme: bgTheme, reduceMotionPref: !!reduceMotionPref, largeTextPref: !!largeTextPref, readAloudPref: (typeof readAloudPref !== "undefined" && !!readAloudPref), primerRead: !!primerRead, boltTourSeen: (typeof boltTourSeen !== "undefined" && !!boltTourSeen), tracer: [], bolt: null, gym: [], refactor: [], bridge: [], order: [], make: [], challenges: null, authoredExercises: [], instructorExercises: [],
+      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", playbackSpeed: playbackSpeed, bgTheme: bgTheme, reduceMotionPref: !!reduceMotionPref, largeTextPref: !!largeTextPref, readAloudPref: (typeof readAloudPref !== "undefined" && !!readAloudPref), dyslexiaPref: (typeof dyslexiaPref !== "undefined" && !!dyslexiaPref), primerRead: !!primerRead, boltTourSeen: (typeof boltTourSeen !== "undefined" && !!boltTourSeen), tracer: [], bolt: null, gym: [], refactor: [], bridge: [], order: [], make: [], challenges: null, authoredExercises: [], instructorExercises: [],
         lastTracer: (typeof tfLastTracer === "number" ? tfLastTracer : -1),
         testOut: (typeof testOut !== "undefined" && testOut)
           ? { passed: !!testOut.passed, score: (typeof testOut.score === "number" ? testOut.score : 0), via: (Array.isArray(testOut.via) ? testOut.via.slice() : [false, false, false]) }
@@ -25912,6 +26387,7 @@ int main() {
         });
       } catch (e) {}
       try { data.challenges = { level: ch.level, data: ch.data }; } catch (e) {}
+      try { if (typeof sprintBest !== "undefined") data.sprintBest = sprintBest; } catch (e) {}
       // Student-authored exercises: additive field only — never touches the
       // tracer / challenges records collected above.
       try {
@@ -26142,6 +26618,12 @@ int main() {
           if (d.challenges.level && CH_LEVELS[d.challenges.level]) ch.level = d.challenges.level;
         }
       } catch (e) {}
+      // Prediction sprint best (additive field; absent in older saves)
+      try {
+        if (d.sprintBest && typeof d.sprintBest.correct === "number" && typeof d.sprintBest.ms === "number" && typeof sprintBest !== "undefined") {
+          sprintBest = { correct: d.sprintBest.correct, ms: d.sprintBest.ms };
+        }
+      } catch (e) {}
       // Student-authored exercises (additive field; absent in older saves)
       try {
         if (Array.isArray(d.authoredExercises) && typeof authoredState !== "undefined" && authoredState) {
@@ -26187,6 +26669,7 @@ int main() {
       if (typeof d.reduceMotionPref === "boolean") reduceMotionPref = d.reduceMotionPref;
       if (typeof d.largeTextPref === "boolean") largeTextPref = d.largeTextPref;
       if (typeof d.readAloudPref === "boolean" && typeof readAloudPref !== "undefined") readAloudPref = d.readAloudPref;
+      if (typeof d.dyslexiaPref === "boolean" && typeof dyslexiaPref !== "undefined") dyslexiaPref = d.dyslexiaPref;
       if (typeof applyComfort === "function") applyComfort();
       // Primer
       if (d.primerRead) { primerRead = true; primerOpened = true; }
@@ -27032,7 +27515,13 @@ int main() {
       "a struct argument is shared, not copied": "A struct passed by value is copied whole into the parameter, like any other by-value argument. The function's writes land in its copy, and the caller's record is untouched. Only a reference parameter (&) shares the original.",
       "the loop counts boxes, not contents": "A loop adds what its body says. total += shelf[i].qty adds each record's qty value — 2, then 5, then 3 — not 1 per visit. Counting the records and summing a field inside them are different bodies, with different totals.",
       "the dot and brackets wait their turn": "Member access resolves first, and completely: shelf[0].qty is one value (4) and shelf[1].qty is another (6) before any arithmetic happens. Only then do the ordinary rules of precedence apply to those values.",
-      ">> reads the whole line": ">> reads one token: it skips leading whitespace, then stops at the next whitespace. It never takes the whole line — taking the rest of a line, spaces and all, is getline's job."
+      ">> reads the whole line": ">> reads one token: it skips leading whitespace, then stops at the next whitespace. It never takes the whole line — taking the rest of a line, spaces and all, is getline's job.",
+      "a failed find returns -1": "find does not use -1 for failure. Its failure value is string::npos, the largest value a size_t can hold, and printing a failed find shows that enormous number. The -1 appears only when the result is stored into a signed int box, which wraps npos into -1 — the box changed the value, not find.",
+      "substr's second number is the end index": "substr takes a starting index and a count: substr(2, 3) means start at index 2 and take 3 characters. The second number is how many characters to take, not the index where the slice ends — the slice ends at start + count - 1.",
+      "less-than lets equals through": "< is strict: it asks whether the left value comes before the right one, and equal values do not come before each other, so a < b is false when a == b. The operator that lets equals through is <=. Equality and ordering are separate questions with separate operators.",
+      "== compares the boxes, not the letters": "On std::string, == compares the text: character by character, the whole contents of both strings. Two separate boxes holding the same letters are equal, wherever they live. == never asks whether the two operands are the same box — for strings it asks only whether they spell the same thing.",
+      "the longer string compares bigger": "String comparison is not a length contest. It walks both strings character by character and stops at the first position where they differ; that single comparison decides the order. Letters beyond the first difference are never looked at, so a longer string whose early letter is smaller still compares smaller.",
+      "one past the last index must crash": "For a std::string, the index exactly equal to length() is legal and guaranteed: it reads the null character that terminates the string, which prints as nothing. Crashes and exceptions belong elsewhere — at() throws for any index past the last character, and operator[] beyond length() is undefined — but the one-past-the-last slot itself is defined and safe to read."
     };
     function trapNoteFor(name) {
       try {
