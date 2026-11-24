@@ -1847,7 +1847,7 @@
             <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Order code, then write a line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find and fix faults.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 122</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 128</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write your own programs.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
             <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
@@ -1925,6 +1925,10 @@
         <button class="mode-btn" type="button" id="mode-order" role="tab" aria-controls="order-mode" aria-selected="false" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>
           Order the Lines
+        </button>
+        <button class="mode-btn" type="button" id="mode-match" role="tab" aria-controls="match-mode" aria-selected="false" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/><path d="M15.5 15.5 20 20"/></svg>
+          Which line printed that?
         </button>
         <button class="mode-btn" type="button" id="mode-make" role="tab" aria-controls="make-mode" aria-selected="false" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
@@ -2008,6 +2012,7 @@
           <button class="drawer-row" type="button" data-drawer-mode="challenges" aria-current="false"><span class="drawer-row-name">Challenges</span><span class="drawer-hint" data-hint="challenges"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="bridge" aria-current="false"><span class="drawer-row-name">Bridge</span><span class="drawer-hint" data-hint="bridge"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="order" aria-current="false"><span class="drawer-row-name">Order the Lines</span><span class="drawer-hint" data-hint="order"></span></button>
+          <button class="drawer-row" type="button" data-drawer-mode="match" aria-current="false"><span class="drawer-row-name">Which line printed that?</span><span class="drawer-hint" data-hint="match"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="make" aria-current="false"><span class="drawer-row-name">Make</span><span class="drawer-hint" data-hint="make"></span></button>
         </nav>
         <hr class="drawer-divider" />
@@ -2186,7 +2191,7 @@ for (int i = 0; i < 3; i++) {
             <select class="lecture-select" id="lecture-ex-select" aria-label="Choose an exercise to project"></select>
             <button class="btn" type="button" id="lecture-project-btn">Project this exercise</button>
           </div>
-          <p class="lecture-pick-note">Any of the 122 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
+          <p class="lecture-pick-note">Any of the 128 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
         </div>
 
         <div id="lecture-project" hidden>
@@ -2358,6 +2363,7 @@ for (int i = 0; i < 3; i++) {
             <div class="pair-toggle" role="group" aria-label="Prediction mode">
               <button class="pair-toggle-btn" type="button" id="pair-solo-btn" aria-pressed="true">Predicting solo</button>
               <button class="pair-toggle-btn" type="button" id="pair-partner-btn" aria-pressed="false">Predicting with a partner</button>
+              <button class="pair-toggle-btn" type="button" id="stage2-btn" aria-pressed="false">Two-stage: predict, discuss, predict again</button>
             </div>
             <p class="predict-q" id="predict-q" style="margin-top:12px;"></p>
             <div id="solo-predict-ui">
@@ -2380,6 +2386,16 @@ for (int i = 0; i < 3; i++) {
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
                 The tracer stays locked until you commit. Guessing is the point: a wrong prediction you own teaches more than a right answer you copied.
               </span>
+            </div>
+            <div id="stage2-panel" hidden>
+              <div class="pair-agree" id="stage2-first-note" role="status"></div>
+              <p style="font-size:.92rem;color:var(--ink-soft);margin-top:10px;">Now talk it over with a partner — or argue it through out loud on your own. Defend your first prediction line by line: which line decides the answer, and what does each box hold at that line? Then lock a second prediction. You may keep the same answer or change it; both predictions stay in your record, and the second one is the one the tracer judges.</p>
+              <div class="options" id="stage2-options"></div>
+              <div class="lockrow">
+                <button class="btn" type="button" id="stage2-lock-btn" disabled>Lock my second prediction</button>
+                <span class="locknote">The tracer stays locked until the second prediction lands.</span>
+              </div>
+              <p class="pair-status" id="stage2-status" role="status"></p>
             </div>
             </div>
             <div id="pair-predict-ui" hidden>
@@ -3278,6 +3294,28 @@ int main() {
         <p class="foot"><strong>How Order the Lines fits:</strong> Bridge asks you to order lines and judges the arrangement on its own. This mode keeps the full TraceFirst loop: the arrangement is only stage one — you then commit to a prediction of the output <em>before</em> the machine runs, and the trace shows you where your model of the program and the machine part. An arrangement passes when the program it builds runs and prints what the round asks for, so more than one order can be right.</p>
       </div><!-- /order-mode -->
 
+      <div id="match-mode" role="tabpanel" tabindex="0" hidden>
+        <section class="bridge-intro">
+          <h2>Which line printed that? Trace the output back to its source.</h2>
+          <p>Each round shows a short program and the output it produced, line by line. Your job runs the machine <strong>backwards</strong>: for every line of output, name the single line of code that printed it. Some lines of code print nothing at all; some print again and again.</p>
+        </section>
+        <section class="toolbar" id="match-rounds" aria-label="Choose a Which line printed that? round">
+          <div>
+            <div class="tlabel">Rounds — six programs, in order</div>
+            <div class="exnav" id="matchnav"></div>
+          </div>
+          <div class="scorebar" id="match-scorebar" aria-label="Your matching progress"></div>
+        </section>
+        <section class="card" id="match-card" style="margin-top:18px;" aria-labelledby="match-title">
+          <span class="concept-tag" id="match-tag"></span>
+          <h2 id="match-title" style="font-size:1.25rem;"></h2>
+          <p class="ch-prompt" id="match-task"></p>
+          <div id="match-body"></div>
+          <div class="make-msg info show" id="match-msg" role="status">Choose the line that printed each line of output, then press Check my matches.</div>
+        </section>
+        <p class="foot"><strong>How this mode fits:</strong> the Prediction Tracer runs forwards — read the code, predict the output. This mode runs the same understanding in reverse: given the output, find its source. It is the skill you use when a program prints something unexpected and you have to hunt down which line is responsible.</p>
+      </div><!-- /match-mode -->
+
       <div id="make-mode" role="tabpanel" tabindex="0" hidden>
         <section class="make-intro">
           <h2>Make: write and run your own C++</h2>
@@ -3366,12 +3404,12 @@ int main() {
         <div id="instructors-body" hidden>
           <div class="lecture-inst-entry">
             <h4>Lecture mode — run a tracer exercise in front of the class</h4>
-            <p>A single projected screen: pick any of the 122 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
+            <p>A single projected screen: pick any of the 128 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
             <div class="journal-actions"><button class="btn small" type="button" id="lecture-open-btn-2">Open Lecture mode</button></div>
           </div>
                     <div class="studio" id="inst-studio">
             <h4>Instructor exercise studio</h4>
-            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 122 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
+            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 128 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
             <div class="authored-field">
               <label for="inst-title">Exercise title</label>
               <input class="authored-input" type="text" id="inst-title" maxlength="80" placeholder="e.g. The average that is not an average" autocomplete="off">
@@ -11040,6 +11078,297 @@ int main() {
           correct: 0,
           explain: "With four letters the indexes run 0 to 3, so index 3 is a real character again: the <b>s</b>. The slot that prints as nothing has moved to index 4."
         }
+      },
+      {
+        concept: "Functions · overloading by type",
+        topic: "Functions",
+        title: "The whole number and the fraction",
+        goal: "One name, two functions: the compiler chooses the overload by the <b>type</b> of each call's argument.",
+        stories: {
+          health:   "A clinic app prints readings two ways: whole-number counts get one label, measurements with fractions get another. The programmer wrote <strong>two functions with the same name</strong> and lets the compiler route each reading.",
+          psych:    "A study app prints results two ways: whole-number counts get one label, fractional averages get another. The programmer wrote <strong>two functions with the same name</strong> and lets the compiler route each result.",
+          business: "A till app prints amounts two ways: whole-number counts get one label, fractional prices get another. The programmer wrote <strong>two functions with the same name</strong> and lets the compiler route each amount.",
+          arts:     "A venue app prints figures two ways: whole-number seat counts get one label, fractional ratings get another. The programmer wrote <strong>two functions with the same name</strong> and lets the compiler route each figure."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "void show(int n) {",
+          "    cout << \"int: \" << n << endl;",
+          "}",
+          "void show(double n) {",
+          "    cout << \"double: \" << n << endl;",
+          "}",
+          "int main() {",
+          "    show(7);",
+          "    show(7.5);",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["int: 7, then double: 7.5", "double: 7, then double: 7.5", "int: 7, then int: 7", "a compile error — two functions cannot share a name"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "<b>Named misconception: one name can only mean one function.</b> You sent both calls to a single version, as if the name show could only ever mean one function. C++ allows a name to be <b>overloaded</b>: two functions share it, and each call is matched by the <em>type of its argument</em>. 7 is an int, so the int version runs; 7.5 is a double, so the double version runs. The parting step is the second call, where the match changes." },
+          2: { step: 2, text: "The second call's argument is 7.5 — a double — so it cannot use the int version without throwing the fraction away, and the compiler does not discard data when an exact match exists. It runs the <b>double</b> version and prints double: 7.5." },
+          3: { step: 0, text: "Sharing a name is exactly what overloading is. The compiler keeps both functions and chooses between them at every call by the number and types of the arguments. No error: both calls find their match." }
+        },
+        steps: [
+          { line: 10, vars: {}, frames: [{ name: "main", vars: {} }, { name: "show(int)", vars: { n: ["int", "7"] } }], out: "", note: "The first call, <b>show(7)</b>: 7 is an <b>int</b>, so the compiler matched this call to the <b>int version</b> of show. Execution jumps in with n = 7." },
+          { line: 4, vars: {}, frames: [{ name: "main", vars: {} }, { name: "show(int)", vars: { n: ["int", "7"] } }], out: "int: 7", note: "The int version prints its label and the value: <b>int: 7</b>. Then the function returns and main continues." },
+          { line: 11, vars: {}, frames: [{ name: "main", vars: {} }, { name: "show(double)", vars: { n: ["double", "7.5"] } }], out: "int: 7", note: "<b>The parting step.</b> The second call passes 7.5, a <b>double</b> — so this call was matched to the <b>double version</b>. Same name, different function, chosen by the argument's type." },
+          { line: 7, vars: {}, frames: [{ name: "main", vars: {} }, { name: "show(double)", vars: { n: ["double", "7.5"] } }], out: "int: 7, double: 7.5", note: "The double version prints on its own line: <b>double: 7.5</b>." },
+          { line: 12, vars: {}, out: "int: 7, double: 7.5", note: "The program ends. Final answer: <b>int: 7, then double: 7.5</b>." }
+        ],
+        modify: {
+          prompt: "The first call changes from show(7) to show(7.0). Nothing else changes. What prints now?",
+          code: 'show(<mark>7.0</mark>);\nshow(7.5);',
+          options: ["double: 7, then double: 7.5", "int: 7, then double: 7.5", "double: 7, then int: 7", "a compile error"],
+          correct: 0,
+          explain: "7.0 is a double literal — the decimal point decides. The first call now matches the <b>double</b> version too, so both calls run it."
+        }
+      },
+      {
+        concept: "Functions · overloading by count",
+        topic: "Functions",
+        title: "One argument or two",
+        goal: "Overloads are also chosen by <b>how many</b> arguments a call passes, not only by their types.",
+        stories: {
+          health:   "A clinic app has a helper that raises a dosage: called with one number it raises it by the standard step, called with two it raises it by the step it is given. <strong>Two helpers share one name.</strong>",
+          psych:    "A study app has a helper that raises a score: called with one number it raises it by the standard step, called with two it raises it by the step it is given. <strong>Two helpers share one name.</strong>",
+          business: "A shop app has a helper that raises a price: called with one number it raises it by the standard step, called with two it raises it by the step it is given. <strong>Two helpers share one name.</strong>",
+          arts:     "A venue app has a helper that raises a rating: called with one number it raises it by the standard step, called with two it raises it by the step it is given. <strong>Two helpers share one name.</strong>"
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int bump(int n) {",
+          "    return n + 1;",
+          "}",
+          "int bump(int n, int step) {",
+          "    return n + step;",
+          "}",
+          "int main() {",
+          "    cout << bump(10) << endl;",
+          "    cout << bump(10, 5) << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["11, then 15", "11, then 11", "15, then 15", "a compile error — two functions cannot share a name"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 3, text: "<b>Named misconception: one name can only mean one function.</b> You ran the one-parameter version for both calls, as if bump could only ever mean that one function. The second call passes <b>two</b> arguments, and the compiler matches a call by <em>count</em> as well as type: two arguments choose the two-parameter version, which adds the step it was handed: 10 + 5 = 15. The parting step is the second call." },
+          2: { step: 0, text: "You ran the two-parameter version for both calls. The first call passes only one argument, so it cannot use that version: there is no second value to add. It matches the one-parameter bump, which adds 1: <b>11</b>." },
+          3: { step: 0, text: "Overloading is legal precisely because the two bump functions differ in their parameter lists, so the compiler can always tell them apart. Each call matches exactly one of them: no error." }
+        },
+        steps: [
+          { line: 10, vars: {}, frames: [{ name: "main", vars: {} }, { name: "bump(int)", vars: { n: ["int", "10"] } }], out: "", note: "The first call passes <b>one</b> argument, so it matches the <b>one-parameter</b> bump. Inside, n is 10." },
+          { line: 4, vars: {}, frames: [{ name: "main", vars: {} }, { name: "bump(int)", vars: { n: ["int", "10"] } }], out: "", note: "That version returns n + 1 = <b>11</b>. The value travels back to the cout waiting in main." },
+          { line: 10, vars: {}, out: "11", note: "main prints the returned value: <b>11</b>." },
+          { line: 11, vars: {}, frames: [{ name: "main", vars: {} }, { name: "bump(int, int)", vars: { n: ["int", "10"], step: ["int", "5"] } }], out: "11", note: "<b>The parting step.</b> The second call passes <b>two</b> arguments, so it matches the <b>two-parameter</b> bump: n is 10 and step is 5." },
+          { line: 7, vars: {}, frames: [{ name: "main", vars: {} }, { name: "bump(int, int)", vars: { n: ["int", "10"], step: ["int", "5"] } }], out: "11", note: "That version returns n + step = 10 + 5 = <b>15</b>." },
+          { line: 11, vars: {}, out: "11, 15", note: "main prints it on the next line: <b>15</b>." },
+          { line: 12, vars: {}, out: "11, 15", note: "The program ends. Final answer: <b>11, then 15</b>." }
+        ],
+        modify: {
+          prompt: "The second call changes from bump(10, 5) to bump(10). What prints now?",
+          code: 'cout << bump(10) << endl;\ncout << bump(<mark>10</mark>) << endl;',
+          options: ["11, then 11", "11, then 15", "10, then 10", "a compile error"],
+          correct: 0,
+          explain: "With one argument, the second call now matches the <b>one-parameter</b> version as well: 10 + 1 = <b>11</b> both times."
+        }
+      },
+      {
+        concept: "Functions · default arguments",
+        topic: "Functions",
+        title: "The argument you may leave out",
+        goal: "A parameter with a <b>default argument</b> may be left out of a call; the default quietly fills in for it.",
+        stories: {
+          health:   "A clinic app announces a patient's name over the speaker: usually once, but a nurse can ask for repeats. The announcing function was written so the repeat count <strong>can be left out</strong>.",
+          psych:    "A study app announces a participant's code on screen: usually once, but a researcher can ask for repeats. The announcing function was written so the repeat count <strong>can be left out</strong>.",
+          business: "A shop app announces a promotion over the speaker: usually once, but a manager can ask for repeats. The announcing function was written so the repeat count <strong>can be left out</strong>.",
+          arts:     "A venue app announces an act's name over the speaker: usually once, but a stage manager can ask for repeats. The announcing function was written so the repeat count <strong>can be left out</strong>."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <string>",
+          "using namespace std;",
+          "",
+          "void announce(string name, int times = 1) {",
+          "    for (int i = 0; i < times; i++) {",
+          "        cout << name << \" \";",
+          "    }",
+          "    cout << endl;",
+          "}",
+          "int main() {",
+          "    announce(\"Go\");",
+          "    announce(\"Go\", 3);",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["Go, then Go Go Go", "a compile error — announce needs two arguments", "Go Go, then Go Go Go", "nothing, then Go Go Go"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 0, text: "No error: the second parameter carries a <b>default argument</b>, times = 1, written in the function's header. A call may leave it out, and the compiler quietly fills it in with the default. The first call runs exactly as if it had been written announce(\"Go\", 1)." },
+          2: { step: 0, text: "You gave the first call two repetitions, but it passes no second argument, so times takes its default: <b>1</b>. Go prints once on the first line. The three repetitions belong to the second call, which passes 3 explicitly." },
+          3: { step: 0, text: "The first call does run. Leaving out an argument that has a default is not skipping the call: times becomes 1 and Go prints once." }
+        },
+        steps: [
+          { line: 11, vars: {}, frames: [{ name: "main", vars: {} }, { name: "announce", vars: { name: ["string", "\"Go\""], times: ["int", "1"] } }], out: "", note: "<b>The parting step.</b> The first call passes one argument. The missing second argument is filled from the header's default: <b>times = 1</b>." },
+          { line: 6, vars: {}, frames: [{ name: "main", vars: {} }, { name: "announce", vars: { name: ["string", "\"Go\""], times: ["int", "1"] } }], out: "Go", note: "The loop runs once (times is 1): <b>Go</b> prints, then endl ends the line." },
+          { line: 12, vars: {}, frames: [{ name: "main", vars: {} }, { name: "announce", vars: { name: ["string", "\"Go\""], times: ["int", "3"] } }], out: "Go", note: "The second call passes both arguments: <b>times is 3</b> this time. The default is only a fallback for when the argument is missing." },
+          { line: 6, vars: {}, frames: [{ name: "main", vars: {} }, { name: "announce", vars: { name: ["string", "\"Go\""], times: ["int", "3"] } }], out: "Go Go Go Go", note: "The loop runs three times on its own line: <b>Go Go Go</b>. The screen now holds Go, then Go Go Go." },
+          { line: 13, vars: {}, out: "Go Go Go Go", note: "The program ends. Final answer: <b>Go, then Go Go Go</b>." }
+        ],
+        modify: {
+          prompt: "The second call changes from announce(\"Go\", 3) to announce(\"Go\", 2). What prints now?",
+          code: 'announce("Go");\nannounce("Go", <mark>2</mark>);',
+          options: ["Go, then Go Go", "Go, then Go Go Go", "Go Go, then Go Go", "a compile error"],
+          correct: 0,
+          explain: "The explicit argument replaces the default: times is 2, so the second line prints Go <b>twice</b>. The first call still uses the default 1."
+        }
+      },
+      {
+        concept: "Functions · defaults fill from the right",
+        topic: "Functions",
+        title: "Which slot does the 9 land in?",
+        goal: "Arguments fill parameters <b>left to right</b>: only the trailing parameters, at the right-hand end, can fall back to their defaults.",
+        stories: {
+          health:   "A clinic billing helper works out a charge from a number of items, a per-item cost and a flat fee. The last two inputs have <strong>standard values</strong> the caller may override. A call passes two numbers.",
+          psych:    "A study billing helper works out a charge from a number of sessions, a per-session cost and a flat fee. The last two inputs have <strong>standard values</strong> the caller may override. A call passes two numbers.",
+          business: "A shop billing helper works out a charge from a number of items, a per-item cost and a flat fee. The last two inputs have <strong>standard values</strong> the caller may override. A call passes two numbers.",
+          arts:     "A venue billing helper works out a charge from a number of seats, a per-seat cost and a flat fee. The last two inputs have <strong>standard values</strong> the caller may override. A call passes two numbers."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int price(int items, int cost = 4, int fee = 2) {",
+          "    return items * cost + fee;",
+          "}",
+          "int main() {",
+          "    cout << price(3, 9) << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["29", "21", "14", "a compile error — the fee argument is missing"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 0, text: "<b>Named misconception: an argument can skip a parameter.</b> 21 is 3 × 4 + 9: it treats the 9 as if it had skipped cost and landed in fee. Arguments cannot skip: they fill parameters <b>strictly left to right</b>, so the 9 lands in <b>cost</b>, the second parameter. fee, the parameter left over at the right-hand end, takes its default 2: 3 × 9 + 2 = <b>29</b>. The parting step is the call itself." },
+          2: { step: 0, text: "14 is price(3) with no second argument at all: 3 × 4 + 2. But this call does pass a 9, and a passed argument always overrides the default of the parameter it lands in — the second parameter, cost. 3 × 9 + 2 = <b>29</b>." },
+          3: { step: 0, text: "No error: a call may omit only the trailing parameters that carry defaults. Here exactly one argument is omitted — fee, at the right-hand end — and it has a default, so the call is complete: cost is 9, fee is 2." }
+        },
+        steps: [
+          { line: 7, vars: {}, frames: [{ name: "main", vars: {} }, { name: "price", vars: { items: ["int", "3"], cost: ["int", "9"], fee: ["int", "2"] } }], out: "", note: "<b>The parting step.</b> The call passes two arguments, and they fill the parameters <b>left to right</b>: items = 3, cost = 9. fee is left over — at the right-hand end, with a default — so fee = 2." },
+          { line: 4, vars: {}, frames: [{ name: "main", vars: {} }, { name: "price", vars: { items: ["int", "3"], cost: ["int", "9"], fee: ["int", "2"] } }], out: "", note: "Inside: items * cost + fee = 3 * 9 + 2 = <b>29</b>." },
+          { line: 7, vars: {}, out: "29", note: "The returned value prints: <b>29</b>." },
+          { line: 8, vars: {}, out: "29", note: "The program ends. Final answer: <b>29</b>." }
+        ],
+        modify: {
+          prompt: "The call changes from price(3, 9) to price(3). What prints now?",
+          code: 'cout << price(<mark>3</mark>) << endl;',
+          options: ["14", "29", "21", "11"],
+          correct: 0,
+          explain: "Both defaults now apply: cost = 4 and fee = 2, so 3 × 4 + 2 = <b>14</b>."
+        }
+      },
+      {
+        concept: "Functions · overloading meets defaults",
+        topic: "Functions",
+        title: "The call that matches twice",
+        goal: "An overload and a default together can make one call match <b>two</b> functions equally well — and the compiler refuses to choose between them.",
+        stories: {
+          health:   "A clinic app has a logging helper in two forms: a short one that takes a reading, and a longer one that also takes a priority level with a standard value. A programmer calls it with <strong>one number</strong>.",
+          psych:    "A study app has a logging helper in two forms: a short one that takes a score, and a longer one that also takes a priority level with a standard value. A programmer calls it with <strong>one number</strong>.",
+          business: "A shop app has a logging helper in two forms: a short one that takes an amount, and a longer one that also takes a priority level with a standard value. A programmer calls it with <strong>one number</strong>.",
+          arts:     "A venue app has a logging helper in two forms: a short one that takes a rating, and a longer one that also takes a priority level with a standard value. A programmer calls it with <strong>one number</strong>."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "void log(int n) {",
+          "    cout << \"one: \" << n << endl;",
+          "}",
+          "void log(int n, int level = 1) {",
+          "    cout << \"two: \" << n << \" \" << level << endl;",
+          "}",
+          "int main() {",
+          "    log(5);",
+          "    return 0;",
+          "}"
+        ],
+        question: "What happens when this program is compiled and run?",
+        options: ["a compile error — the call log(5) is ambiguous", "one: 5", "two: 5 1", "one: 5, then two: 5 1"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "The one-parameter version does match the call — but so does the other one. With its default filling level, the two-parameter version also accepts exactly one argument. When two overloads match a call equally well, the compiler does not pick a favourite: it reports the call as <b>ambiguous</b> and refuses to compile. The parting step is the compiler comparing the two candidates." },
+          2: { step: 2, text: "The two-parameter version does match, its default supplying level — but the one-parameter version matches just as exactly. A tie is not a win: the compiler reports the call as <b>ambiguous</b> and refuses to compile, so neither version ever runs." },
+          3: { step: 2, text: "One call never runs two versions: overloading chooses a single function per call. And here it cannot choose at all — both versions match log(5) equally well, which the compiler rejects as ambiguous. Nothing runs." }
+        },
+        steps: [
+          { line: 10, vars: {}, out: "", note: "Compiling reaches the call <b>log(5)</b>. The compiler gathers every function named log that could accept one int argument." },
+          { line: 3, vars: {}, out: "", note: "Candidate one: <b>log(int)</b> matches exactly — one parameter, one argument." },
+          { line: 6, vars: {}, out: "", note: "<b>The parting step.</b> Candidate two: <b>log(int, int = 1)</b> also matches — its second parameter carries a default, so it too accepts a single argument." },
+          { line: 10, vars: {}, out: "", note: "Neither candidate is a better match than the other, so the compiler stops: the call is <b>ambiguous</b>, no program is produced, and nothing ever runs. Final answer: <b>a compile error</b>." }
+        ],
+        modify: {
+          prompt: "The call changes from log(5) to log(5, 2). What happens now?",
+          code: 'log(<mark>5, 2</mark>);',
+          options: ["two: 5 2", "a compile error — still ambiguous", "one: 5", "two: 5 1"],
+          correct: 0,
+          explain: "Two arguments can only match the two-parameter version: the one-parameter log has nowhere to put the 2. The ambiguity disappears, and that version runs with level = 2: <b>two: 5 2</b>."
+        }
+      },
+      {
+        concept: "Functions · defaults fill from the right",
+        topic: "Functions",
+        title: "Two defaults, one argument given",
+        goal: "With several defaults in a row, a call fills parameters from the left and the defaults cover only the <b>right-hand end</b>.",
+        stories: {
+          health:   "A clinic app totals a visit from a base charge plus two optional extras, each with a <strong>standard value</strong>. A call passes the base and the first extra only.",
+          psych:    "A study app totals a session from a base fee plus two optional extras, each with a <strong>standard value</strong>. A call passes the base and the first extra only.",
+          business: "A shop app totals an order from a base price plus two optional extras, each with a <strong>standard value</strong>. A call passes the base and the first extra only.",
+          arts:     "A venue app totals a booking from a base hire plus two optional extras, each with a <strong>standard value</strong>. A call passes the base and the first extra only."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int total(int a, int b = 5, int c = 7) {",
+          "    return a + b + c;",
+          "}",
+          "int main() {",
+          "    cout << total(2, 3) << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["12", "10", "14", "9"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 0, text: "<b>Named misconception: an argument can skip a parameter.</b> 10 is 2 + 5 + 3: it puts the 3 in c, the last parameter, and leaves b to its default. Arguments fill parameters <b>left to right, with no gaps</b>: the 3 lands in <b>b</b>, the second parameter, and only c — the trailing one — falls back to its default 7. 2 + 3 + 7 = <b>12</b>. The parting step is the call itself." },
+          2: { step: 0, text: "14 is 2 + 5 + 7: both defaults, as if the call were total(2). But the call passes a second argument, 3, and a passed argument always displaces the default of the parameter it lands in: b is 3, not 5. 2 + 3 + 7 = <b>12</b>." },
+          3: { step: 0, text: "9 leaves the passed 3 out of the sum entirely. All three parameters take part: a = 2 and b = 3 come from the call, c = 7 from its default: 2 + 3 + 7 = <b>12</b>." }
+        },
+        steps: [
+          { line: 7, vars: {}, frames: [{ name: "main", vars: {} }, { name: "total", vars: { a: ["int", "2"], b: ["int", "3"], c: ["int", "7"] } }], out: "", note: "<b>The parting step.</b> Two arguments for three parameters, filled left to right: a = 2, b = 3. c is left over at the right-hand end and takes its default: <b>7</b>." },
+          { line: 4, vars: {}, frames: [{ name: "main", vars: {} }, { name: "total", vars: { a: ["int", "2"], b: ["int", "3"], c: ["int", "7"] } }], out: "", note: "Inside: a + b + c = 2 + 3 + 7 = <b>12</b>." },
+          { line: 7, vars: {}, out: "12", note: "The returned value prints: <b>12</b>." },
+          { line: 8, vars: {}, out: "12", note: "The program ends. Final answer: <b>12</b>." }
+        ],
+        modify: {
+          prompt: "The call changes from total(2, 3) to total(2, 3, 4). What prints now?",
+          code: 'cout << total(2, 3, <mark>4</mark>) << endl;',
+          options: ["9", "12", "16", "19"],
+          correct: 0,
+          explain: "All three parameters are now filled from the call: 2 + 3 + 4 = <b>9</b>. No default is used at all."
+        }
       }
     ];
 
@@ -11050,11 +11379,12 @@ int main() {
                pair: false, pairASelected: -1, pairALocked: false,
                pairBSelected: -1, pairBLocked: false, jointSelected: -1, jointLocked: false, rationale: "", muddy: 0,
                confidence: "", followSel: -1, followLocked: false, followCorrect: null,
-               teachBack: "", lastDuel: "", reSel: -1, reLocked: false, reCorrect: null, reAtStep: -1, boxPred: {} };
+               teachBack: "", lastDuel: "", reSel: -1, reLocked: false, reCorrect: null, reAtStep: -1, boxPred: {}, stage2: false, firstSel: -1, firstLocked: false, secondSel: -1 };
     }
     var state = {
       skin: "health",
       pairMode: false,
+      stageMode: false,
       current: 0,
       ex: EXERCISES.map(function () { return freshExState(); })
     };
@@ -11266,7 +11596,8 @@ int main() {
       { name: "Stacks & Queues", list: [49, 50] },
       { name: "Sorting & cost", list: [53, 54, 55, 56, 57, 58] },
       { name: "Going Further \u2014 beyond the first course", list: [73, 74, 75, 76, 77, 78, 79, 80] },
-      { name: "Strings \u2014 find, slice & compare", list: [116, 117, 118, 119, 120, 121] }
+      { name: "Strings \u2014 find, slice & compare", list: [116, 117, 118, 119, 120, 121] },
+      { name: "Functions — overloading & defaults", list: [122, 123, 124, 125, 126, 127] }
     ];
     function renderExNav() {
       var box = $("exnav"); box.innerHTML = ""; box.className = "ex-groups";
@@ -11505,9 +11836,10 @@ int main() {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
       $("predict-q").textContent = ex.question;
       // Toggle
-      var soloBtn = $("pair-solo-btn"), partnerBtn = $("pair-partner-btn");
-      if (soloBtn) soloBtn.setAttribute("aria-pressed", state.pairMode ? "false" : "true");
+      var soloBtn = $("pair-solo-btn"), partnerBtn = $("pair-partner-btn"), stage2Btn = $("stage2-btn");
+      if (soloBtn) soloBtn.setAttribute("aria-pressed", (state.pairMode || state.stageMode) ? "false" : "true");
       if (partnerBtn) partnerBtn.setAttribute("aria-pressed", state.pairMode ? "true" : "false");
+      if (stage2Btn) stage2Btn.setAttribute("aria-pressed", state.stageMode ? "true" : "false");
       var soloUI = $("solo-predict-ui"), pairUI = $("pair-predict-ui");
       if (soloUI) soloUI.hidden = state.pairMode;
       if (pairUI) pairUI.hidden = !state.pairMode;
@@ -11525,6 +11857,7 @@ int main() {
           if (i === s.selected && !s.correct) b.classList.add("reveal-wrong");
         } else {
           b.addEventListener("click", function () {
+            if (s.firstLocked) return;
             s.selected = i; renderPredict();
             var lb = $("lock-btn"); if (lb) lb.disabled = false;
           });
@@ -11538,6 +11871,40 @@ int main() {
       $("lock-btn").disabled = s.locked || s.selected < 0;
       $("lock-btn").style.display = s.locked ? "none" : "";
       $("lock-note").style.display = s.locked ? "none" : "";
+
+      // Two-stage flow (solo UI): after the first lock, the first prediction
+      // freezes and the discussion panel offers the second prediction.
+      var stPanel = $("stage2-panel");
+      if (stPanel) {
+        var lb2 = $("lock-btn"), lblNode = null;
+        for (var cn = 0; cn < lb2.childNodes.length; cn++) { if (lb2.childNodes[cn].nodeType === 3 && lb2.childNodes[cn].textContent.trim()) lblNode = lb2.childNodes[cn]; }
+        if (lblNode) lblNode.textContent = (state.stageMode && !state.pairMode && !s.locked && !s.firstLocked) ? "\n                Lock my first prediction\n              " : "\n                Lock my prediction\n              ";
+        if (s.firstLocked && !s.locked) {
+          box.querySelectorAll(".opt-btn").forEach(function (b2) { b2.disabled = true; });
+          lb2.style.display = "none";
+          $("lock-note").style.display = "none";
+          stPanel.hidden = false;
+          var fn = $("stage2-first-note");
+          fn.hidden = false;
+          fn.textContent = "First prediction locked: \u201c" + ex.options[s.firstSel] + "\u201d. It cannot change now — the discussion starts from it.";
+          var sbox = $("stage2-options"); sbox.innerHTML = "";
+          ex.options.forEach(function (opt, i) {
+            var b3 = document.createElement("button");
+            b3.className = "opt-btn"; b3.type = "button";
+            b3.setAttribute("aria-pressed", s.secondSel === i ? "true" : "false");
+            b3.innerHTML = '<span class="key">' + "ABCD"[i] + "</span><span>" + esc(opt) + "</span>";
+            b3.addEventListener("click", function () { s.secondSel = i; renderPredict(); });
+            sbox.appendChild(b3);
+          });
+          $("stage2-lock-btn").disabled = s.secondSel < 0;
+          var st2 = $("stage2-status");
+          st2.textContent = s.secondSel >= 0 ? "Second prediction: \u201c" + ex.options[s.secondSel] + "\u201d — not locked yet." : "No second prediction chosen yet.";
+          st2.className = "pair-status";
+          var rIn2 = $("rationale-input"); if (rIn2) rIn2.disabled = true;
+        } else {
+          stPanel.hidden = true;
+        }
+      }
 
       // Pair UI
       if (state.pairMode) {
@@ -11595,7 +11962,7 @@ int main() {
       var banner = $("locked-banner");
       if (s.locked) {
         banner.classList.add("show");
-        banner.textContent = "Prediction locked in: “" + ex.options[s.selected] + "”" + (s.pair ? " (pair)" : "") + ". The tracer is open — step through and hold the machine to your answer.";
+        banner.textContent = "Prediction locked in: “" + ex.options[s.selected] + "”" + (s.pair ? " (pair)" : "") + (s.stage2 && s.firstSel >= 0 ? " (two-stage — first prediction: " + ex.options[s.firstSel] + ")" : "") + ". The tracer is open — step through and hold the machine to your answer.";
       } else banner.classList.remove("show");
       // Confidence marking: one optional tap before locking; never blocks.
       var cSure = $("conf-sure"), cUnsure = $("conf-unsure"), cRow = $("confidence-row");
@@ -11626,9 +11993,44 @@ int main() {
       announce("Pair prediction locked: " + ex.options[idx] + ". The tracer is now open.");
       renderAll();
     }
+    /* ---------------- Two-stage prediction (predict, discuss, predict again) ----------------
+       An optional solo flow: the student locks a FIRST prediction, gets a
+       partner-discussion prompt, then locks a SECOND prediction before the
+       tracer opens. The exercise's final locked prediction is the second
+       one (it drives the verdict and the diagnoses, exactly like a solo
+       lock), and the record keeps both: firstSel and secondSel ride the
+       same on-device progress save as every other tracer field. */
+    function setStageMode(on) {
+      if (state.stageMode === on && !on) { renderPredict(); return; }
+      state.stageMode = on;
+      if (on) state.pairMode = false;
+      var s = state.ex[state.current];
+      if (s && !s.modDone) {
+        state.ex[state.current] = freshExState();
+      }
+      announce(on ? "Two-stage prediction: lock a first prediction, talk it over, then lock a second one." : "Predicting solo. This exercise's prediction stage has been reset.");
+      renderAll();
+    }
+    function finalizeStage2() {
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      if (!s.firstLocked || s.secondSel < 0 || s.locked) return;
+      s.selected = s.secondSel;
+      s.locked = true;
+      s.stage2 = true;
+      s.correct = s.selected === ex.correct;
+      announce("Second prediction locked: " + ex.options[s.selected] + ". The tracer is now open.");
+      renderAll();
+    }
+    (function wireStage2() {
+      var btn = $("stage2-btn");
+      if (btn) btn.addEventListener("click", function () { setStageMode(true); });
+      var lock2 = $("stage2-lock-btn");
+      if (lock2) lock2.addEventListener("click", finalizeStage2);
+    })();
     function setPairMode(on) {
       if (state.pairMode === on) { renderPredict(); return; }
       state.pairMode = on;
+      if (on) state.stageMode = false;
       var s = state.ex[state.current];
       // Switching back to solo mid-exercise resets that exercise's prediction stage;
       // switching into partner mode likewise starts that exercise's stage fresh
@@ -12802,17 +13204,26 @@ int main() {
       var v = $("verdict");
       var actual = ex.options[ex.correct], mine = ex.options[s.selected];
       var reHtml = s.reLocked ? '<p><b>Mid-trace re-prediction:</b> at the checkpoint you re-predicted <b>' + esc(ex.options[s.reSel] || "") + "</b> — it " + (s.reCorrect ? "held to the end, so the model you rebuilt mid-trace was the machine's model." : "also parted from the machine: seeing half the run was not enough to repair the model, which is the misconception to work on next.") + "</p>" : "";
+      var stage2Html = "";
+      if (s.stage2 && s.firstSel >= 0 && s.secondSel >= 0) {
+        var fOpt = ex.options[s.firstSel];
+        var fRight = s.firstSel === ex.correct, sRight = s.secondSel === ex.correct;
+        if (fRight && sRight) stage2Html = '<p><b>Two-stage record:</b> your first prediction, <b>' + esc(fOpt) + "</b>, already matched the machine, and the discussion confirmed it — your second prediction held.</p>";
+        else if (!fRight && sRight) stage2Html = '<p><b>Two-stage record:</b> your first prediction was <b>' + esc(fOpt) + "</b> and parted from the machine; after the discussion, your second prediction matched. The conversation repaired the model.</p>";
+        else if (fRight && !sRight) stage2Html = '<p><b>Two-stage record:</b> your first prediction, <b>' + esc(fOpt) + "</b>, was the machine's answer — the discussion talked you out of a sound model. The diagnosis below is written against your second prediction; compare it with what your first instinct saw.</p>";
+        else stage2Html = '<p><b>Two-stage record:</b> both predictions parted from the machine — first <b>' + esc(fOpt) + "</b>, then <b>" + esc(ex.options[s.secondSel]) + "</b>. The diagnosis below is written against the second; the first shows where the model started.</p>";
+      }
       var ratEcho = s.rationale ? '<p class="rationale-echo">You predicted <b>' + esc(mine) + "</b> because: <i>" + esc(s.rationale) + "</i></p>" : "";
       if (s.correct) {
         v.innerHTML = '<div class="verdict good"><h3>Your model matched the machine.</h3>' +
           '<div class="vs"><div><span>You predicted</span>' + esc(mine) + '</div><div><span>The program printed</span>' + esc(actual) + "</div></div>" +
-          "<p>A correct prediction is evidence your mental model of this concept is sound — for these values. Stage 4 changes a value to check the model, not the memory.</p>" + reHtml + ratEcho + partialVerdictHtml(ex, s) + teachBackHtml(s) + "</div>";
+          "<p>A correct prediction is evidence your mental model of this concept is sound — for these values. Stage 4 changes a value to check the model, not the memory.</p>" + reHtml + stage2Html + ratEcho + partialVerdictHtml(ex, s) + teachBackHtml(s) + "</div>";
       } else {
         var d = ex.diagnoses[s.selected];
         var confNote = s.confidence === "sure" ? '<p class="confident-note">You marked this prediction “Sure” — a confident miss, and the kind worth a second look: the model felt solid and still parted from the machine.</p>' : "";
         v.innerHTML = '<div class="verdict bad"><h3>Your model and the machine parted company.</h3>' +
           '<div class="vs"><div><span>You predicted</span>' + esc(mine) + '</div><div><span>The program printed</span>' + esc(actual) + "</div></div>" +
-          "<p>" + d.text + "</p>" + trapNoteHtmlForDiag(d.text) + reHtml + confNote + ratEcho + partialVerdictHtml(ex, s) + '<button class="btn small ghost jump" id="jump-btn" type="button">Jump to the parting step</button>' +
+          "<p>" + d.text + "</p>" + trapNoteHtmlForDiag(d.text) + reHtml + stage2Html + confNote + ratEcho + partialVerdictHtml(ex, s) + '<button class="btn small ghost jump" id="jump-btn" type="button">Jump to the parting step</button>' +
           '<div id="followup-box"></div><p class="suggest-next" id="suggest-next"></p>' + teachBackHtml(s) + "</div>";
         $("jump-btn").addEventListener("click", function () {
           stopPlayback();
@@ -12921,6 +13332,12 @@ int main() {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
       if (s.selected < 0) return;
       var rInLock = $("rationale-input"); if (rInLock) s.rationale = rInLock.value.trim().slice(0, 140);
+      if (state.stageMode && !state.pairMode && !s.firstLocked) {
+        s.firstSel = s.selected; s.firstLocked = true;
+        announce("First prediction locked: " + ex.options[s.firstSel] + ". Talk it over, then lock a second prediction.");
+        renderAll();
+        return;
+      }
       s.locked = true;
       s.correct = s.selected === ex.correct;
       announce("Prediction locked: " + ex.options[s.selected] + ". The tracer is now open.");
@@ -12930,7 +13347,7 @@ int main() {
     // Pair prediction wiring
     (function wirePair() {
       var soloBtn = $("pair-solo-btn"), partnerBtn = $("pair-partner-btn");
-      if (soloBtn) soloBtn.addEventListener("click", function () { setPairMode(false); });
+      if (soloBtn) soloBtn.addEventListener("click", function () { setPairMode(false); setStageMode(false); });
       if (partnerBtn) partnerBtn.addEventListener("click", function () { setPairMode(true); });
       var aSel = $("pair-a-select"), bSel = $("pair-b-select"), jSel = $("joint-select");
       if (aSel) aSel.addEventListener("change", function () {
@@ -22182,8 +22599,9 @@ int main() {
       $("challenges-mode").hidden = mode !== "challenges";
       $("bridge-mode").hidden = mode !== "bridge";
       $("order-mode").hidden = mode !== "order";
+      $("match-mode").hidden = mode !== "match";
       $("make-mode").hidden = mode !== "make";
-      ["bolt","tracer","gym","refactor","translator","challenges","bridge","order","make"].forEach(function(m){
+      ["bolt","tracer","gym","refactor","translator","challenges","bridge","order","match","make"].forEach(function(m){
         var b = $("mode-" + m);
         b.setAttribute("aria-selected", mode === m ? "true" : "false");
         b.setAttribute("aria-pressed", mode === m ? "true" : "false");
@@ -22196,6 +22614,7 @@ int main() {
       if (mode === "challenges") renderChallenges();
       if (mode === "bridge") renderBridge();
       if (mode === "order") renderOrder();
+      if (mode === "match") renderMatch();
       if (mode === "make") renderMake();
       if (typeof renderRoute === "function") { routeLastSig = ""; renderRoute(); }
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -22208,12 +22627,13 @@ int main() {
     $("mode-challenges").addEventListener("click", function () { setMode("challenges"); });
     $("mode-bridge").addEventListener("click", function () { setMode("bridge"); });
     $("mode-order").addEventListener("click", function () { setMode("order"); });
+    $("mode-match").addEventListener("click", function () { setMode("match"); });
     $("mode-make").addEventListener("click", function () { setMode("make"); });
 
 
     /* ---------------- Mode tabs: arrow-key navigation ---------------- */
     (function(){
-      var order = ["bolt","tracer","gym","refactor","translator","challenges","bridge","order","make"];
+      var order = ["bolt","tracer","gym","refactor","translator","challenges","bridge","order","match","make"];
       var tablist = document.getElementById("mode-tablist");
       if (tablist) tablist.addEventListener("keydown", function(e){
         if (!(e.target.classList && e.target.classList.contains("mode-btn"))) return;
@@ -22234,12 +22654,12 @@ int main() {
        and the tab bar is untouched. */
     var MODE_NAMES = {
       bolt: "Bolt's World", tracer: "Prediction Tracer", gym: "Debugging Gym", refactor: "Refactor Gym",
-      translator: "Error Translator", challenges: "Challenges", bridge: "Bridge", order: "Order the Lines", make: "Make"
+      translator: "Error Translator", challenges: "Challenges", bridge: "Bridge", order: "Order the Lines", match: "Which line printed that?", make: "Make"
     };
     var drawerIsOpen = false;
     var drawerHideTimer = null;
     function currentModeKey() {
-      var order = ["bolt","tracer","gym","refactor","translator","challenges","bridge","order","make"];
+      var order = ["bolt","tracer","gym","refactor","translator","challenges","bridge","order","match","make"];
       for (var i = 0; i < order.length; i++) {
         var b = $("mode-" + order[i]);
         if (b && b.getAttribute("aria-selected") === "true") return order[i];
@@ -22254,6 +22674,7 @@ int main() {
         if (mode === "refactor" && typeof refactor !== "undefined" && refactor && refactor.rounds) return refactor.rounds.filter(function (r) { return r.done; }).length + " / " + REFACTOR_ROUNDS.length;
         if (mode === "bridge" && typeof bridgeDoneCount === "function") return bridgeDoneCount() + " / " + BRIDGE_ACTIVITIES.length;
         if (mode === "order" && typeof orderDoneCount === "function") return orderDoneCount() + " / " + ORDER_ROUNDS.length;
+        if (mode === "match" && typeof matchDoneCount === "function") return matchDoneCount() + " / " + MATCH_ROUNDS.length;
         if (mode === "make" && typeof makeDoneCount === "function") return makeDoneCount() + " / " + MAKE_PROMPTS.length;
       } catch (e) {}
       return "";
@@ -22441,15 +22862,15 @@ int main() {
        tfHydrate path applies it field by field (unknown fields are ignored
        by that hydration and dropped by the next tfCollect save; missing
        optional sections default the same way an older save's would). */
-    var TF_PROGRESS_ARRAY_KEYS = ["tracer", "gym", "refactor", "bridge", "order", "make", "authoredExercises", "instructorExercises", "assignments"];
-    var TF_PROGRESS_KNOWN_KEYS = ["v", "bitsFormat", "playbackSpeed", "bgTheme", "reduceMotionPref", "largeTextPref", "readAloudPref", "primerRead", "boltTourSeen", "tracer", "bolt", "gym", "refactor", "bridge", "order", "make", "challenges", "authoredExercises", "instructorExercises", "assignments", "quiz", "gap", "lastTracer", "testOut", "variants", "diagPair", "classRoster", "exitTicket"];
+    var TF_PROGRESS_ARRAY_KEYS = ["tracer", "gym", "refactor", "bridge", "order", "match", "make", "authoredExercises", "instructorExercises", "assignments"];
+    var TF_PROGRESS_KNOWN_KEYS = ["v", "bitsFormat", "playbackSpeed", "bgTheme", "reduceMotionPref", "largeTextPref", "readAloudPref", "primerRead", "boltTourSeen", "tracer", "bolt", "gym", "refactor", "bridge", "order", "match", "make", "challenges", "authoredExercises", "instructorExercises", "assignments", "quiz", "gap", "lastTracer", "testOut", "variants", "diagPair", "classRoster", "exitTicket"];
     function tfIsPlainObj(x) { return !!x && typeof x === "object" && !Array.isArray(x); }
     function tfCloneJson(x) { return JSON.parse(JSON.stringify(x)); }
     function tfValidateProgressFile(d) {
       if (!tfIsPlainObj(d)) return false;
       if (d.v !== 1) return false;
       if (!Array.isArray(d.tracer)) return false;
-      var arrayKeys = ["gym", "refactor", "bridge", "order", "make", "authoredExercises", "instructorExercises", "assignments"];
+      var arrayKeys = ["gym", "refactor", "bridge", "order", "match", "make", "authoredExercises", "instructorExercises", "assignments"];
       for (var i = 0; i < arrayKeys.length; i++) {
         if (d[arrayKeys[i]] !== undefined && !Array.isArray(d[arrayKeys[i]])) return false;
       }
@@ -22576,7 +22997,7 @@ int main() {
       out.v = 1;
       // Indexed activity lists: keep the current record per item; take the
       // file's item only where the current progress has nothing there.
-      ["tracer", "gym", "refactor", "bridge", "order", "make"].forEach(function (k) {
+      ["tracer", "gym", "refactor", "bridge", "order", "match", "make"].forEach(function (k) {
         if (imp[k] !== undefined) out[k] = tfMergeListSection(k, cur[k], imp[k]);
       });
       // Free-standing collections: keep everything current, add file items
@@ -26283,6 +26704,69 @@ int main() {
     var orderState = { current: 0, rounds: ORDER_ROUNDS.map(function () { return orderFreshRound(); }) };
     function orderDoneCount() { return orderState.rounds.filter(function (r) { return r && r.done; }).length; }
 
+    var MATCH_ROUNDS = [
+      { concept: "Sequence · two prints", title: "First words",
+        task: "The program prints two words, one per line. Match each line of output to the line of code that printed it.",
+        code: ["#include <iostream>", "using namespace std;", "int main() {", "    cout << \"Ready\" << endl;", "    cout << \"Go\" << endl;", "    return 0;", "}"],
+        prints: [
+          { text: "Ready", line: 3, why: "Only the first cout carries the word Ready, and it runs first.", diag: { 4: "That line prints Go — it runs second. Each cout prints exactly the text written inside it, so Ready must come from the cout above." } },
+          { text: "Go", line: 4, why: "The second cout carries Go, and statements run top to bottom.", diag: { 3: "That line prints Ready, and it runs first. Go comes from the second cout." } }
+        ],
+        explain: "Two cout statements, two lines of output, in the order the statements run: the first cout prints <b>Ready</b>, the second prints <b>Go</b>." },
+      { concept: "Loops · one line, many prints", title: "The line that prints three times",
+        task: "The program prints 0, 1 and 2, one per line. Match each line of output to the line of code that printed it. One line of code may be the answer more than once.",
+        code: ["#include <iostream>", "using namespace std;", "int main() {", "    for (int i = 0; i < 3; i++) {", "        cout << i << endl;", "    }", "    return 0;", "}"],
+        prints: [
+          { text: "0", line: 4, why: "The cout sits inside the loop body, so that one line runs once per pass; on the first pass i is 0.", diag: { 3: "The header line does run — it creates i, tests it and steps it — but it holds no cout, so it prints nothing. Every number comes from the single cout inside the body." } },
+          { text: "1", line: 4, why: "Same line, second pass: the loop returned to the body with i now 1.", diag: { 3: "The header steps i from 0 to 1, but printing is not its job. The 1 is printed when the body runs again — by the same cout line as before." } },
+          { text: "2", line: 4, why: "Same line, third pass: i is 2, then the test fails and the loop ends.", diag: { 3: "The header's last act is the failing test, not a print. The 2 comes from the body's cout on the final pass." } }
+        ],
+        explain: "There is only one cout in the program, inside the loop body. It runs three times — once per pass — printing <b>0</b>, <b>1</b> and <b>2</b>. One line of code, three lines of output." },
+      { concept: "Decisions · the branch not taken", title: "The branch not taken",
+        task: "The program prints two lines. Match each line of output to the line of code that printed it. Careful: one cout in this program never runs at all.",
+        code: ["#include <iostream>", "using namespace std;", "int main() {", "    int score = 45;", "    if (score >= 50) {", "        cout << \"Pass\" << endl;", "    } else {", "        cout << \"Retry\" << endl;", "    }", "    cout << \"Done\" << endl;", "    return 0;", "}"],
+        prints: [
+          { text: "Retry", line: 7, why: "score is 45, the test fails, and the else branch runs: its cout prints Retry.", diag: { 5: "That cout exists, but it never runs: score is 45, so the if test fails and execution takes the else branch instead. A line prints only when execution actually reaches it." } },
+          { text: "Done", line: 9, why: "After the if/else finishes, execution continues at the cout below the closing brace, whichever branch ran.", diag: { 7: "That line printed Retry, inside the else branch. Done is printed after the whole if/else, by the cout that follows the closing brace." } }
+        ],
+        explain: "The if branch's cout is never reached, because 45 >= 50 is false. The else branch prints <b>Retry</b>, and the cout after the fork — which runs either way — prints <b>Done</b>." },
+      { concept: "Functions · a helper speaks twice", title: "The helper speaks twice",
+        task: "The program prints three lines. Match each line of output to the line of code that printed it. One line of code is the answer twice.",
+        code: ["#include <iostream>", "using namespace std;", "void greet() {", "    cout << \"Hi\" << endl;", "}", "int main() {", "    greet();", "    cout << \"Middle\" << endl;", "    greet();", "    return 0;", "}"],
+        prints: [
+          { text: "Hi", line: 3, why: "The first call sends execution into greet, whose only cout prints Hi.", diag: { 6: "That line calls greet — but a call prints nothing by itself. The Hi text lives inside greet, on its cout line; the call only sends execution there." } },
+          { text: "Middle", line: 7, why: "Between the two calls, main's own cout prints Middle.", diag: { 3: "That line prints Hi, from inside the function. Middle is printed by main's own cout, between the two calls." } },
+          { text: "Hi", line: 3, why: "The second call enters greet again, and the same cout line prints Hi a second time.", diag: { 8: "That line is the second call: it sends execution back into greet, but the printing itself happens on greet's cout line, as it did the first time." } }
+        ],
+        explain: "The cout inside greet prints <b>Hi</b> twice — once per call — while main's own cout prints <b>Middle</b> between the calls. The call lines print nothing; they only move execution." },
+      { concept: "Loops · inside and after", title: "The running total",
+        task: "The program prints four lines: three numbers, then a labelled final line. Match each line of output to the line of code that printed it.",
+        code: ["#include <iostream>", "using namespace std;", "int main() {", "    int total = 0;", "    for (int i = 1; i <= 3; i++) {", "        total += i;", "        cout << total << endl;", "    }", "    cout << \"Final \" << total << endl;", "    return 0;", "}"],
+        prints: [
+          { text: "1", line: 6, why: "First pass: total becomes 1 and the cout inside the loop prints it.", diag: { 8: "The Final line runs once, after the loop, and its output starts with the word Final. The plain 1 printed on the first pass comes from the cout inside the loop." } },
+          { text: "3", line: 6, why: "Second pass: total becomes 1 + 2 = 3, printed by the same inside-loop cout.", diag: { 8: "That line prints only at the end, with its label attached. The bare 3 mid-run is the inside-loop cout on the second pass." } },
+          { text: "6", line: 6, why: "Third pass: total becomes 3 + 3 = 6, printed by the inside-loop cout.", diag: { 8: "The Final line's output is 'Final 6', label included. The bare 6 printed during the run comes from the cout inside the loop, on its last pass." } },
+          { text: "Final 6", line: 8, why: "After the loop ends, the last cout prints its label and the finished total.", diag: { 6: "The inside-loop cout prints the number alone, with no label. 'Final 6' carries the extra text, which only the after-loop cout adds." } }
+        ],
+        explain: "The cout inside the loop prints the running total on every pass — <b>1</b>, <b>3</b>, <b>6</b> — and the cout after the loop prints once, with its label: <b>Final 6</b>. Position relative to the loop decides how often a line prints." },
+      { concept: "Loops · before, inside, after", title: "Countdown",
+        task: "The program prints five lines. Match each line of output to the line of code that printed it.",
+        code: ["#include <iostream>", "using namespace std;", "int main() {", "    cout << \"Start\" << endl;", "    int n = 3;", "    while (n > 0) {", "        cout << n << endl;", "        n--;", "    }", "    cout << \"Liftoff\" << endl;", "    return 0;", "}"],
+        prints: [
+          { text: "Start", line: 3, why: "The cout above the loop runs before the loop begins.", diag: { 6: "That line prints the changing number inside the loop. Start is printed before the loop even begins, by the cout above it." } },
+          { text: "3", line: 6, why: "First pass of the loop: n is 3 and the cout inside prints it.", diag: { 5: "The while header tests n but prints nothing — headers never print. The 3 comes from the cout inside the body." } },
+          { text: "2", line: 6, why: "n-- dropped n to 2, the test passed again, and the same cout line printed the new value.", diag: { 7: "That line changes n — it is the n-- step — but it holds no cout. The 2 is printed by the body's cout on the second pass." } },
+          { text: "1", line: 6, why: "Third pass: n is 1; after printing, n-- makes it 0 and the loop ends.", diag: { 5: "The header's final test fails and ends the loop without printing. The 1 was printed by the body's cout on the last pass." } },
+          { text: "Liftoff", line: 9, why: "Once n reaches 0 the loop is over, and the last cout in main prints Liftoff.", diag: { 6: "The loop's cout prints numbers only. Liftoff is printed after the loop ends, by the last cout in main." } }
+        ],
+        explain: "One cout before the loop prints <b>Start</b>; one inside it prints <b>3</b>, <b>2</b> and <b>1</b> across the passes; one after it prints <b>Liftoff</b>. Where a cout sits — before, inside or after a loop — decides when and how often it prints." }
+    ];
+    function matchFreshRound() {
+      return { sel: [], checks: 0, done: false, perfect: false, msg: "", msgKind: "info" };
+    }
+    var matchState = { current: 0, rounds: MATCH_ROUNDS.map(function () { return matchFreshRound(); }) };
+    function matchDoneCount() { return matchState.rounds.filter(function (r) { return r && r.done; }).length; }
+
     var TF_KEY = "tracefirst-progress-v1";
     var catalogueImports = [];
     /* Class roster: named students decoded from their TFP1: progress
@@ -26321,7 +26805,7 @@ int main() {
       return out;
     }
     function tfCollect() {
-      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", playbackSpeed: playbackSpeed, bgTheme: bgTheme, reduceMotionPref: !!reduceMotionPref, largeTextPref: !!largeTextPref, readAloudPref: (typeof readAloudPref !== "undefined" && !!readAloudPref), dyslexiaPref: (typeof dyslexiaPref !== "undefined" && !!dyslexiaPref), primerRead: !!primerRead, boltTourSeen: (typeof boltTourSeen !== "undefined" && !!boltTourSeen), tracer: [], bolt: null, gym: [], refactor: [], bridge: [], order: [], make: [], challenges: null, authoredExercises: [], instructorExercises: [],
+      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", playbackSpeed: playbackSpeed, bgTheme: bgTheme, reduceMotionPref: !!reduceMotionPref, largeTextPref: !!largeTextPref, readAloudPref: (typeof readAloudPref !== "undefined" && !!readAloudPref), dyslexiaPref: (typeof dyslexiaPref !== "undefined" && !!dyslexiaPref), primerRead: !!primerRead, boltTourSeen: (typeof boltTourSeen !== "undefined" && !!boltTourSeen), tracer: [], bolt: null, gym: [], refactor: [], bridge: [], order: [], match: [], make: [], challenges: null, authoredExercises: [], instructorExercises: [],
         lastTracer: (typeof tfLastTracer === "number" ? tfLastTracer : -1),
         testOut: (typeof testOut !== "undefined" && testOut)
           ? { passed: !!testOut.passed, score: (typeof testOut.score === "number" ? testOut.score : 0), via: (Array.isArray(testOut.via) ? testOut.via.slice() : [false, false, false]) }
@@ -26347,6 +26831,9 @@ int main() {
           reLocked: !!s.reLocked,
           reCorrect: (s.reCorrect === true || s.reCorrect === false) ? s.reCorrect : null,
           reAtStep: (typeof s.reAtStep === "number" ? s.reAtStep : -1),
+          stage2: !!s.stage2,
+          firstSel: (typeof s.firstSel === "number" ? s.firstSel : -1),
+          secondSel: (typeof s.secondSel === "number" ? s.secondSel : -1),
           boxPred: tfBoxPredClean(s.boxPred)
         });
       });
@@ -26379,6 +26866,13 @@ int main() {
       try {
         orderState.rounds.forEach(function (r) {
           data.order.push(r && r.done ? { done: true, predCorrect: r.predCorrect === true } : null);
+        });
+      } catch (e) {}
+      // Which line printed that?: completed rounds only (additive field,
+      // sibling to order; older saves simply lack it).
+      try {
+        matchState.rounds.forEach(function (r) {
+          data.match.push(r && r.done ? { done: true, perfect: r.perfect === true } : null);
         });
       } catch (e) {}
       try {
@@ -26528,6 +27022,10 @@ int main() {
           s.reCorrect = (sv.reCorrect === true || sv.reCorrect === false) ? sv.reCorrect : null;
           if (typeof sv.reAtStep === "number") s.reAtStep = sv.reAtStep;
           s.boxPred = tfBoxPredClean(sv.boxPred);
+          s.stage2 = !!sv.stage2;
+          if (typeof sv.firstSel === "number") s.firstSel = sv.firstSel;
+          if (typeof sv.secondSel === "number") s.secondSel = sv.secondSel;
+          s.firstLocked = !!(s.locked && s.stage2);
           s.jointLocked = !!sv.jointLocked;
           if (s.locked || s.modDone) state.ex[i] = s;
         });
@@ -26596,6 +27094,19 @@ int main() {
             r.done = true;
             r.predCorrect = sv.predCorrect === true;
             orderState.rounds[i] = r;
+          });
+        }
+      } catch (e) {}
+      // Which line printed that?: completed rounds only (additive field;
+      // absent in older saves, which then start every round fresh).
+      try {
+        if (Array.isArray(d.match)) {
+          d.match.forEach(function (sv, i) {
+            if (!sv || !MATCH_ROUNDS[i] || !sv.done) return;
+            var r = matchFreshRound();
+            r.done = true;
+            r.perfect = sv.perfect === true;
+            matchState.rounds[i] = r;
           });
         }
       } catch (e) {}
@@ -27036,6 +27547,7 @@ int main() {
       } catch (e) { c.challenges = [0, 0]; }
       try { c.bridge = [bridgeDoneCount(), BRIDGE_ACTIVITIES.length]; } catch (e) { c.bridge = [0, 0]; }
       try { c.order = [orderDoneCount(), ORDER_ROUNDS.length]; } catch (e) { c.order = [0, 0]; }
+      try { c.match = [matchDoneCount(), MATCH_ROUNDS.length]; } catch (e) { c.match = [0, 0]; }
       try { c.make = [makeDoneCount(), MAKE_PROMPTS.length]; } catch (e) { c.make = [0, 0]; }
       return c;
     }
@@ -27086,7 +27598,7 @@ int main() {
       });
       return { v: 1, t: cleanT, c: cleanC };
     }
-    var TFP_MODE_LABELS = [["bolt", "Bolt's World"], ["gym", "Debugging Gym"], ["refactor", "Refactor Gym"], ["translator", "Error Translator (fix-it rounds)"], ["challenges", "Challenges"], ["bridge", "Bridge"], ["order", "Order the Lines"], ["make", "Make"]];
+    var TFP_MODE_LABELS = [["bolt", "Bolt's World"], ["gym", "Debugging Gym"], ["refactor", "Refactor Gym"], ["translator", "Error Translator (fix-it rounds)"], ["challenges", "Challenges"], ["bridge", "Bridge"], ["order", "Order the Lines"], ["match", "Which line printed that?"], ["make", "Make"]];
     function tfpRenderView(obj) {
       var box = $("tfp-view");
       if (!box) return;
@@ -27418,6 +27930,8 @@ int main() {
       return String(name || "").toLowerCase().replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"').replace(/\u2212/g, "-").replace(/\s+/g, " ").replace(/\.\s*$/, "").trim();
     }
     var TRAP_NOTES = {
+      "one name can only mean one function": "A function name may be shared by several functions — that is overloading. The compiler chooses among them at each call, by the number and the types of the arguments in that call, so the same name can run different code at different calls in the same program. One name does not mean one function; it means one name with a family of parameter lists.",
+      "an argument can skip a parameter": "Arguments fill parameters strictly left to right, in order, with no gaps. A call may leave out only a trailing run of parameters — the ones at the right-hand end that carry default values. The second argument always lands in the second parameter, never in a later one, so a value meant for a later parameter must be preceded by values for everything before it.",
       "one name, one variable": "A name means whichever box is in scope where the name is used. A local inside one function and a global with the same spelling are two different boxes: inside a function that declares its own local, the name means the local; in a function without one, the same spelling means the global. The same spelling never merges two boxes into one.",
       "every call starts fresh": "An ordinary local variable is rebuilt on every call and forgets the previous call completely. A local declared static is the exception: it is created once, on the first call, and keeps its value between calls — which is how a static counter remembers where it left off.",
       "the parameter is the caller's box": "A parameter passed by value is a fresh box holding a copy of the argument; changing it never touches the caller's variable. Only a reference parameter (written with &) is another name for the caller's own box, so only through a reference can a function change what the caller holds.",
@@ -28683,6 +29197,140 @@ int main() {
         return '<div class="membox"><div class="vname"><span>' + esc(nm) + '</span><span class="vtype">' + esc(v.type) + '</span></div><div class="vval">' + esc(val) + "</div></div>";
       }).join("");
     }
+    function matchRoundDef() { return MATCH_ROUNDS[matchState.current]; }
+    function matchRt() { return matchState.rounds[matchState.current]; }
+    function matchSetMsg(r) {
+      var m = $("match-msg"); if (!m) return;
+      if (r.msg) { m.className = "make-msg show " + (r.msgKind || "info"); m.innerHTML = r.msg; }
+    }
+    function renderMatchNav() {
+      var box = $("matchnav"); if (!box) return;
+      box.innerHTML = "";
+      MATCH_ROUNDS.forEach(function (rd, i) {
+        var r = matchState.rounds[i];
+        var st = r.done ? (r.perfect ? "complete · all matched first try" : "complete") : "not started";
+        var b = document.createElement("button");
+        b.className = "ex-btn ex-row"; b.type = "button";
+        b.setAttribute("aria-current", matchState.current === i ? "true" : "false");
+        b.setAttribute("aria-label", "Round " + (i + 1) + ": " + rd.title + " (" + st + ")");
+        b.innerHTML = '<span class="n">' + (i + 1) + '</span><span class="ex-row-title">' + esc(rd.title) + " · " + esc(rd.concept) + '</span><span class="status' + (r.done ? " good" : "") + '">' + esc(st) + "</span>";
+        b.addEventListener("click", function () { matchState.current = i; renderMatch(); });
+        box.appendChild(b);
+      });
+      var sb = $("match-scorebar");
+      if (sb) {
+        var doneN = matchDoneCount();
+        var perfN = matchState.rounds.filter(function (r) { return r && r.done && r.perfect; }).length;
+        sb.innerHTML = '<span class="metric"><strong>' + doneN + " / " + MATCH_ROUNDS.length + '</strong> <span>rounds complete</span></span>' +
+          '<span class="metric"><strong>' + perfN + " / " + doneN + '</strong> <span>matched perfectly first try</span></span>';
+      }
+    }
+    function renderMatch() {
+      var panel = $("match-mode"); if (!panel) return;
+      var d = matchRoundDef();
+      renderMatchNav();
+      $("match-tag").textContent = "Round " + (matchState.current + 1) + " of " + MATCH_ROUNDS.length + " · " + d.concept;
+      $("match-title").textContent = d.title;
+      $("match-task").textContent = d.task;
+      renderMatchBody();
+    }
+    function renderMatchBody() {
+      var body = $("match-body"); if (!body) return;
+      var d = matchRoundDef(), r = matchRt();
+      if (r.done && !r.sel.length) {
+        body.innerHTML =
+          '<p class="otl-stage-tag">Round complete</p>' +
+          '<div class="otl-verdict good" style="margin-top:10px;">' +
+          "<strong>You matched every line of output to the line that printed it" + (r.perfect ? ", all on the first check" : "") + ".</strong>" +
+          "<p>" + d.explain + "</p></div>" +
+          '<div class="lockrow" style="margin-top:14px;">' +
+          '<button class="btn ghost" type="button" id="match-again">Do this round again</button>' +
+          (matchState.current < MATCH_ROUNDS.length - 1 ? '<button class="btn" type="button" id="match-next">Next round →</button>' : "") +
+          "</div>";
+        var again = $("match-again");
+        if (again) again.addEventListener("click", function () {
+          var keep = { done: r.done, perfect: r.perfect };
+          matchState.rounds[matchState.current] = matchFreshRound();
+          matchState.rounds[matchState.current].done = keep.done;
+          matchState.rounds[matchState.current].perfect = keep.perfect;
+          matchRt().msg = "Round reset. Your earlier completion stays recorded until you finish the round again.";
+          matchRt().msgKind = "info";
+          renderMatch();
+          announce("Round " + (matchState.current + 1) + " reset.");
+        });
+        var next = $("match-next");
+        if (next) next.addEventListener("click", function () { matchState.current++; renderMatch(); });
+        matchSetMsg(r);
+        return;
+      }
+      var html = '<p class="otl-stage-tag">The program</p>';
+      html += '<div class="codebox" style="margin-top:8px;"><div class="codehead"><span>program.cpp</span><span>C++</span></div><div style="padding:10px 0;">' + orderCodeHtml(d.code, -1) + "</div></div>";
+      html += '<p class="otl-stage-tag" style="margin-top:16px;">Its output — which line printed each one?</p>';
+      d.prints.forEach(function (p, pi) {
+        var sel = (typeof r.sel[pi] === "number") ? r.sel[pi] : -1;
+        var fb = "";
+        if (r.checked && typeof r.checked[pi] === "string" && r.checked[pi]) {
+          fb = '<p class="match-fb ' + (sel === p.line ? "good" : "bad") + '" style="margin-top:6px;">' + r.checked[pi] + "</p>";
+        }
+        html += '<div class="match-row" style="margin-top:12px;">' +
+          '<div class="match-out"><span class="match-out-label">Output ' + (pi + 1) + '</span><code class="match-out-text">' + esc(p.text) + "</code></div>" +
+          '<label class="match-sel-label" for="match-sel-' + pi + '">Printed by</label>' +
+          '<select class="digest-textarea match-sel" id="match-sel-' + pi + '" data-print="' + pi + '" style="min-height:0;padding:9px 11px;font-family:\'IBM Plex Mono\',monospace;font-size:.9rem;margin-top:6px;width:100%;">' +
+          '<option value="-1">Choose the line…</option>' +
+          d.code.map(function (l, li) {
+            var t = l.trim(); if (t.length > 52) t = t.slice(0, 52) + "…";
+            return '<option value="' + li + '"' + (sel === li ? " selected" : "") + ">Line " + (li + 1) + ": " + esc(t) + "</option>";
+          }).join("") +
+          "</select>" + fb + "</div>";
+      });
+      html += '<div class="lockrow" style="margin-top:16px;"><button class="btn" type="button" id="match-check">Check my matches</button>' +
+        (matchState.current < MATCH_ROUNDS.length - 1 ? '<button class="btn ghost" type="button" id="match-next2">Next round →</button>' : "") + "</div>";
+      if (r.done) {
+        html += '<div class="otl-verdict good" style="margin-top:12px;"><strong>Every output line matched.</strong><p>' + d.explain + "</p></div>";
+      }
+      body.innerHTML = html;
+      body.querySelectorAll(".match-sel").forEach(function (selEl) {
+        selEl.addEventListener("change", function () {
+          var pi = parseInt(selEl.getAttribute("data-print"), 10);
+          var v = parseInt(selEl.value, 10);
+          r.sel[pi] = isNaN(v) ? -1 : v;
+          if (r.checked) r.checked[pi] = "";
+          renderMatchBody();
+        });
+      });
+      var chk = $("match-check");
+      if (chk) chk.addEventListener("click", function () {
+        var missing = d.prints.some(function (p, pi) { return typeof r.sel[pi] !== "number" || r.sel[pi] < 0; });
+        if (missing) {
+          r.msg = "Choose a line for every line of output first — a line of code may be chosen more than once.";
+          r.msgKind = "info";
+          renderMatchBody(); matchSetMsg(r);
+          return;
+        }
+        r.checks++;
+        r.checked = d.prints.map(function (p, pi) {
+          if (r.sel[pi] === p.line) return "<b>Correct.</b> " + p.why;
+          var dg = (p.diag && typeof p.diag[r.sel[pi]] === "string") ? p.diag[r.sel[pi]] : p.why;
+          return "<b>Not that line.</b> " + dg;
+        });
+        var allRight = d.prints.every(function (p, pi) { return r.sel[pi] === p.line; });
+        if (allRight) {
+          r.done = true;
+          r.perfect = r.checks === 1;
+          r.msg = r.perfect ? "Every match right on the first check." : "Every match right.";
+          r.msgKind = "good";
+          if (typeof tfSave === "function") tfSave();
+        } else {
+          r.msg = "Some matches part from the machine. The notes under each output line say why — adjust those and check again.";
+          r.msgKind = "bad";
+        }
+        renderMatch();
+        announce(allRight ? "All matches correct." : "Some matches are not right yet.");
+      });
+      var nx = $("match-next2");
+      if (nx) nx.addEventListener("click", function () { matchState.current++; renderMatch(); });
+      matchSetMsg(r);
+    }
     function renderOrderNav() {
       var box = $("ordernav"); if (!box) return;
       box.innerHTML = "";
@@ -29014,7 +29662,7 @@ int main() {
       function byId(id) { return document.getElementById(id); }
       var MODE_LABELS = {
         bolt: "Bolt's World", tracer: "Prediction Tracer", gym: "Debugging Gym", refactor: "Refactor Gym",
-        translator: "Error Translator", challenges: "Challenges", bridge: "Bridge", order: "Order the Lines", make: "Make"
+        translator: "Error Translator", challenges: "Challenges", bridge: "Bridge", order: "Order the Lines", match: "Which line printed that?", make: "Make"
       };
       /* Declutter: primary sections first in every dropdown; secondary
          entries carry more:true and fold behind one "More sections"
@@ -29073,6 +29721,10 @@ int main() {
           { label: "Rounds \u2014 ten programs, in order", target: "order-rounds" },
           { label: "Arrange, predict, trace", target: "order-card" }
         ] },
+        { mode: "match", items: [
+          { label: "Rounds \u2014 six programs, in order", target: "match-rounds" },
+          { label: "Match each output to its line", target: "match-card" }
+        ] },
         { mode: "make", items: [
           { label: "Prompts \u2014 thirty programs to write, in order", target: "make-prompts" },
           { label: "Editor & test bench", target: "make-editor-card" },
@@ -29089,7 +29741,7 @@ int main() {
       try { reducedMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); } catch (e) {}
 
       function currentMode() {
-        var order = ["bolt", "tracer", "gym", "refactor", "translator", "challenges", "bridge", "order", "make"];
+        var order = ["bolt", "tracer", "gym", "refactor", "translator", "challenges", "bridge", "order", "match", "make"];
         for (var i = 0; i < order.length; i++) {
           var b = byId("mode-" + order[i]);
           if (b && b.getAttribute("aria-selected") === "true") return order[i];
