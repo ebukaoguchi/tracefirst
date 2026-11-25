@@ -1847,7 +1847,7 @@
             <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Order code, then write a line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find and fix faults.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 128</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 134</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write your own programs.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
             <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
@@ -1930,6 +1930,11 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/><path d="M15.5 15.5 20 20"/></svg>
           Which line printed that?
         </button>
+        <button class="mode-btn" type="button" id="mode-perr" role="tab" aria-controls="perr-mode" aria-selected="false" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3z"/><path d="M12 10v4.5M12 17.5h.01"/></svg>
+          Predict the error
+        </button>
+
         <button class="mode-btn" type="button" id="mode-make" role="tab" aria-controls="make-mode" aria-selected="false" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
           Make
@@ -2013,6 +2018,7 @@
           <button class="drawer-row" type="button" data-drawer-mode="bridge" aria-current="false"><span class="drawer-row-name">Bridge</span><span class="drawer-hint" data-hint="bridge"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="order" aria-current="false"><span class="drawer-row-name">Order the Lines</span><span class="drawer-hint" data-hint="order"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="match" aria-current="false"><span class="drawer-row-name">Which line printed that?</span><span class="drawer-hint" data-hint="match"></span></button>
+          <button class="drawer-row" type="button" data-drawer-mode="perr" aria-current="false"><span class="drawer-row-name">Predict the error</span><span class="drawer-hint" data-hint="perr"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="make" aria-current="false"><span class="drawer-row-name">Make</span><span class="drawer-hint" data-hint="make"></span></button>
         </nav>
         <hr class="drawer-divider" />
@@ -2191,7 +2197,7 @@ for (int i = 0; i < 3; i++) {
             <select class="lecture-select" id="lecture-ex-select" aria-label="Choose an exercise to project"></select>
             <button class="btn" type="button" id="lecture-project-btn">Project this exercise</button>
           </div>
-          <p class="lecture-pick-note">Any of the 128 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
+          <p class="lecture-pick-note">Any of the 134 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
         </div>
 
         <div id="lecture-project" hidden>
@@ -2737,6 +2743,37 @@ for (int i = 0; i < 3; i++) {
           <span class="journal-status" id="exit-collect-status" role="status"></span>
         </div>
         <div id="exit-split" style="margin-top:14px;" aria-live="polite"></div>
+      </section>
+<section class="card" id="preclass-section" style="margin-top:18px;" aria-labelledby="preclass-h">
+        <h3 id="preclass-h">Pre-class check — one exercise, the night before</h3>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">The pre-lecture counterpart of the exit ticket: designate <strong>one</strong> tracer exercise as pre-reading for the night before a lecture and share its code or link (it is an assignment code, flagged as a pre-class check). Each student opens it, works that one exercise and locks one prediction — the normal Stage 1 flow — then hands back their progress code (TFP1:, from <strong>Office-hours progress code</strong> above) before class. Paste the returned codes here, or pull them from the class roster, and this panel builds the split: how many were correct, and how many chose each wrong answer. Read the split before class, so the lecture starts where students actually are. <strong>There is no live server:</strong> the split is built only from codes and roster entries collected on this device, exactly like the heatmap and the roster — nothing is uploaded, and nothing appears here until codes are collected here. The summary also appears at the top of the instructor digest below, after the exit-ticket summary when both exist.</p>
+        <h4 style="margin-top:16px;font-size:.95rem;">Designate the pre-class-check exercise</h4>
+        <div style="display:grid;gap:10px;margin-top:8px;">
+          <label style="font-weight:600;font-size:.92rem;">Exercise<br><select id="pre-ex-select" class="digest-textarea" style="min-height:0;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:.95rem;margin-top:4px;" aria-label="Pre-class check exercise"></select></label>
+        </div>
+        <div class="journal-actions">
+          <button class="btn" type="button" id="pre-make-btn">Designate &amp; make its code</button>
+          <span class="journal-status" id="pre-make-status" role="status"></span>
+        </div>
+        <div id="pre-created" hidden style="margin-top:12px;">
+          <label style="font-weight:600;font-size:.92rem;" for="pre-code-out">Pre-class-check code — post this, or send the link</label>
+          <textarea class="digest-textarea" id="pre-code-out" rows="3" readonly style="margin-top:6px;"></textarea>
+          <div class="journal-actions">
+            <button class="btn ghost small" type="button" id="pre-copy-code-btn">Copy code</button>
+            <button class="btn ghost small" type="button" id="pre-copy-link-btn">Copy pre-class-check link</button>
+            <span class="journal-status" id="pre-copy-status" role="status"></span>
+          </div>
+        </div>
+        <h4 style="margin-top:18px;font-size:.95rem;">Collect results on this device</h4>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:4px;">Paste students' returned progress codes — one per line, the student's name first if you have it (Ada — TFP1:…) — or add every roster student who has attempted the check exercise.</p>
+        <textarea class="digest-textarea" id="pre-paste" rows="4" placeholder="Ada — TFP1:…" aria-label="Paste students' returned TFP1 progress codes" style="margin-top:6px;"></textarea>
+        <div class="journal-actions">
+          <button class="btn" type="button" id="pre-collect-btn">Add these results</button>
+          <button class="btn ghost" type="button" id="pre-roster-btn">Add roster students</button>
+          <button class="btn ghost" type="button" id="pre-clear-btn">Clear collected results</button>
+          <span class="journal-status" id="pre-collect-status" role="status"></span>
+        </div>
+        <div id="pre-split" style="margin-top:14px;" aria-live="polite"></div>
       </section>
 <section class="card" id="quiz-section" style="margin-top:18px;" aria-labelledby="quiz-h">
         <h3 id="quiz-h">Prediction quiz — five locks, then the verdicts</h3>
@@ -3316,6 +3353,29 @@ int main() {
         <p class="foot"><strong>How this mode fits:</strong> the Prediction Tracer runs forwards — read the code, predict the output. This mode runs the same understanding in reverse: given the output, find its source. It is the skill you use when a program prints something unexpected and you have to hunt down which line is responsible.</p>
       </div><!-- /match-mode -->
 
+      <div id="perr-mode" role="tabpanel" tabindex="0" hidden>
+        <section class="bridge-intro">
+          <h2>Predict the error: read the fault before the compiler speaks.</h2>
+          <p>Each round shows a short program that will not compile. Your job is to say, before the Error Translator speaks, <strong>which error the compiler reports and on which line</strong>. The compiler stops at the first fault it meets, so a later fault never gets reported — predict the first one.</p>
+        </section>
+        <section class="toolbar" id="perr-rounds" aria-label="Choose a Predict the error round">
+          <div>
+            <div class="tlabel">Rounds — six broken programs, in order</div>
+            <div class="exnav" id="perrnav"></div>
+          </div>
+          <div class="scorebar" id="perr-scorebar" aria-label="Your error-prediction progress"></div>
+        </section>
+        <section class="card" id="perr-card" style="margin-top:18px;" aria-labelledby="perr-title">
+          <span class="concept-tag" id="perr-tag"></span>
+          <h2 id="perr-title" style="font-size:1.25rem;"></h2>
+          <p class="ch-prompt" id="perr-task"></p>
+          <div id="perr-body"></div>
+          <div class="make-msg info show" id="perr-msg" role="status">Choose the error the compiler reports and the line it reports it on, then press Check my prediction.</div>
+        </section>
+        <p class="foot"><strong>How this mode fits:</strong> the fix-it rounds in the Error Translator start after the explanation. This mode starts before it: can you read the error coming, from the code alone? That is the skill you use when the compiler stops you and you have to decide, fast, where to look first.</p>
+      </div><!-- /perr-mode -->
+
+
       <div id="make-mode" role="tabpanel" tabindex="0" hidden>
         <section class="make-intro">
           <h2>Make: write and run your own C++</h2>
@@ -3404,12 +3464,12 @@ int main() {
         <div id="instructors-body" hidden>
           <div class="lecture-inst-entry">
             <h4>Lecture mode — run a tracer exercise in front of the class</h4>
-            <p>A single projected screen: pick any of the 128 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
+            <p>A single projected screen: pick any of the 134 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
             <div class="journal-actions"><button class="btn small" type="button" id="lecture-open-btn-2">Open Lecture mode</button></div>
           </div>
                     <div class="studio" id="inst-studio">
             <h4>Instructor exercise studio</h4>
-            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 128 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
+            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 134 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
             <div class="authored-field">
               <label for="inst-title">Exercise title</label>
               <input class="authored-input" type="text" id="inst-title" maxlength="80" placeholder="e.g. The average that is not an average" autocomplete="off">
@@ -11370,6 +11430,285 @@ int main() {
           explain: "All three parameters are now filled from the call: 2 + 3 + 4 = <b>9</b>. No default is used at all."
         }
       }
+ ,
+      {
+        concept: "Operators · pre-increment vs post-increment",
+        topic: "Operators",
+        title: "The value before the bump",
+        goal: "++n hands over the <b>new</b> value; n++ hands over the <b>old</b> one. The bump happens either way — what differs is what the expression is worth.",
+        stories: {
+          health:   "A clinic app tracks a dose counter: one reading takes the counter after a bump, another takes it before. The programmer writes <strong>++n</strong> in one place and <strong>n++</strong> in another.",
+          psych:    "A study app tracks a session counter: one report takes the counter after a bump, another takes it before. The programmer writes <strong>++n</strong> in one place and <strong>n++</strong> in another.",
+          business: "A shop app tracks a stock counter: one report takes the counter after a bump, another takes it before. The programmer writes <strong>++n</strong> in one place and <strong>n++</strong> in another.",
+          arts:     "A venue app tracks a seat counter: one report takes the counter after a bump, another takes it before. The programmer writes <strong>++n</strong> in one place and <strong>n++</strong> in another."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int n = 5;",
+          "    int a = ++n;",
+          "    int b = n++;",
+          "    cout << a << \" \" << b << \" \" << n << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["6 6 7", "6 7 7", "5 6 7", "6 6 6"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "<b>Named misconception: ++i and i++ are the same.</b> 6 7 7 treats n++ as if it bumped first and handed the new value over, like ++n. Post-increment hands the <b>old</b> value over first: b takes 6, and only then does n become 7. The parting step is the n++ line." },
+          2: { step: 1, text: "5 6 7 hands the old value over for ++n as well — as if both increments waited. Pre-increment bumps <b>first</b>: n is already 6 when a takes its value. The parting step is the ++n line." },
+          3: { step: 2, text: "6 6 6 keeps n at 6 through the whole program, as if n++ changed nothing. Both lines bump n: ++n takes it 5 to 6, and n++ takes it 6 to 7 — so n ends at <b>7</b>." }
+        },
+        steps: [
+          { line: 3, vars: { n: ["int", "5"] }, out: "", note: "n starts at <b>5</b>." },
+          { line: 4, vars: { n: ["int", "6"], a: ["int", "6"] }, out: "", note: "<b>The parting step.</b> <b>++n</b> bumps n to 6 <em>first</em>, then hands the new value over: a = 6." },
+          { line: 5, vars: { n: ["int", "7"], a: ["int", "6"], b: ["int", "6"] }, out: "", note: "<b>n++</b> hands the current value over <em>first</em> — b = 6 — and only then bumps n to 7." },
+          { line: 6, vars: { n: ["int", "7"], a: ["int", "6"], b: ["int", "6"] }, out: "6 6 7", note: "The print shows a, b and n: <b>6 6 7</b>." },
+          { line: 7, vars: { n: ["int", "7"], a: ["int", "6"], b: ["int", "6"] }, out: "6 6 7", note: "The program ends. Final answer: <b>6 6 7</b>." }
+        ],
+        modify: {
+          prompt: "The second line changes from int b = n++; to int b = ++n;. What prints now?",
+          code: 'int b = <mark>++n</mark>;',
+          options: ["6 7 7", "6 6 7", "7 7 7", "6 7 6"],
+          correct: 0,
+          explain: "Both increments now hand over the bumped value: a = 6, then b = 7, and n ends at 7: <b>6 7 7</b>."
+        }
+      },
+      {
+        concept: "Operators · the increment inside the condition",
+        topic: "Operators",
+        title: "Count down, print up",
+        goal: "An increment buried in a test still runs — and it runs <b>before</b> the body sees the new value, because the test is handed the old one.",
+        stories: {
+          health:   "A clinic app counts down the remaining doses: each pass of the loop tests how many are left and prints the count. The test itself carries the <strong>decrement</strong>.",
+          psych:    "A study app counts down the remaining trials: each pass of the loop tests how many are left and prints the count. The test itself carries the <strong>decrement</strong>.",
+          business: "A shop app counts down the remaining items: each pass of the loop tests how many are left and prints the count. The test itself carries the <strong>decrement</strong>.",
+          arts:     "A venue app counts down the remaining seats: each pass of the loop tests how many are left and prints the count. The test itself carries the <strong>decrement</strong>."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int i = 3;",
+          "    while (i-- > 0) {",
+          "        cout << i << \" \";",
+          "    }",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["2 1 0", "3 2 1", "2 1 0 -1", "3 2 1 0"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "<b>Named misconception: the change waits until the line ends.</b> 3 2 1 prints the values the test <em>compared</em>, as if the decrement waited until the body ran. The test is handed the old value: i-- gives 3 to the comparison and changes i to 2 at once — so the first number printed is <b>2</b>, not 3. The parting step is the first test." },
+          2: { step: 7, text: "2 1 0 -1 adds one more print after the loop has ended. The fourth test does run i--, taking i to -1 — but the test is <b>false</b>, so the body never runs and -1 is never printed. The decrement happens; the print does not." },
+          3: { step: 1, text: "3 2 1 0 prints the tested values and adds a fourth pass that never happens. The body prints what i holds <em>after</em> the decrement of that test: 2, then 1, then 0 — and the fourth test fails, so there is no fourth print." }
+        },
+        steps: [
+          { line: 3, vars: { i: ["int", "3"] }, out: "", note: "i starts at <b>3</b>." },
+          { line: 4, vars: { i: ["int", "2"] }, out: "", note: "First test: <b>i--</b> hands 3 to the comparison, then i becomes 2. 3 > 0, so the body runs." },
+          { line: 5, vars: { i: ["int", "2"] }, out: "2 ", note: "The body prints the value i holds <em>now</em>: <b>2</b>." },
+          { line: 4, vars: { i: ["int", "1"] }, out: "2 ", note: "Second test: i-- hands 2, i becomes 1. 2 > 0, so the body runs again." },
+          { line: 5, vars: { i: ["int", "1"] }, out: "2 1 ", note: "It prints <b>1</b>." },
+          { line: 4, vars: { i: ["int", "0"] }, out: "2 1 ", note: "Third test: i-- hands 1, i becomes 0. 1 > 0, so the body runs once more." },
+          { line: 5, vars: { i: ["int", "0"] }, out: "2 1 0 ", note: "It prints <b>0</b>." },
+          { line: 4, vars: { i: ["int", "-1"] }, out: "2 1 0 ", note: "<b>The parting step.</b> Fourth test: i-- hands 0, i becomes -1. 0 > 0 is false, so the loop ends — the -1 is never printed." },
+          { line: 7, vars: { i: ["int", "-1"] }, out: "2 1 0 ", note: "The program ends. Final answer: <b>2 1 0</b>." }
+        ],
+        modify: {
+          prompt: "The condition changes from i-- > 0 to --i > 0. What prints now?",
+          code: 'while (<mark>--i</mark> > 0) {',
+          options: ["2 1", "2 1 0", "1 0", "3 2 1"],
+          correct: 0,
+          explain: "--i bumps first: the tests hand 2, 1, then 0 to the comparison, so the body runs twice and prints <b>2 1</b>."
+        }
+      },
+      {
+        concept: "Operators · compound assignment in sequence",
+        topic: "Operators",
+        title: "Add, take, double",
+        goal: "Each compound assignment updates the box <b>in place</b>: the next line starts from the value the last line left behind.",
+        stories: {
+          health:   "A clinic app adjusts a dose: it adds a supplement, subtracts a reduction, then doubles the result for a two-day course. Each step rewrites the <strong>same total</strong>.",
+          psych:    "A study app adjusts a score: it adds a bonus, subtracts a penalty, then doubles the result for a two-part task. Each step rewrites the <strong>same total</strong>.",
+          business: "A shop app adjusts a price: it adds a surcharge, subtracts a discount, then doubles the result for a pair. Each step rewrites the <strong>same total</strong>.",
+          arts:     "A venue app adjusts a fee: it adds a surcharge, subtracts a concession, then doubles the result for two nights. Each step rewrites the <strong>same total</strong>."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int total = 10;",
+          "    total += 5;",
+          "    total -= 3;",
+          "    total *= 2;",
+          "    cout << total << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["24", "30", "20", "12"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "30 skips the -= 3 step: 15 × 2. But the subtraction runs before the doubling, so the doubling starts from 12, not 15. The parting step is the -= line." },
+          2: { step: 3, text: "<b>Named misconception: each line starts from the original value.</b> 20 applies every step to the starting 10 and lets the last one win. Compound assignment rewrites the box: 10 becomes 15, then 12, then 24 — each line starts from what the line above left. The parting step is the -= line, the first one that changes the value the next line will use." },
+          3: { step: 3, text: "12 stops after the subtraction, as if *= 2 never ran. The doubling is a real step: 12 × 2 = <b>24</b>." }
+        },
+        steps: [
+          { line: 3, vars: { total: ["int", "10"] }, out: "", note: "total starts at <b>10</b>." },
+          { line: 4, vars: { total: ["int", "15"] }, out: "", note: "total += 5: 10 + 5 = <b>15</b>. The box now holds 15." },
+          { line: 5, vars: { total: ["int", "12"] }, out: "", note: "<b>The parting step.</b> total -= 3: 15 - 3 = <b>12</b>. The next line will start from 12, not from 10." },
+          { line: 6, vars: { total: ["int", "24"] }, out: "", note: "total *= 2: 12 × 2 = <b>24</b>." },
+          { line: 7, vars: { total: ["int", "24"] }, out: "24", note: "The print shows <b>24</b>." },
+          { line: 8, vars: { total: ["int", "24"] }, out: "24", note: "The program ends. Final answer: <b>24</b>." }
+        ],
+        modify: {
+          prompt: "The last line changes from total *= 2; to total /= 2;. What prints now?",
+          code: 'total <mark>/= 2</mark>;',
+          options: ["6", "24", "12", "7"],
+          correct: 0,
+          explain: "After += 5 and -= 3, total is 12, and 12 / 2 = <b>6</b> (integer division, no remainder)."
+        }
+      },
+      {
+        concept: "Operators · remainder then multiply",
+        topic: "Operators",
+        title: "Remainder, then triple",
+        goal: "% keeps the <b>remainder</b>, not the quotient — and the next line works on the remainder.",
+        stories: {
+          health:   "A clinic app splits 17 doses into packs of 5, keeps the leftover, then triples it for three wards. The leftover is the <strong>remainder</strong>, not the pack count.",
+          psych:    "A study app splits 17 trials into blocks of 5, keeps the leftover, then triples it for three groups. The leftover is the <strong>remainder</strong>, not the block count.",
+          business: "A shop app splits 17 items into boxes of 5, keeps the leftover, then triples it for three shops. The leftover is the <strong>remainder</strong>, not the box count.",
+          arts:     "A venue app splits 17 tickets into rows of 5, keeps the leftover, then triples it for three nights. The leftover is the <strong>remainder</strong>, not the row count."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int n = 17;",
+          "    n %= 5;",
+          "    n *= 3;",
+          "    cout << n << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["6", "51", "2", "15"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "<b>Named misconception: each line starts from the original value.</b> 51 skips the %= step entirely and triples the original 17. But %= rewrites the box first: 17 becomes its remainder, <b>2</b>, and the tripling starts from 2, not from 17. The parting step is the %= line." },
+          2: { step: 2, text: "2 stops after the remainder, as if *= 3 never ran. The tripling is a real step: 2 × 3 = <b>6</b>." },
+          3: { step: 1, text: "15 triples the divisor instead of the remainder: 5 × 3. The remainder of 17 ÷ 5 is <b>2</b> — 17 is 3 × 5 with 2 left over — and 2 × 3 = <b>6</b>." }
+        },
+        steps: [
+          { line: 3, vars: { n: ["int", "17"] }, out: "", note: "n starts at <b>17</b>." },
+          { line: 4, vars: { n: ["int", "2"] }, out: "", note: "<b>The parting step.</b> n %= 5: 17 ÷ 5 is 3 with a remainder of <b>2</b>, and % keeps the remainder, not the 3." },
+          { line: 5, vars: { n: ["int", "6"] }, out: "", note: "n *= 3: 2 × 3 = <b>6</b>." },
+          { line: 6, vars: { n: ["int", "6"] }, out: "6", note: "The print shows <b>6</b>." },
+          { line: 7, vars: { n: ["int", "6"] }, out: "6", note: "The program ends. Final answer: <b>6</b>." }
+        ],
+        modify: {
+          prompt: "The first line changes from n %= 5; to n %= 4;. What prints now?",
+          code: 'n <mark>%= 4</mark>;',
+          options: ["3", "6", "12", "1"],
+          correct: 0,
+          explain: "17 % 4 = 1 (17 is 4 × 4 with 1 left over), and 1 × 3 = <b>3</b>."
+        }
+      },
+      {
+        concept: "Operators · compound assignment inside an expression",
+        topic: "Operators",
+        title: "Add inside the sum",
+        goal: "A compound assignment inside an expression <b>runs where it stands</b>: it changes its variable before the rest of the line is computed.",
+        stories: {
+          health:   "A clinic app computes a total from a dose that is topped up inside the same line: the top-up runs <strong>where it stands</strong>, before the rest of the sum is worked out.",
+          psych:    "A study app computes a total from a score that is topped up inside the same line: the top-up runs <strong>where it stands</strong>, before the rest of the sum is worked out.",
+          business: "A shop app computes a total from a price that is topped up inside the same line: the top-up runs <strong>where it stands</strong>, before the rest of the sum is worked out.",
+          arts:     "A venue app computes a total from a fee that is topped up inside the same line: the top-up runs <strong>where it stands</strong>, before the rest of the sum is worked out."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int a = 4;",
+          "    int b = 2;",
+          "    int c = (a += b) + 1;",
+          "    cout << a << \" \" << c << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["6 7", "4 7", "6 6", "4 5"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "<b>Named misconception: the change waits until the line ends.</b> 4 7 computes c correctly but leaves a at 4, as if the += only took effect after the line finished. The assignment runs where it stands: a becomes 6 inside the parentheses, and c is 6 + 1 = 7. The parting step is the c line." },
+          2: { step: 2, text: "6 6 drops the + 1 after the parentheses: c is the new a (6) plus 1, which is <b>7</b>." },
+          3: { step: 2, text: "4 5 drops both the assignment and the + 1: a stays 4 and c is 4 + 1. The parentheses run first, making a 6, and then 1 is added: c = <b>7</b>." }
+        },
+        steps: [
+          { line: 3, vars: { a: ["int", "4"] }, out: "", note: "a starts at <b>4</b>." },
+          { line: 4, vars: { a: ["int", "4"], b: ["int", "2"] }, out: "", note: "b is <b>2</b>." },
+          { line: 5, vars: { a: ["int", "6"], b: ["int", "2"], c: ["int", "7"] }, out: "", note: "<b>The parting step.</b> (a += b) runs first: a becomes 4 + 2 = <b>6</b>. Then 1 is added: c = 6 + 1 = <b>7</b>." },
+          { line: 6, vars: { a: ["int", "6"], b: ["int", "2"], c: ["int", "7"] }, out: "6 7", note: "The print shows a and c: <b>6 7</b>." },
+          { line: 7, vars: { a: ["int", "6"], b: ["int", "2"], c: ["int", "7"] }, out: "6 7", note: "The program ends. Final answer: <b>6 7</b>." }
+        ],
+        modify: {
+          prompt: "The line changes from int c = (a += b) + 1; to int c = (a += b) * 2;. What prints now?",
+          code: 'int c = (a += b) <mark>* 2</mark>;',
+          options: ["6 12", "6 7", "4 12", "6 6"],
+          correct: 0,
+          explain: "a still becomes 6 inside the parentheses, and now c is 6 × 2 = <b>12</b>."
+        }
+      },
+      {
+        concept: "Operators · post-increment as an argument",
+        topic: "Operators",
+        title: "Pass the old value",
+        goal: "An argument is copied <b>before</b> the increment runs: the function receives the old value, and the caller keeps the new one.",
+        stories: {
+          health:   "A clinic app passes a reading count into a helper that adds ten: the call hands over the count <strong>before</strong> the increment, and the increment still happens.",
+          psych:    "A study app passes a trial count into a helper that adds ten: the call hands over the count <strong>before</strong> the increment, and the increment still happens.",
+          business: "A shop app passes an item count into a helper that adds ten: the call hands over the count <strong>before</strong> the increment, and the increment still happens.",
+          arts:     "A venue app passes a seat count into a helper that adds ten: the call hands over the count <strong>before</strong> the increment, and the increment still happens."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int add(int x) {",
+          "    return x + 10;",
+          "}",
+          "int main() {",
+          "    int n = 3;",
+          "    cout << add(n++) << \" \" << n << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["13 4", "14 4", "13 3", "14 3"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "<b>Named misconception: ++i and i++ are the same.</b> 14 4 passes the bumped value into add, as if n++ were ++n. Post-increment hands the <b>old</b> value to the call: add receives 3 and returns 13, and only then does n become 4. The parting step is the cout line." },
+          2: { step: 1, text: "13 3 gets the call right but forgets the increment: n++ still bumps n after handing 3 over, so n ends at <b>4</b>." },
+          3: { step: 1, text: "14 3 has both parts wrong: add receives the old value 3, not 4, and the increment still runs, so n ends at <b>4</b>." }
+        },
+        steps: [
+          { line: 7, vars: { n: ["int", "3"] }, out: "", note: "n starts at <b>3</b>." },
+          { line: 8, vars: { n: ["int", "4"] }, frames: [{ name: "main", vars: { n: ["int", "4"] } }, { name: "add", vars: { x: ["int", "3"] } }], out: "", note: "<b>The parting step.</b> The call: <b>n++</b> hands 3 to add, and only then does n become 4. add receives the old value." },
+          { line: 4, vars: { n: ["int", "4"] }, frames: [{ name: "main", vars: { n: ["int", "4"] } }, { name: "add", vars: { x: ["int", "3"] } }], out: "", note: "Inside add: x + 10 = 3 + 10 = <b>13</b>." },
+          { line: 8, vars: { n: ["int", "4"] }, out: "13 4", note: "Back in main, add's 13 prints, then the new n: <b>13 4</b>." },
+          { line: 9, vars: { n: ["int", "4"] }, out: "13 4", note: "The program ends. Final answer: <b>13 4</b>." }
+        ],
+        modify: {
+          prompt: "The call changes from add(n++) to add(++n). What prints now?",
+          code: 'cout << add(<mark>++n</mark>) << " " << n << endl;',
+          options: ["14 4", "13 4", "14 3", "13 3"],
+          correct: 0,
+          explain: "++n bumps first: add receives 4 and returns 14, and n stays 4: <b>14 4</b>."
+        }
+      }
     ];
 
     /* ---------------- State (persisted in this browser — see persistence block at the end) ---------------- */
@@ -11597,7 +11936,8 @@ int main() {
       { name: "Sorting & cost", list: [53, 54, 55, 56, 57, 58] },
       { name: "Going Further \u2014 beyond the first course", list: [73, 74, 75, 76, 77, 78, 79, 80] },
       { name: "Strings \u2014 find, slice & compare", list: [116, 117, 118, 119, 120, 121] },
-      { name: "Functions — overloading & defaults", list: [122, 123, 124, 125, 126, 127] }
+      { name: "Functions — overloading & defaults", list: [122, 123, 124, 125, 126, 127] },
+      { name: "Operators — increments & compound assignment", list: [128, 129, 130, 131, 132, 133] }
     ];
     function renderExNav() {
       var box = $("exnav"); box.innerHTML = ""; box.className = "ex-groups";
@@ -22600,8 +22940,9 @@ int main() {
       $("bridge-mode").hidden = mode !== "bridge";
       $("order-mode").hidden = mode !== "order";
       $("match-mode").hidden = mode !== "match";
+      $("perr-mode").hidden = mode !== "perr";
       $("make-mode").hidden = mode !== "make";
-      ["bolt","tracer","gym","refactor","translator","challenges","bridge","order","match","make"].forEach(function(m){
+      ["bolt","tracer","gym","refactor","translator","challenges","bridge","order","match","perr","make"].forEach(function(m){
         var b = $("mode-" + m);
         b.setAttribute("aria-selected", mode === m ? "true" : "false");
         b.setAttribute("aria-pressed", mode === m ? "true" : "false");
@@ -22615,6 +22956,7 @@ int main() {
       if (mode === "bridge") renderBridge();
       if (mode === "order") renderOrder();
       if (mode === "match") renderMatch();
+      if (mode === "perr") renderPerr();
       if (mode === "make") renderMake();
       if (typeof renderRoute === "function") { routeLastSig = ""; renderRoute(); }
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -22628,12 +22970,13 @@ int main() {
     $("mode-bridge").addEventListener("click", function () { setMode("bridge"); });
     $("mode-order").addEventListener("click", function () { setMode("order"); });
     $("mode-match").addEventListener("click", function () { setMode("match"); });
+    $("mode-perr").addEventListener("click", function () { setMode("perr"); });
     $("mode-make").addEventListener("click", function () { setMode("make"); });
 
 
     /* ---------------- Mode tabs: arrow-key navigation ---------------- */
     (function(){
-      var order = ["bolt","tracer","gym","refactor","translator","challenges","bridge","order","match","make"];
+      var order = ["bolt","tracer","gym","refactor","translator","challenges","bridge","order","match","perr","make"];
       var tablist = document.getElementById("mode-tablist");
       if (tablist) tablist.addEventListener("keydown", function(e){
         if (!(e.target.classList && e.target.classList.contains("mode-btn"))) return;
@@ -22654,12 +22997,12 @@ int main() {
        and the tab bar is untouched. */
     var MODE_NAMES = {
       bolt: "Bolt's World", tracer: "Prediction Tracer", gym: "Debugging Gym", refactor: "Refactor Gym",
-      translator: "Error Translator", challenges: "Challenges", bridge: "Bridge", order: "Order the Lines", match: "Which line printed that?", make: "Make"
+      translator: "Error Translator", challenges: "Challenges", bridge: "Bridge", order: "Order the Lines", match: "Which line printed that?", perr: "Predict the error", make: "Make"
     };
     var drawerIsOpen = false;
     var drawerHideTimer = null;
     function currentModeKey() {
-      var order = ["bolt","tracer","gym","refactor","translator","challenges","bridge","order","match","make"];
+      var order = ["bolt","tracer","gym","refactor","translator","challenges","bridge","order","match","perr","make"];
       for (var i = 0; i < order.length; i++) {
         var b = $("mode-" + order[i]);
         if (b && b.getAttribute("aria-selected") === "true") return order[i];
@@ -22675,6 +23018,7 @@ int main() {
         if (mode === "bridge" && typeof bridgeDoneCount === "function") return bridgeDoneCount() + " / " + BRIDGE_ACTIVITIES.length;
         if (mode === "order" && typeof orderDoneCount === "function") return orderDoneCount() + " / " + ORDER_ROUNDS.length;
         if (mode === "match" && typeof matchDoneCount === "function") return matchDoneCount() + " / " + MATCH_ROUNDS.length;
+        if (mode === "perr" && typeof perrDoneCount === "function") return perrDoneCount() + " / " + PERR_ROUNDS.length;
         if (mode === "make" && typeof makeDoneCount === "function") return makeDoneCount() + " / " + MAKE_PROMPTS.length;
       } catch (e) {}
       return "";
@@ -22862,15 +23206,15 @@ int main() {
        tfHydrate path applies it field by field (unknown fields are ignored
        by that hydration and dropped by the next tfCollect save; missing
        optional sections default the same way an older save's would). */
-    var TF_PROGRESS_ARRAY_KEYS = ["tracer", "gym", "refactor", "bridge", "order", "match", "make", "authoredExercises", "instructorExercises", "assignments"];
-    var TF_PROGRESS_KNOWN_KEYS = ["v", "bitsFormat", "playbackSpeed", "bgTheme", "reduceMotionPref", "largeTextPref", "readAloudPref", "primerRead", "boltTourSeen", "tracer", "bolt", "gym", "refactor", "bridge", "order", "match", "make", "challenges", "authoredExercises", "instructorExercises", "assignments", "quiz", "gap", "lastTracer", "testOut", "variants", "diagPair", "classRoster", "exitTicket"];
+    var TF_PROGRESS_ARRAY_KEYS = ["tracer", "gym", "refactor", "bridge", "order", "match", "perr", "make", "authoredExercises", "instructorExercises", "assignments"];
+    var TF_PROGRESS_KNOWN_KEYS = ["v", "bitsFormat", "playbackSpeed", "bgTheme", "reduceMotionPref", "largeTextPref", "readAloudPref", "primerRead", "boltTourSeen", "tracer", "bolt", "gym", "refactor", "bridge", "order", "match", "perr", "make", "challenges", "authoredExercises", "instructorExercises", "assignments", "quiz", "gap", "lastTracer", "testOut", "variants", "diagPair", "classRoster", "exitTicket", "preClass"];
     function tfIsPlainObj(x) { return !!x && typeof x === "object" && !Array.isArray(x); }
     function tfCloneJson(x) { return JSON.parse(JSON.stringify(x)); }
     function tfValidateProgressFile(d) {
       if (!tfIsPlainObj(d)) return false;
       if (d.v !== 1) return false;
       if (!Array.isArray(d.tracer)) return false;
-      var arrayKeys = ["gym", "refactor", "bridge", "order", "match", "make", "authoredExercises", "instructorExercises", "assignments"];
+      var arrayKeys = ["gym", "refactor", "bridge", "order", "match", "perr", "make", "authoredExercises", "instructorExercises", "assignments"];
       for (var i = 0; i < arrayKeys.length; i++) {
         if (d[arrayKeys[i]] !== undefined && !Array.isArray(d[arrayKeys[i]])) return false;
       }
@@ -22997,7 +23341,7 @@ int main() {
       out.v = 1;
       // Indexed activity lists: keep the current record per item; take the
       // file's item only where the current progress has nothing there.
-      ["tracer", "gym", "refactor", "bridge", "order", "match", "make"].forEach(function (k) {
+      ["tracer", "gym", "refactor", "bridge", "order", "match", "perr", "make"].forEach(function (k) {
         if (imp[k] !== undefined) out[k] = tfMergeListSection(k, cur[k], imp[k]);
       });
       // Free-standing collections: keep everything current, add file items
@@ -23364,7 +23708,9 @@ int main() {
         html += '</div>';
       }
       if (!wrongNums.length) html += '</div>';
-      if (typeof exitDigestHtml === "function") { var xh = exitDigestHtml(); if (xh) html = xh + html; }
+      var __preDigestExit = (typeof exitDigestHtml === "function") ? exitDigestHtml() : "";
+      var __preDigestPre = (typeof preDigestHtml === "function") ? preDigestHtml() : "";
+      if (__preDigestExit || __preDigestPre) html = __preDigestExit + __preDigestPre + html;
       resultBox.innerHTML = html;
       // Store plain text for copy + wire button
       resultBox._cardsText = cardsText;
@@ -23493,6 +23839,7 @@ int main() {
         (pastDue ? ' <strong style="color:var(--rust);">· past due</strong>' : "") +
         " · " + doneN + " of " + a.exs.length + " attempted in this browser's record.</p>" +
         (a.title.indexOf("Exit ticket") === 0 ? '<p style="font-size:.93rem;margin-top:6px;border:1.5px dashed var(--accent);border-radius:10px;padding:10px 12px;">This is an <strong>exit ticket</strong>: work the one exercise below, lock your prediction, then hand your instructor your progress code (TFP1:) from <strong>Office-hours progress code</strong> in these tools. That code is how your prediction gets back — nothing is sent anywhere by the page itself.</p>' : "") +
+        (a.title.indexOf("Pre-class check") === 0 ? '<p style="font-size:.93rem;margin-top:6px;border:1.5px dashed var(--accent);border-radius:10px;padding:10px 12px;">This is a <strong>pre-class check</strong>: work the one exercise below, lock your prediction, then hand your instructor your progress code (TFP1:) from <strong>Office-hours progress code</strong> in these tools before class. That code is how your prediction gets back — nothing is sent anywhere by the page itself.</p>' : "") +
         '<ul style="list-style:none;padding:0;margin:12px 0 0;display:grid;gap:8px;">' + rowsHtml + "</ul>" +
         '<div class="journal-actions"><button class="btn" type="button" id="assign-view-csv">Export assignment CSV</button>' +
         '<span style="font-size:.88rem;color:var(--ink-soft);">Built from this browser\'s saved record — it does not sync anywhere.</span></div>';
@@ -23828,6 +24175,209 @@ int main() {
         var status = $("exit-collect-status");
         if (status) status.textContent = "Collected results cleared. The designation and its code are unchanged.";
         announce("Exit-ticket results cleared.");
+      });
+    })();
+
+    /* ---------------- Pre-class check (TFA1: designation + TFP1: returns) ----------------
+       Server-free, like everything in these tools. The instructor
+       designates ONE existing tracer exercise as pre-reading for the
+       night before a lecture; designation creates a normal assignment
+       whose title is flagged "Pre-class check — …", so the share
+       code/link is the assignment mechanism (TFA1: / #assign-) and
+       opening it presents exactly that one exercise. The student works
+       it through the normal Stage 1 prediction flow and hands back
+       their TFP1: progress code — the existing code-based return flow.
+       The instructor pastes returned codes here (or pulls roster
+       students), and the split is aggregated ON THIS DEVICE ONLY from
+       those codes: there is no live collection, and the panel says so.
+       Read the split before class, so the lecture starts where
+       students actually are. State persists additively as `preClass`
+       in tracefirst-progress-v1: { ex: 0-based index, entries: [{n, p,
+       c, h}] } — n a display name, p the predicted option's text, c
+       1/0 correct, h the source code's hash (dedupe). The summary also
+       lands at the top of the instructor digest (see preDigestHtml,
+       called by the digest builder, after the exit-ticket summary). */
+    var preClass = { ex: -1, entries: [] };
+    function preEntryFor(obj) {
+      if (!obj || preClass.ex < 0) return null;
+      for (var i = 0; i < obj.t.length; i++) {
+        if (obj.t[i][0] === preClass.ex + 1) return { p: obj.t[i][5] || "", c: obj.t[i][1] === 1 ? 1 : 0 };
+      }
+      return null;
+    }
+    function preUpsert(name, h, entry) {
+      for (var i = 0; i < preClass.entries.length; i++) {
+        if (preClass.entries[i].h === h) { preClass.entries[i] = { n: name, p: entry.p, c: entry.c, h: h }; return false; }
+      }
+      preClass.entries.push({ n: name, p: entry.p, c: entry.c, h: h });
+      return true;
+    }
+    function preSplitData() {
+      if (preClass.ex < 0 || !EXERCISES[preClass.ex]) return null;
+      var ex = EXERCISES[preClass.ex];
+      var counts = ex.options.map(function () { return 0; });
+      var other = 0, correct = 0;
+      preClass.entries.forEach(function (r) {
+        var oi = ex.options.indexOf(r.p);
+        if (oi === -1) other++; else counts[oi]++;
+        if (r.c === 1) correct++;
+      });
+      return { ex: ex, counts: counts, other: other, correct: correct, total: preClass.entries.length };
+    }
+    function preSummaryText() {
+      var d = preSplitData();
+      if (!d || !d.total) return "";
+      return "Pre-class check — Exercise " + (preClass.ex + 1) + " (" + EXERCISES[preClass.ex].title + "): " +
+        d.correct + " of " + d.total + " collected predictions correct on this device.";
+    }
+    function preDigestHtml() {
+      var d = preSplitData();
+      if (!d || !d.total) return "";
+      var ex = d.ex;
+      var rows = ex.options.map(function (opt, oi) {
+        return "<li><strong>" + esc(opt) + "</strong> — " + d.counts[oi] + (oi === ex.correct ? " (the correct answer)" : "") + "</li>";
+      }).join("");
+      if (d.other) rows += "<li>A prediction not in the current option list — " + d.other + "</li>";
+      return '<div class="digest-why"><h4>Pre-class check — Exercise ' + (preClass.ex + 1) + ": " + esc(ex.title) + '</h4>' +
+        '<p class="digest-summary">' + d.correct + " of " + d.total + " collected predictions correct. Split of predictions collected on this device:</p>" +
+        '<ul class="digest-why-list">' + rows + "</ul></div>";
+    }
+    function renderPrePanel() {
+      var box = $("pre-split"); if (!box) return;
+      var sel = $("pre-ex-select");
+      if (sel && !sel.options.length) {
+        sel.innerHTML = EXERCISES.map(function (ex, i) { return '<option value="' + i + '">Exercise ' + (i + 1) + " — " + esc(ex.title) + " · " + esc(ex.concept) + "</option>"; }).join("");
+      }
+      if (sel && preClass.ex >= 0) sel.value = String(preClass.ex);
+      if (preClass.ex < 0 || !EXERCISES[preClass.ex]) {
+        box.innerHTML = '<p style="font-size:.93rem;color:var(--ink-soft);">No pre-class check designated yet on this device. Designate an exercise above to make its shareable code.</p>';
+        return;
+      }
+      var ex = EXERCISES[preClass.ex];
+      var head = '<h4 style="font-size:.95rem;">Pre-class check: Exercise ' + (preClass.ex + 1) + " — " + esc(ex.title) + '</h4>';
+      if (!preClass.entries.length) {
+        box.innerHTML = head + '<p style="font-size:.93rem;color:var(--ink-soft);margin-top:6px;">No results collected yet on this device. The split is built only from progress codes (TFP1:) pasted above, or from roster students added above — there is no live server, so nothing appears here until codes are collected here.</p>';
+        return;
+      }
+      var d = preSplitData();
+      var rows = ex.options.map(function (opt, oi) {
+        var pct = d.total ? Math.round((d.counts[oi] / d.total) * 100) : 0;
+        return '<li style="display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline;justify-content:space-between;border:1px solid var(--line);background:var(--panel-2);border-radius:10px;padding:8px 12px;">' +
+          '<span><strong>' + esc(opt) + "</strong>" + (oi === ex.correct ? ' <span style="color:var(--accent-strong);font-weight:700;">· correct answer</span>' : "") + "</span>" +
+          '<span style="font-family:\'IBM Plex Mono\',monospace;font-size:.88rem;">' + d.counts[oi] + " · " + pct + "%</span></li>";
+      }).join("");
+      if (d.other) rows += '<li style="border:1px dashed var(--line);border-radius:10px;padding:8px 12px;">A prediction not in the current option list — ' + d.other + "</li>";
+      var students = preClass.entries.map(function (r) {
+        return '<li><strong>' + esc(r.n) + "</strong> — predicted &ldquo;" + esc(r.p) + "&rdquo; · " + (r.c === 1 ? '<span style="color:var(--accent-strong);font-weight:700;">correct</span>' : '<span style="color:var(--rust);font-weight:700;">not correct</span>') + "</li>";
+      }).join("");
+      box.innerHTML = head +
+        '<p style="font-size:.95rem;margin-top:6px;"><strong>' + d.correct + " of " + d.total + "</strong> collected predictions correct (" + (d.total ? Math.round((d.correct / d.total) * 100) : 0) + '%), from codes and roster entries on this device only.</p>' +
+        '<ul style="list-style:none;padding:0;margin:10px 0 0;display:grid;gap:6px;">' + rows + "</ul>" +
+        '<h5 style="font-size:.92rem;margin-top:14px;">Per student</h5>' +
+        '<ul style="margin:6px 0 0;padding-left:20px;font-size:.93rem;display:grid;gap:3px;">' + students + "</ul>" +
+        '<p style="font-size:.88rem;color:var(--ink-soft);margin-top:10px;">This summary also appears at the top of the instructor digest below when a digest is built.</p>';
+    }
+    (function initPreClass() {
+      renderPrePanel();
+      var makeBtn = $("pre-make-btn");
+      if (makeBtn) makeBtn.addEventListener("click", function () {
+        var sel = $("pre-ex-select");
+        var idx = sel ? parseInt(sel.value, 10) : -1;
+        var status = $("pre-make-status");
+        if (isNaN(idx) || !EXERCISES[idx]) { if (status) status.textContent = "Choose an exercise first."; return; }
+        if (preClass.ex !== idx) preClass.entries = [];
+        preClass.ex = idx;
+        var a = { title: ("Pre-class check — Exercise " + (idx + 1) + ": " + EXERCISES[idx].title).slice(0, 120), due: "", exs: [idx] };
+        /* Re-designating the same exercise replaces its saved entry
+           instead of appending a duplicate: a pre-class-check entry is
+           the saved assignment whose title is flagged "Pre-class
+           check" and whose exercise set is exactly this one exercise. */
+        var replacedAt = -1;
+        for (var ai = 0; ai < assignments.length; ai++) {
+          var oldA = assignments[ai];
+          if (oldA && typeof oldA.title === "string" && oldA.title.indexOf("Pre-class check") === 0 && Array.isArray(oldA.exs) && oldA.exs.length === 1 && oldA.exs[0] === idx) { replacedAt = ai; break; }
+        }
+        if (replacedAt >= 0) assignments[replacedAt] = a; else assignments.push(a);
+        var code = assignEncode(a);
+        var out = $("pre-code-out"); if (out) out.value = code;
+        var created = $("pre-created"); if (created) created.hidden = false;
+        if (typeof renderAssignSaved === "function") renderAssignSaved();
+        if (typeof tfSave === "function") tfSave();
+        renderPrePanel();
+        if (status) status.textContent = replacedAt >= 0
+          ? "Designated Exercise " + (idx + 1) + " — its pre-class-check code is below, and its saved entry in the Assignments list above was updated. Re-designating replaces the entry; no duplicate is added."
+          : "Designated Exercise " + (idx + 1) + " — its pre-class-check code is below, and it is also saved in the Assignments list above.";
+        announce("Pre-class check designated: Exercise " + (idx + 1) + ".");
+      });
+      function preCopy(text, okMsg) {
+        var status = $("pre-copy-status");
+        function done(ok) { if (status) status.textContent = ok ? okMsg : "Copy failed — select the text and copy it manually."; }
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+        else done(false);
+      }
+      var cc = $("pre-copy-code-btn");
+      if (cc) cc.addEventListener("click", function () { var out = $("pre-code-out"); if (out && out.value) preCopy(out.value, "Pre-class-check code copied."); });
+      var cl = $("pre-copy-link-btn");
+      if (cl) cl.addEventListener("click", function () { var out = $("pre-code-out"); if (out && out.value) preCopy(location.href.split("#")[0] + "#assign-" + out.value, "Pre-class-check link copied."); });
+      var collectBtn = $("pre-collect-btn");
+      if (collectBtn) collectBtn.addEventListener("click", function () {
+        var status = $("pre-collect-status");
+        if (preClass.ex < 0) { if (status) status.textContent = "Designate the pre-class-check exercise first — results are read against it."; return; }
+        var text = ($("pre-paste") ? $("pre-paste").value : "") || "";
+        var re = /TFP1:[A-Za-z0-9_-]+/g, m, matches = [];
+        while ((m = re.exec(text)) !== null) matches.push({ code: m[0], at: m.index });
+        if (!matches.length) { if (status) status.textContent = "No TFP1: codes found in the box — paste the codes students handed back, one per line."; return; }
+        var added = 0, updated = 0, noPred = 0, invalid = 0;
+        matches.forEach(function (mt) {
+          var obj = (typeof tfpDecode === "function") ? tfpDecode(mt.code) : null;
+          if (!obj) { invalid++; return; }
+          var entry = preEntryFor(obj);
+          if (!entry) { noPred++; return; }
+          var h = (typeof catHash === "function") ? catHash(mt.code) : mt.code;
+          var lineStart = text.lastIndexOf("\n", Math.max(0, mt.at - 1)) + 1;
+          var before = text.slice(lineStart, mt.at).trim().replace(/[\s—–\-|:,;]+$/, "").replace(/^(student|name)\s*[:\-]?\s*/i, "").trim();
+          var name = before;
+          if (!name && typeof classRoster !== "undefined") {
+            for (var ri = 0; ri < classRoster.length; ri++) if (classRoster[ri].h === h) { name = classRoster[ri].name; break; }
+          }
+          if (!name) name = "Student " + (preClass.entries.length + 1);
+          if (preUpsert(name.slice(0, 60), h, entry)) added++; else updated++;
+        });
+        if (typeof tfSave === "function") tfSave();
+        renderPrePanel();
+        var parts = [];
+        if (added) parts.push(added + " result" + (added === 1 ? "" : "s") + " added");
+        if (updated) parts.push(updated + " updated");
+        if (noPred) parts.push(noPred + " code" + (noPred === 1 ? "" : "s") + " had no prediction for Exercise " + (preClass.ex + 1));
+        if (invalid) parts.push(invalid + " could not be read");
+        if (status) status.textContent = parts.length ? parts.join("; ") + ". Collected on this device: " + preClass.entries.length + "." : "Nothing was added.";
+        announce("Pre-class-check results updated: " + preClass.entries.length + " collected on this device.");
+      });
+      var rosterBtn = $("pre-roster-btn");
+      if (rosterBtn) rosterBtn.addEventListener("click", function () {
+        var status = $("pre-collect-status");
+        if (preClass.ex < 0) { if (status) status.textContent = "Designate the pre-class-check exercise first — results are read against it."; return; }
+        if (typeof classRoster === "undefined" || !classRoster.length) { if (status) status.textContent = "The roster on this device is empty — build it in the misconception catalogue above, or paste codes instead."; return; }
+        var added = 0, updated = 0, skipped = 0;
+        classRoster.forEach(function (r) {
+          var found = null;
+          (r.t || []).forEach(function (e) { if (e[0] === preClass.ex + 1) found = { p: e[2] || "", c: e[1] === 1 ? 1 : 0 }; });
+          if (!found) { skipped++; return; }
+          if (preUpsert(r.name, r.h, found)) added++; else updated++;
+        });
+        if (typeof tfSave === "function") tfSave();
+        renderPrePanel();
+        if (status) status.textContent = "Roster: " + added + " added, " + updated + " already collected, " + skipped + " had not attempted Exercise " + (preClass.ex + 1) + ". Collected on this device: " + preClass.entries.length + ".";
+        announce("Pre-class-check split updated from the roster.");
+      });
+      var clearBtn = $("pre-clear-btn");
+      if (clearBtn) clearBtn.addEventListener("click", function () {
+        preClass.entries = [];
+        if (typeof tfSave === "function") tfSave();
+        renderPrePanel();
+        var status = $("pre-collect-status");
+        if (status) status.textContent = "Collected results cleared. The designation and its code are unchanged.";
+        announce("Pre-class-check results cleared.");
       });
     })();
 
@@ -26767,6 +27317,100 @@ int main() {
     var matchState = { current: 0, rounds: MATCH_ROUNDS.map(function () { return matchFreshRound(); }) };
     function matchDoneCount() { return matchState.rounds.filter(function (r) { return r && r.done; }).length; }
 
+    /* ================= Predict the error: rounds and state =================
+       Mirrors MATCH_ROUNDS. Each round shows a program that will not
+       compile. The student predicts, before the Error Translator speaks,
+       which error the compiler reports first and on which line. Exactly
+       one of the four options is the real first error for that program;
+       the other three carry a `why` that says what is wrong with them.
+       `line` is a 0-based index into `code` (display line = index + 1).
+       `translator` is the id of the matching Error Translator entry,
+       whose meaning + cause are revealed after a correct prediction.
+       Round 3 note: the compiler meets the { that opens the branch while
+       still inside the condition, so its message names the { token; the
+       Translator entry 5 records the same fault with the ; token, which
+       is what follows the condition in its own example. */
+    var PERR_ROUNDS = [
+      { concept: "Semicolons · the next line tells", title: "The semicolon that never came",
+        task: "This program will not compile. Predict which error the compiler reports first, and on which line. The report points at the line where the compiler first notices the fault, which is not always the guilty line.",
+        code: ["#include <iostream>", "using namespace std;", "int main() {", "    int score = 85", "    cout << score << endl;", "    return 0;", "}"],
+        errors: [
+          { text: "error: expected ';' before '}' token", line: 6, why: "The compiler stops at the first token it cannot fit into the unfinished statement — the cout on line 5 — so it never reaches the closing brace." },
+          { text: "error: expected ';' before 'cout'", line: 4, why: "The declaration on line 4 has no semicolon, so the compiler is still inside that statement when cout arrives. It reports the gap on the next line, where it first notices it." },
+          { text: "error: 'score' was not declared in this scope", line: 4, why: "score is declared on line 4, exactly as spelled. The declaration is sound; only its semicolon is missing." },
+          { text: "error: expected ')' before ';' token", line: 4, why: "Every parenthesis on line 5 is closed. The fault is a missing semicolon, not a missing parenthesis." }
+        ],
+        correct: 1,
+        explain: "The statement on line 4 never ends, so the compiler carries it into line 5 and reports the missing <b>;</b> there. A missing semicolon is always reported on the line after the guilty one — look one line up from the report.",
+        translator: 1 },
+      { concept: "Names · a typo is a stranger", title: "One letter off",
+        task: "This program will not compile. Predict which error the compiler reports first, and on which line.",
+        code: ["#include <iostream>", "using namespace std;", "int main() {", "    int score = 85;", "    cout << scroe << endl;", "    return 0;", "}"],
+        errors: [
+          { text: "error: 'scroe' was not declared in this scope", line: 4, why: "scroe is spelled with the o and r swapped, so it names nothing the compiler knows. The compiler does not guess what was meant." },
+          { text: "error: 'score' was not declared in this scope", line: 3, why: "score is declared on line 4, exactly as spelled. The misspelling is in the cout, not the declaration." },
+          { text: "error: expected ';' before 'cout'", line: 4, why: "Line 4 ends with a semicolon, and line 5 does too. No statement here is left unfinished." },
+          { text: "error: cannot convert 'std::string' to 'int' in assignment", line: 3, why: "No string appears anywhere in this program, and score is an int holding an int. A type fault needs two mismatched types; here there is only a misspelled name." }
+        ],
+        correct: 0,
+        explain: "The compiler reads names exactly. <b>scroe</b> is one swap away from <b>score</b>, and one swap is enough: the name was never declared.",
+        translator: 3 },
+      { concept: "Parentheses · the branch never starts", title: "The parenthesis left open",
+        task: "This program will not compile. Predict which error the compiler reports first, and on which line.",
+        code: ["#include <iostream>", "using namespace std;", "int main() {", "    int score = 70;", "    if (score >= 70 {", "        cout << \"Pass\" << endl;", "    }", "    return 0;", "}"],
+        errors: [
+          { text: "error: expected ')' before ';' token", line: 4, why: "The if condition opens its parenthesis and never closes it. The compiler reports the missing ) where the statement breaks down — before the semicolon that would have ended it. Count opens and closes on the line the report names." },
+          { text: "error: expected '}' at end of input", line: 8, why: "The braces balance: main opens on line 3 and closes on line 9, the if on lines 5 and 7. The fault is a parenthesis, not a brace." },
+          { text: "error: expected ')' before '{' token", line: 4, why: "The { is the token the eye stops on, and it does follow the unclosed parenthesis — but the report names the missing ) at the semicolon boundary, not at the brace. The fault is the parenthesis that never closed, and the report points at the token that ends the statement." },
+          { text: "error: 'score' was not declared in this scope", line: 4, why: "score is declared on line 4 and used correctly inside the condition. The condition's fault is punctuation, not a name." }
+        ],
+        correct: 0,
+        explain: "The condition never closes its parenthesis, so the compiler is still inside it when the branch brace arrives. Count opens and closes on the line the report names.",
+        translator: 5 },
+      { concept: "Braces · counted at the end", title: "The brace that never closed",
+        task: "This program will not compile. Predict which error the compiler reports first, and on which line.",
+        code: ["#include <iostream>", "using namespace std;", "int main() {", "    int x = 5;", "    if (x > 0) {", "        cout << x << endl;", "    }", "    return 0;"],
+        errors: [
+          { text: "error: expected ';' before '}' token", line: 6, why: "Every statement ends with a semicolon, including the cout on line 6. The missing piece is a closing brace, not a semicolon." },
+          { text: "error: expected ')' before ';' token", line: 5, why: "The if condition on line 5 has its parentheses closed. The fault is a brace count, not a parenthesis." },
+          { text: "error: 'x' was not declared in this scope", line: 5, why: "x is declared on line 4 and the if reads it correctly. A missing brace at the end of the file does not undeclare anything." },
+          { text: "error: expected '}' at end of input", line: 7, why: "main opens on line 3 and the if closes on line 7, but main itself never closes. The compiler reaches the end of the file still waiting for the } and reports it there." }
+        ],
+        correct: 3,
+        explain: "Two blocks open and only one closes. The compiler runs out of file first and says so: <b>expected '}' at end of input</b>. Count the braces when the report points past the last line.",
+        translator: 4 },
+      { concept: "Types · the assignment refuses", title: "Text into a number box",
+        task: "This program will not compile. Predict which error the compiler reports first, and on which line.",
+        code: ["#include <iostream>", "using namespace std;", "int main() {", "    string entry = \"42\";", "    int count = entry;", "    cout << count << endl;", "    return 0;", "}"],
+        errors: [
+          { text: "error: 'entry' was not declared in this scope", line: 4, why: "entry is declared on line 4, exactly as spelled. The fault is the type of the value, not the name." },
+          { text: "error: cannot convert 'std::string' to 'int' in assignment", line: 4, why: "entry is text and count holds whole numbers. The compiler will not silently turn text into a number, so the assignment on line 5 is refused." },
+          { text: "error: invalid conversion from 'const char*' to 'char'", line: 4, why: "That message belongs to a string literal handed to a char. Here the right side is a string variable and the target is an int, so the compiler names the string-to-int conversion instead." },
+          { text: "error: expected ';' before 'cout'", line: 5, why: "Line 5 ends with a semicolon, as does every statement here. The assignment is complete — it is the types that refuse to meet." }
+        ],
+        correct: 1,
+        explain: "The text <b>\"42\"</b> looks like a number but is stored as a string, and <b>count</b> is an int. The compiler refuses the assignment rather than guessing a conversion; the fix is a deliberate one, with stoi.",
+        translator: 23 },
+      { concept: "Declarations · the type comes first", title: "A box with no type",
+        task: "This program will not compile. Predict which error the compiler reports first, and on which line.",
+        code: ["#include <iostream>", "using namespace std;", "int main() {", "    total = 0;", "    total = total + 5;", "    cout << total << endl;", "    return 0;", "}"],
+        errors: [
+          { text: "error: ISO C++ forbids declaration of 'total' with no type", line: 3, why: "Line 4 is the first appearance of total, and it carries no type. The compiler reads it as a declaration with no type and refuses it on the spot." },
+          { text: "error: 'total' was not declared in this scope", line: 4, why: "The compiler does not reach for the undeclared-name message here: line 4 looks like a declaration, so it reports the missing type, which is the fault it meets first." },
+          { text: "error: lvalue required as left operand of assignment", line: 3, why: "total is a plain name, a sound target for an assignment. Nothing here is assigned backwards." },
+          { text: "error: expected ';' before 'cout'", line: 5, why: "Both assignments end with semicolons. The fault sits on line 4, where the variable is born without a type." }
+        ],
+        correct: 0,
+        explain: "A variable is born with its type written once, on its first line. Leave the type off and the compiler treats the line as a declaration with no type — it never gets as far as using the variable.",
+        translator: 11 }
+    ];
+    function perrFreshRound() {
+      return { err: -1, line: -1, checks: 0, done: false, perfect: false, msg: "", msgKind: "info", errFb: "", lineFb: "" };
+    }
+    var perrState = { current: 0, rounds: PERR_ROUNDS.map(function () { return perrFreshRound(); }) };
+    function perrDoneCount() { return perrState.rounds.filter(function (r) { return r && r.done; }).length; }
+
+
     var TF_KEY = "tracefirst-progress-v1";
     var catalogueImports = [];
     /* Class roster: named students decoded from their TFP1: progress
@@ -26805,7 +27449,7 @@ int main() {
       return out;
     }
     function tfCollect() {
-      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", playbackSpeed: playbackSpeed, bgTheme: bgTheme, reduceMotionPref: !!reduceMotionPref, largeTextPref: !!largeTextPref, readAloudPref: (typeof readAloudPref !== "undefined" && !!readAloudPref), dyslexiaPref: (typeof dyslexiaPref !== "undefined" && !!dyslexiaPref), primerRead: !!primerRead, boltTourSeen: (typeof boltTourSeen !== "undefined" && !!boltTourSeen), tracer: [], bolt: null, gym: [], refactor: [], bridge: [], order: [], match: [], make: [], challenges: null, authoredExercises: [], instructorExercises: [],
+      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", playbackSpeed: playbackSpeed, bgTheme: bgTheme, reduceMotionPref: !!reduceMotionPref, largeTextPref: !!largeTextPref, readAloudPref: (typeof readAloudPref !== "undefined" && !!readAloudPref), dyslexiaPref: (typeof dyslexiaPref !== "undefined" && !!dyslexiaPref), primerRead: !!primerRead, boltTourSeen: (typeof boltTourSeen !== "undefined" && !!boltTourSeen), tracer: [], bolt: null, gym: [], refactor: [], bridge: [], order: [], match: [], perr: [], make: [], challenges: null, authoredExercises: [], instructorExercises: [],
         lastTracer: (typeof tfLastTracer === "number" ? tfLastTracer : -1),
         testOut: (typeof testOut !== "undefined" && testOut)
           ? { passed: !!testOut.passed, score: (typeof testOut.score === "number" ? testOut.score : 0), via: (Array.isArray(testOut.via) ? testOut.via.slice() : [false, false, false]) }
@@ -26875,6 +27519,13 @@ int main() {
           data.match.push(r && r.done ? { done: true, perfect: r.perfect === true } : null);
         });
       } catch (e) {}
+      // Predict the error: completed rounds only (additive field,
+      // sibling to match; older saves simply lack it).
+      try {
+        perrState.rounds.forEach(function (r) {
+          data.perr.push(r && r.done ? { done: true, perfect: r.perfect === true } : null);
+        });
+      } catch (e) {}
       try {
         makeState.items.forEach(function (it) {
           data.make.push({ code: it.code, done: !!it.done, results: it.results || null, hiddenPassed: (typeof it.hiddenPassed === "number" ? it.hiddenPassed : null) });
@@ -26926,6 +27577,7 @@ int main() {
       try { if (typeof catalogueImports !== "undefined" && Array.isArray(catalogueImports)) data.catalogueImports = catalogueImports.map(function (r) { return { h: r.h, n: r.n, c: r.c }; }); } catch (e) {}
       try { if (typeof classRoster !== "undefined" && Array.isArray(classRoster)) data.classRoster = classRoster.map(function (r) { return { name: r.name, h: r.h, n: r.n, c: r.c, t: r.t }; }); } catch (e) {}
       try { if (typeof exitTicket !== "undefined" && exitTicket) data.exitTicket = { ex: exitTicket.ex, entries: exitTicket.entries.map(function (r) { return { n: r.n, p: r.p, c: r.c, h: r.h }; }) }; } catch (e) {}
+      try { if (typeof preClass !== "undefined" && preClass) data.preClass = { ex: preClass.ex, entries: preClass.entries.map(function (r) { return { n: r.n, p: r.p, c: r.c, h: r.h }; }) }; } catch (e) {}
       // Instructor step notes (additive field; absent in older saves)
       try { if (typeof stepNotes !== "undefined" && Array.isArray(stepNotes)) data.stepNotes = stepNotes.map(function (r) { return { e: r.e, s: r.s, t: r.t }; }); } catch (e) {}
       return data;
@@ -27110,6 +27762,19 @@ int main() {
           });
         }
       } catch (e) {}
+      // Predict the error: completed rounds only (additive field;
+      // absent in older saves, which then start every round fresh).
+      try {
+        if (Array.isArray(d.perr)) {
+          d.perr.forEach(function (sv, i) {
+            if (!sv || !PERR_ROUNDS[i] || !sv.done) return;
+            var r = perrFreshRound();
+            r.done = true;
+            r.perfect = sv.perfect === true;
+            perrState.rounds[i] = r;
+          });
+        }
+      } catch (e) {}
       // Make: code text + completion
       try {
         if (Array.isArray(d.make)) {
@@ -27281,6 +27946,18 @@ int main() {
             });
           }
           if (typeof renderExitPanel === "function") renderExitPanel();
+        }
+      } catch (e) {}
+      // Pre-class check (additive field; absent in older saves)
+      try {
+        if (d.preClass && typeof preClass !== "undefined") {
+          if (typeof d.preClass.ex === "number" && d.preClass.ex >= 0 && d.preClass.ex < EXERCISES.length) preClass.ex = Math.floor(d.preClass.ex);
+          if (Array.isArray(d.preClass.entries)) {
+            preClass.entries = d.preClass.entries.filter(function (r) { return r && typeof r.p === "string" && typeof r.h === "string"; }).slice(0, 500).map(function (r) {
+              return { n: (typeof r.n === "string" && r.n) ? r.n.slice(0, 60) : "Student", p: r.p.slice(0, 120), c: r.c === 1 ? 1 : 0, h: r.h.slice(0, 40) };
+            });
+          }
+          if (typeof renderPrePanel === "function") renderPrePanel();
         }
       } catch (e) {}
       // Instructor step notes (additive field; absent in older saves)
@@ -27548,6 +28225,7 @@ int main() {
       try { c.bridge = [bridgeDoneCount(), BRIDGE_ACTIVITIES.length]; } catch (e) { c.bridge = [0, 0]; }
       try { c.order = [orderDoneCount(), ORDER_ROUNDS.length]; } catch (e) { c.order = [0, 0]; }
       try { c.match = [matchDoneCount(), MATCH_ROUNDS.length]; } catch (e) { c.match = [0, 0]; }
+      try { c.perr = [perrDoneCount(), PERR_ROUNDS.length]; } catch (e) { c.perr = [0, 0]; }
       try { c.make = [makeDoneCount(), MAKE_PROMPTS.length]; } catch (e) { c.make = [0, 0]; }
       return c;
     }
@@ -27598,7 +28276,7 @@ int main() {
       });
       return { v: 1, t: cleanT, c: cleanC };
     }
-    var TFP_MODE_LABELS = [["bolt", "Bolt's World"], ["gym", "Debugging Gym"], ["refactor", "Refactor Gym"], ["translator", "Error Translator (fix-it rounds)"], ["challenges", "Challenges"], ["bridge", "Bridge"], ["order", "Order the Lines"], ["match", "Which line printed that?"], ["make", "Make"]];
+    var TFP_MODE_LABELS = [["bolt", "Bolt's World"], ["gym", "Debugging Gym"], ["refactor", "Refactor Gym"], ["translator", "Error Translator (fix-it rounds)"], ["challenges", "Challenges"], ["bridge", "Bridge"], ["order", "Order the Lines"], ["match", "Which line printed that?"], ["perr", "Predict the error"], ["make", "Make"]];
     function tfpRenderView(obj) {
       var box = $("tfp-view");
       if (!box) return;
@@ -27942,6 +28620,9 @@ int main() {
       "shift means +1 or -1": "Shifting moves every bit one column, and each column is worth twice the one before it. A left shift by 1 doubles the value (6 becomes 12); it never just adds 1. A right shift by 1 halves the value, discarding the bit that falls off.",
       "first in, first out": "That rule belongs to a queue. A stack has only one working end — the top: push adds there and pop takes from there, so the last value pushed is the first one popped. Nothing is served from the bottom or the front of a stack.",
       "last in, first out": "That rule belongs to a stack. A queue serves from the head, where the longest-waiting value sits: the first value to arrive is the first one served, no matter what arrived after it.",
+      "++i and i++ are the same": "Both forms bump the variable by one — the difference is what the expression is worth. ++i bumps first and hands over the new value; i++ hands over the old value and bumps afterwards. In a statement on its own the two are identical, but inside an expression, an argument, or a test, the value handed over decides what the program does next.",
+      "the change waits until the line ends": "A side effect runs where it stands, not at the end of the statement. i-- in a test hands the old value to the comparison and changes i at once; += inside an expression changes its variable before the rest of the line is computed. Nothing waits for the semicolon: by the time the next piece of the line runs, the change has already happened.",
+      "each line starts from the original value": "A compound assignment rewrites its variable in place: after total += 5, the box holds the new value, and the next line starts from that. Steps build on each other — 10 becomes 15, then 12, then 24 — so skipping a step or restarting from the original value gives a different answer.",
       "every argument is copied": "Single values passed to a function are copied — but an array is not: an array parameter is another name for the caller's own array. Writes through it land in the original, which is exactly how array functions can sort or fill the caller's data.",
       "counting swaps instead of comparisons": "Read where the counter actually sits. A counter placed before the test rises on every comparison, whether or not a swap follows; only a counter sitting on the swap line itself counts swaps. The line a counter lives on decides what it counts.",
       "counting swaps instead of passes that move nothing": "Selection sort swaps at most once per pass — and only when the minimum it found is not already in place. A pass whose minimum already sits at the front moves nothing and swaps nothing.",
@@ -29331,6 +30012,166 @@ int main() {
       if (nx) nx.addEventListener("click", function () { matchState.current++; renderMatch(); });
       matchSetMsg(r);
     }
+    function perrRoundDef() { return PERR_ROUNDS[perrState.current]; }
+    function perrRt() { return perrState.rounds[perrState.current]; }
+    function perrSetMsg(r) {
+      var m = $('perr-msg'); if (!m) return;
+      if (r.msg) { m.className = 'make-msg show ' + (r.msgKind || 'info'); m.innerHTML = r.msg; }
+    }
+    function perrTransEntry(id) {
+      for (var i = 0; i < TRANS.length; i++) { if (TRANS[i].id === id) return TRANS[i]; }
+      return null;
+    }
+    function perrRevealHtml(d) {
+      var t = perrTransEntry(d.translator);
+      if (!t) return '';
+      return '<div class="otl-verdict" style="margin-top:12px;"><p class="otl-stage-tag">What the Error Translator says</p>' +
+        '<p><strong>' + esc(t.title) + '</strong> (entry ' + t.id + ')</p>' +
+        '<p class="mono" style="margin-top:6px;">' + esc(t.raw) + '</p>' +
+        '<p style="margin-top:6px;"><strong>What it means:</strong> ' + esc(t.meaning) + '</p>' +
+        '<p style="margin-top:6px;"><strong>Why it happens:</strong> ' + esc(t.cause) + '</p></div>';
+    }
+    function renderPerrNav() {
+      var box = $('perrnav'); if (!box) return;
+      box.innerHTML = '';
+      PERR_ROUNDS.forEach(function (rd, i) {
+        var r = perrState.rounds[i];
+        var st = r.done ? (r.perfect ? 'complete · predicted first try' : 'complete') : 'not started';
+        var b = document.createElement('button');
+        b.className = 'ex-btn ex-row'; b.type = 'button';
+        b.setAttribute('aria-current', perrState.current === i ? 'true' : 'false');
+        b.setAttribute('aria-label', 'Round ' + (i + 1) + ': ' + rd.title + ' (' + st + ')');
+        b.innerHTML = '<span class="n">' + (i + 1) + '</span><span class="ex-row-title">' + esc(rd.title) + ' · ' + esc(rd.concept) + '</span><span class="status' + (r.done ? ' good' : '') + '">' + esc(st) + '</span>';
+        b.addEventListener('click', function () { perrState.current = i; renderPerr(); });
+        box.appendChild(b);
+      });
+      var sb = $('perr-scorebar');
+      if (sb) {
+        var doneN = perrDoneCount();
+        var perfN = perrState.rounds.filter(function (r) { return r && r.done && r.perfect; }).length;
+        sb.innerHTML = '<span class="metric"><strong>' + doneN + ' / ' + PERR_ROUNDS.length + '</strong> <span>rounds complete</span></span>' +
+          '<span class="metric"><strong>' + perfN + ' / ' + doneN + '</strong> <span>predicted perfectly first try</span></span>';
+      }
+    }
+    function renderPerr() {
+      var panel = $('perr-mode'); if (!panel) return;
+      var d = perrRoundDef();
+      renderPerrNav();
+      $('perr-tag').textContent = 'Round ' + (perrState.current + 1) + ' of ' + PERR_ROUNDS.length + ' · ' + d.concept;
+      $('perr-title').textContent = d.title;
+      $('perr-task').textContent = d.task;
+      renderPerrBody();
+    }
+    function renderPerrBody() {
+      var body = $('perr-body'); if (!body) return;
+      var d = perrRoundDef(), r = perrRt();
+      if (r.done && r.err < 0) {
+        body.innerHTML =
+          '<p class="otl-stage-tag">Round complete</p>' +
+          '<div class="otl-verdict good" style="margin-top:10px;">' +
+          '<strong>You predicted the error' + (r.perfect ? ', on the first check' : '') + '.</strong>' +
+          '<p>' + d.explain + '</p></div>' +
+          perrRevealHtml(d) +
+          '<div class="lockrow" style="margin-top:14px;">' +
+          '<button class="btn ghost" type="button" id="perr-again">Do this round again</button>' +
+          (perrState.current < PERR_ROUNDS.length - 1 ? '<button class="btn" type="button" id="perr-next">Next round →</button>' : '') +
+          '</div>';
+        var again = $('perr-again');
+        if (again) again.addEventListener('click', function () {
+          var keep = { done: r.done, perfect: r.perfect };
+          perrState.rounds[perrState.current] = perrFreshRound();
+          perrState.rounds[perrState.current].done = keep.done;
+          perrState.rounds[perrState.current].perfect = keep.perfect;
+          perrRt().msg = 'Round reset. Your earlier completion stays recorded until you finish the round again.';
+          perrRt().msgKind = 'info';
+          renderPerr();
+          announce('Round ' + (perrState.current + 1) + ' reset.');
+        });
+        var next = $('perr-next');
+        if (next) next.addEventListener('click', function () { perrState.current++; renderPerr(); });
+        perrSetMsg(r);
+        return;
+      }
+      var html = '<p class="otl-stage-tag">The broken program</p>';
+      html += '<div class="codebox" style="margin-top:8px;"><div class="codehead"><span>program.cpp</span><span>C++</span></div><div style="padding:10px 0;">' + orderCodeHtml(d.code, -1) + '</div></div>';
+      html += '<p class="otl-stage-tag" style="margin-top:16px;">What does the compiler report first?</p>';
+      var errFb = r.errFb ? '<p class="match-fb ' + (r.err === d.correct ? 'good' : 'bad') + '" style="margin-top:6px;">' + r.errFb + '</p>' : '';
+      var lineFb = r.lineFb ? '<p class="match-fb ' + (r.line === d.errors[d.correct].line ? 'good' : 'bad') + '" style="margin-top:6px;">' + r.lineFb + '</p>' : '';
+      html += '<div class="match-row" style="margin-top:12px;">' +
+        '<label class="match-sel-label" for="perr-err-sel">The error message</label>' +
+        '<select class="digest-textarea match-sel" id="perr-err-sel" style="min-height:0;padding:9px 11px;font-family:\'IBM Plex Mono\',monospace;font-size:.9rem;margin-top:6px;width:100%;">' +
+        '<option value="-1">Choose the error…</option>' +
+        d.errors.map(function (e, ei) {
+          var t = e.text; if (t.length > 72) t = t.slice(0, 72) + '…';
+          return '<option value="' + ei + '"' + (r.err === ei ? ' selected' : '') + '>' + esc(t) + '</option>';
+        }).join('') +
+        '</select>' + errFb + '</div>';
+      html += '<div class="match-row" style="margin-top:12px;">' +
+        '<label class="match-sel-label" for="perr-line-sel">Reported on line</label>' +
+        '<select class="digest-textarea match-sel" id="perr-line-sel" style="min-height:0;padding:9px 11px;font-family:\'IBM Plex Mono\',monospace;font-size:.9rem;margin-top:6px;width:100%;">' +
+        '<option value="-1">Choose the line…</option>' +
+        d.code.map(function (l, li) {
+          var t = l.trim(); if (t.length > 52) t = t.slice(0, 52) + '…';
+          return '<option value="' + li + '"' + (r.line === li ? ' selected' : '') + '>Line ' + (li + 1) + ': ' + esc(t) + '</option>';
+        }).join('') +
+        '</select>' + lineFb + '</div>';
+      html += '<div class="lockrow" style="margin-top:16px;"><button class="btn" type="button" id="perr-check">Check my prediction</button>' +
+        (perrState.current < PERR_ROUNDS.length - 1 ? '<button class="btn ghost" type="button" id="perr-next2">Next round →</button>' : '') + '</div>';
+      if (r.done) {
+        html += '<div class="otl-verdict good" style="margin-top:12px;"><strong>Error predicted.</strong><p>' + d.explain + '</p></div>' + perrRevealHtml(d);
+      }
+      body.innerHTML = html;
+      var errSel = $('perr-err-sel');
+      if (errSel) errSel.addEventListener('change', function () {
+        var v = parseInt(errSel.value, 10);
+        r.err = isNaN(v) ? -1 : v;
+        r.errFb = '';
+        renderPerrBody();
+      });
+      var lineSel = $('perr-line-sel');
+      if (lineSel) lineSel.addEventListener('change', function () {
+        var v = parseInt(lineSel.value, 10);
+        r.line = isNaN(v) ? -1 : v;
+        r.lineFb = '';
+        renderPerrBody();
+      });
+      var chk = $('perr-check');
+      if (chk) chk.addEventListener('click', function () {
+        if (r.err < 0 || r.line < 0) {
+          r.msg = 'Choose both the error message and the line first — the compiler reports one error, on one line.';
+          r.msgKind = 'info';
+          renderPerrBody(); perrSetMsg(r);
+          return;
+        }
+        r.checks++;
+        var ce = d.errors[d.correct];
+        var errOk = r.err === d.correct;
+        var lineOk = r.line === ce.line;
+        r.errFb = errOk ? '<b>Correct.</b> ' + ce.why : '<b>Not that error.</b> ' + d.errors[r.err].why;
+        if (lineOk) {
+          r.lineFb = '<b>Correct.</b> The compiler reports it on line ' + (ce.line + 1) + '.';
+        } else if (errOk) {
+          r.lineFb = '<b>Right message, wrong line.</b> The compiler reports it on line ' + (ce.line + 1) + '.';
+        } else {
+          r.lineFb = '<b>Not that line.</b> The real error is reported on line ' + (ce.line + 1) + '.';
+        }
+        if (errOk && lineOk) {
+          r.done = true;
+          r.perfect = r.checks === 1;
+          r.msg = r.perfect ? 'Error predicted on the first check — message and line both right.' : 'Error predicted: message and line both right.';
+          r.msgKind = 'good';
+          if (typeof tfSave === 'function') tfSave();
+        } else {
+          r.msg = 'The prediction parts from the compiler. The notes under each choice say why — adjust those and check again.';
+          r.msgKind = 'bad';
+        }
+        renderPerr();
+        announce(errOk && lineOk ? 'Error predicted correctly.' : 'The prediction is not right yet.');
+      });
+      var nx = $('perr-next2');
+      if (nx) nx.addEventListener('click', function () { perrState.current++; renderPerr(); });
+      perrSetMsg(r);
+    }
     function renderOrderNav() {
       var box = $("ordernav"); if (!box) return;
       box.innerHTML = "";
@@ -29662,7 +30503,7 @@ int main() {
       function byId(id) { return document.getElementById(id); }
       var MODE_LABELS = {
         bolt: "Bolt's World", tracer: "Prediction Tracer", gym: "Debugging Gym", refactor: "Refactor Gym",
-        translator: "Error Translator", challenges: "Challenges", bridge: "Bridge", order: "Order the Lines", match: "Which line printed that?", make: "Make"
+        translator: "Error Translator", challenges: "Challenges", bridge: "Bridge", order: "Order the Lines", match: "Which line printed that?", perr: "Predict the error", make: "Make"
       };
       /* Declutter: primary sections first in every dropdown; secondary
          entries carry more:true and fold behind one "More sections"
@@ -29725,6 +30566,10 @@ int main() {
           { label: "Rounds \u2014 six programs, in order", target: "match-rounds" },
           { label: "Match each output to its line", target: "match-card" }
         ] },
+        { mode: "perr", items: [
+          { label: "Rounds \u2014 six broken programs, in order", target: "perr-rounds" },
+          { label: "Predict the error and its line", target: "perr-card" }
+        ] },
         { mode: "make", items: [
           { label: "Prompts \u2014 thirty programs to write, in order", target: "make-prompts" },
           { label: "Editor & test bench", target: "make-editor-card" },
@@ -29741,7 +30586,7 @@ int main() {
       try { reducedMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); } catch (e) {}
 
       function currentMode() {
-        var order = ["bolt", "tracer", "gym", "refactor", "translator", "challenges", "bridge", "order", "match", "make"];
+        var order = ["bolt", "tracer", "gym", "refactor", "translator", "challenges", "bridge", "order", "match", "perr", "make"];
         for (var i = 0; i < order.length; i++) {
           var b = byId("mode-" + order[i]);
           if (b && b.getAttribute("aria-selected") === "true") return order[i];
