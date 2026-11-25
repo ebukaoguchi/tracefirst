@@ -487,6 +487,12 @@
       }
       .mode-btn svg { width: 17px; height: 17px; flex: none; }
       .mode-btn[aria-pressed="true"], .mode-btn[aria-selected="true"] { background: var(--accent-soft); color: var(--accent-strong); border-color: var(--accent); }
+      .mode-cluster { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+      .mode-cluster-label {
+        font-family: "IBM Plex Mono", monospace; font-size: .68rem; font-weight: 600;
+        letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft);
+        padding: 0 2px 0 6px; flex: 0 0 auto;
+      }
 
       /* ---------- Debugging Gym ---------- */
       .gym-intro { max-width: 760px; margin-top: 22px; }
@@ -1089,6 +1095,7 @@
           border-radius:9px;font-size:1.35rem;line-height:1;
         }
         .drawer-modes{display:flex;flex-direction:column}
+        .drawer-group-label{font-family:"IBM Plex Mono",monospace;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);padding:14px 16px 2px}
         .drawer-row{
           display:flex;align-items:center;justify-content:space-between;gap:12px;
           width:100%;box-sizing:border-box;text-align:left;
@@ -1819,14 +1826,14 @@
       </section>
       <section class="intro">
         <h1>Predict before you run.</h1>
-        <p class="lede">TraceFirst is a first-year C++ tracer built on one rule: <strong>you never run code you have not first predicted</strong> — commit to an answer, then step through the program and watch where your prediction and the machine part. If you are new to programming entirely, <strong>start with Bolt's World</strong>, the first mode below: it teaches the logic first, and only then does the tracer ask you to predict real code.</p>
+        <p class="lede">TraceFirst is a C++ tracer built on one rule: <strong>you never run code you have not first predicted</strong>. Commit to an answer, then step through the program and watch where your prediction and the machine part. New to programming? <strong>Start with Bolt's World</strong>, the first mode below. It teaches the logic first, before the tracer asks you to predict real code.</p>
       </section>
 
       <section class="route-panel" id="start-here" aria-labelledby="route-h">
         <div class="route-head">
           <div>
             <h2 id="route-h">New here? Start here.</h2>
-            <p class="route-sub" id="route-progress">A first route through TraceFirst, in order. Ticks appear as you finish each step. Your progress is saved in this browser, on this device — there is no account and nothing is sent anywhere.</p>
+            <p class="route-sub" id="route-progress">A first route through TraceFirst, in order. Ticks appear as you finish each step. Progress is saved on this device only: no account, nothing sent anywhere.</p>
           </div>
           <button class="btn ghost small" type="button" id="route-toggle" aria-expanded="false" aria-controls="route-body">Expand</button>
         </div>
@@ -1857,7 +1864,7 @@
         </div>
         <div class="testout-panel" id="testout-panel" hidden>
           <h3 id="testout-h" tabindex="-1">Test-out check</h3>
-          <p class="testout-note">Seven short questions, answered in order — no stepping, and each answer is final for this sitting. Score 6 or 7 and the opening stretch is marked as tested out: Start Here steps 1 to 3 tick, the primer counts as read, and Tracer Exercises 1 to 5 are marked <strong>Tested out</strong>. Retakes are unlimited, and a tested-out exercise can still be done normally later — your real attempt replaces the mark.</p>
+          <p class="testout-note">Seven short questions, answered in order. No stepping, and each answer is final for this sitting. Score 6 or 7 and the opening stretch counts as tested out: Start Here steps 1 to 3 tick, the primer counts as read, and Tracer Exercises 1 to 5 are marked <strong>Tested out</strong>. Retakes are unlimited. A tested-out exercise can still be done normally later, and your real attempt replaces the mark.</p>
           <div id="testout-body"></div>
         </div>
         </div>
@@ -1894,6 +1901,8 @@
       </section>
 
       <nav class="mode-toggle" role="tablist" aria-label="Choose a mode" id="mode-tablist">
+        <div class="mode-cluster">
+          <span class="mode-cluster-label">Start here</span>
         <button class="mode-btn" type="button" id="mode-bolt" role="tab" aria-controls="bolt-mode" aria-selected="false" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4"/><circle cx="12" cy="3" r="0.5"/><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M9.5 13h.01M14.5 13h.01M9 21.5h6"/></svg>
           Bolt's World
@@ -1902,13 +1911,16 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
           Prediction Tracer
         </button>
+        </div>
+        <div class="mode-cluster">
+          <span class="mode-cluster-label">Practice</span>
         <button class="mode-btn" type="button" id="mode-gym" role="tab" aria-controls="gym-mode" aria-selected="false" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
           Debugging Gym
         </button>
         <button class="mode-btn" type="button" id="mode-refactor" role="tab" aria-controls="refactor-mode" aria-selected="false" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h13"/><path d="M13 3.5 16.5 7 13 10.5"/><path d="M21 17H8"/><path d="M11 13.5 7.5 17l3.5 3.5"/></svg>
-          Refactor Gym
+          Rewrite Practice
         </button>
         <button class="mode-btn" type="button" id="mode-translator" role="tab" aria-controls="translator-mode" aria-selected="false" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h9M8.5 3v2c0 3-1.8 5.6-4 7M6 8c.6 2 2.3 4.2 4.5 5.5M13 21l4.5-10L22 21M14.8 17h5.4"/></svg>
@@ -1935,10 +1947,14 @@
           Predict the error
         </button>
 
+        </div>
+        <div class="mode-cluster">
+          <span class="mode-cluster-label">Write and author</span>
         <button class="mode-btn" type="button" id="mode-make" role="tab" aria-controls="make-mode" aria-selected="false" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
           Make
         </button>
+        </div>
       </nav>
 
       <div class="mobile-nav" id="mobile-nav">
@@ -2009,16 +2025,19 @@
           <button class="drawer-close" type="button" id="drawer-close" aria-label="Close modes menu">&times;</button>
         </div>
         <nav class="drawer-modes" aria-label="Choose a mode">
+          <div class="drawer-group-label">Start here</div>
           <button class="drawer-row" type="button" data-drawer-mode="bolt" aria-current="false"><span class="drawer-row-name">Bolt's World</span><span class="drawer-hint" data-hint="bolt"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="tracer" aria-current="true"><span class="drawer-row-name">Prediction Tracer</span><span class="drawer-hint" data-hint="tracer"></span></button>
+          <div class="drawer-group-label">Practice</div>
           <button class="drawer-row" type="button" data-drawer-mode="gym" aria-current="false"><span class="drawer-row-name">Debugging Gym</span><span class="drawer-hint" data-hint="gym"></span></button>
-          <button class="drawer-row" type="button" data-drawer-mode="refactor" aria-current="false"><span class="drawer-row-name">Refactor Gym</span><span class="drawer-hint" data-hint="refactor"></span></button>
+          <button class="drawer-row" type="button" data-drawer-mode="refactor" aria-current="false"><span class="drawer-row-name">Rewrite Practice</span><span class="drawer-hint" data-hint="refactor"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="translator" aria-current="false"><span class="drawer-row-name">Error Translator</span><span class="drawer-hint" data-hint="translator"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="challenges" aria-current="false"><span class="drawer-row-name">Challenges</span><span class="drawer-hint" data-hint="challenges"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="bridge" aria-current="false"><span class="drawer-row-name">Bridge</span><span class="drawer-hint" data-hint="bridge"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="order" aria-current="false"><span class="drawer-row-name">Order the Lines</span><span class="drawer-hint" data-hint="order"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="match" aria-current="false"><span class="drawer-row-name">Which line printed that?</span><span class="drawer-hint" data-hint="match"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="perr" aria-current="false"><span class="drawer-row-name">Predict the error</span><span class="drawer-hint" data-hint="perr"></span></button>
+          <div class="drawer-group-label">Write and author</div>
           <button class="drawer-row" type="button" data-drawer-mode="make" aria-current="false"><span class="drawer-row-name">Make</span><span class="drawer-hint" data-hint="make"></span></button>
         </nav>
         <hr class="drawer-divider" />
@@ -2030,10 +2049,10 @@
 
       <div id="bolt-mode" role="tabpanel" tabindex="0" hidden>
         <section class="bolt-intro">
-          <h2>Meet Bolt — programming before the syntax gets heavy.</h2>
-          <p>Bolt is a workshop robot who understands exactly <strong>four commands</strong>: move, turn left, pick up a battery cell, put one down. That is all he will ever know. Everything Bolt does — crossing the Workshop, harvesting a row of cells, feeling his way around crates — is built by combining those four commands with loops, decisions, and functions you define yourself.</p>
+          <h2>Meet Bolt: programming before the syntax gets heavy.</h2>
+          <p>Bolt is a workshop robot who understands exactly <strong>four commands</strong>: move, turn left, pick up a battery cell, put one down. That is all he will ever know. Everything Bolt does is built by combining those four commands with loops, decisions, and functions you define yourself.</p>
           <p>The programs are written in <strong>real C++ shape</strong>: every command ends with a semicolon, blocks wear braces, and helpers are <strong>void</strong> functions. Nothing here is a toy language you will have to unlearn. When you move on to the Prediction Tracer, the syntax will already look familiar; only the ideas will be new.</p>
-          <div class="bolt-order"><strong>Start here.</strong> This mode comes first on purpose: finish these twenty-nine worlds and you already think in sequences, loops, decisions, and functions. Then predict and trace real code in the Prediction Tracer, where the same logic wears full C++ syntax.</div>
+          <div class="bolt-order"><strong>Start here.</strong> Finish these twenty-nine worlds and you already think in sequences, loops, decisions, and functions. Then predict and trace real code in the Prediction Tracer.</div>
         </section>
 
         <section class="card bolt-tour" id="bolt-tour" aria-labelledby="bolt-tour-h" hidden>
@@ -2059,7 +2078,7 @@
         <details class="toolbar bolt-chal-details" id="bolt-challenges" aria-labelledby="bolt-chal-h">
           <summary id="bolt-chal-h">Bolt Challenges (optional) <span class="gcount">8 extra worlds &#9662;</span></summary>
           <div style="margin-top:10px;">
-            <p class="bolt-chal-framing">For students who <strong>finish the twenty-nine worlds and want more</strong>. These challenges are entirely opt-in: they gate nothing and unlock nothing, and they use the same Workshop, the same editor, and the same Run, Step, and Reset controls below. Pick one to load it into the board.</p>
+            <p class="bolt-chal-framing">For students who <strong>finish the twenty-nine worlds and want more</strong>. Entirely opt-in: they gate nothing and unlock nothing, and they use the same Workshop and the same Run, Step, and Reset controls below. Pick one to load it into the board.</p>
             <div class="exnav" id="boltchalnav" style="margin-top:12px;" role="group" aria-label="Choose an optional Bolt challenge"></div>
           </div>
           <div class="scorebar" id="bolt-chal-scorebar" aria-label="Your Bolt Challenges progress" style="margin-top:10px;"></div>
@@ -2170,7 +2189,7 @@ for (int i = 0; i < 3; i++) {
         <div>
           <div class="tlabel">Your field — same code, your world</div>
           <div class="skins" id="skins" role="group" aria-label="Field skins"></div>
-          <p class="skin-note">Every field runs the identical program with the identical numbers. Only the story changes — so a class of mixed majors can argue about one answer together.</p>
+          <p class="skin-note">Every field runs the identical program with the identical numbers. Only the story changes, so a class of mixed majors can argue about one answer together.</p>
         </div>
         <div>
           <div class="tlabel">Exercises</div>
@@ -2999,7 +3018,7 @@ for (int i = 0; i < 3; i++) {
             <div class="tlabel">Rounds — six working but messy programs, in order</div>
             <div class="exnav" id="refnav"></div>
           </div>
-          <div class="scorebar" id="refactor-scorebar" aria-label="Your Refactor Gym scoreboard"></div>
+          <div class="scorebar" id="refactor-scorebar" aria-label="Your Rewrite Practice scoreboard"></div>
         </section>
 
         <section class="card" id="refactor-stage1" style="margin-top:18px;" aria-labelledby="refactor-title">
@@ -22584,6 +22603,10 @@ int main() {
     var primerRead = false;
     var routeManualExpand = false;
     var routeCollapsed = true;
+    // First visit (no saved progress on this device): start with the
+    // route expanded so the entry path is visible. Returning visitors
+    // keep the collapsed default.
+    try { if (!window.localStorage.getItem("tracefirst-progress-v1")) routeCollapsed = false; } catch (e) {}
     var routeLastSig = "";
     function routeProgress() {
       var boltN = 0, tracerN = 0, bridgeN = 0, gymN = 0, makeN = 0;
@@ -22996,7 +23019,7 @@ int main() {
        state and persistence are identical. On wider screens it is display:none
        and the tab bar is untouched. */
     var MODE_NAMES = {
-      bolt: "Bolt's World", tracer: "Prediction Tracer", gym: "Debugging Gym", refactor: "Refactor Gym",
+      bolt: "Bolt's World", tracer: "Prediction Tracer", gym: "Debugging Gym", refactor: "Rewrite Practice",
       translator: "Error Translator", challenges: "Challenges", bridge: "Bridge", order: "Order the Lines", match: "Which line printed that?", perr: "Predict the error", make: "Make"
     };
     var drawerIsOpen = false;
@@ -27107,7 +27130,7 @@ int main() {
       if (opt.diff === null) {
         s.done = true; s.pickKind = "good";
         s.pickMsg = "<b>That is the refactor.</b> It prints what the original prints on the program as shown \u2014 and on the boundary cases where the other two rewrites part from it. Stage 3 below names what changed, and what held the behaviour true.";
-        announce("Correct rewrite. Refactor Gym round " + (refactor.current + 1) + " complete.");
+        announce("Correct rewrite. Rewrite Practice round " + (refactor.current + 1) + " complete.");
       } else {
         s.wrongPicks[i] = true; s.pickKind = "bad";
         var oOut = refactorRun(refactorVariant(r.code.join("\n"), opt.diff));
@@ -28276,7 +28299,7 @@ int main() {
       });
       return { v: 1, t: cleanT, c: cleanC };
     }
-    var TFP_MODE_LABELS = [["bolt", "Bolt's World"], ["gym", "Debugging Gym"], ["refactor", "Refactor Gym"], ["translator", "Error Translator (fix-it rounds)"], ["challenges", "Challenges"], ["bridge", "Bridge"], ["order", "Order the Lines"], ["match", "Which line printed that?"], ["perr", "Predict the error"], ["make", "Make"]];
+    var TFP_MODE_LABELS = [["bolt", "Bolt's World"], ["gym", "Debugging Gym"], ["refactor", "Rewrite Practice"], ["translator", "Error Translator (fix-it rounds)"], ["challenges", "Challenges"], ["bridge", "Bridge"], ["order", "Order the Lines"], ["match", "Which line printed that?"], ["perr", "Predict the error"], ["make", "Make"]];
     function tfpRenderView(obj) {
       var box = $("tfp-view");
       if (!box) return;
@@ -30502,7 +30525,7 @@ int main() {
       "use strict";
       function byId(id) { return document.getElementById(id); }
       var MODE_LABELS = {
-        bolt: "Bolt's World", tracer: "Prediction Tracer", gym: "Debugging Gym", refactor: "Refactor Gym",
+        bolt: "Bolt's World", tracer: "Prediction Tracer", gym: "Debugging Gym", refactor: "Rewrite Practice",
         translator: "Error Translator", challenges: "Challenges", bridge: "Bridge", order: "Order the Lines", match: "Which line printed that?", perr: "Predict the error", make: "Make"
       };
       /* Declutter: primary sections first in every dropdown; secondary
