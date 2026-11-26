@@ -612,6 +612,15 @@
       /* Instructor step notes (shown in the trace) + misconception heatmap */
       .inst-step-note { margin-top: 10px; padding: 10px 12px; border: 1.5px dashed var(--accent); border-radius: 10px; background: var(--accent-soft); font-size: .93rem; }
       .inst-step-note .isn-label { display: block; font-family: "IBM Plex Mono", monospace; font-size: .68rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--accent-strong); margin-bottom: 3px; }
+      .inv-status { margin-top: 10px; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--panel-2); font-size: .93rem; }
+      .inv-status .isn-label { display: block; font-family: "IBM Plex Mono", monospace; font-size: .68rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 3px; }
+      .inv-status.holds { border-color: #2e7d4f; background: rgba(46,125,79,.10); }
+      .inv-status.breaks { border-color: #b3261e; background: rgba(179,38,30,.10); }
+      .inv-verdict.good { border-left: 3px solid #2e7d4f; padding-left: 10px; }
+      .inv-verdict.bad { border-left: 3px solid #b3261e; padding-left: 10px; }
+      .trap-name-line { border-left: 3px solid var(--accent); padding-left: 10px; }
+      .inv-block { border-top: 1px dashed var(--line); margin-top: 14px; padding-top: 12px; }
+      .inv-block h4 { font-size: .95rem; margin: 0 0 6px; }
       .heat-table td.heat-0 { background: transparent; }
       .heat-table td.heat-1 { background: color-mix(in srgb, var(--amber) 18%, transparent); }
       .heat-table td.heat-2 { background: color-mix(in srgb, var(--amber) 38%, transparent); }
@@ -1854,7 +1863,7 @@
             <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Order code, then write a line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find and fix faults.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 134</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 137</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write your own programs.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
             <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
@@ -2216,7 +2225,7 @@ for (int i = 0; i < 3; i++) {
             <select class="lecture-select" id="lecture-ex-select" aria-label="Choose an exercise to project"></select>
             <button class="btn" type="button" id="lecture-project-btn">Project this exercise</button>
           </div>
-          <p class="lecture-pick-note">Any of the 134 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
+          <p class="lecture-pick-note">Any of the 137 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
         </div>
 
         <div id="lecture-project" hidden>
@@ -2392,6 +2401,17 @@ for (int i = 0; i < 3; i++) {
             </div>
             <p class="predict-q" id="predict-q" style="margin-top:12px;"></p>
             <div id="solo-predict-ui">
+            <div class="pair-toggle" role="group" aria-label="Prediction style" id="predstyle-row" hidden>
+              <button class="pair-toggle-btn" type="button" id="predstyle-standard" aria-pressed="true">Standard choices</button>
+              <button class="pair-toggle-btn" type="button" id="predstyle-trap" aria-pressed="false">Trap choices: name the misconception</button>
+            </div>
+            <p class="duel-note" id="trap-style-note" hidden>Trap choices: every wrong answer in this list is a diagnosed trap, drawn from this exercise's misconception catalogue entries. Lock one in, and if it is wrong the verdict names the trap, the misconception family it belongs to.</p>
+            <div class="inv-block" id="inv-wrap" hidden>
+              <h4>First, the invariant</h4>
+              <p class="predict-q" id="inv-q" style="margin-top:4px;"></p>
+              <div class="options" id="inv-options"></div>
+              <p class="locknote" id="inv-note" style="margin-top:8px;"></p>
+            </div>
             <div class="options" id="predict-options"></div>
             <div class="rationale-row">
               <label for="rationale-input">Why I predicted this <span>(one sentence, optional)</span></label>
@@ -2580,6 +2600,7 @@ for (int i = 0; i < 3; i++) {
               <div class="stepnote" id="stepnote"></div>
               <div class="inst-step-note" id="inst-step-note" hidden><span class="isn-label">Instructor note</span><span id="inst-step-note-text"></span></div>
               <div class="parting-note" id="parting-note" hidden role="status"></div>
+              <div class="inv-status" id="inv-status" hidden></div>
               <div class="repred-panel" id="repred-panel" hidden>
                 <h4>Checkpoint — predict the rest of the run</h4>
                 <p id="repred-text">You are halfway through the trace. Before the machine steps on, lock a <b>second prediction</b> for the program's final output — with what you have seen so far, not just your first model.</p>
@@ -3115,6 +3136,19 @@ for (int i = 0; i < 3; i++) {
           </div>
         </section>
 
+        <section class="card" id="translator-paste" style="margin-top:18px;" aria-labelledby="paste-h">
+          <span class="concept-tag">Your error, not the catalogue's</span>
+          <h2 id="paste-h" style="font-size:1.25rem;">Paste your own error</h2>
+          <p class="story">Copy the message your compiler just printed, exactly as it appears, file name, line numbers and all, and paste it here. TraceFirst strips the file names, paths and line numbers out, then matches what is left against the 51 catalogue entries and shows the translation it lands on. Nothing you paste leaves this device.</p>
+          <label for="trans-paste" style="font-weight:700;font-size:.92rem;">Your compiler output</label>
+          <textarea class="digest-textarea" id="trans-paste" style="margin-top:8px;min-height:110px;" placeholder="e.g. main.cpp:6:5: error: 'cout' was not declared in this scope" autocomplete="off" spellcheck="false"></textarea>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px;">
+            <button class="btn" type="button" id="trans-paste-btn">Translate my error</button>
+            <span class="journal-status" id="trans-paste-status" role="status"></span>
+          </div>
+          <div id="trans-paste-results" aria-live="polite"></div>
+        </section>
+
         <div class="trans-searchbar" id="translator-search">
           <div>
             <label for="trans-search">Search the translator</label>
@@ -3483,12 +3517,12 @@ int main() {
         <div id="instructors-body" hidden>
           <div class="lecture-inst-entry">
             <h4>Lecture mode — run a tracer exercise in front of the class</h4>
-            <p>A single projected screen: pick any of the 134 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
+            <p>A single projected screen: pick any of the 137 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
             <div class="journal-actions"><button class="btn small" type="button" id="lecture-open-btn-2">Open Lecture mode</button></div>
           </div>
                     <div class="studio" id="inst-studio">
             <h4>Instructor exercise studio</h4>
-            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 134 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
+            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 137 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
             <div class="authored-field">
               <label for="inst-title">Exercise title</label>
               <input class="authored-input" type="text" id="inst-title" maxlength="80" placeholder="e.g. The average that is not an average" autocomplete="off">
@@ -11727,7 +11761,260 @@ int main() {
           correct: 0,
           explain: "++n bumps first: add receives 4 and returns 14, and n stays 4: <b>14 4</b>."
         }
+      },
+      {
+        concept: "Loops & accumulation",
+        topic: "Loops",
+        title: "Adding only the evens, with an invariant",
+        goal: "Before the output, this exercise asks for a <b>loop invariant</b>: a statement that is true at the top of every pass. The tracer checks yours on each pass.",
+        stories: {
+          health:   "A rehab app totals the minutes from the even-numbered exercises in a session plan: exercise 2, 4, 6, and 8. It prints one number at the end.",
+          psych:    "A study app totals the points from the even-numbered trial blocks in a session: blocks 2, 4, 6, and 8. It prints one number at the end.",
+          business: "A café's till totals the loyalty stamps from the even-numbered tables it served: tables 2, 4, 6, and 8. It prints one number at the end.",
+          arts:     "A rehearsal app totals the minutes from the even-numbered pieces in a practice plan: pieces 2, 4, 6, and 8. It prints one number at the end."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int sum = 0;",
+          "    for (int k = 2; k <= 8; k += 2) {",
+          "        sum = sum + k;",
+          "    }",
+          "    cout << sum << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["20", "12", "18", "28"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 6, text: "12 is the total after <em>three</em> passes (2 + 4 + 6). The test is <b>k &lt;= 8</b>, so a fourth pass runs with k = 8 and adds 8 more." },
+          2: { step: 2, text: "18 leaves out the first pass: it is 4 + 6 + 8. The loop starts at <b>k = 2</b>, and that pass adds 2 like any other." },
+          3: { step: 8, text: "28 adds the last value twice: 2 + 4 + 6 + 8 + 8. After the k = 8 pass, k becomes 10, the test fails, and no fifth pass runs." }
+        },
+        steps: [
+          { line: 4, vars: { sum: ["int", "0"] }, out: "", note: "The accumulator <b>sum</b> starts at 0. Nothing has been added yet." },
+          { line: 5, vars: { sum: ["int", "0"], k: ["int", "2"] }, out: "", note: "Top of pass 1: k starts at 2, and the test 2 &lt;= 8 passes. This is where the invariant is first checked: before any pass has run." },
+          { line: 6, vars: { sum: ["int", "2"], k: ["int", "2"] }, out: "", note: "Pass 1 adds k: sum = 0 + 2 = <b>2</b>." },
+          { line: 5, vars: { sum: ["int", "2"], k: ["int", "4"] }, out: "", note: "Top of pass 2: k += 2 makes k = 4, and 4 &lt;= 8 passes." },
+          { line: 6, vars: { sum: ["int", "6"], k: ["int", "4"] }, out: "", note: "Pass 2 adds 4: sum = 2 + 4 = <b>6</b>." },
+          { line: 5, vars: { sum: ["int", "6"], k: ["int", "6"] }, out: "", note: "Top of pass 3: k = 6, and 6 &lt;= 8 passes." },
+          { line: 6, vars: { sum: ["int", "12"], k: ["int", "6"] }, out: "", note: "Pass 3 adds 6: sum = 6 + 6 = <b>12</b>." },
+          { line: 5, vars: { sum: ["int", "12"], k: ["int", "8"] }, out: "", note: "Top of pass 4: k = 8, and 8 &lt;= 8 passes: the boundary pass counts." },
+          { line: 6, vars: { sum: ["int", "20"], k: ["int", "8"] }, out: "", note: "Pass 4 adds 8: sum = 12 + 8 = <b>20</b>." },
+          { line: 5, vars: { sum: ["int", "20"], k: ["int", "10"] }, out: "", note: "k becomes 10, and 10 &lt;= 8 is false. The loop ends with sum = 20." },
+          { line: 8, vars: { sum: ["int", "20"], k: ["int", "10"] }, out: "20", note: "<b>cout</b> prints the box: <b>20</b>." },
+          { line: 9, vars: { sum: ["int", "20"], k: ["int", "10"] }, out: "20", note: "The program ends. Final answer: <b>20</b>." }
+        ],
+        invariant: {
+          question: "First, the invariant: which statement is true at the top of EVERY pass through this loop?",
+          correct: 0,
+          options: [
+            { text: "sum holds the total of the even numbers below k: every even number the loop has already added, and no other.",
+              checks: [
+                { step: 1, pass: 1, holds: true, note: "sum is 0, and there are no even numbers below 2 to have missed. The statement starts true, before the first pass runs." },
+                { step: 3, pass: 2, holds: true, note: "sum is 2: the only even number below 4 is 2, and it is in." },
+                { step: 5, pass: 3, holds: true, note: "sum is 6 = 2 + 4: every even number below 6 is in." },
+                { step: 7, pass: 4, holds: true, note: "sum is 12 = 2 + 4 + 6: every even number below 8 is in." }
+              ] },
+            { text: "sum holds the total of the even numbers from 2 up to and including k.",
+              checks: [
+                { step: 1, pass: 1, holds: false, note: "sum is 0, but the even numbers from 2 up to and including k = 2 already add to 2. The statement fails before the first pass: it does not survive initialization." },
+                { step: 3, pass: 2, holds: false, note: "Still broken: sum is 2, but the evens up to and including 4 add to 6." },
+                { step: 5, pass: 3, holds: false, note: "Still broken: sum is 6, but the evens up to and including 6 add to 12." },
+                { step: 7, pass: 4, holds: false, note: "Still broken: sum is 12, but the evens up to and including 8 add to 20." }
+              ] },
+            { text: "sum has not yet passed 10.",
+              checks: [
+                { step: 1, pass: 1, holds: true, note: "sum is 0: it has not passed 10." },
+                { step: 3, pass: 2, holds: true, note: "sum is 2: still under 10." },
+                { step: 5, pass: 3, holds: true, note: "sum is 6: still under 10, with one pass to go." },
+                { step: 7, pass: 4, holds: false, note: "sum is 12: it has passed 10. The statement survived three passes and broke on the fourth." }
+              ] }
+          ]
+        },
+        modify: {
+          prompt: "The loop now stops at 6 instead of 8: k <= 6. The body is untouched. What prints now?",
+          code: "int sum = 0;\nfor (int k = 2; k <= <mark>6</mark>; k += 2) {\n    sum = sum + k;\n}\ncout << sum << endl;",
+          options: ["12", "20", "6", "18"],
+          correct: 0,
+          explain: "With k &lt;= 6 the loop takes three passes: 2 + 4 + 6 = <b>12</b>. The pass that added 8 never happens."
+        }
+      },
+      {
+        concept: "Loops & accumulation",
+        topic: "Loops",
+        title: "Counting down to a product, with an invariant",
+        goal: "Before the output, this exercise asks for a <b>loop invariant</b>: a statement that is true at the top of every pass. The tracer checks yours on each pass.",
+        stories: {
+          health:   "A clinic app works out a dosing schedule by multiplying a factor down from 5: 5 × 4 × 3 × 2. It prints one number at the end.",
+          psych:    "A study app computes the number of ways to order five conditions by multiplying down from 5: 5 × 4 × 3 × 2. It prints one number at the end.",
+          business: "A shop app computes the number of ways to arrange five featured products by multiplying down from 5: 5 × 4 × 3 × 2. It prints one number at the end.",
+          arts:     "A choreography app counts the orderings of five sections by multiplying down from 5: 5 × 4 × 3 × 2. It prints one number at the end."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int n = 5;",
+          "    int prod = 1;",
+          "    while (n > 1) {",
+          "        prod = prod * n;",
+          "        n = n - 1;",
+          "    }",
+          "    cout << prod << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["120", "60", "24", "25"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 11, text: "60 is where <b>prod</b> stands at the top of the last pass. The test is <b>n &gt; 1</b>, and at n = 2 it still passes: one more pass multiplies by 2, giving 120." },
+          2: { step: 6, text: "24 is 4 × 3 × 2: it leaves out the first multiplication. The loop starts at <b>n = 5</b>, and the first pass multiplies by 5 like any other." },
+          3: { step: 3, text: "25 is 5 × 5: the first number multiplied twice. Each pass multiplies by the <em>current</em> n, and n drops by 1 after every pass." }
+        },
+        steps: [
+          { line: 4, vars: { n: ["int", "5"] }, out: "", note: "The counter <b>n</b> starts at 5." },
+          { line: 5, vars: { n: ["int", "5"], prod: ["int", "1"] }, out: "", note: "The accumulator <b>prod</b> starts at 1, not 0: multiplying needs a neutral start, the way adding needed 0." },
+          { line: 6, vars: { n: ["int", "5"], prod: ["int", "1"] }, out: "", note: "Top of pass 1: the test 5 &gt; 1 passes. This is where the invariant is first checked." },
+          { line: 7, vars: { n: ["int", "5"], prod: ["int", "5"] }, out: "", note: "Pass 1 multiplies: prod = 1 × 5 = <b>5</b>." },
+          { line: 8, vars: { n: ["int", "4"], prod: ["int", "5"] }, out: "", note: "n drops to 4." },
+          { line: 6, vars: { n: ["int", "4"], prod: ["int", "5"] }, out: "", note: "Top of pass 2: 4 &gt; 1 passes." },
+          { line: 7, vars: { n: ["int", "4"], prod: ["int", "20"] }, out: "", note: "Pass 2 multiplies: prod = 5 × 4 = <b>20</b>." },
+          { line: 8, vars: { n: ["int", "3"], prod: ["int", "20"] }, out: "", note: "n drops to 3." },
+          { line: 6, vars: { n: ["int", "3"], prod: ["int", "20"] }, out: "", note: "Top of pass 3: 3 &gt; 1 passes." },
+          { line: 7, vars: { n: ["int", "3"], prod: ["int", "60"] }, out: "", note: "Pass 3 multiplies: prod = 20 × 3 = <b>60</b>." },
+          { line: 8, vars: { n: ["int", "2"], prod: ["int", "60"] }, out: "", note: "n drops to 2." },
+          { line: 6, vars: { n: ["int", "2"], prod: ["int", "60"] }, out: "", note: "Top of pass 4: 2 &gt; 1 still passes: the boundary pass counts." },
+          { line: 7, vars: { n: ["int", "2"], prod: ["int", "120"] }, out: "", note: "Pass 4 multiplies: prod = 60 × 2 = <b>120</b>." },
+          { line: 8, vars: { n: ["int", "1"], prod: ["int", "120"] }, out: "", note: "n drops to 1." },
+          { line: 6, vars: { n: ["int", "1"], prod: ["int", "120"] }, out: "", note: "The test 1 &gt; 1 is false. The loop ends with prod = 120." },
+          { line: 10, vars: { n: ["int", "1"], prod: ["int", "120"] }, out: "120", note: "<b>cout</b> prints the box: <b>120</b>." },
+          { line: 11, vars: { n: ["int", "1"], prod: ["int", "120"] }, out: "120", note: "The program ends. Final answer: <b>120</b>." }
+        ],
+        invariant: {
+          question: "First, the invariant: which statement is true at the top of EVERY pass through this loop?",
+          correct: 0,
+          options: [
+            { text: "prod holds the product of the numbers from 5 down to n + 1: every number the loop has already multiplied in, and no other.",
+              checks: [
+                { step: 2, pass: 1, holds: true, note: "prod is 1 and nothing has been multiplied in yet: the empty product. The statement starts true." },
+                { step: 5, pass: 2, holds: true, note: "prod is 5: only 5 has been multiplied in, and 5 is the whole run from 5 down to n + 1 = 5." },
+                { step: 8, pass: 3, holds: true, note: "prod is 20 = 5 × 4: the numbers from 5 down to n + 1 = 4." },
+                { step: 11, pass: 4, holds: true, note: "prod is 60 = 5 × 4 × 3: the numbers from 5 down to n + 1 = 3." }
+              ] },
+            { text: "prod holds the product of the numbers from 5 down to n.",
+              checks: [
+                { step: 2, pass: 1, holds: false, note: "prod is 1, but the product from 5 down to n = 5 is 5. The statement fails at the first test: n itself has not been multiplied in yet." },
+                { step: 5, pass: 2, holds: false, note: "Still broken: prod is 5, but the product from 5 down to 4 is 20." },
+                { step: 8, pass: 3, holds: false, note: "Still broken: prod is 20, but the product from 5 down to 3 is 60." },
+                { step: 11, pass: 4, holds: false, note: "Still broken: prod is 60, but the product from 5 down to 2 is 120." }
+              ] },
+            { text: "prod stays below 50.",
+              checks: [
+                { step: 2, pass: 1, holds: true, note: "prod is 1: below 50." },
+                { step: 5, pass: 2, holds: true, note: "prod is 5: still below 50." },
+                { step: 8, pass: 3, holds: true, note: "prod is 20: still below 50, with one pass to go." },
+                { step: 11, pass: 4, holds: false, note: "prod is 60: it has passed 50. The statement survived three passes and broke on the fourth." }
+              ] }
+          ]
+        },
+        modify: {
+          prompt: "n now starts at 4 instead of 5. Everything else is untouched. What prints now?",
+          code: "int n = <mark>4</mark>;\nint prod = 1;\nwhile (n > 1) {\n    prod = prod * n;\n    n = n - 1;\n}\ncout << prod << endl;",
+          options: ["24", "120", "60", "12"],
+          correct: 0,
+          explain: "Starting at 4, the loop multiplies 4 × 3 × 2 = <b>24</b>. The factor of 5 never enters."
+        }
+      },
+      {
+        concept: "Loops & accumulation",
+        topic: "Loops",
+        title: "The total so far, with an invariant",
+        goal: "Before the output, this exercise asks for a <b>loop invariant</b>: a statement that is true at the top of every pass. The tracer checks yours on each pass.",
+        stories: {
+          health:   "A step-tracking app totals the readings from the first four sensors on a recovery band: 3, 5, 2, and 6. It prints one number at the end.",
+          psych:    "A study app totals the scores from the first four tasks in a battery: 3, 5, 2, and 6. It prints one number at the end.",
+          business: "A café app totals the first four orders of the morning: 3, 5, 2, and 6 items. It prints one number at the end.",
+          arts:     "A rehearsal app totals the lengths of the first four pieces in a set: 3, 5, 2, and 6 minutes. It prints one number at the end."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int a[4] = {3, 5, 2, 6};",
+          "    int total = 0;",
+          "    for (int i = 0; i < 4; i++) {",
+          "        total = total + a[i];",
+          "    }",
+          "    cout << total << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["16", "10", "11", "9"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 8, text: "10 is the total after <em>three</em> passes (3 + 5 + 2). The test is <b>i &lt; 4</b>, so a fourth pass runs at i = 3 and adds a[3] = 6." },
+          2: { step: 7, text: "11 adds only the odd-index elements: a[1] + a[3] = 5 + 6. The loop visits <em>every</em> index from 0 to 3, not just the odd ones." },
+          3: { step: 3, text: "9 adds only the first and last elements: a[0] + a[3] = 3 + 6. The middle elements, a[1] = 5 and a[2] = 2, are added on their own passes." }
+        },
+        steps: [
+          { line: 4, vars: { a: ["int[4]", "{3, 5, 2, 6}"] }, out: "", note: "One name, four boxes: <b>a</b> holds 3, 5, 2, and 6 at indexes <b>0, 1, 2, and 3</b>." },
+          { line: 5, vars: { a: ["int[4]", "{3, 5, 2, 6}"], total: ["int", "0"] }, out: "", note: "The accumulator <b>total</b> starts at 0." },
+          { line: 6, vars: { a: ["int[4]", "{3, 5, 2, 6}"], total: ["int", "0"], i: ["int", "0"] }, out: "", note: "Top of pass 1: i starts at 0, and 0 &lt; 4 passes. This is where the invariant is first checked." },
+          { line: 7, vars: { a: ["int[4]", "{3, 5, 2, 6}"], total: ["int", "3"], i: ["int", "0"] }, out: "", note: "Pass 1 adds a[0] = 3: total = <b>3</b>." },
+          { line: 6, vars: { a: ["int[4]", "{3, 5, 2, 6}"], total: ["int", "3"], i: ["int", "1"] }, out: "", note: "Top of pass 2: i = 1, and 1 &lt; 4 passes." },
+          { line: 7, vars: { a: ["int[4]", "{3, 5, 2, 6}"], total: ["int", "8"], i: ["int", "1"] }, out: "", note: "Pass 2 adds a[1] = 5: total = 3 + 5 = <b>8</b>." },
+          { line: 6, vars: { a: ["int[4]", "{3, 5, 2, 6}"], total: ["int", "8"], i: ["int", "2"] }, out: "", note: "Top of pass 3: i = 2, and 2 &lt; 4 passes." },
+          { line: 7, vars: { a: ["int[4]", "{3, 5, 2, 6}"], total: ["int", "10"], i: ["int", "2"] }, out: "", note: "Pass 3 adds a[2] = 2: total = 8 + 2 = <b>10</b>." },
+          { line: 6, vars: { a: ["int[4]", "{3, 5, 2, 6}"], total: ["int", "10"], i: ["int", "3"] }, out: "", note: "Top of pass 4: i = 3, and 3 &lt; 4 passes: the last element still gets its pass." },
+          { line: 7, vars: { a: ["int[4]", "{3, 5, 2, 6}"], total: ["int", "16"], i: ["int", "3"] }, out: "", note: "Pass 4 adds a[3] = 6: total = 10 + 6 = <b>16</b>." },
+          { line: 6, vars: { a: ["int[4]", "{3, 5, 2, 6}"], total: ["int", "16"], i: ["int", "4"] }, out: "", note: "i becomes 4, and 4 &lt; 4 is false. The loop ends with total = 16." },
+          { line: 9, vars: { a: ["int[4]", "{3, 5, 2, 6}"], total: ["int", "16"], i: ["int", "4"] }, out: "16", note: "<b>cout</b> prints the box: <b>16</b>." },
+          { line: 10, vars: { a: ["int[4]", "{3, 5, 2, 6}"], total: ["int", "16"], i: ["int", "4"] }, out: "16", note: "The program ends. Final answer: <b>16</b>." }
+        ],
+        invariant: {
+          question: "First, the invariant: which statement is true at the top of EVERY pass through this loop?",
+          correct: 0,
+          options: [
+            { text: "total holds the sum of a[0] through a[i − 1]: the elements before index i, the ones already added.",
+              checks: [
+                { step: 2, pass: 1, holds: true, note: "total is 0, and there are no elements before index 0. The statement starts true." },
+                { step: 4, pass: 2, holds: true, note: "total is 3 = a[0]: the only element before index 1." },
+                { step: 6, pass: 3, holds: true, note: "total is 8 = 3 + 5: the elements before index 2." },
+                { step: 8, pass: 4, holds: true, note: "total is 10 = 3 + 5 + 2: the elements before index 3." }
+              ] },
+            { text: "total holds the sum of a[0] through a[i], including the element at index i.",
+              checks: [
+                { step: 2, pass: 1, holds: false, note: "total is 0, but a[0] through a[0] already sums to 3. At the top of the pass, the element at index i has not been added yet." },
+                { step: 4, pass: 2, holds: false, note: "Still broken: total is 3, but a[0] through a[1] sums to 8." },
+                { step: 6, pass: 3, holds: false, note: "Still broken: total is 8, but a[0] through a[2] sums to 10." },
+                { step: 8, pass: 4, holds: false, note: "Still broken: total is 10, but a[0] through a[3] sums to 16." }
+              ] },
+            { text: "total is still in single figures.",
+              checks: [
+                { step: 2, pass: 1, holds: true, note: "total is 0: a single figure." },
+                { step: 4, pass: 2, holds: true, note: "total is 3: a single figure." },
+                { step: 6, pass: 3, holds: true, note: "total is 8: a single figure, with one pass to go." },
+                { step: 8, pass: 4, holds: false, note: "total is 10: two figures. The statement survived three passes and broke on the fourth." }
+              ] }
+          ]
+        },
+        modify: {
+          prompt: "The loop bound changes from 4 to 3: i < 3. The body is untouched. What prints now?",
+          code: "int a[4] = {3, 5, 2, 6};\nint total = 0;\nfor (int i = 0; i < <mark>3</mark>; i++) {\n    total = total + a[i];\n}\ncout << total << endl;",
+          options: ["10", "16", "8", "13"],
+          correct: 0,
+          explain: "With i &lt; 3 the loop takes three passes: 3 + 5 + 2 = <b>10</b>. The last element, a[3] = 6, is never added."
+        }
       }
+
     ];
 
     /* ---------------- State (persisted in this browser — see persistence block at the end) ---------------- */
@@ -11737,7 +12024,7 @@ int main() {
                pair: false, pairASelected: -1, pairALocked: false,
                pairBSelected: -1, pairBLocked: false, jointSelected: -1, jointLocked: false, rationale: "", muddy: 0,
                confidence: "", followSel: -1, followLocked: false, followCorrect: null,
-               teachBack: "", lastDuel: "", reSel: -1, reLocked: false, reCorrect: null, reAtStep: -1, boxPred: {}, stage2: false, firstSel: -1, firstLocked: false, secondSel: -1 };
+               teachBack: "", lastDuel: "", reSel: -1, reLocked: false, reCorrect: null, reAtStep: -1, boxPred: {}, stage2: false, firstSel: -1, firstLocked: false, secondSel: -1, invSel: -1, trapStyle: false };
     }
     var state = {
       skin: "health",
@@ -11931,7 +12218,7 @@ int main() {
 
     var EX_GROUPS = [
       { name: "Foundations", list: [0, 1, 2] },
-      { name: "Loops & Functions", list: [3, 4, 5, 6, 23, 24, 28, 44] },
+      { name: "Loops & Functions", list: [3, 4, 5, 6, 23, 24, 28, 44, 134, 135, 136] },
       { name: "Arrays & Strings", list: [7, 8, 25, 26, 29, 45, 46, 52] },
       { name: "Two-dimensional arrays", list: [104, 105, 106, 107, 108, 109] },
       { name: "Structs — grouped data", list: [110, 111, 112, 113, 114, 115] },
@@ -12205,11 +12492,12 @@ int main() {
 
       // Solo UI (unchanged behaviour)
       var box = $("predict-options"); box.innerHTML = "";
-      ex.options.forEach(function (opt, i) {
+      tfTrapOrder(ex, s).forEach(function (i, pos) {
+        var opt = ex.options[i];
         var b = document.createElement("button");
         b.className = "opt-btn"; b.type = "button";
         b.setAttribute("aria-pressed", s.selected === i ? "true" : "false");
-        b.innerHTML = '<span class="key">' + "ABCD"[i] + "</span><span>" + esc(opt) + "</span>";
+        b.innerHTML = '<span class="key">' + "ABCD"[pos] + "</span><span>" + esc(opt) + "</span>";
         if (s.locked) {
           b.disabled = true;
           if (i === ex.correct) b.classList.add("reveal-correct");
@@ -12218,7 +12506,7 @@ int main() {
           b.addEventListener("click", function () {
             if (s.firstLocked) return;
             s.selected = i; renderPredict();
-            var lb = $("lock-btn"); if (lb) lb.disabled = false;
+            var lb = $("lock-btn"); if (lb) lb.disabled = !tfLockReady(ex, s);
           });
         }
         box.appendChild(b);
@@ -12227,9 +12515,12 @@ int main() {
       if (rIn) { if (document.activeElement !== rIn) rIn.value = s.rationale || ""; rIn.disabled = !!s.locked; }
       var prIn = $("pair-rationale-input");
       if (prIn) { if (document.activeElement !== prIn) prIn.value = s.rationale || ""; prIn.disabled = !!s.locked; }
-      $("lock-btn").disabled = s.locked || s.selected < 0;
+      $("lock-btn").disabled = s.locked || !tfLockReady(ex, s);
       $("lock-btn").style.display = s.locked ? "none" : "";
       $("lock-note").style.display = s.locked ? "none" : "";
+
+      renderTrapStyleRow(ex, s);
+      renderInvBlock(ex, s);
 
       // Two-stage flow (solo UI): after the first lock, the first prediction
       // freezes and the discussion panel offers the second prediction.
@@ -12991,7 +13282,7 @@ int main() {
       syncBitsToggle();
       $("trace-locked").style.display = s.locked ? "none" : "";
       $("trace-ui").hidden = !s.locked;
-      if (!s.locked) { renderCode(-1); flowUpdate(-1); var capL = $("play-caption"); if (capL) capL.hidden = true; var cs0 = $("callstack"); if (cs0) cs0.innerHTML = ""; var sc0 = $("stack-col"); if (sc0) sc0.hidden = true; return; }
+      if (!s.locked) { renderCode(-1); flowUpdate(-1); var capL = $("play-caption"); if (capL) capL.hidden = true; var cs0 = $("callstack"); if (cs0) cs0.innerHTML = ""; var sc0 = $("stack-col"); if (sc0) sc0.hidden = true; var ivE = $("inv-status"); if (ivE) ivE.hidden = true; return; }
       var step = s.step >= 0 ? ex.steps[s.step] : null;
       renderCode(step ? step.line : -1);
       flowUpdate(step ? step.line : -1);
@@ -13027,6 +13318,7 @@ int main() {
       $("cout").innerHTML = step && step.out ? esc(step.out) : '<span class="cursor"></span>';
       $("stepnote").innerHTML = step ? step.note :
         "The highlighted line is always the statement the machine is <b>about to finish</b>. Step slowly on the lines that change a box — those are where mental models break.";
+      renderInvStatus();
       renderStepNote();
     }
 
@@ -13576,13 +13868,13 @@ int main() {
       if (s.correct) {
         v.innerHTML = '<div class="verdict good"><h3>Your model matched the machine.</h3>' +
           '<div class="vs"><div><span>You predicted</span>' + esc(mine) + '</div><div><span>The program printed</span>' + esc(actual) + "</div></div>" +
-          "<p>A correct prediction is evidence your mental model of this concept is sound — for these values. Stage 4 changes a value to check the model, not the memory.</p>" + reHtml + stage2Html + ratEcho + partialVerdictHtml(ex, s) + teachBackHtml(s) + "</div>";
+          "<p>A correct prediction is evidence your mental model of this concept is sound — for these values. Stage 4 changes a value to check the model, not the memory.</p>" + reHtml + stage2Html + tfInvVerdictHtml(ex, s) + ratEcho + partialVerdictHtml(ex, s) + teachBackHtml(s) + "</div>";
       } else {
         var d = ex.diagnoses[s.selected];
         var confNote = s.confidence === "sure" ? '<p class="confident-note">You marked this prediction “Sure” — a confident miss, and the kind worth a second look: the model felt solid and still parted from the machine.</p>' : "";
         v.innerHTML = '<div class="verdict bad"><h3>Your model and the machine parted company.</h3>' +
           '<div class="vs"><div><span>You predicted</span>' + esc(mine) + '</div><div><span>The program printed</span>' + esc(actual) + "</div></div>" +
-          "<p>" + d.text + "</p>" + trapNoteHtmlForDiag(d.text) + reHtml + stage2Html + confNote + ratEcho + partialVerdictHtml(ex, s) + '<button class="btn small ghost jump" id="jump-btn" type="button">Jump to the parting step</button>' +
+          tfTrapNameHtml(ex, s, d) + "<p>" + d.text + "</p>" + trapNoteHtmlForDiag(d.text) + reHtml + stage2Html + confNote + tfInvVerdictHtml(ex, s) + ratEcho + partialVerdictHtml(ex, s) + '<button class="btn small ghost jump" id="jump-btn" type="button">Jump to the parting step</button>' +
           '<div id="followup-box"></div><p class="suggest-next" id="suggest-next"></p>' + teachBackHtml(s) + "</div>";
         $("jump-btn").addEventListener("click", function () {
           stopPlayback();
@@ -13686,10 +13978,245 @@ int main() {
       }
       return parts.join(". ");
     }
+    /* ---------------- Loop invariants & trap choices (2026-11-26) ----------------
+       Two additions to Stage 1, both additive and both optional:
+       (a) Exercises that carry an `invariant` block ask the student to pick
+           the loop invariant before the output prediction can lock. The
+           tracer then checks the chosen statement at the top of every pass
+           (the checks are authored per option in the exercise data) and the
+           verdict reports whether it held or where it broke.
+       (b) A prediction style toggle: "Trap choices" rebuilds the option
+           order from the exercise's diagnosed wrong answers (the same
+           misconception catalogue the instructor panel derives), so every
+           wrong choice is a diagnosed trap, and the verdict names the trap.
+       Neither touches saved-progress keys: invSel and trapStyle ride inside
+       the existing per-exercise tracer record as additive fields. */
+    function tfLockReady(ex, s) {
+      if (!s || s.selected < 0) return false;
+      if (ex && ex.invariant && !state.pairMode && s.invSel < 0) return false;
+      return true;
+    }
+    function tfTrapOrder(ex, s) {
+      var n = ex.options.length, order = [], i;
+      for (i = 0; i < n; i++) order.push(i);
+      if (!s || !s.trapStyle || !ex.diagnoses) return order;
+      var rng = variantRng(90210 + (state.current + 1) * 131);
+      for (i = n - 1; i > 0; i--) {
+        var j = Math.floor(rng() * (i + 1)), t = order[i]; order[i] = order[j]; order[j] = t;
+      }
+      return order;
+    }
+    function renderTrapStyleRow(ex, s) {
+      var row = $("predstyle-row"); if (!row) return;
+      var show = !state.pairMode && !!ex.diagnoses;
+      row.hidden = !show;
+      if (!show) return;
+      var std = $("predstyle-standard"), trp = $("predstyle-trap");
+      if (std) std.setAttribute("aria-pressed", s.trapStyle ? "false" : "true");
+      if (trp) trp.setAttribute("aria-pressed", s.trapStyle ? "true" : "false");
+      var note = $("trap-style-note");
+      if (note) note.hidden = !s.trapStyle;
+      if (!row.dataset.wired) {
+        row.dataset.wired = "1";
+        if (std) std.addEventListener("click", function () {
+          var st = state.ex[state.current]; if (st.locked || st.firstLocked) return;
+          st.trapStyle = false; renderPredict();
+        });
+        if (trp) trp.addEventListener("click", function () {
+          var st = state.ex[state.current]; if (st.locked || st.firstLocked) return;
+          st.trapStyle = true; renderPredict();
+          announce("Trap choices: every wrong answer in this list is a diagnosed trap from the misconception catalogue. The verdict will name the trap you picked.");
+        });
+      }
+      if (std) std.disabled = !!s.locked || !!s.firstLocked;
+      if (trp) trp.disabled = !!s.locked || !!s.firstLocked;
+    }
+    function renderInvBlock(ex, s) {
+      var wrap = $("inv-wrap"); if (!wrap) return;
+      if (!ex.invariant || state.pairMode) { wrap.hidden = true; return; }
+      wrap.hidden = false;
+      $("inv-q").textContent = ex.invariant.question;
+      var box = $("inv-options"); box.innerHTML = "";
+      ex.invariant.options.forEach(function (opt, i) {
+        var b = document.createElement("button");
+        b.className = "opt-btn"; b.type = "button";
+        b.setAttribute("aria-pressed", s.invSel === i ? "true" : "false");
+        b.innerHTML = '<span class="key">' + "ABCD"[i] + "</span><span>" + esc(opt.text) + "</span>";
+        if (s.locked || s.firstLocked) { b.disabled = true; }
+        else b.addEventListener("click", function () { s.invSel = i; renderPredict(); });
+        box.appendChild(b);
+      });
+      var note = $("inv-note");
+      if (note) note.textContent = s.locked
+        ? "Your invariant is locked with your prediction. Watch it at the top of every pass while you step."
+        : (s.invSel >= 0 ? "Invariant chosen. It locks together with your prediction." : "Choose the invariant first: the prediction cannot lock until both are committed.");
+    }
+    function tfInvCheckAt(ex, s) {
+      if (!ex.invariant || s.invSel < 0) return null;
+      var checks = ex.invariant.options[s.invSel].checks || [];
+      var found = null;
+      for (var i = 0; i < checks.length; i++) if (checks[i].step <= s.step) found = checks[i];
+      return found;
+    }
+    function renderInvStatus() {
+      var el = $("inv-status"); if (!el) return;
+      var ex = EXERCISES[state.current], s = state.ex[state.current];
+      if (!ex.invariant || !s.locked || s.invSel < 0 || state.pairMode) { el.hidden = true; return; }
+      var opt = ex.invariant.options[s.invSel];
+      el.hidden = false;
+      if (s.step < 0) {
+        el.className = "inv-status";
+        el.innerHTML = '<span class="isn-label">Your invariant</span>' + esc(opt.text) + " The tracer checks it at the top of every pass.";
+        return;
+      }
+      var chk = tfInvCheckAt(ex, s);
+      if (!chk) {
+        el.className = "inv-status";
+        el.innerHTML = '<span class="isn-label">Your invariant</span>' + esc(opt.text) + " First check comes at the top of pass 1.";
+        return;
+      }
+      el.className = "inv-status " + (chk.holds ? "holds" : "breaks");
+      el.innerHTML = '<span class="isn-label">Invariant check — top of pass ' + chk.pass + ": " + (chk.holds ? "holds" : "BREAKS") + "</span>" + esc(chk.note);
+    }
+    function tfInvVerdictHtml(ex, s) {
+      if (!ex.invariant || s.invSel < 0 || state.pairMode) return "";
+      var inv = ex.invariant, opt = inv.options[s.invSel];
+      if (s.invSel === inv.correct) {
+        return '<p class="inv-verdict good"><b>Your invariant held.</b> It stayed true at the top of every pass, from before the first pass to the moment the test failed. That is the loop\'s proof sketch: start it true, keep it true, and the final value has to be what the program printed.</p>';
+      }
+      var checks = opt.checks || [], brk = null;
+      for (var i = 0; i < checks.length; i++) if (!checks[i].holds) { brk = checks[i]; break; }
+      if (brk) {
+        return '<p class="inv-verdict bad"><b>Your invariant broke at the top of pass ' + brk.pass + '.</b> ' + esc(brk.note) + " An invariant that fails on any pass cannot certify the loop, however plausible it sounded before the trace.</p>";
+      }
+      return '<p class="inv-verdict bad"><b>Your invariant held on every pass, but it is too weak.</b> It never broke, yet it does not pin down the final value: several different answers would satisfy it. The invariant that certifies this loop is the one that says exactly what the accumulator holds at the top of each pass.</p>';
+    }
+    function tfTrapNameHtml(ex, s, d) {
+      if (!s.trapStyle || s.correct || !d) return "";
+      var name = (typeof catNamedName === "function") ? catNamedName(d.text) : null;
+      if (name) {
+        return '<p class="trap-name-line">The trap in that choice has a name: <b>' + esc(name) + '</b>. It is one of the diagnosed misconception families in the catalogue, and this exercise\'s wrong answers were built from it.</p>';
+      }
+      var plain = String(d.text || "").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+      var dot = plain.indexOf(". ");
+      var first = dot === -1 ? plain : plain.slice(0, dot + 1);
+      return '<p class="trap-name-line">The trap in that choice: <b>' + esc(first) + '</b></p>';
+    }
+
+    /* ---------------- Error Translator: paste your own error (2026-11-26) ----------------
+       The student pastes real compiler output; file names, paths and
+       line/column numbers are normalised away, quoted identifiers and
+       numbers are wildcarded, and the result is matched against the TRANS
+       catalogue: exact signature containment first, then token overlap
+       with the entry's raw text and keys. A warning entry is badged as a
+       warning (not an error), exactly as in the catalogue list. */
+    function tfErrNorm(t) {
+      return String(t || "")
+        .replace(/[A-Za-z]:\\[^\s:'"]+/g, " ")
+        .replace(/(^|[\s(])[\w.\/-]+\.(?:cpp|cc|cxx|c|h|hpp):\d+(?::\d+)?:/gi, "$1 ")
+        .replace(/(^|[\s(])[\w.\/-]+\.(?:cpp|cc|cxx|c|h|hpp)\b/gi, "$1 ")
+        .replace(/\b(?:line|column|col)\s+\d+/gi, "$1")
+        .replace(/'[^']*'/g, "'§'")
+        .replace(/"[^"]*"/g, '"§"')
+        .replace(/\d+/g, "#")
+        .toLowerCase().replace(/\s+/g, " ").trim();
+    }
+    function tfErrTokens(t) {
+      var seen = {}, out = [];
+      String(t || "").split(/[^a-z0-9§#']+/i).forEach(function (w) {
+        w = w.toLowerCase();
+        if (w.length >= 3 && !seen[w]) { seen[w] = true; out.push(w); }
+      });
+      return out;
+    }
+    function tfErrMatch(pasted) {
+      var norm = tfErrNorm(pasted);
+      if (!norm) return { best: null, bestScore: 0, partials: [] };
+      var pToks = tfErrTokens(norm);
+      var pNames = (String(pasted).match(/'[^']+'/g) || []);
+      var pNamesLow = pNames.map(function (n) { return n.toLowerCase(); });
+      var scored = [];
+      TRANS.forEach(function (e) {
+        var eNames = (String(e.raw || "").match(/'[^']+'/g) || []);
+        var nameHit = eNames.some(function (n) { return pNames.indexOf(n) !== -1; });
+        var nameHitCI = !nameHit && eNames.some(function (n) { return pNamesLow.indexOf(n.toLowerCase()) !== -1; });
+        var sigs = String(e.raw || "").split(/— also seen as:|\n/i).map(function (x) { return tfErrNorm(x); }).filter(Boolean);
+        var score = 0, contained = false;
+        sigs.forEach(function (sg) {
+          if (sg.length >= 14 && norm.indexOf(sg) !== -1) { contained = true; score = Math.max(score, 100 + sg.length); }
+          var sToks = tfErrTokens(sg), hit = 0;
+          sToks.forEach(function (w) { if (pToks.indexOf(w) !== -1) hit++; });
+          if (sToks.length) score = Math.max(score, Math.round(70 * hit / sToks.length));
+        });
+        var kToks = tfErrTokens(e.keys || ""), kHit = 0;
+        kToks.forEach(function (w) { if (pToks.indexOf(w) !== -1) kHit++; });
+        if (kToks.length) score += Math.round(20 * kHit / kToks.length);
+        if (contained) score += 30;
+        if (nameHit) score += 45; else if (nameHitCI) score += 15;
+        scored.push({ e: e, score: score, contained: contained });
+      });
+      scored.sort(function (a, b) { return b.score - a.score; });
+      var top = scored[0];
+      var best = (top && (top.contained || top.score >= 70)) ? top : null;
+      var partials = scored.filter(function (r) { return r.score >= 22 && (!best || r.e.id !== best.e.id); }).slice(0, 3);
+      return { best: best ? best.e : null, bestScore: top ? top.score : 0, partials: partials.map(function (r) { return r.e; }) };
+    }
+    function tfErrEntryHtml(e) {
+      return '<div class="trans-raw"><span class="rlabel">As g++ prints it</span>' + esc(e.raw) + "</div>" +
+        '<div class="trans-grid"><div><h4>In plain English</h4><p>' + e.meaning + "</p></div>" +
+        "<div><h4>What in your code causes it</h4><p>" + e.cause + "</p></div></div>" +
+        '<div class="trans-fix"><h4>The fix — before → after</h4><div class="fix-compare"><div class="fix-box before"><span class="flabel">Before — broken</span>' + esc(e.before) + '</div><div class="fix-box after"><span class="flabel">After — fixed</span>' + esc(e.after) + "</div></div></div>" +
+        '<div class="lockrow" style="margin-top:12px;"><button class="btn ghost small" type="button" data-open-trans="' + e.id + '">Open entry ' + e.id + " in the catalogue</button></div>";
+    }
+    function tfErrBadge(e) {
+      return e.stage === "warning" ? '<span class="trans-stage warning">Warning — not an error</span>'
+        : e.stage === "link" ? '<span class="trans-stage link">Linker error</span>'
+        : e.stage === "runtime" ? '<span class="trans-stage runtime">Runtime error</span>'
+        : '<span class="trans-stage">Compiler error</span>';
+    }
+    (function wireTransPaste() {
+      var btn = $("trans-paste-btn"), ta = $("trans-paste"), out = $("trans-paste-results"), status = $("trans-paste-status");
+      if (!btn || !ta || !out) return;
+      function jumpTo(id) {
+        transStage = ""; var srch = $("trans-search"); if (srch) srch.value = "";
+        transOpen = {}; transOpen[id] = true; renderTrans("");
+        var el = $("trans-" + id);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      btn.addEventListener("click", function () {
+        var text = ta.value || "";
+        if (!text.trim()) { if (status) status.textContent = "Paste a compiler message first."; out.innerHTML = ""; return; }
+        var r = tfErrMatch(text);
+        if (r.best) {
+          var e = r.best;
+          out.innerHTML = '<div class="trans-item open" style="margin-top:14px;"><div class="trans-body" style="display:block;">' +
+            '<p style="margin:0 0 8px;"><span class="tnum">' + e.id + '</span> <span class="ttitle">' + esc(e.title) + "</span> " + tfErrBadge(e) + "</p>" +
+            (e.stage === "warning" ? '<p style="font-size:.92rem;"><b>This is a warning, not an error.</b> The program still compiles and runs; the compiler is pointing at something that probably does not do what you mean.</p>' : "") +
+            tfErrEntryHtml(e) + "</div></div>";
+          if (status) status.textContent = "Matched entry " + e.id + ": " + e.title + ".";
+          announce("Matched translation number " + e.id + ": " + e.title);
+        } else {
+          var html = '<p style="margin-top:14px;font-size:.95rem;"><b>No catalogue entry matches that message.</b> The translator covers the ' + TRANS.length + " messages beginners meet most; this one is outside it. Read the first error line literally: it names what the compiler expected and what it found instead.</p>";
+          if (r.partials.length) {
+            html += '<p style="font-size:.92rem;color:var(--ink-soft);">Closest partial matches, by shared wording:</p><div class="lockrow">';
+            r.partials.forEach(function (pe) { html += '<button class="btn ghost small" type="button" data-open-trans="' + pe.id + '">Entry ' + pe.id + ": " + esc(pe.title) + "</button>"; });
+            html += "</div>";
+          }
+          out.innerHTML = html;
+          if (status) status.textContent = "No exact match in the catalogue.";
+          announce("No catalogue entry matches that compiler message.");
+        }
+        out.querySelectorAll("[data-open-trans]").forEach(function (b) {
+          b.addEventListener("click", function () { jumpTo(parseInt(b.getAttribute("data-open-trans"), 10)); });
+        });
+      });
+    })();
+
     /* ---------------- Wiring ---------------- */
     $("lock-btn").addEventListener("click", function () {
       var ex = EXERCISES[state.current], s = state.ex[state.current];
       if (s.selected < 0) return;
+      if (ex.invariant && !state.pairMode && s.invSel < 0) return;
       var rInLock = $("rationale-input"); if (rInLock) s.rationale = rInLock.value.trim().slice(0, 140);
       if (state.stageMode && !state.pairMode && !s.firstLocked) {
         s.firstSel = s.selected; s.firstLocked = true;
@@ -27501,6 +28028,8 @@ int main() {
           stage2: !!s.stage2,
           firstSel: (typeof s.firstSel === "number" ? s.firstSel : -1),
           secondSel: (typeof s.secondSel === "number" ? s.secondSel : -1),
+          invSel: (typeof s.invSel === "number" ? s.invSel : -1),
+          trapStyle: !!s.trapStyle,
           boxPred: tfBoxPredClean(s.boxPred)
         });
       });
@@ -27700,6 +28229,8 @@ int main() {
           s.stage2 = !!sv.stage2;
           if (typeof sv.firstSel === "number") s.firstSel = sv.firstSel;
           if (typeof sv.secondSel === "number") s.secondSel = sv.secondSel;
+          if (typeof sv.invSel === "number") s.invSel = sv.invSel;
+          s.trapStyle = !!sv.trapStyle;
           s.firstLocked = !!(s.locked && s.stage2);
           s.jointLocked = !!sv.jointLocked;
           if (s.locked || s.modDone) state.ex[i] = s;
