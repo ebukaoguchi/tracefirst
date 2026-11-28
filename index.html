@@ -288,6 +288,11 @@
       .membox .vtype { font-size: .68rem; color: var(--ink-soft); font-weight: 500; letter-spacing: .05em; text-transform: uppercase; }
       .membox .vval { font-family: "IBM Plex Mono", monospace; font-size: 1.55rem; font-weight: 600; margin-top: 2px; }
       .membox.changed { border-color: var(--amber); animation: flash 0.7s ease; }
+      /* One-change focus (2026-11-27): with data-focus="onechange" on the root,
+         every memory box dims except the one that changed at this step — the
+         .changed box the tracers already mark. */
+      :root[data-focus="onechange"] .membox { opacity: .35; transition: opacity .25s ease; }
+      :root[data-focus="onechange"] .membox.changed { opacity: 1; }
       @keyframes flash { 0% { background: var(--amber-soft); } 100% { background: var(--panel-2); } }
       .membox.wide { flex: 1 1 230px; }
       .mem-fields { display: grid; gap: 4px; margin-top: 7px; }
@@ -1863,7 +1868,7 @@
             <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Order code, then write a line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find and fix faults.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 137</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 143</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write your own programs.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
             <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
@@ -1954,6 +1959,10 @@
         <button class="mode-btn" type="button" id="mode-perr" role="tab" aria-controls="perr-mode" aria-selected="false" aria-pressed="false">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3z"/><path d="M12 10v4.5M12 17.5h.01"/></svg>
           Predict the error
+        </button>
+        <button class="mode-btn" type="button" id="mode-owncode" role="tab" aria-controls="owncode-mode" aria-selected="false" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 6-6 6 6 6"/><path d="m16 6 6 6-6 6"/></svg>
+          Trace your own code
         </button>
 
         </div>
@@ -2046,6 +2055,7 @@
           <button class="drawer-row" type="button" data-drawer-mode="order" aria-current="false"><span class="drawer-row-name">Order the Lines</span><span class="drawer-hint" data-hint="order"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="match" aria-current="false"><span class="drawer-row-name">Which line printed that?</span><span class="drawer-hint" data-hint="match"></span></button>
           <button class="drawer-row" type="button" data-drawer-mode="perr" aria-current="false"><span class="drawer-row-name">Predict the error</span><span class="drawer-hint" data-hint="perr"></span></button>
+          <button class="drawer-row" type="button" data-drawer-mode="owncode" aria-current="false"><span class="drawer-row-name">Trace your own code</span><span class="drawer-hint" data-hint="owncode"></span></button>
           <div class="drawer-group-label">Write and author</div>
           <button class="drawer-row" type="button" data-drawer-mode="make" aria-current="false"><span class="drawer-row-name">Make</span><span class="drawer-hint" data-hint="make"></span></button>
         </nav>
@@ -2225,7 +2235,7 @@ for (int i = 0; i < 3; i++) {
             <select class="lecture-select" id="lecture-ex-select" aria-label="Choose an exercise to project"></select>
             <button class="btn" type="button" id="lecture-project-btn">Project this exercise</button>
           </div>
-          <p class="lecture-pick-note">Any of the 137 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
+          <p class="lecture-pick-note">Any of the 143 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
         </div>
 
         <div id="lecture-project" hidden>
@@ -2581,6 +2591,13 @@ for (int i = 0; i < 3; i++) {
                   <button type="button" class="bits-btn" data-bits="hex" aria-pressed="false">Hex</button>
                 </div>
                 <span class="bits-note">Display only: integer boxes are redrawn in the chosen base. Predictions and program output stay decimal.</span>
+              </div>
+              <div class="bits-toggle">
+                <span class="bits-label" id="focus-label">Focus</span>
+                <div class="bits-group" role="group" aria-labelledby="focus-label">
+                  <button type="button" class="bits-btn" id="focus-toggle" aria-pressed="false">One change at a time</button>
+                </div>
+                <span class="bits-note">When on, only the box that changed at each step stays at full strength; the boxes that did not change dim, so your eye lands on the one change.</span>
               </div>
               <div class="stepmeta" id="stepmeta"></div>
               <div class="stepbar"><i id="stepbar-fill"></i></div>
@@ -3428,6 +3445,59 @@ int main() {
         <p class="foot"><strong>How this mode fits:</strong> the fix-it rounds in the Error Translator start after the explanation. This mode starts before it: can you read the error coming, from the code alone? That is the skill you use when the compiler stops you and you have to decide, fast, where to look first.</p>
       </div><!-- /perr-mode -->
 
+      <div id="owncode-mode" role="tabpanel" tabindex="0" hidden>
+        <section class="bridge-intro">
+          <h2>Trace your own code: predict it before the machine runs it.</h2>
+          <p>Bring a short program of your own — from a lab, a worksheet, or your head. Paste it in, <strong>predict its exact output and lock the prediction in</strong>, and only then step through the run box by box to see whether the machine agrees with you. The runner handles the same small C++ the tracer itself uses: <strong>int, double, string and bool</strong> boxes, assignment and compound assignment, arithmetic and comparisons, <strong>cout</strong>, <strong>if / else</strong>, and <strong>for</strong> and <strong>while</strong> loops (and <strong>cin</strong>, fed from the input box). Anything outside that subset is named as unsupported instead of guessed at.</p>
+        </section>
+        <section class="card" id="own-card" aria-labelledby="own-card-h">
+          <h3 id="own-card-h" style="font-size:1.15rem;">Your program</h3>
+          <div class="make-label"><label for="own-code">Paste or type a short C++ program, with <span style="font-family:'IBM Plex Mono',monospace;">int main() { ... }</span></label></div>
+          <textarea class="make-editor" id="own-code" spellcheck="false" aria-label="Your C++ program" placeholder="Paste or type your program here"></textarea>
+          <div class="make-input-row">
+            <label for="own-input">Input (for cin)</label>
+            <input class="make-input" type="text" id="own-input" autocomplete="off" placeholder="Values your program reads, separated by spaces" />
+          </div>
+          <div class="bolt-controls">
+            <button class="btn" type="button" id="own-check">Check it runs</button>
+            <button class="btn ghost small" type="button" id="own-load-sample">Load a sample program</button>
+            <button class="btn ghost small" type="button" id="own-clear">Clear</button>
+          </div>
+          <div class="make-msg info show" id="own-status" role="status">Write your program, then press Check it runs. If it uses something outside the subset above, the message names the construct.</div>
+        </section>
+        <section class="card" id="own-predict-card" hidden aria-labelledby="own-predict-h" style="margin-top:18px;">
+          <span class="concept-tag">Step 1 · Predict</span>
+          <h3 id="own-predict-h" style="font-size:1.15rem;">Lock your prediction before you see a single step</h3>
+          <div class="traceview-code" id="own-code-view" aria-label="Your program, as the machine will run it"></div>
+          <div class="make-label" style="margin-top:14px;"><label for="own-prediction">What will it print, exactly? One line per line of output.</label></div>
+          <textarea class="make-editor" id="own-prediction" spellcheck="false" style="min-height:110px;" aria-label="Your predicted output" placeholder="Type the exact output you predict"></textarea>
+          <div class="bolt-controls">
+            <button class="btn" type="button" id="own-lock">Lock my prediction &amp; run it</button>
+          </div>
+          <div class="make-msg" id="own-pred-status" role="status"></div>
+        </section>
+        <section class="card" id="own-trace-card" hidden aria-labelledby="own-trace-h" style="margin-top:18px;">
+          <span class="concept-tag">Step 2 · Trace</span>
+          <h3 id="own-trace-h" style="font-size:1.15rem;">Your program, stepped</h3>
+          <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">Each step shows the state <em>before</em> the highlighted line runs — the same view the Make trace uses. A box drawn dashed with a <strong>?</strong> holds a variable that was declared but never given a value.</p>
+          <div class="make-msg" id="own-verdict" role="status" style="margin-bottom:12px;"></div>
+          <div class="lockrow">
+            <button class="btn ghost small" type="button" id="own-prev">&larr; Back</button>
+            <button class="btn small" type="button" id="own-next">Step &rarr;</button>
+            <span class="stepmeta" id="own-meta" role="status"></span>
+          </div>
+          <div class="traceview-code" id="own-codebox" aria-label="Your program with the current line highlighted"></div>
+          <h4 style="margin-top:14px;font-size:.85rem;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;">Memory</h4>
+          <div class="memory" id="own-memory"></div>
+          <div class="console" aria-label="Program output so far"><div class="chead">Program output so far</div><div class="cout" id="own-out"></div></div>
+          <div class="bolt-controls" style="margin-top:14px;">
+            <button class="btn ghost small" type="button" id="own-edit">Edit the program</button>
+            <button class="btn ghost small" type="button" id="own-again">Predict again</button>
+          </div>
+        </section>
+        <p class="foot"><strong>On this device only:</strong> your program and prediction are never uploaded, and this mode keeps no score — it writes nothing to your saved progress. A program the runner cannot handle is told to you plainly, with the construct named; that is a limit of this small runner, not a mark against your code.</p>
+      </div><!-- /owncode-mode -->
+
 
       <div id="make-mode" role="tabpanel" tabindex="0" hidden>
         <section class="make-intro">
@@ -3517,12 +3587,12 @@ int main() {
         <div id="instructors-body" hidden>
           <div class="lecture-inst-entry">
             <h4>Lecture mode — run a tracer exercise in front of the class</h4>
-            <p>A single projected screen: pick any of the 137 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
+            <p>A single projected screen: pick any of the 143 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
             <div class="journal-actions"><button class="btn small" type="button" id="lecture-open-btn-2">Open Lecture mode</button></div>
           </div>
                     <div class="studio" id="inst-studio">
             <h4>Instructor exercise studio</h4>
-            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 137 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
+            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 143 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
             <div class="authored-field">
               <label for="inst-title">Exercise title</label>
               <input class="authored-input" type="text" id="inst-title" maxlength="80" placeholder="e.g. The average that is not an average" autocomplete="off">
@@ -12013,6 +12083,270 @@ int main() {
           correct: 0,
           explain: "With i &lt; 3 the loop takes three passes: 3 + 5 + 2 = <b>10</b>. The last element, a[3] = 6, is never added."
         }
+      },
+      {
+        concept: "Decisions — ternary conditional",
+        topic: "Branches",
+        title: "Two roads, one expression",
+        goal: "The <b>conditional operator</b> <b>?:</b> is an if / else that produces a value: the test is checked once, and exactly one of the two values is taken. The other is never evaluated at all.",
+        stories: {
+          health:   "A clinic app reads a room temperature of <strong>30</strong> degrees. At 25 or above it labels the room <strong>Warm</strong>; below that, <strong>Cool</strong>. It prints the label.",
+          psych:    "A study app reads a focus score of <strong>30</strong>. At 25 or above it labels the session <strong>Warm</strong>; below that, <strong>Cool</strong>. It prints the label.",
+          business: "A café app reads a terrace temperature of <strong>30</strong> degrees. At 25 or above it labels the terrace <strong>Warm</strong>; below that, <strong>Cool</strong>. It prints the label.",
+          arts:     "A venue app reads a stage temperature of <strong>30</strong> degrees. At 25 or above it labels the stage <strong>Warm</strong>; below that, <strong>Cool</strong>. It prints the label."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int temp = 30;",
+          "    string label = temp >= 25 ? \"Warm\" : \"Cool\";",
+          "    cout << label << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["Warm", "Cool", "Warm, then Cool", "Nothing at all"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "You read the test backwards. The test is <b>temp &gt;= 25</b> — is 30 at least 25? Yes. A true test takes the value <em>before</em> the colon, so the label is the first one." },
+          2: { step: 1, text: "<b>Named misconception: both branches run.</b> Both values exist in the code, but a ternary is a fork, not a list: the machine evaluates the test, takes one value, and the other value is never evaluated at all. Exactly one label can print." },
+          3: { step: 0, text: "Something always prints here. The ternary always produces one of its two values, and that value lands in <b>label</b> — there is no path through this program that prints nothing." }
+        },
+        steps: [
+          { line: 4, vars: { temp: ["int", "30"] }, out: "", note: "The box <b>temp</b> holds <b>30</b>. The next line asks a question about it and turns the answer into a value." },
+          { line: 5, vars: { temp: ["int", "30"], label: ["string", "\"Warm\""] }, out: "", note: "The test <b>30 &gt;= 25</b> is <b>true</b>, so the ternary takes the value before the colon: <b>label</b> becomes <b>Warm</b>. The <b>Cool</b> side is never evaluated." },
+          { line: 6, vars: { temp: ["int", "30"], label: ["string", "\"Warm\""] }, out: "Warm", note: "<b>cout</b> prints the box: <b>Warm</b>." },
+          { line: 7, vars: { temp: ["int", "30"], label: ["string", "\"Warm\""] }, out: "Warm", note: "The program ends. Final answer: <b>Warm</b>, and only that." }
+        ],
+        modify: {
+          prompt: "The temperature changes to 18. Everything else stays the same. What prints now?",
+          code: "int temp = <mark>18</mark>;\nstring label = temp >= 25 ? \"Warm\" : \"Cool\";\ncout << label << endl;",
+          options: ["Cool", "Warm", "Warm, then Cool", "Nothing at all"],
+          correct: 0,
+          explain: "18 &gt;= 25 is <b>false</b>, so this time the ternary takes the value after the colon: <b>Cool</b>. Same fork, other road."
+        }
+      },
+      {
+        concept: "Decisions — ternary conditional",
+        topic: "Branches",
+        title: "Asking the parity question",
+        goal: "A ternary can sit inside a <b>cout</b> chain: the whole <b>(test ? value : value)</b> is one expression, and only the chosen value is handed to the printer.",
+        stories: {
+          health:   "A lab app checks a sample number, <strong>7</strong>: if dividing it by 2 leaves no remainder it reports <strong>even</strong>, otherwise <strong>odd</strong>. It prints one word.",
+          psych:    "A study app checks a participant number, <strong>7</strong>: if dividing it by 2 leaves no remainder it reports <strong>even</strong>, otherwise <strong>odd</strong>. It prints one word.",
+          business: "A till app checks a receipt number, <strong>7</strong>: if dividing it by 2 leaves no remainder it reports <strong>even</strong>, otherwise <strong>odd</strong>. It prints one word.",
+          arts:     "A gallery app checks a ticket number, <strong>7</strong>: if dividing it by 2 leaves no remainder it reports <strong>even</strong>, otherwise <strong>odd</strong>. It prints one word."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int n = 7;",
+          "    cout << (n % 2 == 0 ? \"even\" : \"odd\") << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["odd", "even", "7", "even, then odd"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "7 % 2 is <b>1</b>, not 0: dividing 7 by 2 leaves a remainder of 1. So the test <b>n % 2 == 0</b> is false, and the ternary takes the value after the colon." },
+          2: { step: 1, text: "The parentheses make the ternary one expression, and <b>cout</b> receives the value that expression produces — the chosen word. The box <b>n</b> itself is never sent to the printer." },
+          3: { step: 1, text: "<b>Named misconception: both branches run.</b> Both words exist in the code, but the test picks exactly one of them to hand to <b>cout</b>. The other is never evaluated, so it cannot print." }
+        },
+        steps: [
+          { line: 4, vars: { n: ["int", "7"] }, out: "", note: "The box <b>n</b> holds <b>7</b>. The print line asks a question about it first." },
+          { line: 5, vars: { n: ["int", "7"] }, out: "odd", note: "<b>7 % 2</b> is <b>1</b>, so the test <b>n % 2 == 0</b> is <b>false</b>. The ternary takes the value after the colon, <b>odd</b>, and <b>cout</b> prints it. The <b>even</b> side was never chosen." },
+          { line: 6, vars: { n: ["int", "7"] }, out: "odd", note: "The program ends. Final answer: <b>odd</b>." }
+        ],
+        modify: {
+          prompt: "The number changes to 8. Everything else stays the same. What prints now?",
+          code: "int n = <mark>8</mark>;\ncout << (n % 2 == 0 ? \"even\" : \"odd\") << endl;",
+          options: ["even", "odd", "8", "even, then odd"],
+          correct: 0,
+          explain: "8 % 2 is <b>0</b>, so the test is <b>true</b> this time and the ternary hands <b>even</b> to the printer."
+        }
+      },
+      {
+        concept: "Decisions — ternary conditional",
+        topic: "Branches",
+        title: "The grade ladder",
+        goal: "A ternary can be <b>chained</b>: the value after the colon is itself another ternary. The machine walks the ladder from the top and stops at the <b>first true test</b> — later tests are never checked.",
+        stories: {
+          health:   "A training app grades a quiz score of <strong>85</strong>: 90 or above earns <strong>A</strong>, 80 or above earns <strong>B</strong>, anything lower earns <strong>C</strong>. It prints the grade.",
+          psych:    "A study app grades a test score of <strong>85</strong>: 90 or above earns <strong>A</strong>, 80 or above earns <strong>B</strong>, anything lower earns <strong>C</strong>. It prints the grade.",
+          business: "A sales app grades a rep's score of <strong>85</strong>: 90 or above earns <strong>A</strong>, 80 or above earns <strong>B</strong>, anything lower earns <strong>C</strong>. It prints the grade.",
+          arts:     "A festival app grades an audition score of <strong>85</strong>: 90 or above earns <strong>A</strong>, 80 or above earns <strong>B</strong>, anything lower earns <strong>C</strong>. It prints the grade."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int score = 85;",
+          "    string grade = score >= 90 ? \"A\" : score >= 80 ? \"B\" : \"C\";",
+          "    cout << grade << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["B", "A", "C", "B, then C"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "85 &gt;= 90 is <b>false</b>: 85 is not at least 90. The first rung of the ladder does not hold, so the machine moves on to the second test instead of taking <b>A</b>." },
+          2: { step: 1, text: "<b>Named misconception: the chain falls through to the end.</b> The ladder does not run to its last value. The second test, 85 &gt;= 80, is <b>true</b>, so the chain stops there with <b>B</b> — the final <b>C</b> is only for scores that fail both tests." },
+          3: { step: 1, text: "A chained ternary still produces exactly <b>one</b> value. The moment a test comes out true, the rest of the chain is never evaluated, so two grades cannot print." }
+        },
+        steps: [
+          { line: 4, vars: { score: ["int", "85"] }, out: "", note: "The box <b>score</b> holds <b>85</b>. The next line walks a two-rung ladder." },
+          { line: 5, vars: { score: ["int", "85"], grade: ["string", "\"B\""] }, out: "", note: "First test: <b>85 &gt;= 90</b> is <b>false</b>, so the machine steps to the value after the colon — another ternary. Second test: <b>85 &gt;= 80</b> is <b>true</b>, so <b>grade</b> becomes <b>B</b>. The final <b>C</b> is never reached." },
+          { line: 6, vars: { score: ["int", "85"], grade: ["string", "\"B\""] }, out: "B", note: "<b>cout</b> prints the box: <b>B</b>." },
+          { line: 7, vars: { score: ["int", "85"], grade: ["string", "\"B\""] }, out: "B", note: "The program ends. Final answer: <b>B</b>." }
+        ],
+        modify: {
+          prompt: "The score changes to 95. The ladder is untouched. What prints now?",
+          code: "int score = <mark>95</mark>;\nstring grade = score >= 90 ? \"A\" : score >= 80 ? \"B\" : \"C\";\ncout << grade << endl;",
+          options: ["A", "B", "C", "A, then B"],
+          correct: 0,
+          explain: "95 &gt;= 90 is <b>true</b>, so the ladder stops at its very first rung: <b>A</b>. The second test is never even checked."
+        }
+      },
+      {
+        concept: "Decisions — ternary conditional",
+        topic: "Branches",
+        title: "The bonus that never lands",
+        goal: "Only the <b>chosen</b> side of a ternary is evaluated. The value on the other side is not computed, not stored, and not applied later — it simply never becomes anything.",
+        stories: {
+          health:   "A rehab app tracks <strong>40</strong> points. A bonus of <strong>10</strong> is earned only at 50 points or more; below that the bonus is <strong>0</strong>. The app adds the bonus and prints the total.",
+          psych:    "A study app tracks <strong>40</strong> points. A bonus of <strong>10</strong> is earned only at 50 points or more; below that the bonus is <strong>0</strong>. The app adds the bonus and prints the total.",
+          business: "A loyalty app tracks <strong>40</strong> points. A bonus of <strong>10</strong> is earned only at 50 points or more; below that the bonus is <strong>0</strong>. The app adds the bonus and prints the total.",
+          arts:     "A rehearsal app tracks <strong>40</strong> points. A bonus of <strong>10</strong> is earned only at 50 points or more; below that the bonus is <strong>0</strong>. The app adds the bonus and prints the total."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int points = 40;",
+          "    int bonus = points >= 50 ? 10 : 0;",
+          "    points = points + bonus;",
+          "    cout << points << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["40", "50", "10", "0"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "<b>Named misconception: the unchosen branch still happens.</b> 50 = 40 + 10 assumes the 10 lands anyway. It does not: the test failed, so the ternary produced <b>0</b>, and the 10 was never evaluated as a value at all." },
+          2: { step: 2, text: "10 is the value <b>bonus</b> would have taken if the test had passed. It did not pass, so bonus is 0 — and the program prints <b>points</b>, not bonus." },
+          3: { step: 2, text: "0 is the value of <b>bonus</b>, not of <b>points</b>. The print line reads points, which is still 40 + 0 = <b>40</b>." }
+        },
+        steps: [
+          { line: 4, vars: { points: ["int", "40"] }, out: "", note: "The box <b>points</b> holds <b>40</b>." },
+          { line: 5, vars: { points: ["int", "40"], bonus: ["int", "0"] }, out: "", note: "The test <b>40 &gt;= 50</b> is <b>false</b>, so <b>bonus</b> takes the value after the colon: <b>0</b>. The 10 is not added, saved, or owed — it never becomes anything." },
+          { line: 6, vars: { points: ["int", "40"], bonus: ["int", "0"] }, out: "", note: "<b>points = 40 + 0 = 40</b>. The total does not move." },
+          { line: 7, vars: { points: ["int", "40"], bonus: ["int", "0"] }, out: "40", note: "<b>cout</b> prints the box: <b>40</b>." },
+          { line: 8, vars: { points: ["int", "40"], bonus: ["int", "0"] }, out: "40", note: "The program ends. Final answer: <b>40</b>." }
+        ],
+        modify: {
+          prompt: "The points change to 55. Everything else stays the same. What prints now?",
+          code: "int points = <mark>55</mark>;\nint bonus = points >= 50 ? 10 : 0;\npoints = points + bonus;\ncout << points << endl;",
+          options: ["65", "55", "10", "45"],
+          correct: 0,
+          explain: "55 &gt;= 50 is <b>true</b>, so this time bonus really is <b>10</b>, and the total is 55 + 10 = <b>65</b>."
+        }
+      },
+      {
+        concept: "Decisions — ternary conditional",
+        topic: "Branches",
+        title: "Where the + 2 belongs",
+        goal: "The conditional operator binds <b>looser</b> than <b>+</b>: in <b>test ? 8 : 10 + 2</b>, the + 2 belongs to the second value alone. It is not added to whatever the ternary produces.",
+        stories: {
+          health:   "A clinic app charges a member price of <strong>8</strong> to members and <strong>10 + 2</strong> to everyone else. This patient <strong>is</strong> a member. It prints the price.",
+          psych:    "A study app charges a member price of <strong>8</strong> to members and <strong>10 + 2</strong> to everyone else. This participant <strong>is</strong> a member. It prints the price.",
+          business: "A café app charges a member price of <strong>8</strong> to members and <strong>10 + 2</strong> to everyone else. This customer <strong>is</strong> a member. It prints the price.",
+          arts:     "A venue app charges a member price of <strong>8</strong> to members and <strong>10 + 2</strong> to everyone else. This guest <strong>is</strong> a member. It prints the price."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    bool member = true;",
+          "    int price = member ? 8 : 10 + 2;",
+          "    cout << price << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["8", "10", "12", "20"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "<b>Named misconception: the ternary swallows the rest of the line.</b> You grouped the line as (member ? 8 : 10) + 2. It groups the other way: <b>member ? 8 : (10 + 2)</b>, because + binds tighter than ?:. The + 2 lives inside the untaken value, so it never touches the 8." },
+          2: { step: 1, text: "12 is the full value of the <em>untaken</em> side, 10 + 2. The test is true, so that whole side is skipped — the machine never works it out, let alone prints it." },
+          3: { step: 1, text: "20 adds every number on the line together. A ternary produces <b>one</b> of its two values; the numbers are alternatives, not a sum." }
+        },
+        steps: [
+          { line: 4, vars: { member: ["bool", "true"] }, out: "", note: "The box <b>member</b> holds <b>true</b>." },
+          { line: 5, vars: { member: ["bool", "true"], price: ["int", "8"] }, out: "", note: "The test is <b>true</b>, so <b>price</b> takes the value before the colon: <b>8</b>. The + 2 belongs to the other value — it is part of <b>10 + 2</b>, the price that would have been used if the test were false. It is never added to the 8." },
+          { line: 6, vars: { member: ["bool", "true"], price: ["int", "8"] }, out: "8", note: "<b>cout</b> prints the box: <b>8</b>." },
+          { line: 7, vars: { member: ["bool", "true"], price: ["int", "8"] }, out: "8", note: "The program ends. Final answer: <b>8</b>." }
+        ],
+        modify: {
+          prompt: "The customer is not a member now: member is false. The price line is untouched. What prints now?",
+          code: "bool member = <mark>false</mark>;\nint price = member ? 8 : 10 + 2;\ncout << price << endl;",
+          options: ["12", "10", "8", "20"],
+          correct: 0,
+          explain: "With the test <b>false</b>, the ternary takes its second value — and that value is the whole expression <b>10 + 2</b>, so price is <b>12</b>. This time the + 2 really does run, because it sits inside the taken side."
+        }
+      },
+      {
+        concept: "Decisions — ternary conditional",
+        topic: "Branches",
+        title: "Zero is not positive",
+        goal: "A ternary's test is exactly as strict as the same test in an if: <b>&gt;</b> does not include its boundary. Zero is not greater than zero, so a value sitting on the line falls to the second value.",
+        stories: {
+          health:   "A clinic app reads a change in weight of <strong>0</strong>. Above zero it reports <strong>positive</strong>; anything else reports <strong>not positive</strong>. It prints one message.",
+          psych:    "A study app reads a change in score of <strong>0</strong>. Above zero it reports <strong>positive</strong>; anything else reports <strong>not positive</strong>. It prints one message.",
+          business: "A sales app reads a change in takings of <strong>0</strong>. Above zero it reports <strong>positive</strong>; anything else reports <strong>not positive</strong>. It prints one message.",
+          arts:     "A venue app reads a change in attendance of <strong>0</strong>. Above zero it reports <strong>positive</strong>; anything else reports <strong>not positive</strong>. It prints one message."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    int n = 0;",
+          "    string msg = n > 0 ? \"positive\" : \"not positive\";",
+          "    cout << msg << endl;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["not positive", "positive", "0", "Nothing at all"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "<b>Named misconception: the boundary counts as passing.</b> The test is <b>n &gt; 0</b>, and &gt; is strict: is 0 greater than 0? No. A value sitting exactly on the boundary fails a strict test, so the ternary takes its second value." },
+          2: { step: 1, text: "The print line reads <b>msg</b>, the string the ternary chose — not <b>n</b>. The number decided which message; it is not itself printed." },
+          3: { step: 0, text: "Something always prints here. Whichever way the test falls, the ternary yields one of its two strings, and that string lands in <b>msg</b>." }
+        },
+        steps: [
+          { line: 4, vars: { n: ["int", "0"] }, out: "", note: "The box <b>n</b> holds <b>0</b> — exactly on the boundary the next line tests." },
+          { line: 5, vars: { n: ["int", "0"], msg: ["string", "\"not positive\""] }, out: "", note: "The test is <b>n &gt; 0</b>: is 0 greater than 0? <b>No.</b> The strict test fails, so <b>msg</b> takes the value after the colon: <b>not positive</b>." },
+          { line: 6, vars: { n: ["int", "0"], msg: ["string", "\"not positive\""] }, out: "not positive", note: "<b>cout</b> prints the box: <b>not positive</b>." },
+          { line: 7, vars: { n: ["int", "0"], msg: ["string", "\"not positive\""] }, out: "not positive", note: "The program ends. Final answer: <b>not positive</b>." }
+        ],
+        modify: {
+          prompt: "The change is now 3 instead of 0. Everything else stays the same. What prints now?",
+          code: "int n = <mark>3</mark>;\nstring msg = n > 0 ? \"positive\" : \"not positive\";\ncout << msg << endl;",
+          options: ["positive", "not positive", "3", "Nothing at all"],
+          correct: 0,
+          explain: "3 &gt; 0 is <b>true</b>, so this time the ternary takes its first value: <b>positive</b>."
+        }
       }
 
     ];
@@ -12243,7 +12577,8 @@ int main() {
       { name: "Going Further \u2014 beyond the first course", list: [73, 74, 75, 76, 77, 78, 79, 80] },
       { name: "Strings \u2014 find, slice & compare", list: [116, 117, 118, 119, 120, 121] },
       { name: "Functions — overloading & defaults", list: [122, 123, 124, 125, 126, 127] },
-      { name: "Operators — increments & compound assignment", list: [128, 129, 130, 131, 132, 133] }
+      { name: "Operators — increments & compound assignment", list: [128, 129, 130, 131, 132, 133] },
+      { name: "Decisions — ternary conditional", list: [137, 138, 139, 140, 141, 142] }
     ];
     function renderExNav() {
       var box = $("exnav"); box.innerHTML = ""; box.className = "ex-groups";
@@ -18990,6 +19325,11 @@ int main() {
        both. Persisted additively as `dyslexiaPref`, a view preference
        only. */
     var dyslexiaPref = false;
+    /* One-change focus (2026-11-27): when on, each trace step renders only
+       the memory box that changed at full opacity and dims the rest (see
+       the data-focus CSS block). A view preference only, persisted
+       additively as `focusPref` exactly like the other comfort prefs. */
+    var focusPref = false;
     var speechOk = false;
     try { speechOk = ("speechSynthesis" in window) && (typeof window.SpeechSynthesisUtterance === "function"); } catch (e) { speechOk = false; }
     function speakTrace(text) {
@@ -19021,6 +19361,9 @@ int main() {
       if (dyslexiaPref) document.documentElement.setAttribute("data-reading", "dyslexia");
       else document.documentElement.removeAttribute("data-reading");
       var dt = $("reading-toggle"); if (dt) dt.setAttribute("aria-pressed", dyslexiaPref ? "true" : "false");
+      if (focusPref) document.documentElement.setAttribute("data-focus", "onechange");
+      else document.documentElement.removeAttribute("data-focus");
+      var ft = $("focus-toggle"); if (ft) ft.setAttribute("aria-pressed", focusPref ? "true" : "false");
     }
     function setReduceMotionPref(on) {
       if (reduceMotionPref === !!on) { applyComfort(); return; }
@@ -19062,6 +19405,15 @@ int main() {
         : "Dyslexia-friendly reading off. Font, spacing and line focus are back to the standard display. Nothing else about your work has changed.");
       try { tfSave(); } catch (e) {}
     }
+    function setFocusPref(on) {
+      if (focusPref === !!on) { applyComfort(); return; }
+      focusPref = !!on;
+      applyComfort();
+      announce(focusPref
+        ? "One-change focus on. At each step of a trace, only the memory box that changed stays at full strength; the boxes that did not change dim. Nothing else about your work has changed."
+        : "One-change focus off. Every memory box renders at full strength again. Nothing else about your work has changed.");
+      try { tfSave(); } catch (e) {}
+    }
     (function wireComfort() {
       var mt = $("motion-toggle");
       if (mt) mt.addEventListener("click", function () { setReduceMotionPref(!reduceMotionPref); });
@@ -19071,7 +19423,227 @@ int main() {
       if (rt) rt.addEventListener("click", function () { setReadAloudPref(!readAloudPref); });
       var dt = $("reading-toggle");
       if (dt) dt.addEventListener("click", function () { setDyslexiaPref(!dyslexiaPref); });
+      var ft = $("focus-toggle");
+      if (ft) ft.addEventListener("click", function () { setFocusPref(!focusPref); });
       applyComfort();
+    })();
+
+    /* ---------------- Trace your own code (2026-11-27) ----------------
+       The student pastes a short program; the flow is the tracer's own:
+       predict the exact output, lock it in, then step through the run
+       box by box. The runner is the page's existing small interpreter
+       (makeRunProgram, shared with Make and the Instructor Studio),
+       which covers the subset the tracer itself uses: int / double /
+       string / bool boxes, assignment and compound assignment,
+       arithmetic and comparison expressions, cout, if / else, for and
+       while loops, and cin fed from the input box. Steps use the raw
+       interpreter snapshots with the same "state before the highlighted
+       line runs" presentation as the Make trace panel. A pre-scan
+       names the common constructs outside that subset (ternary,
+       switch, do...while, goto, classes, arrays and [ ] indexing,
+       getline, exceptions, dynamic memory) so the student gets a clear
+       unsupported-construct message instead of a confusing failure;
+       anything else the runner rejects is reported with the runner's
+       own words. This mode keeps no score and writes nothing to the
+       saved-progress record: no keys are added or changed. */
+    var OWN_SAMPLE = [
+      "#include <iostream>",
+      "using namespace std;",
+      "",
+      "int main() {",
+      "    int total = 0;",
+      "    for (int i = 1; i <= 4; i++) {",
+      "        total += i;",
+      "    }",
+      "    cout << total << endl;",
+      "    return 0;",
+      "}"
+    ].join("\n");
+    var OWN_UNSUPPORTED = [
+      { re: /\?/, name: "the conditional (ternary) operator ?:" },
+      { re: /\bswitch\b/, name: "switch statements" },
+      { re: /\bdo\b/, name: "do ... while loops" },
+      { re: /\bgoto\b/, name: "goto" },
+      { re: /\bclass\b|\bstruct\b/, name: "classes and structs" },
+      { re: /\w\s*\[[^\]]*\]/, name: "arrays and [ ] indexing" },
+      { re: /\bcin\s*>>[^;>]*>>/, name: "chained cin reads (cin >> a >> b) — split them into one read per statement" },
+      { re: /\bgetline\b/, name: "getline input" },
+      { re: /\btry\b|\bcatch\b|\bthrow\b/, name: "exceptions (try / catch / throw)" },
+      { re: /\bnew\b|\bmalloc\b|\bfree\s*\(/, name: "dynamic memory (new / malloc)" },
+      { re: /\btemplate\b/, name: "templates" },
+      { re: /\bnamespace\s+\w+\s*\{/, name: "named namespace blocks" }
+    ];
+    function ownStripForScan(src) {
+      var out = "", i = 0, n = src.length, state = "code";
+      while (i < n) {
+        var c = src.charAt(i), d = i + 1 < n ? src.charAt(i + 1) : "";
+        if (state === "code") {
+          if (c === "/" && d === "/") { state = "line"; out += "  "; i += 2; continue; }
+          if (c === "/" && d === "*") { state = "block"; out += "  "; i += 2; continue; }
+          if (c === "\"") { state = "str"; out += " "; i++; continue; }
+          if (c === "'") { state = "chr"; out += " "; i++; continue; }
+          out += c; i++; continue;
+        }
+        if (state === "line") { if (c === "\n") { state = "code"; out += "\n"; } else out += " "; i++; continue; }
+        if (state === "block") { if (c === "*" && d === "/") { state = "code"; out += "  "; i += 2; } else { out += (c === "\n" ? "\n" : " "); i++; } continue; }
+        var q = state === "str" ? "\"" : "'";
+        if (c === "\\") { out += "  "; i += 2; continue; }
+        if (c === q) state = "code";
+        out += (c === "\n" ? "\n" : " "); i++; continue;
+      }
+      return out;
+    }
+    function ownUnsupportedIn(src) {
+      var scan = ownStripForScan(src);
+      for (var i = 0; i < OWN_UNSUPPORTED.length; i++) {
+        if (OWN_UNSUPPORTED[i].re.test(scan)) return OWN_UNSUPPORTED[i].name;
+      }
+      return null;
+    }
+    /* Names whose box changed between snapshot idx-1 and snapshot idx
+       (new box, new value, or a box that vanished). Pure: the focus
+       renderer and the unit tests both use it. */
+    function ownChangedNames(snaps, idx) {
+      var changed = {}, cur = (snaps[idx] && snaps[idx].vars) || {}, prev = (idx > 0 && snaps[idx - 1] && snaps[idx - 1].vars) || {};
+      Object.keys(cur).forEach(function (nm) {
+        var a = cur[nm], b = prev[nm];
+        if (!b || b.display !== a.display || !!b.uninit !== !!a.uninit || b.type !== a.type) changed[nm] = true;
+      });
+      Object.keys(prev).forEach(function (nm) { if (!(nm in cur)) changed[nm] = true; });
+      return changed;
+    }
+    var ownState = { code: "", snaps: null, idx: 0, prediction: "", output: "" };
+    function ownSetStatus(msg, kind) {
+      var el = $("own-status");
+      if (!el) return;
+      el.className = "make-msg show " + (kind || "info");
+      el.textContent = msg || "";
+    }
+    function ownShow(el, on) { if (el) el.hidden = !on; }
+    function ownCodeLinesHtml(activeLine) {
+      return ownState.code.split("\n").map(function (line, i) {
+        return "<div class=\"cline" + (i + 1 === activeLine ? " active" : "") + "\"><span class=\"ln\">" + (i + 1) + "</span><span>" + (esc(line) || " ") + "</span></div>";
+      }).join("");
+    }
+    function ownRenderStep() {
+      var snaps = ownState.snaps; if (!snaps || !snaps.length) return;
+      var st = snaps[ownState.idx];
+      var meta = $("own-meta");
+      if (meta) meta.textContent = "Step " + (ownState.idx + 1) + " of " + snaps.length + " · line " + st.line + " about to run";
+      var box = $("own-codebox");
+      if (box) box.innerHTML = ownCodeLinesHtml(st.line);
+      var mem = $("own-memory");
+      if (mem) {
+        mem.innerHTML = "";
+        var changed = ownChangedNames(snaps, ownState.idx);
+        if (!st.order || !st.order.length) mem.innerHTML = "<div class=\"mem-empty\">No variables exist yet at this step.</div>";
+        (st.order || []).forEach(function (name) {
+          var v = st.vars[name]; if (!v) return;
+          var d = document.createElement("div");
+          d.className = "membox" + (v.uninit ? " uninit" : "") + (changed[name] ? " changed" : "");
+          d.innerHTML = "<div class=\"vname\">" + esc(name) + " <span class=\"vtype\">" + esc(v.type) + "</span></div><div class=\"vval\">" + (v.uninit ? "<span class=\"uninit-mark\">?</span>" : esc(v.display)) + "</div>" + (v.uninit ? "<div style=\"font-size:.75rem;color:var(--amber);font-weight:600;\">declared, never given a value</div>" : "");
+          mem.appendChild(d);
+        });
+      }
+      var out = $("own-out");
+      if (out) out.textContent = st.out || "";
+      var prev = $("own-prev"), next = $("own-next");
+      if (prev) prev.disabled = ownState.idx <= 0;
+      if (next) next.disabled = ownState.idx >= snaps.length - 1;
+    }
+    function ownPrepare() {
+      var ta = $("own-code");
+      var src = ta ? ta.value : "";
+      if (!src.trim()) { ownSetStatus("Paste or type a program first — or load the sample.", "bad"); if (ta) ta.focus(); return false; }
+      var bad = ownUnsupportedIn(src);
+      if (bad) {
+        ownSetStatus("Trace your own code cannot run " + bad + " yet. The runner covers int, double, string and bool boxes, assignment and compound assignment, arithmetic and comparisons, cout, if / else, and for and while loops. Rewrite that part in those terms and try again.", "bad");
+        ownShow($("own-predict-card"), false); ownShow($("own-trace-card"), false);
+        return false;
+      }
+      var inputEl = $("own-input");
+      var res = null;
+      try { res = makeRunProgram(src, inputEl ? inputEl.value : "", { trace: true }); }
+      catch (e) { res = null; }
+      if (!res || !res.ok) {
+        ownSetStatus("The runner could not run this program: " + (res && res.error ? res.error : "it stopped before producing a trace.") + " If the message names a line, that line is where the unsupported or mistaken construct lives.", "bad");
+        ownShow($("own-predict-card"), false); ownShow($("own-trace-card"), false);
+        return false;
+      }
+      if (!res.steps || !res.steps.length) { ownSetStatus("The runner produced no steps for this program. Add statements inside main() and try again.", "bad"); return false; }
+      ownState = { code: src.replace(/\r\n?/g, "\n"), snaps: res.steps, idx: 0, prediction: "", output: res.output || "" };
+      var view = $("own-code-view");
+      if (view) view.innerHTML = ownCodeLinesHtml(0);
+      ownSetStatus("The program runs: " + res.steps.length + " steps. Now predict its output — the trace stays hidden until your prediction is locked.", "info");
+      ownShow($("own-predict-card"), true); ownShow($("own-trace-card"), false);
+      var ps = $("own-pred-status"); if (ps) { ps.className = "make-msg"; ps.textContent = ""; }
+      var pred = $("own-prediction"); if (pred) { pred.value = ""; pred.focus(); }
+      return true;
+    }
+    function ownLock() {
+      var pred = $("own-prediction");
+      var guess = pred ? pred.value : "";
+      if (!guess.trim()) {
+        var ps0 = $("own-pred-status");
+        if (ps0) { ps0.className = "make-msg show bad"; ps0.textContent = "Type your predicted output first — the prediction has to be locked in before the run is shown."; }
+        if (pred) pred.focus();
+        return;
+      }
+      ownState.prediction = guess;
+      ownState.idx = 0;
+      var match = instMatches(guess, ownState.output);
+      var verdict = $("own-verdict");
+      if (verdict) {
+        verdict.className = "make-msg show " + (match ? "good" : "bad");
+        verdict.innerHTML = match
+          ? "<b>Your prediction matches the machine.</b> Step through the run and check that the boxes changed the way you pictured — not just that the output agreed."
+          : "<b>Your prediction does not match.</b> You predicted <b>" + esc(guess.replace(/\n+$/, "")) + "</b>; the program printed <b>" + esc(ownState.output.replace(/\n+$/, "")) + "</b>. Step through the run and find the exact step where your picture and the machine part company.";
+      }
+      ownShow($("own-trace-card"), true);
+      ownRenderStep();
+      var card = $("own-trace-card");
+      if (card && card.scrollIntoView) card.scrollIntoView({ behavior: reduceMotionPref ? "auto" : "smooth", block: "start" });
+      announce(match ? "Prediction correct. Step through your run." : "Prediction locked. The run differs — step through it to find where.");
+    }
+    function renderOwn() {
+      if (ownState.snaps && ownState.snaps.length) {
+        var view = $("own-code-view");
+        if (view && !$("own-predict-card").hidden) view.innerHTML = ownCodeLinesHtml(0);
+        var tc = $("own-trace-card");
+        if (tc && !tc.hidden) ownRenderStep();
+      }
+    }
+    (function wireOwn() {
+      var checkBtn = $("own-check");
+      if (checkBtn) checkBtn.addEventListener("click", ownPrepare);
+      var sampleBtn = $("own-load-sample");
+      if (sampleBtn) sampleBtn.addEventListener("click", function () {
+        var ta = $("own-code"); if (ta) { ta.value = OWN_SAMPLE; ta.focus(); }
+        ownSetStatus("Sample loaded: it adds 1 + 2 + 3 + 4 in a loop. Press Check it runs when you are ready.", "info");
+      });
+      var clearBtn = $("own-clear");
+      if (clearBtn) clearBtn.addEventListener("click", function () {
+        var ta = $("own-code"); if (ta) { ta.value = ""; ta.focus(); }
+        var inp = $("own-input"); if (inp) inp.value = "";
+        ownState = { code: "", snaps: null, idx: 0, prediction: "", output: "" };
+        ownShow($("own-predict-card"), false); ownShow($("own-trace-card"), false);
+        ownSetStatus("Write your program, then press Check it runs. If it uses something outside the subset above, the message names the construct.", "info");
+      });
+      var lockBtn = $("own-lock");
+      if (lockBtn) lockBtn.addEventListener("click", ownLock);
+      var prev = $("own-prev"), next = $("own-next");
+      if (prev) prev.addEventListener("click", function () { if (ownState.idx > 0) { ownState.idx--; ownRenderStep(); } });
+      if (next) next.addEventListener("click", function () { if (ownState.snaps && ownState.idx < ownState.snaps.length - 1) { ownState.idx++; ownRenderStep(); } });
+      var editBtn = $("own-edit");
+      if (editBtn) editBtn.addEventListener("click", function () {
+        ownShow($("own-trace-card"), false); ownShow($("own-predict-card"), false);
+        var ta = $("own-code"); if (ta) { ta.focus(); ta.scrollIntoView({ behavior: reduceMotionPref ? "auto" : "smooth", block: "start" }); }
+      });
+      var againBtn = $("own-again");
+      if (againBtn) againBtn.addEventListener("click", function () {
+        ownShow($("own-trace-card"), false);
+        if (ownPrepare()) { var p = $("own-prediction"); if (p) p.focus(); }
+      });
     })();
 
     /* ================= Printable prediction worksheet =================
@@ -23491,8 +24063,9 @@ int main() {
       $("order-mode").hidden = mode !== "order";
       $("match-mode").hidden = mode !== "match";
       $("perr-mode").hidden = mode !== "perr";
+      $("owncode-mode").hidden = mode !== "owncode";
       $("make-mode").hidden = mode !== "make";
-      ["bolt","tracer","gym","refactor","translator","challenges","bridge","order","match","perr","make"].forEach(function(m){
+      ["bolt","tracer","gym","refactor","translator","challenges","bridge","order","match","perr","owncode","make"].forEach(function(m){
         var b = $("mode-" + m);
         b.setAttribute("aria-selected", mode === m ? "true" : "false");
         b.setAttribute("aria-pressed", mode === m ? "true" : "false");
@@ -23507,6 +24080,7 @@ int main() {
       if (mode === "order") renderOrder();
       if (mode === "match") renderMatch();
       if (mode === "perr") renderPerr();
+      if (mode === "owncode") renderOwn();
       if (mode === "make") renderMake();
       if (typeof renderRoute === "function") { routeLastSig = ""; renderRoute(); }
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -23521,12 +24095,13 @@ int main() {
     $("mode-order").addEventListener("click", function () { setMode("order"); });
     $("mode-match").addEventListener("click", function () { setMode("match"); });
     $("mode-perr").addEventListener("click", function () { setMode("perr"); });
+    $("mode-owncode").addEventListener("click", function () { setMode("owncode"); });
     $("mode-make").addEventListener("click", function () { setMode("make"); });
 
 
     /* ---------------- Mode tabs: arrow-key navigation ---------------- */
     (function(){
-      var order = ["bolt","tracer","gym","refactor","translator","challenges","bridge","order","match","perr","make"];
+      var order = ["bolt","tracer","gym","refactor","translator","challenges","bridge","order","match","perr","owncode","make"];
       var tablist = document.getElementById("mode-tablist");
       if (tablist) tablist.addEventListener("keydown", function(e){
         if (!(e.target.classList && e.target.classList.contains("mode-btn"))) return;
@@ -23547,12 +24122,12 @@ int main() {
        and the tab bar is untouched. */
     var MODE_NAMES = {
       bolt: "Bolt's World", tracer: "Prediction Tracer", gym: "Debugging Gym", refactor: "Rewrite Practice",
-      translator: "Error Translator", challenges: "Challenges", bridge: "Bridge", order: "Order the Lines", match: "Which line printed that?", perr: "Predict the error", make: "Make"
+      translator: "Error Translator", challenges: "Challenges", bridge: "Bridge", order: "Order the Lines", match: "Which line printed that?", perr: "Predict the error", owncode: "Trace your own code", make: "Make"
     };
     var drawerIsOpen = false;
     var drawerHideTimer = null;
     function currentModeKey() {
-      var order = ["bolt","tracer","gym","refactor","translator","challenges","bridge","order","match","perr","make"];
+      var order = ["bolt","tracer","gym","refactor","translator","challenges","bridge","order","match","perr","owncode","make"];
       for (var i = 0; i < order.length; i++) {
         var b = $("mode-" + order[i]);
         if (b && b.getAttribute("aria-selected") === "true") return order[i];
@@ -23757,7 +24332,7 @@ int main() {
        by that hydration and dropped by the next tfCollect save; missing
        optional sections default the same way an older save's would). */
     var TF_PROGRESS_ARRAY_KEYS = ["tracer", "gym", "refactor", "bridge", "order", "match", "perr", "make", "authoredExercises", "instructorExercises", "assignments"];
-    var TF_PROGRESS_KNOWN_KEYS = ["v", "bitsFormat", "playbackSpeed", "bgTheme", "reduceMotionPref", "largeTextPref", "readAloudPref", "primerRead", "boltTourSeen", "tracer", "bolt", "gym", "refactor", "bridge", "order", "match", "perr", "make", "challenges", "authoredExercises", "instructorExercises", "assignments", "quiz", "gap", "lastTracer", "testOut", "variants", "diagPair", "classRoster", "exitTicket", "preClass"];
+    var TF_PROGRESS_KNOWN_KEYS = ["v", "bitsFormat", "playbackSpeed", "bgTheme", "reduceMotionPref", "largeTextPref", "readAloudPref", "focusPref", "primerRead", "boltTourSeen", "tracer", "bolt", "gym", "refactor", "bridge", "order", "match", "perr", "make", "challenges", "authoredExercises", "instructorExercises", "assignments", "quiz", "gap", "lastTracer", "testOut", "variants", "diagPair", "classRoster", "exitTicket", "preClass"];
     function tfIsPlainObj(x) { return !!x && typeof x === "object" && !Array.isArray(x); }
     function tfCloneJson(x) { return JSON.parse(JSON.stringify(x)); }
     function tfValidateProgressFile(d) {
@@ -23779,6 +24354,7 @@ int main() {
       if (d.reduceMotionPref !== undefined && typeof d.reduceMotionPref !== "boolean") return false;
       if (d.largeTextPref !== undefined && typeof d.largeTextPref !== "boolean") return false;
       if (d.readAloudPref !== undefined && typeof d.readAloudPref !== "boolean") return false;
+      if (d.focusPref !== undefined && typeof d.focusPref !== "boolean") return false;
       if (d.quiz !== undefined && d.quiz !== null && !tfIsPlainObj(d.quiz)) return false;
       if (d.primerRead !== undefined && typeof d.primerRead !== "boolean") return false;
       if (d.boltTourSeen !== undefined && typeof d.boltTourSeen !== "boolean") return false;
@@ -27999,7 +28575,7 @@ int main() {
       return out;
     }
     function tfCollect() {
-      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", playbackSpeed: playbackSpeed, bgTheme: bgTheme, reduceMotionPref: !!reduceMotionPref, largeTextPref: !!largeTextPref, readAloudPref: (typeof readAloudPref !== "undefined" && !!readAloudPref), dyslexiaPref: (typeof dyslexiaPref !== "undefined" && !!dyslexiaPref), primerRead: !!primerRead, boltTourSeen: (typeof boltTourSeen !== "undefined" && !!boltTourSeen), tracer: [], bolt: null, gym: [], refactor: [], bridge: [], order: [], match: [], perr: [], make: [], challenges: null, authoredExercises: [], instructorExercises: [],
+      var data = { v: 1, bitsFormat: (bitsFormat === "bin" || bitsFormat === "hex") ? bitsFormat : "dec", playbackSpeed: playbackSpeed, bgTheme: bgTheme, reduceMotionPref: !!reduceMotionPref, largeTextPref: !!largeTextPref, readAloudPref: (typeof readAloudPref !== "undefined" && !!readAloudPref), dyslexiaPref: (typeof dyslexiaPref !== "undefined" && !!dyslexiaPref), focusPref: (typeof focusPref !== "undefined" && !!focusPref), primerRead: !!primerRead, boltTourSeen: (typeof boltTourSeen !== "undefined" && !!boltTourSeen), tracer: [], bolt: null, gym: [], refactor: [], bridge: [], order: [], match: [], perr: [], make: [], challenges: null, authoredExercises: [], instructorExercises: [],
         lastTracer: (typeof tfLastTracer === "number" ? tfLastTracer : -1),
         testOut: (typeof testOut !== "undefined" && testOut)
           ? { passed: !!testOut.passed, score: (typeof testOut.score === "number" ? testOut.score : 0), via: (Array.isArray(testOut.via) ? testOut.via.slice() : [false, false, false]) }
@@ -28400,6 +28976,7 @@ int main() {
       if (typeof d.largeTextPref === "boolean") largeTextPref = d.largeTextPref;
       if (typeof d.readAloudPref === "boolean" && typeof readAloudPref !== "undefined") readAloudPref = d.readAloudPref;
       if (typeof d.dyslexiaPref === "boolean" && typeof dyslexiaPref !== "undefined") dyslexiaPref = d.dyslexiaPref;
+      if (typeof d.focusPref === "boolean" && typeof focusPref !== "undefined") focusPref = d.focusPref;
       if (typeof applyComfort === "function") applyComfort();
       // Primer
       if (d.primerRead) { primerRead = true; primerOpened = true; }
@@ -31057,7 +31634,7 @@ int main() {
       function byId(id) { return document.getElementById(id); }
       var MODE_LABELS = {
         bolt: "Bolt's World", tracer: "Prediction Tracer", gym: "Debugging Gym", refactor: "Rewrite Practice",
-        translator: "Error Translator", challenges: "Challenges", bridge: "Bridge", order: "Order the Lines", match: "Which line printed that?", perr: "Predict the error", make: "Make"
+        translator: "Error Translator", challenges: "Challenges", bridge: "Bridge", order: "Order the Lines", match: "Which line printed that?", perr: "Predict the error", owncode: "Trace your own code", make: "Make"
       };
       /* Declutter: primary sections first in every dropdown; secondary
          entries carry more:true and fold behind one "More sections"
@@ -31124,6 +31701,10 @@ int main() {
           { label: "Rounds \u2014 six broken programs, in order", target: "perr-rounds" },
           { label: "Predict the error and its line", target: "perr-card" }
         ] },
+        { mode: "owncode", items: [
+          { label: "Your program", target: "own-card" },
+          { label: "Predict the output", target: "own-predict-card" }
+        ] },
         { mode: "make", items: [
           { label: "Prompts \u2014 thirty programs to write, in order", target: "make-prompts" },
           { label: "Editor & test bench", target: "make-editor-card" },
@@ -31140,7 +31721,7 @@ int main() {
       try { reducedMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); } catch (e) {}
 
       function currentMode() {
-        var order = ["bolt", "tracer", "gym", "refactor", "translator", "challenges", "bridge", "order", "match", "perr", "make"];
+        var order = ["bolt", "tracer", "gym", "refactor", "translator", "challenges", "bridge", "order", "match", "perr", "owncode", "make"];
         for (var i = 0; i < order.length; i++) {
           var b = byId("mode-" + order[i]);
           if (b && b.getAttribute("aria-selected") === "true") return order[i];
