@@ -1868,7 +1868,7 @@
             <li><button class="route-step" type="button" data-route="tracer" data-step="3"><span class="route-num" aria-hidden="true">3</span><span class="route-text"><strong>Prediction Tracer, Exercises 1 to 5</strong><span>The core ideas.</span><span class="route-detail" data-detail="3"></span></span><span class="route-state" data-state="3">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="bridge" data-step="4"><span class="route-num" aria-hidden="true">4</span><span class="route-text"><strong>Bridge, first two activities</strong><span>Order code, then write a line.</span><span class="route-detail" data-detail="4"></span></span><span class="route-state" data-state="4">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="gym" data-step="5"><span class="route-num" aria-hidden="true">5</span><span class="route-text"><strong>Debugging Gym, Round 1</strong><span>Find and fix faults.</span><span class="route-detail" data-detail="5"></span></span><span class="route-state" data-state="5">Not yet</span></button></li>
-            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 143</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
+            <li><button class="route-step" type="button" data-route="tracer" data-step="6"><span class="route-num" aria-hidden="true">6</span><span class="route-text"><strong>Prediction Tracer, Exercises 6 to 155</strong><span>The rest of the course, plus the optional Going Further pack at the end.</span><span class="route-detail" data-detail="6"></span></span><span class="route-state" data-state="6">Not yet</span></button></li>
             <li><button class="route-step" type="button" data-route="make" data-step="7"><span class="route-num" aria-hidden="true">7</span><span class="route-text"><strong>Make, Prompts 1 to 3</strong><span>Write your own programs.</span><span class="route-detail" data-detail="7"></span></span><span class="route-state" data-state="7">Not yet</span></button></li>
             <li class="route-open"><span class="route-num" aria-hidden="true">8</span><span class="route-text"><strong>Then explore</strong><span>Everything else, in any order.</span></span><span class="route-state">Open</span></li>
           </ol>
@@ -2235,7 +2235,7 @@ for (int i = 0; i < 3; i++) {
             <select class="lecture-select" id="lecture-ex-select" aria-label="Choose an exercise to project"></select>
             <button class="btn" type="button" id="lecture-project-btn">Project this exercise</button>
           </div>
-          <p class="lecture-pick-note">Any of the 143 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
+          <p class="lecture-pick-note">Any of the 155 Prediction Tracer exercises can be projected. Projecting an exercise starts it with empty tallies and a fresh trace.</p>
         </div>
 
         <div id="lecture-project" hidden>
@@ -2404,6 +2404,7 @@ for (int i = 0; i < 3; i++) {
             <h3 id="predict-h">Stage 1 — Predict</h3>
             <div class="duel-banner" id="duel-banner" hidden role="status">Prediction duel — someone has already locked their prediction. Lock yours to reveal both.</div>
             <p class="duel-note" id="duel-note" hidden role="status"></p>
+            <p class="duel-note" id="margin-note" hidden role="status"></p>
             <div class="pair-toggle" role="group" aria-label="Prediction mode">
               <button class="pair-toggle-btn" type="button" id="pair-solo-btn" aria-pressed="true">Predicting solo</button>
               <button class="pair-toggle-btn" type="button" id="pair-partner-btn" aria-pressed="false">Predicting with a partner</button>
@@ -2712,6 +2713,15 @@ for (int i = 0; i < 3; i++) {
         <label style="font-weight:600;font-size:.92rem;display:block;margin-top:10px;" for="tfp-code-out">Your progress code</label>
         <textarea class="digest-textarea" id="tfp-code-out" rows="3" readonly style="margin-top:6px;" placeholder="Your TFP1: code will appear here"></textarea>
         <p style="font-size:.88rem;color:var(--ink-soft);margin-top:6px;">Show this code to your instructor — it contains your progress on this device, nothing else.</p>
+        <h4 style="margin-top:18px;font-size:.95rem;">Students: notes from your instructor</h4>
+        <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">If your instructor hands you a note code (TFN1:) after office hours, paste it here. The notes attach to your exercises on this device, and you will see each one beside its exercise in the Prediction Tracer. Nothing is sent anywhere — the code is the only transfer, as with your progress code.</p>
+        <label style="font-weight:600;font-size:.92rem;display:block;margin-top:8px;" for="tfn-paste">Paste an instructor note code</label>
+        <textarea class="digest-textarea" id="tfn-paste" rows="3" placeholder="TFN1:…" aria-label="Paste an instructor note code" style="margin-top:6px;"></textarea>
+        <div class="journal-actions">
+          <button class="btn" type="button" id="tfn-add-btn">Add the notes</button>
+          <span class="journal-status" id="tfn-add-status" role="status"></span>
+        </div>
+        <div class="tfp-view" id="tfn-mine" hidden aria-live="polite"></div>
         <h4 style="margin-top:18px;font-size:.95rem;">Instructors: view a student's code</h4>
         <label style="font-weight:600;font-size:.92rem;display:block;margin-top:8px;" for="tfp-paste">Paste a student's TFP1: code</label>
         <textarea class="digest-textarea" id="tfp-paste" rows="3" placeholder="TFP1:…" aria-label="Paste a student's TFP1 progress code" style="margin-top:6px;"></textarea>
@@ -2720,6 +2730,14 @@ for (int i = 0; i < 3; i++) {
           <span class="journal-status" id="tfp-view-status" role="status"></span>
         </div>
         <div class="tfp-view" id="tfp-view" hidden aria-live="polite"></div>
+        <div id="tfp-notes" hidden style="margin-top:16px;">
+          <h4 style="font-size:.95rem;">Margin notes for this student</h4>
+          <p style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;">Write a one-line note beside any exercise this student has locked. Notes are kept in this browser, against this student's code. When you are done, hand the student the note code below: when they add it on their device, each note appears beside its exercise in their tracer.</p>
+          <div id="tfp-notes-list" style="display:grid;gap:8px;margin-top:8px;"></div>
+          <label style="font-weight:600;font-size:.92rem;display:block;margin-top:10px;" for="tfn-code-out">Note code for this student</label>
+          <textarea class="digest-textarea" id="tfn-code-out" rows="3" readonly style="margin-top:6px;" placeholder="TFN1: note code will appear here once a note is saved"></textarea>
+          <span class="journal-status" id="tfp-notes-status" role="status"></span>
+        </div>
       </section>
 <section class="card" id="assign-section" style="margin-top:18px;" aria-labelledby="assign-h">
         <h3 id="assign-h">Assignments</h3>
@@ -3448,7 +3466,7 @@ int main() {
       <div id="owncode-mode" role="tabpanel" tabindex="0" hidden>
         <section class="bridge-intro">
           <h2>Trace your own code: predict it before the machine runs it.</h2>
-          <p>Bring a short program of your own — from a lab, a worksheet, or your head. Paste it in, <strong>predict its exact output and lock the prediction in</strong>, and only then step through the run box by box to see whether the machine agrees with you. The runner handles the same small C++ the tracer itself uses: <strong>int, double, string and bool</strong> boxes, assignment and compound assignment, arithmetic and comparisons, <strong>cout</strong>, <strong>if / else</strong>, and <strong>for</strong> and <strong>while</strong> loops (and <strong>cin</strong>, fed from the input box). Anything outside that subset is named as unsupported instead of guessed at.</p>
+          <p>Bring a short program of your own — from a lab, a worksheet, or your head. Paste it in, <strong>predict its exact output and lock the prediction in</strong>, and only then step through the run box by box to see whether the machine agrees with you. The runner handles the same small C++ the tracer itself uses: <strong>int, double, string and bool</strong> boxes, assignment and compound assignment, arithmetic and comparisons, <strong>cout</strong>, <strong>if / else</strong>, and <strong>for</strong>, <strong>while</strong> and <strong>do...while</strong> loops (and <strong>cin</strong>, fed from the input box). Anything outside that subset is named as unsupported instead of guessed at.</p>
         </section>
         <section class="card" id="own-card" aria-labelledby="own-card-h">
           <h3 id="own-card-h" style="font-size:1.15rem;">Your program</h3>
@@ -3587,12 +3605,12 @@ int main() {
         <div id="instructors-body" hidden>
           <div class="lecture-inst-entry">
             <h4>Lecture mode — run a tracer exercise in front of the class</h4>
-            <p>A single projected screen: pick any of the 143 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
+            <p>A single projected screen: pick any of the 155 exercises, tally the class's predictions as counts, see the live split, then step through with the split pinned beside the trace. It is a facilitator view on this device only — tallies are kept in memory for the session and are never added to any student's record or to the digest below.</p>
             <div class="journal-actions"><button class="btn small" type="button" id="lecture-open-btn-2">Open Lecture mode</button></div>
           </div>
                     <div class="studio" id="inst-studio">
             <h4>Instructor exercise studio</h4>
-            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 143 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
+            <p class="studio-note">Author a tracer exercise in the same C++ subset the Make interpreter runs. The true output is never typed in: it is taken from an actual run of your code, and saving stays blocked until the current code has run cleanly. On save you also get a share code (TFI1:) another instructor can load below. Saved exercises appear in the Prediction Tracer's exercise list under <strong>Instructor-authored</strong>, labelled I1, I2, &hellip; — the 155 built-in exercises keep their numbers. <strong>Instructor-authored attempts never touch the built-in exercises' records, accuracy counts, Start Here route, test-out state, or the digest counts.</strong></p>
             <div class="authored-field">
               <label for="inst-title">Exercise title</label>
               <input class="authored-input" type="text" id="inst-title" maxlength="80" placeholder="e.g. The average that is not an average" autocomplete="off">
@@ -12347,6 +12365,628 @@ int main() {
           correct: 0,
           explain: "3 &gt; 0 is <b>true</b>, so this time the ternary takes its first value: <b>positive</b>."
         }
+      },
+      {
+        concept: "Loops — do-while",
+        topic: "Loops",
+        title: "The guaranteed first pass",
+        goal: "A <b>do-while</b> loop runs its body first and tests afterwards, so a pass is never skipped: the test only decides whether there is a <em>next</em> pass.",
+        stories: {
+          health:   "A rehab app counts out a set: it prints the count, adds one, and only then checks whether the count is still at most <strong>3</strong>. Afterwards it prints a closing word.",
+          psych:    "A focus app counts out a round: it prints the count, adds one, and only then checks whether the count is still at most <strong>3</strong>. Afterwards it prints a closing word.",
+          business: "A stock app counts out a shelf check: it prints the count, adds one, and only then checks whether the count is still at most <strong>3</strong>. Afterwards it prints a closing word.",
+          arts:     "A rehearsal app counts in the band: it prints the count, adds one, and only then checks whether the count is still at most <strong>3</strong>. Afterwards it prints a closing word."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int k = 1;",
+          "    do {",
+          "        cout << k << \" \";",
+          "        k++;",
+          "    } while (k <= 3);",
+          "    cout << \"end\";",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["1 2 3 end", "1 2 3 4 end", "1 2 end", "1 2 3"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 9, text: "A fourth print would need the test to pass <em>after</em> k becomes 4 — and the parting step is that test: <b>4 &lt;= 3 is false</b>. The test guards the repetitions, and by then it has already said no. Three passes, not four." },
+          2: { step: 7, text: "<b>&lt;=</b> includes the boundary: when k is 3, the test <b>3 &lt;= 3 is true</b>, so a third pass runs and prints 3. Reading &lt;= as &lt; stops the loop one pass early." },
+          3: { step: 10, text: "The loop does print 1 2 3 — but the program is not finished. The line after the loop prints <b>end</b>, and it runs whatever the loop did. The loop ending never ends the program." }
+        },
+        steps: [
+          { line: 3, vars: { k: ["int", "1"] }, out: "", note: "The box <b>k</b> starts at <b>1</b>. Watch where the test sits: it is written <em>after</em> the body, so nothing is checked yet." },
+          { line: 5, vars: { k: ["int", "1"] }, out: "1 ", note: "<b>The parting step.</b> The body's cout runs <b>first</b>, before any condition is tested: <b>1 prints</b>. A do-while body always runs at least once — the test only decides whether it runs <em>again</em>." },
+          { line: 6, vars: { k: ["int", "2"] }, out: "1 ", note: "<b>k++</b> makes k <b>2</b>. The body is finished; only now is the condition looked at." },
+          { line: 7, vars: { k: ["int", "2"] }, out: "1 ", note: "The test: is <b>2 &lt;= 3</b>? <b>True</b> — so the body runs again." },
+          { line: 5, vars: { k: ["int", "2"] }, out: "1 2 ", note: "Second pass: <b>2 prints</b>." },
+          { line: 6, vars: { k: ["int", "3"] }, out: "1 2 ", note: "<b>k++</b> makes k <b>3</b>." },
+          { line: 7, vars: { k: ["int", "3"] }, out: "1 2 ", note: "The test: is <b>3 &lt;= 3</b>? <b>True</b> — the boundary counts, so there is a third pass." },
+          { line: 5, vars: { k: ["int", "3"] }, out: "1 2 3 ", note: "Third pass: <b>3 prints</b>." },
+          { line: 6, vars: { k: ["int", "4"] }, out: "1 2 3 ", note: "<b>k++</b> makes k <b>4</b>." },
+          { line: 7, vars: { k: ["int", "4"] }, out: "1 2 3 ", note: "The test: is <b>4 &lt;= 3</b>? <b>False</b>. The loop ends after three passes." },
+          { line: 8, vars: { k: ["int", "4"] }, out: "1 2 3 end", note: "The closing cout prints <b>end</b> right after the 3 and its space: <b>1 2 3 end</b>." },
+          { line: 9, vars: { k: ["int", "4"] }, out: "1 2 3 end", note: "The program ends. Final answer: <b>1 2 3 end</b> — three passes, each one permitted by the test at the bottom." }
+        ],
+        modify: {
+          prompt: "The bound changes from 3 to 4: the test becomes k <= 4. Nothing else changes. What prints now?",
+          code: 'int k = 1;\ndo {\n    cout << k << " ";\n    k++;\n} while (k <= <mark>4</mark>);\ncout << "end";',
+          options: ["1 2 3 4 end", "1 2 3 end", "1 2 3 4 5 end", "4 end"],
+          correct: 0,
+          explain: "The test now also passes at k = 4, so a fourth pass prints 4 before the test fails at 5: <b>1 2 3 4 end</b>."
+        }
+      },
+      {
+        concept: "Loops — do-while",
+        topic: "Loops",
+        title: "False from the start, still once",
+        goal: "Even when a do-while condition is <b>false from the very beginning</b>, the body still runs <b>exactly once</b> — the test is met only on the way out.",
+        stories: {
+          health:   "A clinic kiosk counts attempts: it adds one to the count, prints the attempt, and only then checks whether the count has gone past <strong>3</strong>. Afterwards it prints a closing word.",
+          psych:    "A survey kiosk counts attempts: it adds one to the count, prints the attempt, and only then checks whether the count has gone past <strong>3</strong>. Afterwards it prints a closing word.",
+          business: "A returns kiosk counts attempts: it adds one to the count, prints the attempt, and only then checks whether the count has gone past <strong>3</strong>. Afterwards it prints a closing word.",
+          arts:     "A gallery kiosk counts attempts: it adds one to the count, prints the attempt, and only then checks whether the count has gone past <strong>3</strong>. Afterwards it prints a closing word."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int tries = 0;",
+          "    do {",
+          "        tries++;",
+          "        cout << \"try \" << tries << \" \";",
+          "    } while (tries > 3);",
+          "    cout << \"stop\";",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["try 1 stop", "stop", "try 1 try 2 try 3 stop", "try 0 stop"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "<b>Named misconception: the condition is tested first.</b> That is how a plain <b>while</b> loop works — and this is not one. In a do-while the test sits at the bottom: the body runs once, <b>try 1 prints</b>, and only then does the failing test end the loop." },
+          2: { step: 3, text: "That trace reads the test as <b>tries &lt; 3</b> — but the code says <b>tries &gt; 3</b>. After the one guaranteed pass, tries is 1, and <b>1 &gt; 3 is false</b>, so the loop ends. One attempt, not three." },
+          3: { step: 1, text: "The body's first line is <b>tries++</b>, and it runs before the print. By the time anything prints, tries is already <b>1</b> — the 0 is never printed." }
+        },
+        steps: [
+          { line: 3, vars: { tries: ["int", "0"] }, out: "", note: "The box <b>tries</b> starts at <b>0</b>. The loop's test, tries &gt; 3, is already false — keep that in mind." },
+          { line: 5, vars: { tries: ["int", "1"] }, out: "", note: "The body runs anyway: <b>tries++</b> makes tries <b>1</b>. No test has been checked yet." },
+          { line: 6, vars: { tries: ["int", "1"] }, out: "try 1 ", note: "<b>The parting step.</b> The print runs too: <b>try 1</b> is on the screen before the condition is ever looked at. A false-from-the-start test cannot prevent the first pass." },
+          { line: 7, vars: { tries: ["int", "1"] }, out: "try 1 ", note: "The test, at last: is <b>1 &gt; 3</b>? <b>False</b>. The loop ends after exactly one pass." },
+          { line: 8, vars: { tries: ["int", "1"] }, out: "try 1 stop", note: "The closing cout prints <b>stop</b>: <b>try 1 stop</b>." },
+          { line: 9, vars: { tries: ["int", "1"] }, out: "try 1 stop", note: "The program ends. Final answer: <b>try 1 stop</b> — one pass, guaranteed by the do, not permitted by the while." }
+        ],
+        modify: {
+          prompt: "The test changes from tries > 3 to tries < 3. Nothing else changes. What prints now?",
+          code: 'int tries = 0;\ndo {\n    tries++;\n    cout << "try " << tries << " ";\n} while (tries < <mark>3</mark>);\ncout << "stop";',
+          options: ["try 1 try 2 try 3 stop", "try 1 stop", "try 1 try 2 stop", "stop"],
+          correct: 0,
+          explain: "Now the test passes after tries 1 and 2, so the body repeats: try 1, try 2, try 3 print, and the test 3 &lt; 3 fails: <b>try 1 try 2 try 3 stop</b>."
+        }
+      },
+      {
+        concept: "Loops — do-while",
+        topic: "Loops",
+        title: "The sum that starts past the limit",
+        goal: "A do-while guarding an <b>accumulator</b> still adds its first value even when the counter starts <b>past the limit</b> — the first addition is unconditional.",
+        stories: {
+          health:   "A step program holds a total of <strong>0</strong> and a day counter starting at <strong>7</strong>. A loop adds the counter to the total, steps the counter, and only then checks whether the counter is still below 5. It prints the total.",
+          psych:    "A points program holds a total of <strong>0</strong> and a round counter starting at <strong>7</strong>. A loop adds the counter to the total, steps the counter, and only then checks whether the counter is still below 5. It prints the total.",
+          business: "A ledger program holds a total of <strong>0</strong> and a batch counter starting at <strong>7</strong>. A loop adds the counter to the total, steps the counter, and only then checks whether the counter is still below 5. It prints the total.",
+          arts:     "A ticket program holds a total of <strong>0</strong> and a show counter starting at <strong>7</strong>. A loop adds the counter to the total, steps the counter, and only then checks whether the counter is still below 5. It prints the total."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int total = 0;",
+          "    int i = 7;",
+          "    do {",
+          "        total += i;",
+          "        i++;",
+          "    } while (i < 5);",
+          "    cout << total;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["7", "0", "15", "8"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "<b>Named misconception: the condition is tested first.</b> 0 is what a plain <b>while</b> loop would print here, since 7 &lt; 5 fails at the door. A do-while adds first and tests later: the parting step is the body's addition, which puts <b>7</b> into total before any test happens." },
+          2: { step: 4, text: "15 is 7 + 8 — two additions. But a second pass needs the test to pass, and after the first pass i is 8: <b>8 &lt; 5 is false</b>. Only one addition ever runs." },
+          3: { step: 5, text: "8 is the final value of the <b>counter</b>, not the total. The print line reads <b>total</b> — the box the addition filled — and that box holds <b>7</b>." }
+        },
+        steps: [
+          { line: 3, vars: { total: ["int", "0"] }, out: "", note: "The accumulator <b>total</b> starts at <b>0</b>." },
+          { line: 4, vars: { total: ["int", "0"], i: ["int", "7"] }, out: "", note: "The counter <b>i</b> starts at <b>7</b> — already past the loop's limit of 5." },
+          { line: 6, vars: { total: ["int", "7"], i: ["int", "7"] }, out: "", note: "<b>The parting step.</b> The body runs before any test: <b>total += 7</b> puts <b>7</b> in the box. The failing condition cannot take this addition back." },
+          { line: 7, vars: { total: ["int", "7"], i: ["int", "8"] }, out: "", note: "<b>i++</b> makes i <b>8</b>. The body is finished; only now is the condition looked at." },
+          { line: 8, vars: { total: ["int", "7"], i: ["int", "8"] }, out: "", note: "The test: is <b>8 &lt; 5</b>? <b>False</b>. The loop ends after exactly one pass." },
+          { line: 9, vars: { total: ["int", "7"], i: ["int", "8"] }, out: "7", note: "The program prints <b>total</b>: <b>7</b>." },
+          { line: 10, vars: { total: ["int", "7"], i: ["int", "8"] }, out: "7", note: "The program ends. Final answer: <b>7</b> — one unconditional addition, then the test closes the door." }
+        ],
+        modify: {
+          prompt: "The counter starts at 2 instead of 7. Nothing else changes. What prints now?",
+          code: 'int total = 0;\nint i = <mark>2</mark>;\ndo {\n    total += i;\n    i++;\n} while (i < 5);\ncout << total;',
+          options: ["9", "2", "5", "14"],
+          correct: 0,
+          explain: "Now the test keeps passing: total takes 2, then 3, then 4, and the test fails at i = 5: 2 + 3 + 4 = <b>9</b>."
+        }
+      },
+      {
+        concept: "Loops — do-while",
+        topic: "Loops",
+        title: "Reading until zero",
+        goal: "A do-while is the natural shape for <b>read, process, then test</b>: the sentinel value is <b>processed like any other</b> before the test sees it, because the test comes last.",
+        stories: {
+          health:   "A clinic desk program reads numbers until the nurse types <strong>0</strong>. Each number it reads, it doubles and prints. The nurse types <strong>5</strong>, then <strong>0</strong>. Afterwards the program prints a closing word.",
+          psych:    "A lab desk program reads numbers until the assistant types <strong>0</strong>. Each number it reads, it doubles and prints. The assistant types <strong>5</strong>, then <strong>0</strong>. Afterwards the program prints a closing word.",
+          business: "A till program reads amounts until the cashier types <strong>0</strong>. Each amount it reads, it doubles and prints. The cashier types <strong>5</strong>, then <strong>0</strong>. Afterwards the program prints a closing word.",
+          arts:     "A box-office program reads counts until the usher types <strong>0</strong>. Each count it reads, it doubles and prints. The usher types <strong>5</strong>, then <strong>0</strong>. Afterwards the program prints a closing word."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int x;",
+          "    do {",
+          "        cin >> x;",
+          "        cout << x * 2 << \" \";",
+          "    } while (x != 0);",
+          "    cout << \"done\";",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["10 0 done", "10 done", "5 0 done", "10 0 0 done"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 5, text: "That trace stops the loop <em>before</em> the 0 is processed — but the test sits at the bottom. The 0 is read, and the body's print runs on it like any other value: <b>0 * 2 prints as the second 0</b>. The parting step is that print. Only after it does the test end the loop." },
+          2: { step: 2, text: "The print line does not print <b>x</b> — it prints <b>x * 2</b>. The first read is 5, so the first thing on the screen is <b>10</b>, not 5." },
+          3: { step: 6, text: "A third 0 would need a third pass — another read. But after the second pass the test <b>x != 0 is false</b>, so the loop ends. The test failing is what stops the reading; no extra pass sneaks in." }
+        },
+        steps: [
+          { line: 3, vars: { x: ["int", "—"] }, out: "", note: "The box <b>x</b> is declared but holds nothing yet. The input waiting is <b>5</b>, then <b>0</b>." },
+          { line: 5, vars: { x: ["int", "5"] }, out: "", note: "The body runs first: <b>cin &gt;&gt; x</b> reads the <b>5</b>. No test has been checked — there is nothing to check yet, which is exactly why this loop shape exists." },
+          { line: 6, vars: { x: ["int", "5"] }, out: "10 ", note: "The print runs on the value just read: <b>5 * 2 = 10</b> prints." },
+          { line: 7, vars: { x: ["int", "5"] }, out: "10 ", note: "The test: is <b>5 != 0</b>? <b>True</b> — read again." },
+          { line: 5, vars: { x: ["int", "0"] }, out: "10 ", note: "Second pass: the read takes the <b>0</b>, the sentinel." },
+          { line: 6, vars: { x: ["int", "0"] }, out: "10 0 ", note: "<b>The parting step.</b> The sentinel is processed like any other value <em>before</em> the test sees it: <b>0 * 2 = 0</b> prints." },
+          { line: 7, vars: { x: ["int", "0"] }, out: "10 0 ", note: "The test: is <b>0 != 0</b>? <b>False</b>. The loop ends." },
+          { line: 8, vars: { x: ["int", "0"] }, out: "10 0 done", note: "The closing cout prints <b>done</b>: <b>10 0 done</b>." },
+          { line: 9, vars: { x: ["int", "0"] }, out: "10 0 done", note: "The program ends. Final answer: <b>10 0 done</b> — the sentinel went through the body, because in a do-while the test always comes last." }
+        ],
+        modify: {
+          prompt: "The input changes: the user types 3, then 4, then 0. Nothing else changes. What prints now?",
+          code: 'int x;\ndo {\n    cin >> x;\n    cout << x * 2 << " ";\n} while (x != 0);\ncout << "done";',
+          options: ["6 8 0 done", "6 8 done", "3 4 0 done", "6 8 0 0 done"],
+          correct: 0,
+          explain: "Each read is doubled and printed before the test: 3 becomes 6, 4 becomes 8, and the sentinel 0 is processed too, printing 0 before the test ends the loop: <b>6 8 0 done</b>."
+        }
+      },
+      {
+        concept: "Loops — do-while",
+        topic: "Loops",
+        title: "Counting evens from the inside",
+        goal: "The do-while test is checked <b>between passes</b>, so the pass that makes the counter reach the limit <b>still counts</b> — the limit is only consulted after it.",
+        stories: {
+          health:   "A training program steps a counter from <strong>0</strong> and counts how many of the values it steps through are <strong>even</strong>, stopping once the counter is no longer below 6. It prints the count of evens.",
+          psych:    "A scoring program steps a counter from <strong>0</strong> and counts how many of the values it steps through are <strong>even</strong>, stopping once the counter is no longer below 6. It prints the count of evens.",
+          business: "A rota program steps a counter from <strong>0</strong> and counts how many of the values it steps through are <strong>even</strong>, stopping once the counter is no longer below 6. It prints the count of evens.",
+          arts:     "A casting program steps a counter from <strong>0</strong> and counts how many of the values it steps through are <strong>even</strong>, stopping once the counter is no longer below 6. It prints the count of evens."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int i = 0;",
+          "    int evens = 0;",
+          "    do {",
+          "        i++;",
+          "        if (i % 2 == 0) {",
+          "            evens++;",
+          "        }",
+          "    } while (i < 6);",
+          "    cout << evens;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["3", "2", "6", "4"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 7, text: "2 counts the evens among 1 to 5 — it leaves out <b>6</b>. But the pass that steps i to 6 runs in full, because the test is only consulted <em>after</em> it: the parting step is that pass, where i becomes 6, the if fires, and <b>evens reaches 3</b> before the test closes the loop." },
+          2: { step: 2, text: "6 is the number of <b>passes</b>, not the number of evens. The if filters the passes: only the ones landing on 2, 4, and 6 add to evens. The odd landings — 1, 3, 5 — add nothing." },
+          3: { step: 1, text: "4 counts the starting <b>0</b> as an even value tested. But the if never sees 0: <b>i++ runs first</b> in every pass, so the values the if tests are 1, 2, 3, 4, 5, 6 — and 0 is not among them." }
+        },
+        steps: [
+          { line: 3, vars: { i: ["int", "0"] }, out: "", note: "The counter <b>i</b> starts at <b>0</b>." },
+          { line: 4, vars: { i: ["int", "0"], evens: ["int", "0"] }, out: "", note: "The count of evens starts at <b>0</b>." },
+          { line: 7, vars: { i: ["int", "1"], evens: ["int", "0"] }, out: "", note: "First pass: <b>i++</b> makes i <b>1</b>, and the if tests it: 1 % 2 is 1, not 0 — <b>odd, no count</b>." },
+          { line: 8, vars: { i: ["int", "2"], evens: ["int", "1"] }, out: "", note: "Second pass: i becomes <b>2</b>, the if fires, and <b>evens</b> becomes <b>1</b>." },
+          { line: 7, vars: { i: ["int", "3"], evens: ["int", "1"] }, out: "", note: "Third pass: i becomes <b>3</b> — odd, no count." },
+          { line: 8, vars: { i: ["int", "4"], evens: ["int", "2"] }, out: "", note: "Fourth pass: i becomes <b>4</b>, the if fires, and <b>evens</b> becomes <b>2</b>." },
+          { line: 7, vars: { i: ["int", "5"], evens: ["int", "2"] }, out: "", note: "Fifth pass: i becomes <b>5</b> — odd, no count. The test after this pass, 5 &lt; 6, still passes, so one more pass runs." },
+          { line: 8, vars: { i: ["int", "6"], evens: ["int", "3"] }, out: "", note: "<b>The parting step.</b> Sixth pass: i becomes <b>6</b>, the if fires, and <b>evens</b> becomes <b>3</b>. This pass counts even though it ends the loop — the test is consulted only now." },
+          { line: 10, vars: { i: ["int", "6"], evens: ["int", "3"] }, out: "", note: "The test: is <b>6 &lt; 6</b>? <b>False</b>. The loop ends." },
+          { line: 11, vars: { i: ["int", "6"], evens: ["int", "3"] }, out: "3", note: "The program prints <b>evens</b>: <b>3</b> — the evens among 1 to 6 are 2, 4, and 6." },
+          { line: 12, vars: { i: ["int", "6"], evens: ["int", "3"] }, out: "3", note: "The program ends. Final answer: <b>3</b>." }
+        ],
+        modify: {
+          prompt: "The bound changes from 6 to 4: the test becomes i < 4. Nothing else changes. What prints now?",
+          code: 'int i = 0;\nint evens = 0;\ndo {\n    i++;\n    if (i % 2 == 0) {\n        evens++;\n    }\n} while (i < <mark>4</mark>);\ncout << evens;',
+          options: ["2", "3", "1", "4"],
+          correct: 0,
+          explain: "The passes now land on 1, 2, 3, 4, and the evens among them are 2 and 4: <b>2</b>."
+        }
+      },
+      {
+        concept: "Loops — do-while",
+        topic: "Loops",
+        title: "Two loops, two fates",
+        goal: "Side by side, the difference is exact: a <b>while</b> loop whose test fails at the door runs <b>zero</b> times; a <b>do-while</b> with the same failing test runs <b>once</b>.",
+        stories: {
+          health:   "A clinic program holds a value of <strong>20</strong> and runs two loops against the test <em>below 10</em>: first a while loop that would print a letter, then a do-while that would print another. Afterwards it prints a closing mark.",
+          psych:    "A study program holds a value of <strong>20</strong> and runs two loops against the test <em>below 10</em>: first a while loop that would print a letter, then a do-while that would print another. Afterwards it prints a closing mark.",
+          business: "A stock program holds a value of <strong>20</strong> and runs two loops against the test <em>below 10</em>: first a while loop that would print a letter, then a do-while that would print another. Afterwards it prints a closing mark.",
+          arts:     "A venue program holds a value of <strong>20</strong> and runs two loops against the test <em>below 10</em>: first a while loop that would print a letter, then a do-while that would print another. Afterwards it prints a closing mark."
+        },
+        code: [
+          "#include <iostream>",
+          "using namespace std;",
+          "int main() {",
+          "    int a = 20;",
+          "    while (a < 10) {",
+          "        cout << \"W\";",
+          "        a++;",
+          "    }",
+          "    do {",
+          "        cout << \"D\";",
+          "        a++;",
+          "    } while (a < 10);",
+          "    cout << \"!\";",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["D!", "WD!", "!", "DD!"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 1, text: "That trace gives the while loop a free first pass too — it has none. Its test is at the door: <b>20 &lt; 10 is false</b>, so the W body is skipped entirely. The guaranteed first pass belongs to the do-while alone." },
+          2: { step: 2, text: "<b>Named misconception: the condition is tested first.</b> Applied to both loops, it predicts nothing prints. The while loop obeys it — but the do-while does not: its body runs once before the test, and the parting step is that run, which prints <b>D</b>." },
+          3: { step: 4, text: "Two Ds would need the do-while's test to pass once — after the first pass a is 21, and <b>21 &lt; 10 is false</b>. One guaranteed pass, no repetitions." }
+        },
+        steps: [
+          { line: 3, vars: { a: ["int", "20"] }, out: "", note: "The box <b>a</b> starts at <b>20</b>. Both loops test a &lt; 10, and 20 already fails it. Watch what each loop does with that." },
+          { line: 4, vars: { a: ["int", "20"] }, out: "", note: "The while loop tests first: is <b>20 &lt; 10</b>? <b>False</b>. Its body is skipped entirely — <b>W never prints</b>, and a never changes." },
+          { line: 9, vars: { a: ["int", "20"] }, out: "D", note: "<b>The parting step.</b> The do-while body runs before its test: <b>D prints</b>, even though the same test just failed for the while loop." },
+          { line: 10, vars: { a: ["int", "21"] }, out: "D", note: "<b>a++</b> makes a <b>21</b>. The body is finished; only now is the condition looked at." },
+          { line: 11, vars: { a: ["int", "21"] }, out: "D", note: "The test: is <b>21 &lt; 10</b>? <b>False</b>. The do-while ends after its one guaranteed pass." },
+          { line: 12, vars: { a: ["int", "21"] }, out: "D!", note: "The closing cout prints <b>!</b>: <b>D!</b>." },
+          { line: 13, vars: { a: ["int", "21"] }, out: "D!", note: "The program ends. Final answer: <b>D!</b> — zero passes for the while, one for the do-while, on the same failing test." }
+        ],
+        modify: {
+          prompt: "The starting value changes from 20 to 5. Both loops and the closing print are unchanged. What prints now?",
+          code: 'int a = <mark>5</mark>;\nwhile (a < 10) {\n    cout << "W";\n    a++;\n}\ndo {\n    cout << "D";\n    a++;\n} while (a < 10);\ncout << "!";',
+          options: ["WWWWWD!", "WWWD!", "D!", "WWWWW!"],
+          correct: 0,
+          explain: "Now the test passes at the door: the while loop prints W for a = 5, 6, 7, 8, 9 — five Ws — leaving a at 10. The do-while then prints its one D before its test fails: <b>WWWWWD!</b>."
+        }
+      },
+      {
+        concept: "Vectors — range-based for",
+        topic: "Arrays and vectors",
+        title: "Walking every element",
+        goal: "A <b>range-based for</b> walks a vector element by element, in order, with no index: on each pass the loop variable holds the <b>current element's value</b>.",
+        stories: {
+          health:   "A tracking app stores three readings in a <strong>vector</strong>: <strong>4, 7, 9</strong>. A loop walks the vector and adds every reading to a total. It prints the total.",
+          psych:    "A survey app stores three scores in a <strong>vector</strong>: <strong>4, 7, 9</strong>. A loop walks the vector and adds every score to a total. It prints the total.",
+          business: "A sales app stores three daily figures in a <strong>vector</strong>: <strong>4, 7, 9</strong>. A loop walks the vector and adds every figure to a total. It prints the total.",
+          arts:     "A media app stores three counts in a <strong>vector</strong>: <strong>4, 7, 9</strong>. A loop walks the vector and adds every count to a total. It prints the total."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <vector>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    vector<int> v = {4, 7, 9};",
+          "    int total = 0;",
+          "    for (auto x : v) {",
+          "        total += x;",
+          "    }",
+          "    cout << total;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["20", "3", "9", "4"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "3 is how many elements the vector holds — its size. The loop never counts passes into <b>total</b>; it adds values. The parting step is the first addition: total becomes <b>4</b>, the first element, not 1." },
+          2: { step: 4, text: "9 is the last value <b>x</b> holds — but the question asks for <b>total</b>, a separate box that kept every addition along the way: 4 + 7 + 9 = <b>20</b>. x is replaced each pass; total is not." },
+          3: { step: 2, text: "4 is where total stands after the <b>first pass only</b>. A range-based for does not stop at the first element: it walks all of them, in order, and the additions for 7 and 9 are still to come." }
+        },
+        steps: [
+          { line: 5, vars: { v: ["vector<int>", "{4, 7, 9} (size 3)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["4", "7", "9"] }], out: "", note: "The vector <b>v</b> holds three elements: <b>4, 7, 9</b>, in that order." },
+          { line: 6, vars: { v: ["vector<int>", "{4, 7, 9} (size 3)"], total: ["int", "0"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["4", "7", "9"] }, { name: "total", type: "int", value: "0" }], out: "", note: "The accumulator <b>total</b> starts at <b>0</b>." },
+          { line: 8, vars: { v: ["vector<int>", "{4, 7, 9} (size 3)"], total: ["int", "4"], x: ["int", "4"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["4", "7", "9"] }, { name: "x", type: "int", value: "4" }, { name: "total", type: "int", value: "4" }], out: "", note: "First pass: <b>x</b> holds the first element, <b>4</b> — no index was written anywhere. <b>total += 4</b> makes total <b>4</b>." },
+          { line: 8, vars: { v: ["vector<int>", "{4, 7, 9} (size 3)"], total: ["int", "11"], x: ["int", "7"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["4", "7", "9"] }, { name: "x", type: "int", value: "7" }, { name: "total", type: "int", value: "11" }], out: "", note: "Second pass: x is replaced by the next element, <b>7</b>. total = 4 + 7 = <b>11</b>." },
+          { line: 8, vars: { v: ["vector<int>", "{4, 7, 9} (size 3)"], total: ["int", "20"], x: ["int", "9"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["4", "7", "9"] }, { name: "x", type: "int", value: "9" }, { name: "total", type: "int", value: "20" }], out: "", note: "Third pass: x holds <b>9</b>. total = 11 + 9 = <b>20</b>. The vector is exhausted, so the loop ends." },
+          { line: 10, vars: { v: ["vector<int>", "{4, 7, 9} (size 3)"], total: ["int", "20"], x: ["int", "9"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["4", "7", "9"] }, { name: "x", type: "int", value: "9" }, { name: "total", type: "int", value: "20" }], out: "20", note: "The program prints <b>total</b>: <b>20</b> — every element added, none skipped." },
+          { line: 11, vars: { v: ["vector<int>", "{4, 7, 9} (size 3)"], total: ["int", "20"], x: ["int", "9"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["4", "7", "9"] }, { name: "x", type: "int", value: "9" }, { name: "total", type: "int", value: "20" }], out: "20", note: "The program ends. Final answer: <b>20</b>." }
+        ],
+        modify: {
+          prompt: "The vector gains a fourth element: it becomes {4, 7, 9, 10}. Nothing else changes. What prints now?",
+          code: 'vector<int> v = {4, 7, 9, <mark>10</mark>};\nint total = 0;\nfor (auto x : v) {\n    total += x;\n}\ncout << total;',
+          options: ["30", "20", "10", "4"],
+          correct: 0,
+          explain: "The loop walks the extra element too: 4 + 7 + 9 + 10 = <b>30</b>. A range-based for always covers the whole vector, however long it is."
+        }
+      },
+      {
+        concept: "Vectors — range-based for",
+        topic: "Arrays and vectors",
+        title: "The copy that changes nothing",
+        goal: "With plain <b>auto</b>, the loop variable is a <b>copy</b> of each element, in its own box. Writing to the copy, however thoroughly, never reaches the vector.",
+        stories: {
+          health:   "A clinic app stores three counts in a <strong>vector</strong>: <strong>1, 2, 3</strong>. A loop walks it and multiplies the loop variable by ten on every pass. Afterwards the program prints the vector's three elements.",
+          psych:    "A study app stores three counts in a <strong>vector</strong>: <strong>1, 2, 3</strong>. A loop walks it and multiplies the loop variable by ten on every pass. Afterwards the program prints the vector's three elements.",
+          business: "A stock app stores three counts in a <strong>vector</strong>: <strong>1, 2, 3</strong>. A loop walks it and multiplies the loop variable by ten on every pass. Afterwards the program prints the vector's three elements.",
+          arts:     "A venue app stores three counts in a <strong>vector</strong>: <strong>1, 2, 3</strong>. A loop walks it and multiplies the loop variable by ten on every pass. Afterwards the program prints the vector's three elements."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <vector>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    vector<int> v = {1, 2, 3};",
+          "    for (auto x : v) {",
+          "        x = x * 10;",
+          "    }",
+          "    cout << v[0] << \" \" << v[1] << \" \" << v[2];",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["1 2 3", "10 20 30", "10 2 3", "0 0 0"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "<b>Named misconception: the loop variable is the element.</b> It is not — with plain <b>auto</b>, x is a <b>copy</b> in its own box, as the two boxes side by side show. The parting step is the first multiplication: x becomes 10 while v[0] sits unchanged at 1. Every write in this loop lands on a copy that is thrown away." },
+          2: { step: 2, text: "Even the first element does not change: the write <b>x = x * 10</b> lands on the copy of v[0], not on v[0] itself. No pass reaches the vector, so the answer is not partly changed — it is wholly unchanged." },
+          3: { step: 1, text: "Nothing is emptied. The copies start from the elements' values — 1, 2, 3 — and the vector itself is never written to at all, so it cannot end up zeroed." }
+        },
+        steps: [
+          { line: 5, vars: { v: ["vector<int>", "{1, 2, 3} (size 3)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["1", "2", "3"] }], out: "", note: "The vector <b>v</b> holds <b>1, 2, 3</b>. Keep your eye on this row of boxes: the question is whether anything in it ever changes." },
+          { line: 6, vars: { v: ["vector<int>", "{1, 2, 3} (size 3)"], x: ["int", "1"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["1", "2", "3"] }, { name: "x", type: "int", value: "1" }], out: "", note: "First pass: <b>x</b> is created as a <b>copy</b> of the first element. Two boxes now hold 1: the element, and the copy beside it. They are not the same box." },
+          { line: 7, vars: { v: ["vector<int>", "{1, 2, 3} (size 3)"], x: ["int", "10"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["1", "2", "3"] }, { name: "x", type: "int", value: "10" }], out: "", note: "<b>The parting step.</b> <b>x = x * 10</b> makes the copy <b>10</b> — and the vector's first element is still <b>1</b>. The write landed on the copy, and the copy is discarded at the end of the pass." },
+          { line: 6, vars: { v: ["vector<int>", "{1, 2, 3} (size 3)"], x: ["int", "2"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["1", "2", "3"] }, { name: "x", type: "int", value: "2" }], out: "", note: "Second pass: a fresh copy, this time of the second element: x is <b>2</b>." },
+          { line: 7, vars: { v: ["vector<int>", "{1, 2, 3} (size 3)"], x: ["int", "20"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["1", "2", "3"] }, { name: "x", type: "int", value: "20" }], out: "", note: "The copy becomes <b>20</b>; the element stays <b>2</b>. Same story as the first pass." },
+          { line: 6, vars: { v: ["vector<int>", "{1, 2, 3} (size 3)"], x: ["int", "3"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["1", "2", "3"] }, { name: "x", type: "int", value: "3" }], out: "", note: "Third pass: a fresh copy of the third element: x is <b>3</b>." },
+          { line: 7, vars: { v: ["vector<int>", "{1, 2, 3} (size 3)"], x: ["int", "30"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["1", "2", "3"] }, { name: "x", type: "int", value: "30" }], out: "", note: "The copy becomes <b>30</b>; the element stays <b>3</b>. The loop ends, and every copy is gone." },
+          { line: 9, vars: { v: ["vector<int>", "{1, 2, 3} (size 3)"], x: ["int", "30"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["1", "2", "3"] }, { name: "x", type: "int", value: "30" }], out: "1 2 3", note: "The print reads the <b>vector</b>, which no line ever wrote to: <b>1 2 3</b>, exactly as it started." },
+          { line: 10, vars: { v: ["vector<int>", "{1, 2, 3} (size 3)"], x: ["int", "30"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["1", "2", "3"] }, { name: "x", type: "int", value: "30" }], out: "1 2 3", note: "The program ends. Final answer: <b>1 2 3</b> — three multiplications, all performed on copies." }
+        ],
+        modify: {
+          prompt: "One character changes: the loop variable becomes auto& x instead of auto x. Nothing else changes. What prints now?",
+          code: 'vector<int> v = {1, 2, 3};\nfor (<mark>auto&</mark> x : v) {\n    x = x * 10;\n}\ncout << v[0] << " " << v[1] << " " << v[2];',
+          options: ["10 20 30", "1 2 3", "10 2 3", "30 20 10"],
+          correct: 0,
+          explain: "The <b>&amp;</b> makes x another name for the element itself, not a copy — so every multiplication lands inside the vector: <b>10 20 30</b>."
+        }
+      },
+      {
+        concept: "Vectors — range-based for",
+        topic: "Arrays and vectors",
+        title: "The reference that reaches in",
+        goal: "With <b>auto&amp;</b>, the loop variable is <b>another name for the element itself</b>: a write through it lands inside the vector, element by element.",
+        stories: {
+          health:   "A clinic app stores three readings in a <strong>vector</strong>: <strong>5, 6, 7</strong>. A loop walks it by reference and adds one to every element. Afterwards the program prints the vector's three elements.",
+          psych:    "A study app stores three scores in a <strong>vector</strong>: <strong>5, 6, 7</strong>. A loop walks it by reference and adds one to every element. Afterwards the program prints the vector's three elements.",
+          business: "A pricing app stores three prices in a <strong>vector</strong>: <strong>5, 6, 7</strong>. A loop walks it by reference and adds one to every element. Afterwards the program prints the vector's three elements.",
+          arts:     "A venue app stores three counts in a <strong>vector</strong>: <strong>5, 6, 7</strong>. A loop walks it by reference and adds one to every element. Afterwards the program prints the vector's three elements."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <vector>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    vector<int> v = {5, 6, 7};",
+          "    for (auto& x : v) {",
+          "        x += 1;",
+          "    }",
+          "    cout << v[0] << \" \" << v[1] << \" \" << v[2];",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["6 7 8", "5 6 7", "6 7 7", "8 7 6"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "That is the answer the <b>copy</b> version of this loop would give — but there is an <b>&amp;</b> in this one. The parting step is the first <b>x += 1</b>: it lands inside the vector, and v[0] itself becomes 6. No copy exists to absorb the write." },
+          2: { step: 6, text: "The last element is reached too: on the third pass x names <b>v[2]</b>, and the same += 1 takes it from 7 to <b>8</b>. A range-based for leaves no element unvisited." },
+          3: { step: 2, text: "Nothing here reverses anything. The loop walks front to back — 5, then 6, then 7 — and each element grows by one <em>in place</em>, keeping its position: 6, 7, 8." }
+        },
+        steps: [
+          { line: 5, vars: { v: ["vector<int>", "{5, 6, 7} (size 3)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["5", "6", "7"] }], out: "", note: "The vector <b>v</b> holds <b>5, 6, 7</b>." },
+          { line: 6, vars: { v: ["vector<int>", "{5, 6, 7} (size 3)"], x: ["int&", "5"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["5", "6", "7"] }, { name: "x", type: "int&", value: "5" }], out: "", note: "First pass: <b>x</b> is not a copy — the <b>&amp;</b> makes it <b>another name for v[0] itself</b>. The x box and the first element box are one and the same box, shown twice." },
+          { line: 7, vars: { v: ["vector<int>", "{6, 6, 7} (size 3)"], x: ["int&", "6"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["6", "6", "7"] }, { name: "x", type: "int&", value: "6" }], out: "", note: "<b>The parting step.</b> <b>x += 1</b> writes through the name into the element: <b>v[0] becomes 6</b>, inside the vector." },
+          { line: 6, vars: { v: ["vector<int>", "{6, 6, 7} (size 3)"], x: ["int&", "6"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["6", "6", "7"] }, { name: "x", type: "int&", value: "6" }], out: "", note: "Second pass: x now names <b>v[1]</b>, which holds 6." },
+          { line: 7, vars: { v: ["vector<int>", "{6, 7, 7} (size 3)"], x: ["int&", "7"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["6", "7", "7"] }, { name: "x", type: "int&", value: "7" }], out: "", note: "<b>x += 1</b> takes v[1] to <b>7</b>, inside the vector." },
+          { line: 6, vars: { v: ["vector<int>", "{6, 7, 7} (size 3)"], x: ["int&", "7"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["6", "7", "7"] }, { name: "x", type: "int&", value: "7" }], out: "", note: "Third pass: x names <b>v[2]</b>, which holds 7." },
+          { line: 7, vars: { v: ["vector<int>", "{6, 7, 8} (size 3)"], x: ["int&", "8"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["6", "7", "8"] }, { name: "x", type: "int&", value: "8" }], out: "", note: "<b>x += 1</b> takes v[2] to <b>8</b>. The loop ends; the vector itself has been rewritten." },
+          { line: 9, vars: { v: ["vector<int>", "{6, 7, 8} (size 3)"], x: ["int&", "8"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["6", "7", "8"] }, { name: "x", type: "int&", value: "8" }], out: "6 7 8", note: "The print reads the vector as the loop left it: <b>6 7 8</b>." },
+          { line: 10, vars: { v: ["vector<int>", "{6, 7, 8} (size 3)"], x: ["int&", "8"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["6", "7", "8"] }, { name: "x", type: "int&", value: "8" }], out: "6 7 8", note: "The program ends. Final answer: <b>6 7 8</b> — the &amp; is the whole difference from the copy loop." }
+        ],
+        modify: {
+          prompt: "The body's += 1 becomes += 10. Nothing else changes. What prints now?",
+          code: 'vector<int> v = {5, 6, 7};\nfor (auto& x : v) {\n    x += <mark>10</mark>;\n}\ncout << v[0] << " " << v[1] << " " << v[2];',
+          options: ["15 16 17", "6 7 8", "5 6 7", "25 26 27"],
+          correct: 0,
+          explain: "Every element grows by ten, in place, through the reference: 5 + 10, 6 + 10, 7 + 10 = <b>15 16 17</b>."
+        }
+      },
+      {
+        concept: "Vectors — range-based for",
+        topic: "Arrays and vectors",
+        title: "Counting matches in a row",
+        goal: "Reading needs no write-back, so a <b>copy</b> loop variable is enough to <b>inspect</b> every element: the copy trap only bites when the body tries to <em>change</em> the collection.",
+        stories: {
+          health:   "A clinic app stores four readings in a <strong>vector</strong>: <strong>70, 85, 90, 85</strong>. A loop walks it and counts how many readings equal <strong>85</strong>. It prints the count.",
+          psych:    "A survey app stores four scores in a <strong>vector</strong>: <strong>70, 85, 90, 85</strong>. A loop walks it and counts how many scores equal <strong>85</strong>. It prints the count.",
+          business: "A sales app stores four figures in a <strong>vector</strong>: <strong>70, 85, 90, 85</strong>. A loop walks it and counts how many figures equal <strong>85</strong>. It prints the count.",
+          arts:     "A review app stores four ratings in a <strong>vector</strong>: <strong>70, 85, 90, 85</strong>. A loop walks it and counts how many ratings equal <strong>85</strong>. It prints the count."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <vector>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    vector<int> scores = {70, 85, 90, 85};",
+          "    int hits = 0;",
+          "    for (auto x : scores) {",
+          "        if (x == 85) {",
+          "            hits++;",
+          "        }",
+          "    }",
+          "    cout << hits;",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["2", "1", "4", "85"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 5, text: "The loop does not stop at the first match — there is no <b>break</b>. It walks all four elements, and the parting step is the last pass: x is 85 <em>again</em>, and <b>hits</b> rises to <b>2</b>." },
+          2: { step: 2, text: "4 is the number of <b>passes</b>. hits only rises when the if fires — on the two passes where x equals 85. The 70 and the 90 are inspected and passed over." },
+          3: { step: 6, text: "85 is a value <b>x</b> held along the way, not what prints. The print line reads <b>hits</b> — the counter — and the counter ends at <b>2</b>." }
+        },
+        steps: [
+          { line: 5, vars: { scores: ["vector<int>", "{70, 85, 90, 85} (size 4)"] }, boxes: [{ name: "scores", type: "vector<int>", wide: true, elems: ["70", "85", "90", "85"] }], out: "", note: "The vector <b>scores</b> holds <b>70, 85, 90, 85</b> — note the 85 appears twice." },
+          { line: 6, vars: { scores: ["vector<int>", "{70, 85, 90, 85} (size 4)"], hits: ["int", "0"] }, boxes: [{ name: "scores", type: "vector<int>", wide: true, elems: ["70", "85", "90", "85"] }, { name: "hits", type: "int", value: "0" }], out: "", note: "The counter <b>hits</b> starts at <b>0</b>." },
+          { line: 8, vars: { scores: ["vector<int>", "{70, 85, 90, 85} (size 4)"], hits: ["int", "0"], x: ["int", "70"] }, boxes: [{ name: "scores", type: "vector<int>", wide: true, elems: ["70", "85", "90", "85"] }, { name: "x", type: "int", value: "70" }, { name: "hits", type: "int", value: "0" }], out: "", note: "First pass: x is a copy of <b>70</b>. The if tests the copy: 70 == 85 is false — no count. A copy is all a <em>reading</em> loop needs." },
+          { line: 9, vars: { scores: ["vector<int>", "{70, 85, 90, 85} (size 4)"], hits: ["int", "1"], x: ["int", "85"] }, boxes: [{ name: "scores", type: "vector<int>", wide: true, elems: ["70", "85", "90", "85"] }, { name: "x", type: "int", value: "85" }, { name: "hits", type: "int", value: "1" }], out: "", note: "Second pass: x is <b>85</b>, the if fires, and <b>hits</b> becomes <b>1</b>." },
+          { line: 8, vars: { scores: ["vector<int>", "{70, 85, 90, 85} (size 4)"], hits: ["int", "1"], x: ["int", "90"] }, boxes: [{ name: "scores", type: "vector<int>", wide: true, elems: ["70", "85", "90", "85"] }, { name: "x", type: "int", value: "90" }, { name: "hits", type: "int", value: "1" }], out: "", note: "Third pass: x is <b>90</b> — no match, no count." },
+          { line: 9, vars: { scores: ["vector<int>", "{70, 85, 90, 85} (size 4)"], hits: ["int", "2"], x: ["int", "85"] }, boxes: [{ name: "scores", type: "vector<int>", wide: true, elems: ["70", "85", "90", "85"] }, { name: "x", type: "int", value: "85" }, { name: "hits", type: "int", value: "2" }], out: "", note: "<b>The parting step.</b> Fourth pass: x is <b>85</b> again — the loop did not stop at the first match — and <b>hits</b> becomes <b>2</b>." },
+          { line: 12, vars: { scores: ["vector<int>", "{70, 85, 90, 85} (size 4)"], hits: ["int", "2"], x: ["int", "85"] }, boxes: [{ name: "scores", type: "vector<int>", wide: true, elems: ["70", "85", "90", "85"] }, { name: "x", type: "int", value: "85" }, { name: "hits", type: "int", value: "2" }], out: "2", note: "The program prints <b>hits</b>: <b>2</b>." },
+          { line: 13, vars: { scores: ["vector<int>", "{70, 85, 90, 85} (size 4)"], hits: ["int", "2"], x: ["int", "85"] }, boxes: [{ name: "scores", type: "vector<int>", wide: true, elems: ["70", "85", "90", "85"] }, { name: "x", type: "int", value: "85" }, { name: "hits", type: "int", value: "2" }], out: "2", note: "The program ends. Final answer: <b>2</b> — both 85s counted, by a loop that only ever read copies." }
+        ],
+        modify: {
+          prompt: "The target changes from 85 to 90: the if becomes x == 90. Nothing else changes. What prints now?",
+          code: 'vector<int> scores = {70, 85, 90, 85};\nint hits = 0;\nfor (auto x : scores) {\n    if (x == <mark>90</mark>) {\n        hits++;\n    }\n}\ncout << hits;',
+          options: ["1", "2", "0", "4"],
+          correct: 0,
+          explain: "Only one element equals 90, so the if fires exactly once: <b>1</b>."
+        }
+      },
+      {
+        concept: "Vectors — range-based for",
+        topic: "Arrays and vectors",
+        title: "Words in a row",
+        goal: "A range-based for works the same over <b>strings</b>: each pass hands the loop variable the <b>next element in order</b>, and whatever the body prints appears in that order.",
+        stories: {
+          health:   "A clinic app stores two labels in a <strong>vector</strong>: <strong>sun</strong> and <strong>moon</strong>. A loop prints each label followed by a dash. Afterwards the program prints a closing word.",
+          psych:    "A study app stores two labels in a <strong>vector</strong>: <strong>sun</strong> and <strong>moon</strong>. A loop prints each label followed by a dash. Afterwards the program prints a closing word.",
+          business: "A café app stores two labels in a <strong>vector</strong>: <strong>sun</strong> and <strong>moon</strong>. A loop prints each label followed by a dash. Afterwards the program prints a closing word.",
+          arts:     "A gallery app stores two labels in a <strong>vector</strong>: <strong>sun</strong> and <strong>moon</strong>. A loop prints each label followed by a dash. Afterwards the program prints a closing word."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <vector>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    vector<string> words = {\"sun\", \"moon\"};",
+          "    for (auto w : words) {",
+          "        cout << w << \"-\";",
+          "    }",
+          "    cout << \"end\";",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["sun-moon-end", "sun-end", "sunmoon-end", "end"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 2, text: "The loop walks <b>every</b> element, not just the first: after sun's pass, w is replaced by <b>moon</b> and its pass prints too. Two elements, two prints." },
+          2: { step: 1, text: "The dash is <b>inside</b> the loop body, so it prints on every pass, right after the word: sun-, then moon-. A separator written in the body cannot be skipped between elements." },
+          3: { step: 1, text: "The closing print is the <em>last</em> thing that runs, not the only one. Before it, the loop body has already printed both words with their dashes." }
+        },
+        steps: [
+          { line: 5, vars: { words: ["vector<string>", "{\"sun\", \"moon\"} (size 2)"] }, boxes: [{ name: "words", type: "vector<string>", wide: true, elems: ["sun", "moon"] }], out: "", note: "The vector <b>words</b> holds two strings: <b>sun</b>, then <b>moon</b>." },
+          { line: 7, vars: { words: ["vector<string>", "{\"sun\", \"moon\"} (size 2)"], w: ["string", "\"sun\""] }, boxes: [{ name: "words", type: "vector<string>", wide: true, elems: ["sun", "moon"] }, { name: "w", type: "string", value: "\"sun\"" }], out: "sun-", note: "First pass: <b>w</b> holds a copy of the first element, <b>sun</b>, and the body prints it with its dash: <b>sun-</b>." },
+          { line: 7, vars: { words: ["vector<string>", "{\"sun\", \"moon\"} (size 2)"], w: ["string", "\"moon\""] }, boxes: [{ name: "words", type: "vector<string>", wide: true, elems: ["sun", "moon"] }, { name: "w", type: "string", value: "\"moon\"" }], out: "sun-moon-", note: "Second pass: w is replaced by the next element, <b>moon</b>, and the body prints it with its dash: <b>sun-moon-</b>. The vector is exhausted, so the loop ends." },
+          { line: 9, vars: { words: ["vector<string>", "{\"sun\", \"moon\"} (size 2)"], w: ["string", "\"moon\""] }, boxes: [{ name: "words", type: "vector<string>", wide: true, elems: ["sun", "moon"] }, { name: "w", type: "string", value: "\"moon\"" }], out: "sun-moon-end", note: "The closing cout prints <b>end</b> right after the last dash: <b>sun-moon-end</b>." },
+          { line: 10, vars: { words: ["vector<string>", "{\"sun\", \"moon\"} (size 2)"], w: ["string", "\"moon\""] }, boxes: [{ name: "words", type: "vector<string>", wide: true, elems: ["sun", "moon"] }, { name: "w", type: "string", value: "\"moon\"" }], out: "sun-moon-end", note: "The program ends. Final answer: <b>sun-moon-end</b> — the elements in order, each with its dash." }
+        ],
+        modify: {
+          prompt: "The vector gains a third word: it becomes {\"sun\", \"moon\", \"star\"}. Nothing else changes. What prints now?",
+          code: 'vector<string> words = {"sun", "moon", <mark>"star"</mark>};\nfor (auto w : words) {\n    cout << w << "-";\n}\ncout << "end";',
+          options: ["sun-moon-star-end", "sun-moon-end", "sun-star-end", "star-end"],
+          correct: 0,
+          explain: "The loop covers the new element in its turn, in order: <b>sun-moon-star-end</b>."
+        }
+      },
+      {
+        concept: "Vectors — range-based for",
+        topic: "Arrays and vectors",
+        title: "One vector, two endings",
+        goal: "The same vector, the same body shape, two loops: the <b>copy</b> loop leaves the vector untouched, the <b>reference</b> loop rewrites it. The <b>&amp;</b> is the whole difference.",
+        stories: {
+          health:   "A clinic app stores two readings in a <strong>vector</strong>: <strong>2, 4</strong>. A first loop adds 100 to its loop variable on every pass; a second loop, written with a reference, adds 1. Afterwards the program prints the vector's two elements.",
+          psych:    "A study app stores two scores in a <strong>vector</strong>: <strong>2, 4</strong>. A first loop adds 100 to its loop variable on every pass; a second loop, written with a reference, adds 1. Afterwards the program prints the vector's two elements.",
+          business: "A sales app stores two figures in a <strong>vector</strong>: <strong>2, 4</strong>. A first loop adds 100 to its loop variable on every pass; a second loop, written with a reference, adds 1. Afterwards the program prints the vector's two elements.",
+          arts:     "A venue app stores two counts in a <strong>vector</strong>: <strong>2, 4</strong>. A first loop adds 100 to its loop variable on every pass; a second loop, written with a reference, adds 1. Afterwards the program prints the vector's two elements."
+        },
+        code: [
+          "#include <iostream>",
+          "#include <vector>",
+          "using namespace std;",
+          "",
+          "int main() {",
+          "    vector<int> v = {2, 4};",
+          "    for (auto x : v) {",
+          "        x += 100;",
+          "    }",
+          "    for (auto& x : v) {",
+          "        x += 1;",
+          "    }",
+          "    cout << v[0] << \" \" << v[1];",
+          "    return 0;",
+          "}"
+        ],
+        question: "What will this program print?",
+        options: ["3 5", "103 105", "102 104", "2 4"],
+        correct: 0,
+        diagnoses: {
+          1: { step: 3, text: "That trace lets the first loop's +100 land in the vector. It never does: the first loop's x is a <b>copy</b>, so when the second loop starts, v still holds <b>2 and 4</b> — and the reference loop's +1 gives <b>3 and 5</b>, not 103 and 105." },
+          2: { step: 1, text: "102 and 104 are the values the first loop's <b>copies</b> reached — mistaken for the vector. The copies are discarded, and the second loop, which your trace ignores, writes through its reference into the elements themselves." },
+          3: { step: 3, text: "That trace misses the second loop entirely. Its <b>&amp;</b> makes x the element itself: the parting step is its first pass, where <b>v[0] becomes 3</b> inside the vector." }
+        },
+        steps: [
+          { line: 5, vars: { v: ["vector<int>", "{2, 4} (size 2)"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["2", "4"] }], out: "", note: "The vector <b>v</b> holds <b>2, 4</b>. Two loops are about to walk it — watch what each one leaves behind." },
+          { line: 7, vars: { v: ["vector<int>", "{2, 4} (size 2)"], x: ["int", "102"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["2", "4"] }, { name: "x", type: "int", value: "102" }], out: "", note: "First loop, first pass: x is a <b>copy</b> of 2, and <b>x += 100</b> takes the copy to <b>102</b>. The vector's first element is still <b>2</b>." },
+          { line: 7, vars: { v: ["vector<int>", "{2, 4} (size 2)"], x: ["int", "104"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["2", "4"] }, { name: "x", type: "int", value: "104" }], out: "", note: "First loop, second pass: a fresh copy of 4 becomes <b>104</b> — and is discarded. The first loop ends having changed <b>nothing</b> in the vector." },
+          { line: 10, vars: { v: ["vector<int>", "{3, 4} (size 2)"], x: ["int&", "3"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["3", "4"] }, { name: "x", type: "int&", value: "3" }], out: "", note: "<b>The parting step.</b> Second loop, first pass: the <b>&amp;</b> makes x <b>v[0] itself</b>, so <b>x += 1</b> lands inside the vector: the first element becomes <b>3</b>." },
+          { line: 10, vars: { v: ["vector<int>", "{3, 5} (size 2)"], x: ["int&", "5"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["3", "5"] }, { name: "x", type: "int&", value: "5" }], out: "", note: "Second loop, second pass: x is v[1] itself, and += 1 takes it to <b>5</b>. The vector is now {3, 5}." },
+          { line: 12, vars: { v: ["vector<int>", "{3, 5} (size 2)"], x: ["int&", "5"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["3", "5"] }, { name: "x", type: "int&", value: "5" }], out: "3 5", note: "The print reads the vector: <b>3 5</b>. The +100s vanished with their copies; the +1s stayed." },
+          { line: 13, vars: { v: ["vector<int>", "{3, 5} (size 2)"], x: ["int&", "5"] }, boxes: [{ name: "v", type: "vector<int>", wide: true, elems: ["3", "5"] }, { name: "x", type: "int&", value: "5" }], out: "3 5", note: "The program ends. Final answer: <b>3 5</b> — one character, the &amp;, decided which loop the vector felt." }
+        ],
+        modify: {
+          prompt: "The second loop's += 1 becomes += 10. The first loop is unchanged. What prints now?",
+          code: 'vector<int> v = {2, 4};\nfor (auto x : v) {\n    x += 100;\n}\nfor (auto& x : v) {\n    x += <mark>10</mark>;\n}\ncout << v[0] << " " << v[1];',
+          options: ["12 14", "3 5", "112 114", "2 4"],
+          correct: 0,
+          explain: "The first loop still changes only its copies; the reference loop adds ten to each element itself: 2 + 10 and 4 + 10 = <b>12 14</b>."
+        }
       }
 
     ];
@@ -12578,7 +13218,9 @@ int main() {
       { name: "Strings \u2014 find, slice & compare", list: [116, 117, 118, 119, 120, 121] },
       { name: "Functions — overloading & defaults", list: [122, 123, 124, 125, 126, 127] },
       { name: "Operators — increments & compound assignment", list: [128, 129, 130, 131, 132, 133] },
-      { name: "Decisions — ternary conditional", list: [137, 138, 139, 140, 141, 142] }
+      { name: "Decisions — ternary conditional", list: [137, 138, 139, 140, 141, 142] },
+      { name: "Loops — do-while", list: [143, 144, 145, 146, 147, 148] },
+      { name: "Vectors — range-based for", list: [149, 150, 151, 152, 153, 154] }
     ];
     function renderExNav() {
       var box = $("exnav"); box.innerHTML = ""; box.className = "ex-groups";
@@ -19435,12 +20077,12 @@ int main() {
        (makeRunProgram, shared with Make and the Instructor Studio),
        which covers the subset the tracer itself uses: int / double /
        string / bool boxes, assignment and compound assignment,
-       arithmetic and comparison expressions, cout, if / else, for and
-       while loops, and cin fed from the input box. Steps use the raw
+       arithmetic and comparison expressions, cout, if / else, for,
+       while and do...while loops, and cin fed from the input box. Steps use the raw
        interpreter snapshots with the same "state before the highlighted
        line runs" presentation as the Make trace panel. A pre-scan
        names the common constructs outside that subset (ternary,
-       switch, do...while, goto, classes, arrays and [ ] indexing,
+       switch, goto, classes, arrays and [ ] indexing,
        getline, exceptions, dynamic memory) so the student gets a clear
        unsupported-construct message instead of a confusing failure;
        anything else the runner rejects is reported with the runner's
@@ -19462,7 +20104,6 @@ int main() {
     var OWN_UNSUPPORTED = [
       { re: /\?/, name: "the conditional (ternary) operator ?:" },
       { re: /\bswitch\b/, name: "switch statements" },
-      { re: /\bdo\b/, name: "do ... while loops" },
       { re: /\bgoto\b/, name: "goto" },
       { re: /\bclass\b|\bstruct\b/, name: "classes and structs" },
       { re: /\w\s*\[[^\]]*\]/, name: "arrays and [ ] indexing" },
@@ -21464,6 +22105,13 @@ int main() {
             next(); expectOp("("); var wc = parseExpr(); expectOp(")");
             return { kind: "while", cond: wc, body: parseStmt(), line: t.line };
           }
+          if (t.v === "do") {
+            next();
+            var dbody = parseStmt();
+            if (!isId("while")) fail(peek(), "a do loop's body must be followed by 'while ( ... );' — the test that decides whether the body runs again.");
+            next(); expectOp("("); var dcond = parseExpr(); expectOp(")"); expectOp(";");
+            return { kind: "dowhile", cond: dcond, body: dbody, line: t.line };
+          }
           if (t.v === "for") return parseFor();
           if (t.v === "break") { next(); expectOp(";"); return { kind: "break", line: t.line }; }
           if (t.v === "continue") { next(); expectOp(";"); return { kind: "continue", line: t.line }; }
@@ -21869,6 +22517,9 @@ int main() {
           case "while":
             r = walkExpr(scopes, st.cond); if (r) return r;
             return walkStmt(scopes, st.body);
+          case "dowhile":
+            r = walkStmt(scopes, st.body); if (r) return r;
+            return walkExpr(scopes, st.cond);
           case "for": {
             scopes.push({});
             if (st.init) { r = st.init.kind === "decl" ? walkStmt(scopes, st.init) : walkExpr(scopes, st.init.expr); if (r) { scopes.pop(); return r; } }
@@ -22728,6 +23379,16 @@ int main() {
           case "while":
             while (makeTruthy(evalExpr(env, node.cond), node.line)) { step(node.line); try { execStmt(env, node.body); } catch (eW) { if (eW && eW.makeBreak) break; if (!(eW && eW.makeContinue)) throw eW; } }
             return;
+          case "dowhile": {
+            for (;;) {
+              step(node.line);
+              var doBroke = false;
+              try { execStmt(env, node.body); } catch (eD) { if (eD && eD.makeBreak) doBroke = true; else if (!(eD && eD.makeContinue)) throw eD; }
+              if (doBroke) break;
+              if (!makeTruthy(evalExpr(env, node.cond), node.line)) break;
+            }
+            return;
+          }
           case "for": {
             env.push({});
             try {
@@ -24332,7 +24993,7 @@ int main() {
        by that hydration and dropped by the next tfCollect save; missing
        optional sections default the same way an older save's would). */
     var TF_PROGRESS_ARRAY_KEYS = ["tracer", "gym", "refactor", "bridge", "order", "match", "perr", "make", "authoredExercises", "instructorExercises", "assignments"];
-    var TF_PROGRESS_KNOWN_KEYS = ["v", "bitsFormat", "playbackSpeed", "bgTheme", "reduceMotionPref", "largeTextPref", "readAloudPref", "focusPref", "primerRead", "boltTourSeen", "tracer", "bolt", "gym", "refactor", "bridge", "order", "match", "perr", "make", "challenges", "authoredExercises", "instructorExercises", "assignments", "quiz", "gap", "lastTracer", "testOut", "variants", "diagPair", "classRoster", "exitTicket", "preClass"];
+    var TF_PROGRESS_KNOWN_KEYS = ["v", "bitsFormat", "playbackSpeed", "bgTheme", "reduceMotionPref", "largeTextPref", "readAloudPref", "focusPref", "primerRead", "boltTourSeen", "tracer", "bolt", "gym", "refactor", "bridge", "order", "match", "perr", "make", "challenges", "authoredExercises", "instructorExercises", "assignments", "quiz", "gap", "lastTracer", "testOut", "variants", "diagPair", "classRoster", "exitTicket", "preClass", "marginNotes"];
     function tfIsPlainObj(x) { return !!x && typeof x === "object" && !Array.isArray(x); }
     function tfCloneJson(x) { return JSON.parse(JSON.stringify(x)); }
     function tfValidateProgressFile(d) {
@@ -24358,6 +25019,7 @@ int main() {
       if (d.quiz !== undefined && d.quiz !== null && !tfIsPlainObj(d.quiz)) return false;
       if (d.primerRead !== undefined && typeof d.primerRead !== "boolean") return false;
       if (d.boltTourSeen !== undefined && typeof d.boltTourSeen !== "boolean") return false;
+      if (d.marginNotes !== undefined && !Array.isArray(d.marginNotes)) return false;
       return true;
     }
     function tfSanitizeProgressFile(d) {
@@ -24482,6 +25144,8 @@ int main() {
       if (imp.testOut !== undefined) {
         if (!(cur.testOut && cur.testOut.passed) && imp.testOut) out.testOut = tfCloneJson(imp.testOut);
       }
+      // Margin notes: keyed by student-code hash + exercise number.
+      if (imp.marginNotes !== undefined) out.marginNotes = tfMergeCollection(cur.marginNotes, imp.marginNotes, function (it) { return String(it.h || "") + "|" + String(it.e || ""); });
       // Preferences (bitsFormat, playbackSpeed, bgTheme, reduceMotionPref,
       // largeTextPref) stay as the current ones under merge — they are
       // already in `out`. primerRead is a read record: keep it if either
@@ -28554,6 +29218,15 @@ int main() {
        tracefirst-progress-v1; absent in older saves. On-device only —
        assignment codes carry no per-step data, so notes never travel. */
     var stepNotes = [];
+    /* Instructor margin notes on prediction journals (2026-11-28):
+       [{ h: hash of the student's TFP1: code the note was written
+       against ("" for notes this device received as a student),
+       e: 1-based exercise number, t: note text (one line),
+       w: date written }]. Additive field `marginNotes` in
+       tracefirst-progress-v1; absent in older saves. On-device only:
+       notes travel back to the student in a TFN1: note code, the
+       return half of the office-hours code flow. */
+    var marginNotes = [];
     var tfLastSaved = null;
     var tfLastTracer = -1;
     var tfStorageOk = true;
@@ -28708,6 +29381,8 @@ int main() {
       try { if (typeof preClass !== "undefined" && preClass) data.preClass = { ex: preClass.ex, entries: preClass.entries.map(function (r) { return { n: r.n, p: r.p, c: r.c, h: r.h }; }) }; } catch (e) {}
       // Instructor step notes (additive field; absent in older saves)
       try { if (typeof stepNotes !== "undefined" && Array.isArray(stepNotes)) data.stepNotes = stepNotes.map(function (r) { return { e: r.e, s: r.s, t: r.t }; }); } catch (e) {}
+      // Instructor margin notes (additive field; absent in older saves)
+      try { if (typeof marginNotes !== "undefined" && Array.isArray(marginNotes)) data.marginNotes = marginNotes.map(function (r) { return { h: r.h, e: r.e, t: r.t, w: r.w }; }); } catch (e) {}
       return data;
     }
     function tfHasProgress(d) {
@@ -29100,6 +29775,15 @@ int main() {
           }).slice(0, 500).map(function (r) { return { e: Math.floor(r.e), s: Math.floor(r.s), t: r.t.slice(0, 280) }; });
         }
       } catch (e) {}
+      // Instructor margin notes (additive field; absent in older saves)
+      try {
+        if (Array.isArray(d.marginNotes)) {
+          marginNotes = d.marginNotes.filter(function (r) {
+            return r && typeof r.e === "number" && typeof r.t === "string" &&
+              r.e >= 1 && r.e <= EXERCISES.length && r.t.trim();
+          }).slice(0, 500).map(function (r) { return { h: (typeof r.h === "string" ? r.h.slice(0, 40) : ""), e: Math.floor(r.e), t: r.t.slice(0, 140), w: (typeof r.w === "string" ? r.w.slice(0, 10) : "") }; });
+        }
+      } catch (e) {}
       // Gap-build state (additive field; absent in older saves)
       try {
         if (d.gap && typeof d.gap === "object" && typeof gapState !== "undefined") {
@@ -29451,6 +30135,7 @@ int main() {
       }).join("") + "</ul>";
       box.innerHTML = html;
       box.hidden = false;
+      tfpRenderNotes(obj);
     }
     (function wireTfp() {
       var createBtn = $("tfp-create-btn"), viewBtn = $("tfp-view-btn");
@@ -29470,10 +30155,150 @@ int main() {
           announce("That is not a TFP1 progress code, so nothing was shown.");
           return;
         }
+        tfpCurrentHash = tfpHashOf($("tfp-paste") ? $("tfp-paste").value : "");
         tfpRenderView(obj);
         if (st) st.textContent = "Snapshot shown below — it is separate from the class digest and changes nothing else.";
         announce("Student progress snapshot shown.");
       });
+    })();
+
+    /* ---------- Instructor margin notes (2026-11-28) ----------
+       The return half of the office-hours code flow. Viewing a
+       student's TFP1: snapshot (above) offers a one-line note per
+       locked exercise; notes are stored in this browser's
+       marginNotes, keyed by a short hash of the student's code, and
+       a TFN1: note code carries them back to the student. Adding a
+       TFN1: code stores the notes as this device's own (h: ""), and
+       the tracer shows each note beside its exercise. Strict decode,
+       plain-language rejection, no accounts: the same conventions
+       as TFP1:. */
+    var tfpCurrentHash = "";
+    function tfpHashOf(text) {
+      var s = String(text == null ? "" : text).trim();
+      var seg = s.indexOf("TFP1:") === 0 ? s.slice(5).trim().split(/\s/)[0] : s;
+      var h = 5381;
+      for (var i = 0; i < seg.length; i++) h = ((h * 33) ^ seg.charCodeAt(i)) >>> 0;
+      return "s" + h.toString(36);
+    }
+    function tfMarginToday() { try { return new Date().toISOString().slice(0, 10); } catch (e) { return ""; } }
+    function tfMarginFor(hash, exNum) {
+      for (var i = 0; i < marginNotes.length; i++) if (marginNotes[i].h === hash && marginNotes[i].e === exNum) return marginNotes[i];
+      return null;
+    }
+    function tfMarginSet(hash, exNum, text) {
+      var t = String(text == null ? "" : text).replace(/\s+/g, " ").trim().slice(0, 140);
+      var found = -1;
+      for (var i = 0; i < marginNotes.length; i++) if (marginNotes[i].h === hash && marginNotes[i].e === exNum) { found = i; break; }
+      if (!t) { if (found >= 0) marginNotes.splice(found, 1); }
+      else if (found >= 0) { marginNotes[found].t = t; marginNotes[found].w = tfMarginToday(); }
+      else marginNotes.push({ h: hash, e: exNum, t: t, w: tfMarginToday() });
+      try { tfSave(); } catch (e) {}
+    }
+    function tfNoteEncode(hash) {
+      var n = [];
+      marginNotes.forEach(function (r) { if (r.h === hash) n.push([r.e, r.t]); });
+      n.sort(function (a, b) { return a[0] - b[0]; });
+      if (!n.length) return "";
+      return "TFN1:" + tfpB64e(JSON.stringify({ v: 1, n: n }));
+    }
+    function tfNoteDecode(text) {
+      var s = String(text == null ? "" : text).trim();
+      if (s.indexOf("TFN1:") !== 0) return null;
+      var seg = s.slice(5).trim().split(/\s/)[0];
+      if (!seg || !/^[A-Za-z0-9_-]+$/.test(seg)) return null;
+      var obj = null;
+      try { obj = JSON.parse(tfpB64d(seg)); } catch (e) { return null; }
+      if (!obj || obj.v !== 1 || !Array.isArray(obj.n)) return null;
+      var clean = [];
+      for (var i = 0; i < obj.n.length; i++) {
+        var e = obj.n[i];
+        if (!Array.isArray(e) || typeof e[0] !== "number" || e[0] < 1 || e[0] > EXERCISES.length || typeof e[1] !== "string" || !e[1].trim()) return null;
+        clean.push([Math.floor(e[0]), e[1].replace(/\s+/g, " ").trim().slice(0, 140)]);
+      }
+      return clean;
+    }
+    function tfpRenderNotes(obj) {
+      var wrap = $("tfp-notes"), list = $("tfp-notes-list"), out = $("tfn-code-out");
+      if (!wrap || !list) return;
+      wrap.hidden = false;
+      list.innerHTML = "";
+      var entries = obj.t.slice().sort(function (a, b) { return a[0] - b[0]; });
+      if (!entries.length) list.innerHTML = "<p style='font-size:.92rem;color:var(--ink-soft);'>No locked exercises in this snapshot yet, so there is nothing to write a note beside.</p>";
+      entries.forEach(function (e) {
+        var ex = EXERCISES[e[0] - 1];
+        var row = document.createElement("div");
+        row.style.cssText = "display:flex;gap:8px;align-items:center;flex-wrap:wrap;";
+        var lab = document.createElement("span");
+        lab.style.cssText = "font-size:.92rem;font-weight:600;";
+        lab.textContent = "Exercise " + e[0] + (ex ? " \u2014 " + ex.title : "");
+        var inp = document.createElement("input");
+        inp.type = "text"; inp.maxLength = 140;
+        inp.style.cssText = "flex:1;min-width:200px;font:inherit;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel-2);color:var(--ink);";
+        inp.setAttribute("aria-label", "Margin note for Exercise " + e[0]);
+        inp.placeholder = "One line, beside this exercise";
+        var cur = tfMarginFor(tfpCurrentHash, e[0]);
+        if (cur) inp.value = cur.t;
+        var btn = document.createElement("button");
+        btn.type = "button"; btn.className = "btn ghost"; btn.textContent = "Save note";
+        btn.setAttribute("data-ex", String(e[0]));
+        row.appendChild(lab); row.appendChild(inp); row.appendChild(btn);
+        list.appendChild(row);
+      });
+      if (out) out.value = tfNoteEncode(tfpCurrentHash);
+    }
+    function tfRenderMyNotes() {
+      var box = $("tfn-mine");
+      if (!box) return;
+      var mine = marginNotes.filter(function (r) { return r.h === ""; }).sort(function (a, b) { return a.e - b.e; });
+      if (!mine.length) { box.hidden = true; box.innerHTML = ""; return; }
+      box.innerHTML = "<h5>Your instructor's notes</h5><ul>" + mine.map(function (r) {
+        var ex = EXERCISES[r.e - 1];
+        return "<li><strong>Exercise " + r.e + (ex ? " \u2014 " + esc(ex.title) : "") + ":</strong> " + esc(r.t) + "</li>";
+      }).join("") + "</ul>";
+      box.hidden = false;
+    }
+    function tfSyncMarginUi() {
+      var el = $("margin-note");
+      if (el && typeof state !== "undefined" && state) {
+        var n = tfMarginFor("", state.current + 1);
+        if (n) { el.hidden = false; el.textContent = "Instructor's note on this exercise: " + n.t; }
+        else { el.hidden = true; el.textContent = ""; }
+      }
+      tfRenderMyNotes();
+    }
+    var tfRenderAllMarginOrig = renderAll;
+    renderAll = function () { tfRenderAllMarginOrig(); tfSyncMarginUi(); };
+    (function wireMarginNotes() {
+      var list = $("tfp-notes-list");
+      if (list) list.addEventListener("click", function (ev) {
+        var btn = ev.target && ev.target.closest ? ev.target.closest("button[data-ex]") : null;
+        if (!btn) return;
+        var row = btn.parentNode;
+        var inp = row ? row.querySelector("input") : null;
+        var exNum = parseInt(btn.getAttribute("data-ex"), 10);
+        if (!inp || !(exNum >= 1)) return;
+        tfMarginSet(tfpCurrentHash, exNum, inp.value);
+        var out = $("tfn-code-out"); if (out) out.value = tfNoteEncode(tfpCurrentHash);
+        var st = $("tfp-notes-status");
+        if (st) st.textContent = inp.value.trim() ? "Note saved for Exercise " + exNum + " — the note code above now carries it." : "Note for Exercise " + exNum + " cleared.";
+        announce("Margin note saved.");
+      });
+      var addBtn = $("tfn-add-btn");
+      if (addBtn) addBtn.addEventListener("click", function () {
+        var st = $("tfn-add-status");
+        var notes = tfNoteDecode($("tfn-paste") ? $("tfn-paste").value : "");
+        if (!notes) {
+          if (st) st.textContent = "That is not a TFN1 note code, so nothing was added.";
+          announce("That is not a TFN1 note code, so nothing was added.");
+          return;
+        }
+        notes.forEach(function (pair) { tfMarginSet("", pair[0], pair[1]); });
+        tfRenderMyNotes();
+        tfSyncMarginUi();
+        if (st) st.textContent = notes.length + (notes.length === 1 ? " note" : " notes") + " added — each one now sits beside its exercise in the Prediction Tracer.";
+        announce("Instructor notes added.");
+      });
+      tfRenderMyNotes();
     })();
 
     /* ---------- Prediction duels ---------- */
